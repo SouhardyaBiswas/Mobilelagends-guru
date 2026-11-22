@@ -6,3 +6,6 @@ dist
 coverage
 test-results
 *.tsbuildinfo
+
+# Scratch checkouts used by helper agents
+.claude/worktrees/
