@@ -27,6 +27,16 @@ const PLAYER_SCHEMA = {
   additionalProperties: false,
 } as const;
 
+const SHOP_ITEM_SCHEMA = {
+  type: "object",
+  properties: {
+    name: { type: "string", description: "Item name exactly as printed." },
+    price: { type: "integer", description: "Price printed on the item, -1 if not visible." },
+  },
+  required: ["name", "price"],
+  additionalProperties: false,
+} as const;
+
 export const VISION_SCHEMA = {
   type: "object",
   properties: {
@@ -38,12 +48,19 @@ export const VISION_SCHEMA = {
     myGold: { type: "integer", description: "The user's current spendable gold if visible, else -1." },
     allies: { type: "array", items: PLAYER_SCHEMA, description: "The user's team, including the user." },
     enemies: { type: "array", items: PLAYER_SCHEMA },
+    myItems: {
+      type: "array",
+      items: { type: "string" },
+      description: "Items the player owns: the shop's bottom inventory row, or the player's own scoreboard row. Empty if not visible.",
+    },
+    recommended: { type: "array", items: SHOP_ITEM_SCHEMA, description: "Shop only: items listed before the Spare Equipment heading." },
+    spare: { type: "array", items: SHOP_ITEM_SCHEMA, description: "Shop only: items listed under Spare Equipment." },
     tip: {
       type: "string",
       description: "One coaching sentence (max 18 words) grounded in what is visible, or empty string.",
     },
   },
-  required: ["screen", "gameTime", "myGold", "allies", "enemies", "tip"],
+  required: ["screen", "gameTime", "myGold", "allies", "enemies", "myItems", "recommended", "spare", "tip"],
   additionalProperties: false,
 } as const;
 
