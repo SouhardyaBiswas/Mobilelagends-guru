@@ -1072,12 +1072,15 @@ describe("AI coach", () => {
 
   it("turns a positioning answer into advice, and says when the map was not open", () => {
     const s = live();
-    expect(positionBrief(s, 2_000_000, 2)).toMatch(/The player is Zetian \(Mage\)/);
-    expect(positionBrief(s, 2_000_000, 2)).toMatch(/Freya \(9\/3\/2\)/);
-    expect(positionBrief(s, 2_000_000, 2)).toMatch(/Picture 2 was taken a few seconds later/);
-    expect(positionBrief(s, 2_000_000, 1)).toMatch(/One picture only/);
+    const both = positionBrief({ ...s, scenes: [{ at: 470, text: "Mid lane, next to Argus." }] }, 2_000_000, [{ kind: "battlefield" }, { kind: "map", agoSec: 40 }]);
+    expect(both).toMatch(/The player is Zetian \(Mage\)/);
+    expect(both).toMatch(/Freya \(9\/3\/2\)/);
+    expect(both).toMatch(/Picture 1: the battlefield around the player, now\./);
+    expect(both).toMatch(/Picture 2: the map opened large, taken about 40 seconds ago/);
+    expect(both).toMatch(/- Mid lane, next to Argus\./);
+    expect(positionBrief(s, 2_000_000, [{ kind: "battlefield" }])).toMatch(/No opened map this time/);
     const a = normalizePosition({ map_open: true, where: "Mid lane, past the river.", enemies_seen: "Two top, three missing.", risk: "high", say: "Back to your turret.", moves: ["Walk back.", "Clear the wave.", "Wait for Argus.", "extra"] }, "claude-opus-5-5", 5)!;
-    expect(a).toMatchObject({ at: 5, summary: "Mid lane, past the river. Two top, three missing.", danger: "High risk where you are standing.", say: "Back to your turret.", model: "claude-opus-5-5" });
+    expect(a).toMatchObject({ at: 5, summary: "Mid lane, past the river. Two top, three missing.", risk: "high", danger: "High risk where you are standing.", say: "Back to your turret.", model: "claude-opus-5-5" });
     expect(a.moves).toHaveLength(3);
     const b = normalizePosition({ map_open: false, where: "Bottom lane.", enemies_seen: "", risk: "low", say: "Stay where you are.", moves: [] }, "m", 6)!;
     expect(b.danger).toBeUndefined();

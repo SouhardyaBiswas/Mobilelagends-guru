@@ -10,6 +10,8 @@ export interface VisionContext {
   enemies: number[];
   /** How many screenshots this match has already seen. Only the scripted demo reader uses it, to know where in its script it is. */
   step?: number;
+  /** Demo reader only: answer as this kind of screen instead of following the script. */
+  force?: string;
 }
 
 /**
@@ -24,6 +26,7 @@ Classify the screen:
 - "scoreboard": the in-match panel with "Equipment" and "Attributes" tabs and a "VS" bar. The left half (blue) is the player's team, the right half (red) is the enemy team, five rows each. Every row prints the player name and, directly under it, the HERO NAME in smaller text — read the hero from that text. Each row also shows kills, deaths, assists, a gold figure, and up to six round item slots. Kills, deaths and assists are small numbers (rarely above 30); the gold figure has three to five digits. The enemy half is a mirror image of the player's half, so its columns run in the opposite order: on both halves decide what a number is by its size and its column, never by counting positions from the left. A row's gold must never end up in kills.
 - "shop": the in-match equipment shop (tabs such as Recommended, Attack, Magic, Defense, Movement; a "Purchase" button).
 - "gameplay": the live battlefield with no panel open.
+- "map": the live battlefield with the map opened large (it covers a good part of the screen, far bigger than the small map in the corner).
 - "post_game": the results screen after the match.
 - "other": anything else, including the "Battle Setup" pop-up.
 
@@ -40,6 +43,8 @@ Items: answer with names from the item list below.
 - On the scoreboard, "myItems" is the item row of the player's own highlighted row.
 
 Numbers: copy kills, deaths, assists, gold and level exactly as shown; use -1 when a number is not visible.
+
+scene: on "gameplay" and "map" screens only, one plain sentence saying where the player's hero is (which lane, the river, the jungle or their base; pushed forward or near their own turret), which teammates are beside them, and which enemy heroes are in view or shown on the map. The player's hero is the one the camera is centred on. Say only what you can see; write "" if you cannot tell. Use "" on every other screen.
 
 tip: one short, concrete coaching sentence based only on what is visible (who is ahead, an obvious item gap). Use "" if there is nothing useful to say. Do not recommend specific items in the tip; the app does that.
 

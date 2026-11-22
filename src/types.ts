@@ -190,7 +190,8 @@ export interface CounterPick {
   reasons: string[];
 }
 
-export type ScreenKind = "draft" | "loading" | "scoreboard" | "shop" | "gameplay" | "post_game" | "other";
+/** "map" is the battlefield with the map opened large over it. */
+export type ScreenKind = "draft" | "loading" | "scoreboard" | "shop" | "gameplay" | "map" | "post_game" | "other";
 
 export interface ShopEntry {
   id: string;
@@ -211,6 +212,8 @@ export interface Observation {
   /** The shop's recommended list (the player's chosen in-game build) and spare items. */
   shop?: { recommended: ShopEntry[]; spare: ShopEntry[] };
   tip?: string;
+  /** Battlefield and map screens: one sentence on where the player is and who is around. A hint, not a fact. */
+  scene?: string;
   /** Names the model returned that matched nothing we know. */
   unknown: string[];
 }
@@ -256,10 +259,31 @@ export interface PositionAdvice {
   /** Epoch ms. */
   at: number;
   summary: string;
+  /** How exposed the player's current spot is. */
+  risk: "low" | "medium" | "high";
   danger?: string;
   moves: string[];
   say: string;
   model: string;
+}
+
+/** What the enemy-tracking specialist concluded from the latest scoreboard picture. */
+export interface EnemyIntel {
+  /** Epoch ms. */
+  at: number;
+  model: string;
+  /** One line: who to respect, who to punish. */
+  summary: string;
+  enemies: Array<{
+    heroId: number;
+    threat: "high" | "medium" | "low";
+    /** How to deal with this hero right now. */
+    note: string;
+    /** Items named on two reads in a row: believed. */
+    items: string[];
+    /** Items named on this read only: a hint until the next read agrees. */
+    maybe: string[];
+  }>;
 }
 
 /** A build order chosen by the AI coach for this match: catalog item ids, with a reason for each. */

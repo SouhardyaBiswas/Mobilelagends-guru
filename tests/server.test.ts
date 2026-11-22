@@ -10,7 +10,8 @@ import type { Session } from "../src/state/session";
  */
 const call = async (method: string, path: string, init: RequestInit = {}) => {
   const res = await api.fetch(new Request(`https://coach.test/api/coach${path}`, { method, ...init }));
-  return { status: res.status, body: (await res.json()) as Record<string, unknown> & { session?: Session; version?: number } };
+  // `version` is a write stamp that only ever grows; `revision` counts the changes made to the match itself.
+  return { status: res.status, body: (await res.json()) as Record<string, unknown> & { session?: Session; version?: number; revision?: number } };
 };
 const PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0, 0, 0, 0]);
 const ipad = (room: string, headers: Record<string, string> = { "x-vision-provider": "demo" }) =>
@@ -30,7 +31,7 @@ describe("screenshot endpoint", () => {
   it("keeps the phone's tap when a screenshot is being read at the same time", async () => {
     const room = "RACE01";
     await ipad(room); // loading screen: establishes the match
-    const v0 = (await state(room)).version!;
+    const v0 = (await state(room)).revision!;
     // The next screenshot (a scoreboard) takes ~0.5s to read. The phone taps "Done" meanwhile.
     const reading = ipad(room);
     await phone(room, { type: "bought", id: "comp:boots" });
@@ -40,7 +41,8 @@ describe("screenshot endpoint", () => {
     expect(after.session!.owned).toContain("comp:boots"); // the tap survived
     expect(after.session!.gold).toBe(620); // and so did the read
     expect(after.session!.phase).toBe("live");
-    expect(after.version).toBe(v0 + 3); // the tap, the read, then the coach's call: each is a version the dashboard will see
+    expect(after.revision).toBe(v0 + 2); // the tap and the read both changed the match; the coach keeps its conclusions in its own entry
+    expect(after.session!.ai).toBeDefined();
   });
 
   it("drops a read that finishes after the phone ended the match", async () => {
@@ -89,8 +91,9 @@ describe("screenshot endpoint", () => {
     const s = (await state(room)).session!;
     expect(s.myHeroId).toBeDefined();
     expect(s.enemies.length).toBe(5);
-    const before = (await state(room)).version;
+    const before = await state(room);
     const buy = await call("GET", `?room=${room}&ask=buy`);
+    const firstNote = (await state(room)).announce as { id: number };
     expect(String(buy.body.say)).toMatch(/Buy|Next item|Save/);
     expect(String((await call("GET", `?room=${room}&ask=plan`)).body.say).length).toBeGreaterThan(20);
     expect(String((await call("GET", `?room=${room}&ask=threat`)).body.say)).toMatch(/biggest threat/);
@@ -98,9 +101,10 @@ describe("screenshot endpoint", () => {
     // The phone is told to say the latest answer, with a new id each time, without disturbing the match.
     const after = await state(room);
     expect(after.announce).toMatchObject({ text: status.body.say });
-    expect((after.announce as { id: number }).id).toBeGreaterThanOrEqual(4);
-    // Each answer is a new version (so the dashboard fetches it), but the match itself is untouched.
-    expect(after.version).toBe(before! + 4);
+    expect((after.announce as { id: number }).id).toBeGreaterThan(firstNote.id); // a new id each time, so each answer is spoken once
+    // Each answer moves the version (so the dashboard fetches it), but the match itself is untouched.
+    expect(after.version!).toBeGreaterThan(before.version!);
+    expect(after.revision).toBe(before.revision);
     expect(after.session).toEqual(s);
     expect((await call("GET", `?room=${room}&ask=nonsense`)).status).toBe(400);
   });
@@ -160,7 +164,7 @@ describe("voice commands", () => {
     // Anything at all moves the version: a failed read, a voice answer, a tap.
     await call("POST", `?room=${room}`, { headers: { "content-type": "image/png" }, body: PNG }); // no key: fails
     const moved = await call("GET", `?room=${room}&v=${full.version}`);
-    expect(moved.body.version).toBe(full.version! + 1);
+    expect(moved.body.version as number).toBeGreaterThan(full.version!);
     expect(String(moved.body.error)).toMatch(/API key/);
   });
 });
@@ -279,8 +283,9 @@ describe("room memory shared between copies of the server", () => {
     await go("POST", "?room=LAGGY1", shot);
     await new Promise((r) => setTimeout(r, LAG_MS + 50));
     const after = await go("GET", "?room=LAGGY1&v=-1");
-    expect(after.version).toBe(4); // read, coach, read, coach: none overwritten
-    expect(after.session!.history.length).toBe(1); // the scoreboard read survived the coach's write
+    expect(after.revision).toBe(2); // both reads applied, neither built on a copy from before the other
+    expect(after.session!.calls).toBe(2);
+    expect(after.session!.history.length).toBe(1); // the scoreboard read is there
     expect(after.session!.ai).toBeDefined();
     expect(after.session!.gold).toBe(620);
   });

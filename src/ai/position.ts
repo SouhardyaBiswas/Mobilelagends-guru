@@ -43,8 +43,11 @@ export const POSITION_SCHEMA = {
   additionalProperties: false,
 } as const;
 
-/** Who is in the match, so the model can put names to the portraits. */
-export function positionBrief(s: Session, now: number, pictures: number): string {
+/** What each attached picture is, in order. */
+export type PositionPicture = { kind: "battlefield" } | { kind: "map"; agoSec?: number };
+
+/** Who is in the match, so the model can put names to the portraits, and what the pictures are. */
+export function positionBrief(s: Session, now: number, pictures: PositionPicture[]): string {
   const lines: string[] = [];
   const hero = s.myHeroId ? heroById(s.myHeroId) : undefined;
   const sec = gameSeconds(s, now);
@@ -58,7 +61,13 @@ export function positionBrief(s: Session, now: number, pictures: number): string
     });
     lines.push(`Enemies: ${line.join(", ")}.`);
   }
-  lines.push(pictures >= 2 ? "Picture 1 is the battlefield around the player. Picture 2 was taken a few seconds later, after the player was asked to open the map." : "One picture only: use the small map in its corner.");
+  const scenes = (s.scenes ?? []).slice(-4);
+  if (scenes.length) lines.push("Where the player has been over the last minute, oldest first (read from earlier frames; hints, not facts):", ...scenes.map((x) => `- ${x.text}`));
+  pictures.forEach((p, i) => {
+    if (p.kind === "battlefield") lines.push(`Picture ${i + 1}: the battlefield around the player, now.`);
+    else lines.push(`Picture ${i + 1}: the map opened large${p.agoSec && p.agoSec > 5 ? `, taken about ${Math.round(p.agoSec)} seconds ago — positions on it may have changed` : ""}.`);
+  });
+  if (!pictures.some((p) => p.kind === "map")) lines.push("No opened map this time: use the small map in the corner of the battlefield picture.");
   lines.push("Where should the player stand or go right now?");
   return lines.join("\n");
 }
@@ -76,6 +85,7 @@ export function normalizePosition(raw: unknown, model: string, now: number): Pos
   return {
     at: now,
     summary: [where, seen].filter(Boolean).join(" ") + mapNote,
+    risk,
     danger: risk === "low" ? undefined : `${risk === "high" ? "High" : "Some"} risk where you are standing.`,
     moves: (Array.isArray(r.moves) ? r.moves : []).map((x) => text(x, 140)).filter(Boolean).slice(0, 3),
     say,

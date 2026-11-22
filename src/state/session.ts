@@ -5,7 +5,7 @@
 import { heroById } from "../data/heroes";
 import { COMPONENTS, componentId, itemById, SELL_REFUND } from "../data/items";
 import { storyBeat } from "../engine/story";
-import type { AiAdvice, AiBuild, Lane, Observation, PlayerState, PositionAdvice, ShopEntry, StoryBeat } from "../types";
+import type { AiAdvice, AiBuild, EnemyIntel, Lane, Observation, PlayerState, PositionAdvice, ShopEntry, StoryBeat } from "../types";
 
 export interface LogEntry {
   at: number;
@@ -32,6 +32,11 @@ export interface Snapshot {
 
 const HISTORY_MAX = 40;
 const STORY_MAX = 40;
+const SCENES_MAX = 6;
+/** With screenshots arriving every few seconds, this many in a row with no game on them means the player has left the match. */
+const IDLE_FRAMES_END = 8;
+/** Pocket gold read within this long of the last reading can be checked against it. */
+const GOLD_CHECK_MS = 30_000;
 
 export interface Session {
   phase: "draft" | "live";
@@ -104,6 +109,15 @@ export interface Session {
   aiBuild?: AiBuild;
   /** The latest answer to "help me position". */
   position?: PositionAdvice;
+  /** What the enemy-tracking specialist last concluded. */
+  intel?: EnemyIntel;
+  /** Where the player has been lately, as the reader described each battlefield frame: hints for the positioning specialist. */
+  scenes?: Array<{ at: number; text: string }>;
+  /** When pocket gold was last believed, and a reading that disagreed with it and awaits a second opinion. */
+  goldAt?: number;
+  pendingGold?: number;
+  /** Frames in a row that showed no game at all. Enough of them and the match is taken to be over. */
+  idleFrames?: number;
 }
 
 /** List value of a set of item / component ids. */
@@ -353,8 +367,24 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
       next.spent = mine.gold - obs.myGold + (next.goldOffset ?? 0);
       next.spentAt = now;
     }
-  } else if (obs.myGold !== undefined && s.gold !== undefined && s.spent !== undefined && obs.myGold < s.gold - 150) {
-    // Between scoreboards, a drop in pocket gold is a purchase.
+  }
+  // Pocket gold from a single battlefield frame can be a misread, and with frames arriving every few
+  // seconds one misread would look like a purchase. A reading far from the last one (a big drop, or
+  // a jump no kill explains) is held until the next frame agrees with it. A scoreboard is believed
+  // outright, and so is any reading when the last one is too old to compare with.
+  let goldBelieved = obs.myGold !== undefined;
+  if (obs.myGold !== undefined && obs.screen !== "scoreboard" && s.gold !== undefined && s.goldAt !== undefined && now - s.goldAt <= GOLD_CHECK_MS) {
+    const delta = obs.myGold - s.gold;
+    const ordinary = delta >= -150 && delta <= 800;
+    const confirmed = s.pendingGold !== undefined && Math.abs(obs.myGold - s.pendingGold) <= 300;
+    if (!ordinary && !confirmed) {
+      goldBelieved = false;
+      next.pendingGold = obs.myGold;
+    }
+  }
+  if (goldBelieved) next.pendingGold = undefined;
+  if (goldBelieved && obs.screen !== "scoreboard" && obs.myGold !== undefined && s.gold !== undefined && s.spent !== undefined && obs.myGold < s.gold - 150) {
+    // Between scoreboards, a (believed) drop in pocket gold is a purchase.
     next.spent = s.spent + (s.gold - obs.myGold);
   }
 
@@ -411,9 +441,12 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
     next.shopPrices = Object.fromEntries(listed.filter((e) => e.price !== undefined && e.price > 0).map((e) => [e.id, e.price!]));
     next.shopPricesSpent = next.spent;
   }
-  if (obs.myGold !== undefined) next.gold = obs.myGold;
+  if (obs.myGold !== undefined && goldBelieved) {
+    next.gold = obs.myGold;
+    next.goldAt = now;
+  }
   // The match clock only appears on in-match screens; a draft countdown or anything else is not it.
-  const inMatch = obs.screen === "scoreboard" || obs.screen === "gameplay" || obs.screen === "shop";
+  const inMatch = obs.screen === "scoreboard" || obs.screen === "gameplay" || obs.screen === "map" || obs.screen === "shop";
   if (obs.gameTimeSec !== undefined && inMatch) {
     const candidate = now - obs.gameTimeSec * 1000;
     if (next.clockStart === undefined || !next.clockSure || Math.abs(candidate - next.clockStart) <= 120_000) {
@@ -430,7 +463,7 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
     }
   }
   // Seeing the match is the cue to leave draft mode.
-  if ((obs.screen === "scoreboard" || obs.screen === "gameplay" || obs.screen === "shop") && next.myHeroId) {
+  if (inMatch && next.myHeroId) {
     next.phase = "live";
     next.clockStart ??= now;
   }
@@ -457,15 +490,29 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
       if (beat) next.story = addBeat(next.story, beat);
     }
   }
+  // Where the player was, as the reader described this frame.
+  if (obs.scene && next.clockStart !== undefined) {
+    const at = obs.gameTimeSec ?? Math.max(0, Math.round((now - next.clockStart) / 1000));
+    next.scenes = [...(s.scenes ?? []), { at, text: obs.scene }].slice(-SCENES_MAX);
+  }
   // Keep the stage in step with what the screen shows, so the buttons rarely need touching.
   if (next.phase === "live") next.stage = "live";
   else if (obs.screen === "loading") next.stage = "loading";
   else if (obs.screen === "draft") next.stage = "draft";
+  // The results screen, or a run of frames with no game on them, ends the match: reading pauses
+  // and a repeating shortcut is told to stop, instead of photographing the lobby until it runs out.
+  next.idleFrames = obs.screen === "other" ? (s.idleFrames ?? 0) + 1 : 0;
+  const wasPlaying = stageOf(s) === "live" || stageOf(s) === "loading";
+  if (obs.screen === "post_game" || (wasPlaying && next.idleFrames >= IDLE_FRAMES_END)) {
+    next.phase = "draft";
+    next.stage = "done";
+    next.idleFrames = 0;
+  }
   return next;
 }
 
 /** Add a line to the storyboard; a line for the same moment replaces the one already there. */
-function addBeat(story: StoryBeat[] | undefined, beat: StoryBeat): StoryBeat[] {
+export function addBeat(story: StoryBeat[] | undefined, beat: StoryBeat): StoryBeat[] {
   const lines = [...(story ?? [])];
   const last = lines.at(-1);
   if (last && Math.abs(last.at - beat.at) < 20) lines[lines.length - 1] = beat;
@@ -495,6 +542,7 @@ export function sessionReducer(s: Session, a: SessionAction): Session {
       return {
         ...s, phase: "live", clockStart: a.now, owned: [], gold: undefined, enemyLive: {}, allyLive: {}, history: [], manualFed: {}, tip: undefined, calls: 0, costUsd: 0, matchId: s.matchId + 1,
         spent: undefined, spentAt: undefined, seenItems: undefined, seenPartial: undefined, pendingSeen: undefined, goldOffset: undefined, doubt: undefined, story: undefined, ai: undefined, aiBuild: undefined, position: undefined,
+        intel: undefined, scenes: undefined, goldAt: undefined, pendingGold: undefined, idleFrames: undefined,
       };
     case "newMatch":
       return { ...EMPTY_SESSION, lane: s.lane, matchId: s.matchId + 1 };

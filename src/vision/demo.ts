@@ -34,6 +34,19 @@ export function demoVision(): VisionCall {
       items,
     });
 
+    // A test can ask for a particular kind of screen instead of the next one in the script.
+    if (ctx.force === "gameplay" || ctx.force === "map") {
+      return {
+        raw: {
+          screen: ctx.force, gameTime: "04:00", myGold: 900, allies: [], enemies: [], tip: "",
+          scene: ctx.force === "map" ? "You are in the middle lane near the river; two enemies show in the top lane." : "You are in the middle lane next to Tigreal; no enemy in view.",
+        },
+        model: "demo",
+      };
+    }
+    if (ctx.force === "other" || ctx.force === "post_game") {
+      return { raw: { screen: ctx.force, gameTime: "", myGold: -1, allies: [], enemies: [], tip: "" }, model: "demo" };
+    }
     if (s === 0) {
       return {
         raw: {

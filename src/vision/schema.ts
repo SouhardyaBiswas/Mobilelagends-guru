@@ -42,7 +42,7 @@ export const VISION_SCHEMA = {
   properties: {
     screen: {
       type: "string",
-      enum: ["draft", "loading", "scoreboard", "shop", "gameplay", "post_game", "other"],
+      enum: ["draft", "loading", "scoreboard", "shop", "gameplay", "map", "post_game", "other"],
     },
     gameTime: { type: "string", description: "Match clock as mm:ss if visible, else empty string." },
     myGold: { type: "integer", description: "The user's current spendable gold if visible, else -1." },
@@ -59,8 +59,12 @@ export const VISION_SCHEMA = {
       type: "string",
       description: "One coaching sentence (max 18 words) grounded in what is visible, or empty string.",
     },
+    scene: {
+      type: "string",
+      description: "Gameplay and map screens only: one sentence on where the player's hero is and who is around. Empty string on every other screen.",
+    },
   },
-  required: ["screen", "gameTime", "myGold", "allies", "enemies", "myItems", "recommended", "spare", "tip"],
+  required: ["screen", "gameTime", "myGold", "allies", "enemies", "myItems", "recommended", "spare", "tip", "scene"],
   additionalProperties: false,
 } as const;
 
@@ -75,7 +79,7 @@ interface RawPlayer {
   items?: unknown;
 }
 
-const SCREENS: readonly ScreenKind[] = ["draft", "loading", "scoreboard", "shop", "gameplay", "post_game", "other"];
+const SCREENS: readonly ScreenKind[] = ["draft", "loading", "scoreboard", "shop", "gameplay", "map", "post_game", "other"];
 
 const num = (v: unknown): number | undefined => {
   const n = typeof v === "string" ? Number(v) : v;
@@ -200,6 +204,7 @@ export function normalizeObservation(raw: unknown): Observation {
 
   const screen = SCREENS.includes(r.screen as ScreenKind) ? (r.screen as ScreenKind) : "other";
   const tip = typeof r.tip === "string" ? r.tip.trim().slice(0, 200) : "";
+  const scene = (screen === "gameplay" || screen === "map") && typeof r.scene === "string" ? r.scene.replace(/\s+/g, " ").trim().slice(0, 220) : "";
 
   return {
     screen,
@@ -211,6 +216,7 @@ export function normalizeObservation(raw: unknown): Observation {
     myItems: myItems.length ? myItems : undefined,
     shop: recommended.length || spare.length ? { recommended, spare } : undefined,
     tip: tip || undefined,
+    scene: scene || undefined,
     unknown: [...new Set(unknown)],
   };
 }

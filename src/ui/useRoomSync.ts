@@ -41,6 +41,7 @@ export const SCREEN_LABEL: Record<string, string> = {
   scoreboard: "the scoreboard",
   shop: "the shop",
   gameplay: "gameplay",
+  map: "the map",
   post_game: "the results screen",
   other: "not a game screen",
 };
