@@ -1902,7 +1902,8 @@ function applyObservation(s0, obs0, now, costUsd = 0) {
 		...EMPTY_SESSION,
 		lane: s.lane,
 		log: s.log,
-		matchId: s.matchId + 1
+		matchId: s.matchId + 1,
+		stage: "draft"
 	};
 	else obs = orientObservation(obs, s);
 	const next = {
@@ -1941,6 +1942,9 @@ function applyObservation(s0, obs0, now, costUsd = 0) {
 		next.phase = "live";
 		next.clockStart ??= now;
 	}
+	if (next.phase === "live") next.stage = "live";
+	else if (obs.screen === "loading") next.stage = "loading";
+	else if (obs.screen === "draft") next.stage = "draft";
 	return next;
 }
 function sessionReducer(s, a) {
@@ -2038,6 +2042,41 @@ function sessionReducer(s, a) {
 			clockStart: a.now - a.gameSec * 1e3
 		};
 		case "observe": return applyObservation(s, a.obs, a.now, a.costUsd);
+		case "setStage":
+			switch (a.stage) {
+				case "draft": return {
+					...EMPTY_SESSION,
+					lane: s.lane,
+					log: s.log,
+					matchId: s.matchId + 1,
+					stage: "draft"
+				};
+				case "loading": return {
+					...s,
+					phase: "draft",
+					stage: "loading"
+				};
+				case "live": return s.phase === "live" ? {
+					...s,
+					stage: "live"
+				} : {
+					...s,
+					phase: "live",
+					stage: "live",
+					clockStart: s.clockStart ?? a.now
+				};
+				case "done": return {
+					...s,
+					phase: "draft",
+					stage: "done"
+				};
+			}
+			return s;
+		case "adopt": return {
+			...EMPTY_SESSION,
+			...a.session,
+			log: s.log
+		};
 		case "log": return {
 			...s,
 			log: [a.entry, ...s.log].slice(0, LOG_MAX$1)
@@ -2064,6 +2103,25 @@ function enemyStates(s) {
 		return { heroId };
 	});
 }
+var stageOf = (s) => s.stage ?? (s.phase === "live" ? "live" : "draft");
+/** Actions a controlling device (the phone) may send to the server's copy of the match. */
+var CONTROLLER_ACTIONS = /* @__PURE__ */ new Set([
+	"setStage",
+	"setTeam",
+	"setMyHero",
+	"setLane",
+	"setLaneOpponent",
+	"startMatch",
+	"newMatch",
+	"backToDraft",
+	"toggleOwned",
+	"bought",
+	"sold",
+	"swap",
+	"setGold",
+	"cycleFed",
+	"syncClock"
+]);
 // src/engine/coach.ts
 /** First sentence only — spoken lines must be short enough to hear mid-fight. */
 var firstSentence = (text) => {
@@ -37980,6 +38038,13 @@ ITEM LIST:
 ${[...ITEMS.map((i) => i.name), ...[...COMPONENTS.values()].map((c) => c.name)].join(", ")}`;
 function userPrompt(ctx) {
 	const lines = [];
+	const stage = {
+		draft: "hero selection (the draft)",
+		loading: "the loading screen just before the match",
+		live: "a match in progress",
+		done: ""
+	}[ctx.stage ?? "done"];
+	if (stage) lines.push(`The player says the game is currently in ${stage}. Use that if the screen is ambiguous; trust the screen if it clearly shows something else.`);
 	if (ctx.myHeroId) lines.push(`The player is playing ${heroName(ctx.myHeroId)}.`);
 	if (ctx.allies.length) lines.push(`Known allies: ${ctx.allies.map(heroName).join(", ")}.`);
 	if (ctx.enemies.length) lines.push(`Known enemies: ${ctx.enemies.map(heroName).join(", ")}.`);
@@ -82751,6 +82816,26 @@ async function handle(request) {
 			"access-control-allow-methods": "GET,POST,OPTIONS"
 		}
 	});
+	const roomParam = (url.searchParams.get("room") ?? request.headers.get("x-coach-room") ?? "").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 32).toUpperCase();
+	if (request.method === "GET" && roomParam) {
+		const room = rooms.get(roomParam);
+		if (!room) return json(200, {
+			ok: true,
+			version: 0
+		});
+		if (url.searchParams.get("v") === String(room.version)) return json(200, {
+			ok: true,
+			version: room.version,
+			unchanged: true,
+			at: room.at
+		});
+		return json(200, {
+			ok: true,
+			version: room.version,
+			at: room.at,
+			session: room.session
+		});
+	}
 	if (request.method === "GET") {
 		const sample = planBuild({
 			hero: HEROES.find((h) => h.name === "Layla"),
@@ -82768,12 +82853,13 @@ async function handle(request) {
 	if (request.method !== "POST") return fail(405, "Send the screenshot with a POST request.");
 	const now = Date.now();
 	for (const [id, room] of rooms) if (now - room.at > ROOM_TTL_MS) rooms.delete(id);
-	const roomId = (request.headers.get("x-coach-room") ?? "default").slice(0, 64);
+	const roomId = roomParam || "DEFAULT";
 	const room = rooms.get(roomId) ?? {
 		session: EMPTY_SESSION,
 		called: /* @__PURE__ */ new Set(),
 		matchId: 0,
-		at: now
+		at: now,
+		version: 0
 	};
 	if (url.searchParams.has("reset")) {
 		rooms.delete(roomId);
@@ -82783,6 +82869,56 @@ async function handle(request) {
 			say: "Ready for a new match."
 		});
 	}
+	if (url.searchParams.has("action")) {
+		const action = (await request.json().catch(() => ({}))).action;
+		if (!action || !CONTROLLER_ACTIONS.has(action.type)) return json(400, {
+			ok: false,
+			error: "Unknown action."
+		});
+		const session = sessionReducer(room.session, action);
+		const called = session.matchId === room.matchId ? room.called : /* @__PURE__ */ new Set();
+		rooms.set(roomId, {
+			session,
+			called,
+			matchId: session.matchId,
+			at: room.at,
+			version: room.version + 1
+		});
+		return json(200, {
+			ok: true,
+			version: room.version + 1
+		});
+	}
+	if (url.searchParams.has("restore")) {
+		if (!rooms.has(roomId)) {
+			const body = await request.json().catch(() => ({}));
+			if (body.session && typeof body.session === "object") {
+				const session = {
+					...EMPTY_SESSION,
+					...body.session,
+					log: []
+				};
+				rooms.set(roomId, {
+					session,
+					called: /* @__PURE__ */ new Set(),
+					matchId: session.matchId,
+					at: now,
+					version: 1
+				});
+			}
+		}
+		return json(200, {
+			ok: true,
+			version: rooms.get(roomId)?.version ?? 0
+		});
+	}
+	if (stageOf(room.session) === "done") return json(200, {
+		title: "Paused",
+		body: "Paused. Tap Hero selection on your phone when the next match starts.",
+		say: "",
+		stop: true,
+		screen: "other"
+	});
 	let bytes;
 	try {
 		bytes = await readImage(request);
@@ -82806,6 +82942,7 @@ async function handle(request) {
 			base64: Buffer.from(bytes).toString("base64"),
 			mediaType: mediaType ?? "image/jpeg"
 		}, {
+			stage: stageOf(s),
 			myHeroId: s.myHeroId,
 			allies: s.allies,
 			enemies: s.enemies
@@ -82822,10 +82959,12 @@ async function handle(request) {
 			session,
 			called,
 			matchId: session.matchId,
-			at: now
+			at: now,
+			version: room.version + 1
 		});
 		return json(200, {
 			...answer,
+			stop: false,
 			model: reply.model,
 			unknown: obs.unknown
 		});

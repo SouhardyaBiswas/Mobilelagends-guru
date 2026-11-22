@@ -3,6 +3,8 @@ import { COMPONENTS, ITEMS } from "../data/items";
 
 /** What the app already knows about the match — narrows the model's choices. */
 export interface VisionContext {
+  /** What the player says is happening right now, if they told us. */
+  stage?: "draft" | "loading" | "live" | "done";
   myHeroId?: number;
   allies: number[];
   enemies: number[];
@@ -47,6 +49,8 @@ ${[...ITEMS.map((i) => i.name), ...[...COMPONENTS.values()].map((c) => c.name)].
 
 export function userPrompt(ctx: VisionContext): string {
   const lines: string[] = [];
+  const stage = { draft: "hero selection (the draft)", loading: "the loading screen just before the match", live: "a match in progress", done: "" }[ctx.stage ?? "done"];
+  if (stage) lines.push(`The player says the game is currently in ${stage}. Use that if the screen is ambiguous; trust the screen if it clearly shows something else.`);
   if (ctx.myHeroId) lines.push(`The player is playing ${heroName(ctx.myHeroId)}.`);
   if (ctx.allies.length) lines.push(`Known allies: ${ctx.allies.map(heroName).join(", ")}.`);
   if (ctx.enemies.length) lines.push(`Known enemies: ${ctx.enemies.map(heroName).join(", ")}.`);

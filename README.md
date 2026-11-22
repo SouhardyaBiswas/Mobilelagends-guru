@@ -8,68 +8,63 @@ A coach for Mobile Legends: Bang Bang, built for a new player. It tells you, in 
 
 Every enemy gets a card with the skills to recognise (real names and descriptions from the game's own data) and how to play against them.
 
-> **Status:** the advice engine, guide, pictures, voice and the screenshot endpoint are tested (45 unit tests, 22 scripted browser checks). Reading *real* screenshots with a live vision model has **not** been run yet — see [What is and isn't verified](#what-is-and-isnt-verified).
+> **Status:** the advice engine, guide, pictures, voice and the screenshot endpoint are tested (47 unit tests, 34 scripted browser checks). Reading *real* screenshots with a live vision model has **not** been run yet — see [What is and isn't verified](#what-is-and-isnt-verified).
 
-## Use it with only an iPad (no laptop)
+## iPad plays, phone coaches (no laptop)
 
-### 1. Put it online — free, about a minute
+The iPad runs the game and sends screenshots by itself. This site reads them and works out the advice. Your phone, beside you, is the dashboard and the voice — and the controller, with stage buttons for *Hero selection → Match starting → In match → Match over*.
+
+### 1. Put it online — free
 
 1. Open **vercel.com/new** in Safari and sign in.
-2. Under *Import Git Repository* choose this repository and press **Deploy**. Leave every setting alone.
-3. Open the address it gives you. Add it to your Home Screen from the share menu if you like.
+2. Tap **Continue with GitHub** and approve it (Vercel must be connected to GitHub before it can see the repository), then choose this repository and press **Deploy**. Leave every setting alone.
+3. Open the address it gives you.
 
 Every later update to this repository redeploys by itself. The free Hobby plan is enough.
 
-### 2. What works straight away
+### 2. Get a free key
 
-Open the site on your **iPhone next to the iPad** (or on the iPad between matches):
+Google AI Studio → *Get API key*. This is what reads the screenshots. It goes into the iPad shortcut, not onto the site.
 
-- **Draft** tab → tap in the enemy heroes as they lock in → best picks, your build with pictures, and the *How to play this game* guide.
-- **Start match** → the Live coach speaks the plan and each purchase. Tap **Done** when you buy, tap an enemy **Even → Fed** when they pull ahead.
-- First check: **Settings → Test voice**. Phones only speak after you tap something, and only while the page is on screen.
+### 3. Set up the two devices
 
-### 3. Let it read your screenshots
+On the site open **Settings → iPad plays, phone coaches**. It shows your room code, the link for the phone and the address for the shortcut, with copy buttons and a *Test server* button.
 
-1. Get a free key: Google AI Studio → *Get API key*.
-2. **Settings → Screen reading → Gemini** → paste the key.
-3. **Live coach → Upload screenshot** and pick a scoreboard or shop screenshot from Photos.
+**iPad — build the shortcut once** (Shortcuts app → +):
 
-The scoreboard alone is enough: it prints every hero's name, your items, everyone's score and your gold. The shop screenshot adds the build you chose in game, which the coach then follows, at the shop's real prices.
+1. *Repeat* — 60 times. Put the next five actions inside it.
+2. *Take Screenshot*
+3. *Resize Image* — width 1600
+4. *Convert Image* — JPEG
+5. *Get Contents of URL* — the shortcut address from Settings; method POST; header `x-vision-key` = your key; request body = File → the converted image
+6. *Wait* — 15 seconds
 
-If it says the model was not found, change the model name in Settings — the default (`gemini-3.8-flash`) is the one the Google SDK documents, but it has not been called from here.
+**Phone:** open the phone link from Settings, tap **Turn on voice**, and keep the page on screen.
 
-### 4. Read the game without leaving it (Shortcut)
+### 4. Play
 
-Safari cannot look at another app on an iPad, and no web page can draw on top of a game. What an iPad does allow is a **Shortcut** that takes a screenshot, sends it to this site, speaks the answer and shows it as a banner at the top of the screen.
+1. When hero selection starts, tap **Hero selection** on the phone and run the shortcut on the iPad.
+2. As enemies lock in, the phone calls out the best picks. Once you have picked, it tells you how to play your lane.
+3. In the match it tracks your gold and the clock from ordinary gameplay screenshots, and says what to buy, with the item's picture and where it is in the shop. Open the scoreboard now and then so it sees everyone's items; open the shop once so it learns the build you chose.
+4. Tap **Done** on the phone when you buy something. Tap **Match over** to pause reading.
 
-**First, a two-minute test** — it tells us whether this route works on your iPad at all. In the Shortcuts app make a shortcut with three actions:
+The stage moves on by itself as the screenshots change; the buttons are there for when it guesses wrong.
 
-1. *Take Screenshot*
-2. *Show Notification* — text "Coach test", and attach the screenshot if the action offers it
-3. *Speak Text* — "Coach test, can you hear me?"
-
-Then Settings → Accessibility → Touch → AssistiveTouch → on; *Custom Actions → Double-Tap* → your shortcut. Open Mobile Legends, start any match, and double-tap the floating button. Note three things: did a banner appear at the top, did you hear the voice over the game, and does the screenshot show the game (not the Shortcuts app).
-
-**If that works**, build the real one. The exact steps and your endpoint address are in the app under **Settings → Reading the game on an iPad**, with a *Test endpoint* button:
-
-1. *Take Screenshot*
-2. *Resize Image* — width 1600
-3. *Convert Image* — JPEG
-4. *Get Contents of URL* — `https://<your-site>/api/coach`, method POST, header `x-vision-key` = your key, request body = File → the converted image
-5. *Get Dictionary Value* `say` → *Speak Text*
-6. *Get Dictionary Value* `title` and `body` → *Show Notification*
-
-In a match: open the scoreboard, double-tap. The reply also carries `icon`, the address of the item's picture, if you want it in the banner.
-
-Your key travels in the request and is not stored on the site. The endpoint remembers the current match only while it stays warm; if it forgets, it asks you to open the scoreboard once.
+**If the repeating shortcut stops by itself:** iPadOS decides how long a shortcut may keep running behind a game, and that has only been reasoned about, not tried. If it stops, remove *Repeat* and *Wait*, assign the four-action shortcut to an AssistiveTouch double-tap (Settings → Accessibility → Touch → AssistiveTouch → Custom Actions), and double-tap when you open the scoreboard. One double-tap takes and sends the screenshot; nothing is shared by hand.
 
 ### What an iPad cannot do
 
 | Wanted | Reality |
 |---|---|
-| A pop-up drawn over the game by the app | Not possible from a web page. The banner comes from the Shortcut's notification. A true floating overlay needs a native app built with a Mac. |
-| The coach watching the screen continuously | Not possible from a web page. Each read is one double-tap. |
-| iPad reads showing up live on the iPhone | Not built yet — it needs storage on the server. For now the phone is used by tapping picks in. |
+| A web page that watches the game | Not possible in Safari on iPad. The Shortcut is the only route without a native app. |
+| A pop-up drawn over the game | Not possible from a web page. The phone is the display; a true overlay needs a native app, built with a Mac. |
+| Guaranteed memory of the match on the server | The free setup keeps the match in the server's memory. If the server restarts, the phone hands its copy back; if both lose it, the next scoreboard screenshot rebuilds everything. |
+
+### Other ways to use it
+
+- **Phone only, by hand:** Draft tab → tap in the enemy heroes → pick yours → Start match. No key needed.
+- **Upload a screenshot:** Settings → Screen reading → paste the key → Live coach → Upload screenshot.
+- **Laptop:** Live coach → Share game screen, which watches a game window continuously.
 
 ## How it decides
 
@@ -93,15 +88,15 @@ Your key travels in the request and is not stored on the site. The endpoint reme
 ## What is and isn't verified
 
 **Verified here**
-- 45 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, catalog and picture coverage, and session handling.
+- 47 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, catalog and picture coverage, and session handling.
 - Tests transcribed by hand from real match screenshots: one scoreboard yields the hero, both teams, gold and inventory; the shop yields the in-game build; all eight shop prices match the catalog at the emblem's 95%.
-- 22 scripted browser checks in demo mode, including pictures loading and spoken lines.
+- 34 scripted browser checks in demo mode: the single-device flow, and the two-device flow with a simulated iPad posting screenshots while a phone-sized page follows, speaks, sends purchases back and switches stages.
 - The screenshot endpoint, run locally: health check, error answers, and a scripted match.
 
 **Not verified**
 - **A real vision model reading a real screenshot.** No API key was available while building.
 - **The endpoint running on Vercel.** It is one self-contained file to keep that simple; *Settings → Test endpoint* confirms it once deployed.
-- **The Shortcut route on a real iPad** — hence the two-minute test above.
+- **The Shortcut on a real iPad**, in particular whether a repeating shortcut keeps running behind the game.
 - **Voice on iPhone and iPad Safari.**
 
 ## Fair-play note

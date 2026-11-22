@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef } from "react";
 import { speaker } from "../audio/speech";
 import { eventsBetween } from "../data/timeline";
-import { buyAdvice, fedAdvice, setupAdvice, SpokenLog } from "../engine/coach";
+import { buyAdvice, counterAdvice, fedAdvice, setupAdvice, SpokenLog } from "../engine/coach";
+import { rankCounters } from "../engine/draft";
 import { gamePlan } from "../engine/tips";
 import { useStore } from "../state/store";
 import type { Advice, BuildPlan, Hero, ThreatProfile } from "../types";
@@ -20,6 +21,7 @@ export function useCoach(plan: (BuildPlan & { threat: ThreatProfile }) | undefin
   const spoken = useRef(new SpokenLog());
   const fedCalled = useRef(new Set<number>());
   const prevSec = useRef<number | undefined>(undefined);
+  const preSaid = useRef<string | undefined>(undefined);
   const live = session.phase === "live";
 
   useEffect(() => {
@@ -50,9 +52,31 @@ export function useCoach(plan: (BuildPlan & { threat: ThreatProfile }) | undefin
     say(setupAdvice(hero, plan), Infinity);
     // Then the two things most worth knowing before minions spawn: the lane, and who to kill.
     const lines = gamePlan(hero, session.enemies, plan.threat, laneOpponentId).slice(0, 2);
-    if (session.enemies.length && lines.length) say({ key: `plan:${setupKey}`, say: lines.join(" "), kind: "info", priority: 1 }, Infinity);
+    // Skip the plan if it was already spoken before the match started (follow mode).
+    if (session.enemies.length && lines.length && preSaid.current !== setupKey) say({ key: `plan:${setupKey}`, say: lines.join(" "), kind: "info", priority: 1 }, Infinity);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setupKey]);
+
+  // Hero selection on a following device: call out the best picks as the enemy locks in.
+  const following = settings.sync.follow;
+  const draftKey = !live && following && !hero && session.enemies.length ? session.enemies.join(",") : undefined;
+  useEffect(() => {
+    if (!draftKey) return;
+    const picks = rankCounters({ enemies: session.enemies, allies: session.allies, banned: session.banned, lane: session.lane, laneOpponent: laneOpponentId, limit: 3 });
+    const advice = counterAdvice(picks);
+    if (advice) say({ ...advice, key: `draft:${session.matchId}:${draftKey}` }, Infinity);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [draftKey]);
+
+  // Hero locked, match not started: how to play the lane, before the minions spawn.
+  const preKey = !live && following && hero && plan && session.enemies.length >= 3 ? `${session.matchId}:${hero.id}:${session.enemies.join(",")}` : undefined;
+  useEffect(() => {
+    if (!preKey || !hero || !plan) return;
+    const lines = gamePlan(hero, session.enemies, plan.threat, laneOpponentId).slice(0, 2);
+    preSaid.current = `${session.matchId}:${hero.id}`;
+    say({ key: `pre:${preKey}`, say: `Playing ${hero.name}. Battle spell: ${plan.spell.name}. ${lines.join(" ")}`, kind: "info", priority: 1 }, Infinity);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [preKey]);
 
   // Someone on their team pulled ahead.
   const threat = plan?.threat;

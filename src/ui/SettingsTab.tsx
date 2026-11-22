@@ -139,14 +139,20 @@ export function SettingsTab() {
   );
 }
 
-/** How to read the game from inside it on an iPad, where a web page cannot see other apps. */
+/** Two-device setup: the iPad sends screenshots, this site reads them, the phone shows and speaks the coach. */
 function IpadSetup() {
-  const endpoint = `${window.location.origin}/api/coach`;
+  const { state, dispatch } = useStore();
+  const { sync } = state.settings;
+  const origin = window.location.origin;
+  const endpoint = `${origin}/api/coach?room=${sync.room}`;
+  const phoneLink = `${origin}/?room=${sync.room}`;
   const [check, setCheck] = useState<string>();
+  const setSync = (patch: Partial<typeof sync>) => dispatch({ type: "settings", patch: { sync: { ...sync, ...patch } } });
+  const copy = (text: string) => void navigator.clipboard?.writeText(text);
   const test = async () => {
     setCheck("Checking…");
     try {
-      const res = await fetch(endpoint);
+      const res = await fetch(`${origin}/api/coach`);
       const body = (await res.json()) as { ok?: boolean; heroes?: number; sample?: string };
       setCheck(body.ok ? `Working — ${body.heroes} heroes loaded. Sample advice: "${body.sample}"` : `Unexpected answer (HTTP ${res.status}).`);
     } catch {
@@ -155,31 +161,64 @@ function IpadSetup() {
   };
   return (
     <section className="panel span">
-      <h2>Reading the game on an iPad</h2>
+      <h2>iPad plays, phone coaches</h2>
       <p className="hint">
-        Safari can't look at another app, so on an iPad the screenshot comes from a Shortcut instead: one tap on the floating AssistiveTouch button sends the screen here and speaks the answer. Build it once in the Shortcuts app.
+        Safari on an iPad can't look at the game, so the screenshots come from an Apple Shortcut. It sends each one to this site, the site works out the advice, and your phone — following the same room — shows the dashboard and says it out loud.
       </p>
+
+      <div className="setup-grid">
+        <div className="setup-card">
+          <span className="eyebrow">Room code</span>
+          <input className="input" value={sync.room} onChange={(e) => setSync({ room: e.target.value.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 32).toUpperCase() })} aria-label="Room code" />
+          <p>Links the two devices. Keep it to yourself.</p>
+        </div>
+        <div className="setup-card">
+          <span className="eyebrow">This device</span>
+          <label className="check">
+            <input type="checkbox" checked={sync.follow} onChange={(e) => setSync({ follow: e.target.checked })} />
+            <span>Follow this room (show and speak the coach here)</span>
+          </label>
+          <p>Turn this on for the phone. Leave it off on the iPad.</p>
+        </div>
+      </div>
+
       <div className="field">
-        <span>Your endpoint</span>
+        <span>1 · Open this on your phone</span>
+        <code className="endpoint">{phoneLink}</code>
+      </div>
+      <div className="field">
+        <span>2 · The iPad shortcut sends screenshots here</span>
         <code className="endpoint">{endpoint}</code>
       </div>
       <div className="row wrap">
-        <button className="btn" onClick={() => void navigator.clipboard?.writeText(endpoint)}>Copy endpoint</button>
-        <button className="btn" onClick={() => void test()}>Test endpoint</button>
+        <button className="btn" onClick={() => copy(phoneLink)}>Copy phone link</button>
+        <button className="btn" onClick={() => copy(endpoint)}>Copy shortcut address</button>
+        <button className="btn" onClick={() => void test()}>Test server</button>
       </div>
       {check && <p className="fine">{check}</p>}
+
+      <h3>Build the shortcut on the iPad (Shortcuts app → +)</h3>
       <ol className="steps">
+        <li><strong>Repeat</strong> — 60 times. Put the next five actions inside it.</li>
         <li><strong>Take Screenshot</strong></li>
         <li><strong>Resize Image</strong> — width 1600, height auto</li>
         <li><strong>Convert Image</strong> — to JPEG</li>
         <li>
-          <strong>Get Contents of URL</strong> — the endpoint above. Method <em>POST</em>. Headers: <code>x-vision-key</code> = your Gemini (or Claude) API key. Request Body: <em>File</em> → the converted image.
+          <strong>Get Contents of URL</strong> — the shortcut address above. Show More → Method <em>POST</em>. Headers → add <code>x-vision-key</code> with your Gemini API key. Request Body → <em>File</em> → choose the Converted Image.
         </li>
-        <li><strong>Get Dictionary Value</strong> — key <code>say</code> → <strong>Speak Text</strong></li>
-        <li><strong>Get Dictionary Value</strong> — keys <code>title</code> and <code>body</code> → <strong>Show Notification</strong></li>
+        <li><strong>Wait</strong> — 15 seconds</li>
       </ol>
       <p className="fine">
-        Then Settings → Accessibility → Touch → AssistiveTouch → Custom Actions → Double-Tap → choose the shortcut. In a match, open the scoreboard and double-tap the floating button. To start a fresh match, add <code>?reset=1</code> to the endpoint in a second shortcut, or just open the new match's scoreboard.
+        That sends a screenshot every 15 seconds for about 15 minutes with no tapping. Ordinary gameplay still shows your gold and the match clock, and whenever you open the scoreboard or shop the next screenshot picks it up. Run it again for a longer match.
+      </p>
+      <h3>Play</h3>
+      <ol className="steps">
+        <li>Phone: open the phone link, tap <em>Turn on voice</em>, and keep it on screen beside you. The stage buttons at the top are yours: <em>Hero selection</em> starts a fresh match, <em>Match over</em> pauses reading.</li>
+        <li>iPad: when hero selection starts, run the shortcut (from the Home Screen, or assign it to AssistiveTouch: Settings → Accessibility → Touch → AssistiveTouch → Custom Actions).</li>
+        <li>Play. Open the scoreboard now and then so the coach sees everyone's items.</li>
+      </ol>
+      <p className="fine">
+        <strong>If the repeating shortcut stops by itself</strong> — iPadOS decides how long a shortcut may run behind a game, and that has to be tried on your iPad — remove the Repeat and Wait, assign the four-action shortcut to an AssistiveTouch double-tap, and tap it when you open the scoreboard. One double-tap takes the screenshot and sends it; there is nothing to share by hand.
       </p>
     </section>
   );

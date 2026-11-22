@@ -12,8 +12,20 @@ export interface LogEntry {
   text: string;
 }
 
+/** Where the player says (or the screenshots show) the game is. */
+export type Stage = "draft" | "loading" | "live" | "done";
+
+export const STAGE_LABEL: Record<Stage, string> = {
+  draft: "Hero selection",
+  loading: "Match starting",
+  live: "In match",
+  done: "Match over",
+};
+
 export interface Session {
   phase: "draft" | "live";
+  /** Set from the phone's stage buttons, or inferred from what the screenshots show. */
+  stage?: Stage;
   myHeroId?: number;
   lane?: Lane;
   allies: number[];
@@ -74,6 +86,8 @@ export type SessionAction =
   | { type: "cycleFed"; heroId: number }
   | { type: "syncClock"; now: number; gameSec: number }
   | { type: "observe"; obs: Observation; now: number; costUsd?: number }
+  | { type: "adopt"; session: Session }
+  | { type: "setStage"; stage: Stage; now: number }
   | { type: "log"; entry: LogEntry };
 
 const uniq = <T,>(xs: T[]) => [...new Set(xs)];
@@ -155,7 +169,7 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
   let obs = obs0;
   if (isNewMatch(s, obs)) {
     // Start clean: last game's items, clock and hero must not leak into this one.
-    s = { ...EMPTY_SESSION, lane: s.lane, log: s.log, matchId: s.matchId + 1 };
+    s = { ...EMPTY_SESSION, lane: s.lane, log: s.log, matchId: s.matchId + 1, stage: "draft" };
   } else {
     obs = orientObservation(obs, s);
   }
@@ -199,6 +213,10 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
     next.phase = "live";
     next.clockStart ??= now;
   }
+  // Keep the stage in step with what the screen shows, so the buttons rarely need touching.
+  if (next.phase === "live") next.stage = "live";
+  else if (obs.screen === "loading") next.stage = "loading";
+  else if (obs.screen === "draft") next.stage = "draft";
   return next;
 }
 
@@ -271,6 +289,22 @@ export function sessionReducer(s: Session, a: SessionAction): Session {
       return { ...s, clockStart: a.now - a.gameSec * 1000 };
     case "observe":
       return applyObservation(s, a.obs, a.now, a.costUsd);
+    case "setStage":
+      switch (a.stage) {
+        case "draft":
+          // A new hero selection is a new match: nothing from the last one may leak in.
+          return { ...EMPTY_SESSION, lane: s.lane, log: s.log, matchId: s.matchId + 1, stage: "draft" };
+        case "loading":
+          return { ...s, phase: "draft", stage: "loading" };
+        case "live":
+          return s.phase === "live" ? { ...s, stage: "live" } : { ...s, phase: "live", stage: "live", clockStart: s.clockStart ?? a.now };
+        case "done":
+          return { ...s, phase: "draft", stage: "done" };
+      }
+      return s;
+    case "adopt":
+      // Match state from the server replaces ours; this device keeps its own log of what was said.
+      return { ...EMPTY_SESSION, ...a.session, log: s.log };
     case "log":
       return { ...s, log: [a.entry, ...s.log].slice(0, LOG_MAX) };
     default:
@@ -302,3 +336,11 @@ export function enemyStates(s: Session): PlayerState[] {
 export const gameSeconds = (s: Session, now: number): number | undefined =>
   s.phase === "live" && s.clockStart !== undefined ? Math.max(0, Math.floor((now - s.clockStart) / 1000)) : undefined;
 
+
+export const stageOf = (s: Session): Stage => s.stage ?? (s.phase === "live" ? "live" : "draft");
+
+/** Actions a controlling device (the phone) may send to the server's copy of the match. */
+export const CONTROLLER_ACTIONS: ReadonlySet<SessionAction["type"]> = new Set([
+  "setStage", "setTeam", "setMyHero", "setLane", "setLaneOpponent", "startMatch", "newMatch", "backToDraft",
+  "toggleOwned", "bought", "sold", "swap", "setGold", "cycleFed", "syncClock",
+]);

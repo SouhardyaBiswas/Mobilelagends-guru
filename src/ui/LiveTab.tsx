@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { speaker } from "../audio/speech";
 import { captureSupport } from "../capture/capture";
 import { heroById } from "../data/heroes";
 import { componentId, ownedLabel } from "../data/items";
@@ -190,6 +191,18 @@ export function LiveTab({ plan, hero, gameSec, laneOpponentId, onRepeat, onDraft
   const { state, dispatch } = useStore();
   const s = state.session;
 
+  if ((!hero || !plan) && state.settings.sync.follow) {
+    return (
+      <div className="grid two">
+        <section className="panel">
+          <h2>Waiting for your iPad</h2>
+          <p className="hint">This device is following room <strong>{state.settings.sync.room}</strong>. On the iPad, open the scoreboard in a match and run the coach shortcut. As soon as a screenshot is read, your build, the enemy team and the plan appear here and are spoken aloud.</p>
+          <button className="btn primary" onClick={() => { speaker.unlock(); speaker.say("Voice is on. Waiting for your first screenshot.", 2); }}>🔊 Turn on voice for this device</button>
+          <p className="fine">Phones only speak after you tap once, and only while this page stays open on screen.</p>
+        </section>
+      </div>
+    );
+  }
   if (!hero || !plan) {
     return (
       <div className="grid two">

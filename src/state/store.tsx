@@ -1,7 +1,7 @@
-import { createContext, useContext, useEffect, useMemo, useReducer, type Dispatch, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useRef, type Dispatch, type ReactNode } from "react";
 import type { SpeechSettings } from "../audio/speech";
 import { DEFAULT_VISION, type VisionSettings } from "../vision";
-import { EMPTY_SESSION, freshSession, sessionReducer, type Session, type SessionAction } from "./session";
+import { CONTROLLER_ACTIONS, EMPTY_SESSION, freshSession, sessionReducer, type Session, type SessionAction } from "./session";
 
 export * from "./session";
 
@@ -15,11 +15,21 @@ export interface CaptureSettings {
   maxCalls: number;
 }
 
+export interface SyncSettings {
+  /** Shared code linking the device that sends screenshots to the device that shows the coach. */
+  room: string;
+  /** When on, this device shows and speaks whatever the room's screenshots produce. */
+  follow: boolean;
+}
+
 export interface Settings {
   vision: VisionSettings;
   speech: SpeechSettings;
   capture: CaptureSettings;
+  sync: SyncSettings;
 }
+
+const newRoomCode = () => Math.random().toString(36).slice(2, 8).toUpperCase().padEnd(6, "X");
 
 export interface State {
   settings: Settings;
@@ -30,6 +40,7 @@ export const DEFAULT_SETTINGS: Settings = {
   vision: DEFAULT_VISION,
   speech: { enabled: true, rate: 1.05, volume: 1 },
   capture: { mode: "auto", intervalSec: 20, stillThreshold: 3, maxCalls: 80 },
+  sync: { room: "", follow: false },
 };
 
 export type Action = SessionAction | { type: "settings"; patch: Partial<Settings> };
@@ -52,6 +63,14 @@ function load<T>(key: string, fallback: T): T {
   }
 }
 
+/** A link like https://site/?room=ABC123 puts this device straight into follow mode for that room. */
+function initialSync(saved: SyncSettings | undefined): SyncSettings {
+  const fromLink = typeof location !== "undefined" ? new URLSearchParams(location.search).get("room") : null;
+  const clean = (fromLink ?? "").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 32).toUpperCase();
+  if (clean) return { room: clean, follow: true };
+  return { room: saved?.room || newRoomCode(), follow: saved?.follow ?? false };
+}
+
 function initialState(): State {
   const saved = load<Settings>(KEY_SETTINGS, DEFAULT_SETTINGS);
   return {
@@ -59,6 +78,7 @@ function initialState(): State {
       vision: { ...DEFAULT_SETTINGS.vision, ...saved.vision },
       speech: { ...DEFAULT_SETTINGS.speech, ...saved.speech },
       capture: { ...DEFAULT_SETTINGS.capture, ...saved.capture },
+      sync: initialSync(saved.sync),
     },
     session: freshSession(load<Session>(KEY_SESSION, EMPTY_SESSION), Date.now()),
   };
@@ -82,7 +102,21 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       /* ignore */
     }
   }, [state.session]);
-  const value = useMemo(() => ({ state, dispatch }), [state]);
+  // In follow mode this device is the controller: what you tap here also changes the server's copy,
+  // so the next screenshot from the iPad is read against it.
+  const syncRef = useRef(state.settings.sync);
+  syncRef.current = state.settings.sync;
+  const send = useCallback((action: Action) => {
+    dispatch(action);
+    const { follow, room } = syncRef.current;
+    if (!follow || !room || action.type === "settings" || !CONTROLLER_ACTIONS.has(action.type)) return;
+    void fetch(`/api/coach?room=${encodeURIComponent(room)}&action=1`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ action }),
+    }).catch(() => undefined);
+  }, []);
+  const value = useMemo(() => ({ state, dispatch: send }), [state, send]);
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 

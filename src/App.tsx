@@ -4,14 +4,21 @@ import { Ticker } from "./capture/ticker";
 import { heroById } from "./data/heroes";
 import { planBuild } from "./engine/build";
 import { guessLaneOpponent } from "./engine/tips";
-import { enemyStates, gameSeconds, StoreProvider, useStore } from "./state/store";
+import { enemyStates, gameSeconds, STAGE_LABEL, stageOf, StoreProvider, useStore } from "./state/store";
 import { CaptureProvider } from "./ui/CaptureContext";
 import { DraftTab } from "./ui/DraftTab";
 import { LiveTab } from "./ui/LiveTab";
 import { SettingsTab } from "./ui/SettingsTab";
 import { useCoach } from "./ui/useCoach";
+import { useRoomSync } from "./ui/useRoomSync";
 
 type Tab = "draft" | "live" | "settings";
+
+const agoText = (now: number, at?: number) => {
+  if (!at) return "just now";
+  const sec = Math.max(0, Math.round((now - at) / 1000));
+  return sec < 5 ? "just now" : sec < 90 ? `${sec}s ago` : `${Math.round(sec / 60)} min ago`;
+};
 const LATE_GAME_SEC = 15 * 60;
 
 function Shell() {
@@ -55,6 +62,13 @@ function Shell() {
     return guessLaneOpponent(session.lane, session.enemies);
   }, [session.laneOpponentId, session.enemies, session.lane]);
   const repeat = useCoach(plan, hero, gameSec, laneOpponentId);
+  const room = useRoomSync();
+  // In follow mode the match arrives from the server, so open on the coach.
+  useEffect(() => {
+    if (room) setTab(session.phase === "live" ? "live" : "draft");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [!!room]);
+  const stage = stageOf(session);
 
   // When a screen read moves the match into (or out of) play, follow it.
   const lastPhase = useRef(session.phase);
@@ -94,6 +108,28 @@ function Shell() {
         </button>
       </header>
 
+      {room && (
+        <div className={`roombar ${room.error ? "bad" : room.version ? "ok" : ""}`}>
+          📡 Following room <strong>{settings.sync.room}</strong> —{" "}
+          {room.error ?? (room.version ? `last screenshot read ${agoText(now, room.lastReadAt)}` : "waiting for the first screenshot from your iPad")}
+          {!settings.speech.enabled && " · voice is muted"}
+          <div className="stages" role="group" aria-label="Match stage">
+            {(["draft", "loading", "live", "done"] as const).map((st) => (
+              <button
+                key={st}
+                className={`chip ${stage === st ? "on" : ""}`}
+                aria-pressed={stage === st}
+                onClick={() => {
+                  speaker.unlock();
+                  dispatch({ type: "setStage", stage: st, now: Date.now() });
+                }}
+              >
+                {STAGE_LABEL[st]}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
       <main>
         {tab === "draft" && <DraftTab plan={plan} hero={hero} laneOpponentId={laneOpponentId} onStart={() => setTab("live")} />}
         {tab === "live" && <LiveTab plan={plan} hero={hero} gameSec={gameSec} laneOpponentId={laneOpponentId} onRepeat={repeat} onDraft={() => setTab("draft")} />}

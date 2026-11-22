@@ -242,3 +242,11 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
 .endpoint { display: block; padding: 10px 12px; word-break: break-all; user-select: all; }
 .steps { margin: 0; padding-left: 22px; display: grid; gap: 8px; font-size: 14px; }
 .steps li::marker { color: var(--gold); font-weight: 700; }
+
+/* ── Follow mode ─────────────────────────────────────── */
+.roombar { padding: 8px 16px; font-size: 13.5px; text-align: center; background: var(--surface); border-bottom: 1px solid var(--border); color: var(--muted); }
+.roombar.ok { color: #bff0d8; background: rgba(62, 207, 142, 0.1); }
+.roombar.bad { color: #ffb4b4; background: rgba(255, 107, 107, 0.1); }
+.setup-card .input { margin: 4px 0; font-weight: 700; letter-spacing: 0.08em; }
+.stages { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+.stages .chip { min-height: 40px; }

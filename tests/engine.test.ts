@@ -11,7 +11,7 @@ import { rankCounters } from "../src/engine/draft";
 import { coachReply } from "../src/engine/reply";
 import { analyzeThreat } from "../src/engine/threat";
 import { briefOn, gamePlan, guessLaneOpponent, skillsOf } from "../src/engine/tips";
-import { EMPTY_SESSION, freshSession, orientObservation, sessionReducer, type Session } from "../src/state/store";
+import { EMPTY_SESSION, freshSession, orientObservation, sessionReducer, stageOf, type Session } from "../src/state/session";
 import type { Observation, PlayerState } from "../src/types";
 import { normalizeObservation, parseGameTime } from "../src/vision/schema";
 
@@ -393,6 +393,34 @@ describe("session state", () => {
     // A draft being prepared is never discarded.
     const draft: Session = { ...base, phase: "draft" };
     expect(freshSession(draft, 9e12)).toBe(draft);
+  });
+
+  it("follows the stage buttons: new match, loading, in match, paused", () => {
+    const old: Session = { ...base, phase: "live", clockStart: 5, owned: ["swift_boots"], gold: 900, matchId: 4, lane: "gold" };
+    const draft = sessionReducer(old, { type: "setStage", stage: "draft", now: 100 });
+    // "Hero selection" is the reliable new-match signal: last game's hero, items and enemies are gone.
+    expect(draft).toMatchObject({ stage: "draft", phase: "draft", owned: [], enemies: [], lane: "gold", matchId: 5 });
+    expect(draft.myHeroId).toBeUndefined();
+    const picked: Session = { ...draft, myHeroId: H("Layla").id, enemies: ids("Gusion") };
+    const loading = sessionReducer(picked, { type: "setStage", stage: "loading", now: 200 });
+    expect(loading).toMatchObject({ stage: "loading", phase: "draft", myHeroId: H("Layla").id });
+    const live = sessionReducer(loading, { type: "setStage", stage: "live", now: 300 });
+    expect(live).toMatchObject({ stage: "live", phase: "live", clockStart: 300, matchId: 5 });
+    // Tapping "In match" again must not restart the clock.
+    expect(sessionReducer(live, { type: "setStage", stage: "live", now: 999 }).clockStart).toBe(300);
+    expect(stageOf(sessionReducer(live, { type: "setStage", stage: "done", now: 400 }))).toBe("done");
+    // Screenshots move the stage on their own.
+    const seen = sessionReducer(picked, { type: "observe", obs: obsOf("scoreboard", team("Layla"), team("Gusion")), now: 500 });
+    expect(stageOf(seen)).toBe("live");
+    expect(stageOf(EMPTY_SESSION)).toBe("draft");
+  });
+
+  it("adopts a match computed on the server but keeps this device's log", () => {
+    const mine: Session = { ...EMPTY_SESSION, log: [{ at: 1, kind: "say", text: "hello" }] };
+    const remote: Session = { ...base, phase: "live", gold: 700, matchId: 9, log: [] };
+    const s = sessionReducer(mine, { type: "adopt", session: remote });
+    expect(s).toMatchObject({ phase: "live", gold: 700, matchId: 9, myHeroId: H("Layla").id });
+    expect(s.log).toEqual(mine.log);
   });
 
   it("handles buying, finishing from a component, and sell-swaps", () => {
