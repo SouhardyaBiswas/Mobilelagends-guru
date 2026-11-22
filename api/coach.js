@@ -23538,6 +23538,8 @@ var STAGE_LABEL = {
 };
 /** With screenshots arriving every few seconds, this many in a row with no game on them means the player has left the match. */
 var IDLE_FRAMES_END = 8;
+/** …and this many in a row read as the results screen. */
+var RESULT_FRAMES_END = 2;
 /** Pocket gold read within this long of the last reading can be checked against it. */
 var GOLD_CHECK_MS = 3e4;
 /** List value of a set of item / component ids. */
@@ -23870,11 +23872,13 @@ function applyObservation(s0, obs0, now, costUsd = 0) {
 	else if (obs.screen === "loading") next.stage = "loading";
 	else if (obs.screen === "draft") next.stage = "draft";
 	next.idleFrames = obs.screen === "other" ? (s.idleFrames ?? 0) + 1 : 0;
+	next.resultFrames = obs.screen === "post_game" ? (s.resultFrames ?? 0) + 1 : 0;
 	const wasPlaying = stageOf(s) === "live" || stageOf(s) === "loading";
-	if (obs.screen === "post_game" || wasPlaying && next.idleFrames >= IDLE_FRAMES_END) {
+	if (next.resultFrames >= RESULT_FRAMES_END || wasPlaying && next.idleFrames >= IDLE_FRAMES_END) {
 		next.phase = "draft";
 		next.stage = "done";
 		next.idleFrames = 0;
+		next.resultFrames = 0;
 	}
 	return next;
 }
@@ -23939,7 +23943,8 @@ function sessionReducer(s, a) {
 			scenes: void 0,
 			goldAt: void 0,
 			pendingGold: void 0,
-			idleFrames: void 0
+			idleFrames: void 0,
+			resultFrames: void 0
 		};
 		case "newMatch": return {
 			...EMPTY_SESSION,
@@ -97299,6 +97304,14 @@ var DEFAULT_MODEL = {
 	gemini: "gemini-3.8-flash",
 	claude: "claude-opus-5-5"
 };
+/**
+* The reader for frames sent in a loop. Sorting and transcribing a frame every few seconds is
+* a job for the fast model: it costs a fraction of a cent, and the specialists do the thinking.
+*/
+var STREAM_READER = {
+	gemini: "gemini-3.8-flash",
+	claude: "claude-haiku-5-5"
+};
 /** Two screenshots this close together on the match clock show the same moment: the coach is not asked twice. */
 var COACH_GAP_SEC = 20;
 /** How often positioning is reviewed from battlefield frames, and how soon again after the player opens the map. */
@@ -97521,19 +97534,20 @@ function caller(request) {
 		demoScreen: (request.headers.get("x-demo-screen") ?? "").trim().toLowerCase()
 	};
 }
-function pickVision(request, roomId) {
+function pickVision(request, roomId, stream) {
 	const { key, provider, readerModel } = caller(request);
 	if (provider === "demo") return {
 		vision: demoFor(roomId),
 		asked: "demo"
 	};
+	const usual = stream ? STREAM_READER : DEFAULT_MODEL;
 	if (provider === "claude") return {
-		vision: claudeVision(key, readerModel || DEFAULT_MODEL.claude),
-		asked: readerModel || DEFAULT_MODEL.claude
+		vision: claudeVision(key, readerModel || usual.claude),
+		asked: readerModel || usual.claude
 	};
 	if (provider === "gemini") return {
-		vision: geminiVision(key, readerModel || DEFAULT_MODEL.gemini),
-		asked: readerModel || DEFAULT_MODEL.gemini
+		vision: geminiVision(key, readerModel || usual.gemini),
+		asked: readerModel || usual.gemini
 	};
 	throw new VisionError("Add your API key to the shortcut as the x-vision-key header.", "config");
 }
@@ -97974,7 +97988,7 @@ async function handle(request) {
 	});
 	let reader;
 	try {
-		reader = pickVision(request, roomId);
+		reader = pickVision(request, roomId, stream);
 	} catch (err) {
 		return failRead(400, err instanceof Error ? err.message : "Missing API key.");
 	}
@@ -98138,6 +98152,7 @@ async function handle(request) {
 			bytes: bytes.length,
 			upMs,
 			ms: readAt - now,
+			asked: reader.asked,
 			model: reply.model,
 			scene: obs.scene
 		});

@@ -42,6 +42,11 @@ import { storeForRequest, type KeyValue } from "./store";
 const MAX_BYTES = 4_000_000;
 const ROOM_TTL_SEC = 3 * 60 * 60;
 const DEFAULT_MODEL = { gemini: "gemini-3.8-flash", claude: "claude-opus-5-5" } as const;
+/**
+ * The reader for frames sent in a loop. Sorting and transcribing a frame every few seconds is
+ * a job for the fast model: it costs a fraction of a cent, and the specialists do the thinking.
+ */
+const STREAM_READER = { gemini: "gemini-3.8-flash", claude: "claude-haiku-5-5" } as const;
 /** Two screenshots this close together on the match clock show the same moment: the coach is not asked twice. */
 const COACH_GAP_SEC = 20;
 /** How often positioning is reviewed from battlefield frames, and how soon again after the player opens the map. */
@@ -316,11 +321,12 @@ function caller(request: Request) {
   return { key, provider, readerModel, coachModel, coachOff, demoScreen };
 }
 
-function pickVision(request: Request, roomId: string): { vision: VisionCall; asked: string } {
+function pickVision(request: Request, roomId: string, stream: boolean): { vision: VisionCall; asked: string } {
   const { key, provider, readerModel } = caller(request);
   if (provider === "demo") return { vision: demoFor(roomId), asked: "demo" };
-  if (provider === "claude") return { vision: claudeVision(key, readerModel || DEFAULT_MODEL.claude), asked: readerModel || DEFAULT_MODEL.claude };
-  if (provider === "gemini") return { vision: geminiVision(key, readerModel || DEFAULT_MODEL.gemini), asked: readerModel || DEFAULT_MODEL.gemini };
+  const usual = stream ? STREAM_READER : DEFAULT_MODEL;
+  if (provider === "claude") return { vision: claudeVision(key, readerModel || usual.claude), asked: readerModel || usual.claude };
+  if (provider === "gemini") return { vision: geminiVision(key, readerModel || usual.gemini), asked: readerModel || usual.gemini };
   throw new VisionError("Add your API key to the shortcut as the x-vision-key header.", "config");
 }
 
@@ -578,7 +584,7 @@ async function handle(request: Request): Promise<Response> {
 
   let reader: ReturnType<typeof pickVision>;
   try {
-    reader = pickVision(request, roomId);
+    reader = pickVision(request, roomId, stream);
   } catch (err) {
     return failRead(400, err instanceof Error ? err.message : "Missing API key.");
   }
@@ -658,7 +664,7 @@ async function handle(request: Request): Promise<Response> {
     const battlefield = obs.screen === "gameplay" || obs.screen === "map";
     if (battlefield && stream) {
       // Battlefield frames arrive every few seconds; one short line each keeps the log readable.
-      record({ t: "frame", room: roomId, screen: obs.screen, clock: obs.gameTimeSec, gold: obs.myGold, bytes: bytes.length, upMs, ms: readAt - now, model: reply.model, scene: obs.scene });
+      record({ t: "frame", room: roomId, screen: obs.screen, clock: obs.gameTimeSec, gold: obs.myGold, bytes: bytes.length, upMs, ms: readAt - now, asked: reader.asked, model: reply.model, scene: obs.scene });
     } else {
       record({
         t: "read", room: roomId, store: store.kind, screen: obs.screen, clock: obs.gameTimeSec, gold: obs.myGold, bytes: bytes.length, upMs, ms: readAt - now, asked: reader.asked, model: reply.model,

@@ -35,6 +35,8 @@ const STORY_MAX = 40;
 const SCENES_MAX = 6;
 /** With screenshots arriving every few seconds, this many in a row with no game on them means the player has left the match. */
 const IDLE_FRAMES_END = 8;
+/** …and this many in a row read as the results screen. */
+const RESULT_FRAMES_END = 2;
 /** Pocket gold read within this long of the last reading can be checked against it. */
 const GOLD_CHECK_MS = 30_000;
 
@@ -118,6 +120,8 @@ export interface Session {
   pendingGold?: number;
   /** Frames in a row that showed no game at all. Enough of them and the match is taken to be over. */
   idleFrames?: number;
+  /** Frames in a row read as the results screen. One alone could be the in-match scoreboard misfiled. */
+  resultFrames?: number;
 }
 
 /** List value of a set of item / component ids. */
@@ -502,11 +506,14 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
   // The results screen, or a run of frames with no game on them, ends the match: reading pauses
   // and a repeating shortcut is told to stop, instead of photographing the lobby until it runs out.
   next.idleFrames = obs.screen === "other" ? (s.idleFrames ?? 0) + 1 : 0;
+  // The results screen looks much like the in-match scoreboard, so one read of it is not believed: it takes two in a row.
+  next.resultFrames = obs.screen === "post_game" ? (s.resultFrames ?? 0) + 1 : 0;
   const wasPlaying = stageOf(s) === "live" || stageOf(s) === "loading";
-  if (obs.screen === "post_game" || (wasPlaying && next.idleFrames >= IDLE_FRAMES_END)) {
+  if (next.resultFrames >= RESULT_FRAMES_END || (wasPlaying && next.idleFrames >= IDLE_FRAMES_END)) {
     next.phase = "draft";
     next.stage = "done";
     next.idleFrames = 0;
+    next.resultFrames = 0;
   }
   return next;
 }
@@ -542,7 +549,7 @@ export function sessionReducer(s: Session, a: SessionAction): Session {
       return {
         ...s, phase: "live", clockStart: a.now, owned: [], gold: undefined, enemyLive: {}, allyLive: {}, history: [], manualFed: {}, tip: undefined, calls: 0, costUsd: 0, matchId: s.matchId + 1,
         spent: undefined, spentAt: undefined, seenItems: undefined, seenPartial: undefined, pendingSeen: undefined, goldOffset: undefined, doubt: undefined, story: undefined, ai: undefined, aiBuild: undefined, position: undefined,
-        intel: undefined, scenes: undefined, goldAt: undefined, pendingGold: undefined, idleFrames: undefined,
+        intel: undefined, scenes: undefined, goldAt: undefined, pendingGold: undefined, idleFrames: undefined, resultFrames: undefined,
       };
     case "newMatch":
       return { ...EMPTY_SESSION, lane: s.lane, matchId: s.matchId + 1 };

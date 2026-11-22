@@ -214,7 +214,7 @@ function IpadSetup() {
         seconds to upload from a phone.
       </p>
       <p className="fine">
-        Models: with a Claude key both the reader and the coach default to the strongest model. To choose, add the headers <code>x-vision-model</code> (reads the screenshot) and <code>x-coach-model</code> (decides items and calls), or <code>x-coach</code> = <code>off</code> to use the built-in rules only.
+        Models, with a Claude key and no extra headers: a single shot (“coach now”) is read by the strongest model; frames in continuous mode are read by the fast one, which costs a fraction of a cent each; the specialists always use the strongest. To choose yourself, add the headers <code>x-vision-model</code> (reads the screenshot) and <code>x-coach-model</code> (the specialists), or <code>x-coach</code> = <code>off</code> to use the built-in rules only.
       </p>
 
       <h3>Voice commands</h3>

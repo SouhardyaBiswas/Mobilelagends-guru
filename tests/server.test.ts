@@ -343,19 +343,24 @@ describe("continuous screenshots", () => {
     expect(intel.summary).toMatch(/Respect/);
   });
 
-  it("ends the match on the results screen and tells the loop to stop", async () => {
+  it("ends the match on the results screen — seen twice running — and tells the loop to stop", async () => {
     const room = "STREAM3";
     await ipad(room);
     await ipad(room);
     expect((await frame(room, "gameplay")).body.stop).toBe(false);
+    // One frame read as the results screen is not believed: it looks too much like the in-match scoreboard.
+    expect((await frame(room, "post_game")).body.halt).toBeUndefined();
+    expect((await frame(room, "gameplay")).body.halt).toBeUndefined(); // …and play going on resets the count
+    expect((await frame(room, "post_game")).body.halt).toBeUndefined();
+    // Two in a row is the end of the match.
     const results = await frame(room, "post_game");
     expect(results.body).toMatchObject({ stop: true, halt: "yes" });
     expect((await state(room)).session!.stage).toBe("done");
     // Whatever arrives next is not read at all.
     const after = await frame(room, "gameplay");
     expect(after.body).toMatchObject({ title: "Paused", halt: "yes" });
-    expect((await state(room)).session!.calls).toBe(4);
-  });
+    expect((await state(room)).session!.calls).toBe(7);
+  }, 20_000);
 
   it("takes eight frames in a row with no game on them as the end of the match", async () => {
     const room = "STREAM4";

@@ -35,8 +35,8 @@ The shortcuts send your own key with each screenshot (`x-vision-key` header); th
 | Header | What it sets | Default with a Claude key |
 |---|---|---|
 | `x-vision-key` | Your API key | — |
-| `x-vision-model` | The model that reads the screenshot | `claude-opus-5-5` |
-| `x-coach-model` | The model that decides items and calls | `claude-opus-5-5` |
+| `x-vision-model` | The model that reads the screenshot | `claude-opus-5-5` for a single shot; `claude-haiku-5-5` for frames in continuous mode (`&stream=1`) |
+| `x-coach-model` | The model the specialists use | `claude-opus-5-5` |
 | `x-coach` | `off` uses the built-in rules only | on |
 
 ### 3. Set up the two devices
@@ -66,7 +66,7 @@ Open **Settings → Phone plays, iPad shows the coach** on the site. It shows yo
 
 The questions in the last row are answered from what the room already knows — no screenshot, no AI call, no cost.
 
-**Continuous mode.** "Coach on" sends a screenshot about every 10 seconds for the whole match (5 seconds of waiting plus the time to take, upload and read one). You just play; whenever the scoreboard, shop or map happens to be open, the next frame picks it up. The loop stops by itself on the results screen, after eight frames in a row with no game on them, or when you say "coach off". Whether iOS keeps a long repeat alive behind the game has to be tried on your phone: run it for two minutes in a match first.
+**Continuous mode.** "Coach on" sends a screenshot about every 10 seconds for the whole match (5 seconds of waiting plus the time to take, upload and read one). You just play; whenever the scoreboard, shop or map happens to be open, the next frame picks it up. The loop stops by itself on the results screen (seen on two frames running), after eight frames in a row with no game on them, or when you say "coach off". Whether iOS keeps a long repeat alive behind the game has to be tried on your phone: run it for two minutes in a match first.
 
 **What happens to each frame.** A fast model sorts it (battlefield, map, scoreboard, shop) and reads it before the next frame is accepted. Three specialists — each a stronger model with its own panel on the dashboard — then work only when there is something new for them:
 
@@ -179,8 +179,18 @@ npm run build      # site in dist/ and the endpoint in api/coach.js
 
 Node 20+. Screen sharing (**Share game screen**) works on a laptop browser, where the app can watch a game window continuously.
 
+Browser checks (they need Playwright with Chromium installed where `require("playwright")` can find it):
+
+```bash
+npm run build && (npx vite preview --port 4173 --strictPort &)
+node scripts/e2e/run.cjs        # single-device flow
+node scripts/e2e/follow.cjs     # a phone-sized follower
+node scripts/e2e/dashboard.cjs  # the iPad dashboard, every stage, three screen sizes
+node scripts/e2e/voice.cjs      # the dashboard driven by voice commands and a frame loop, listening to what it says
 ```
-scripts/           data and picture sync
+
+```
+scripts/           data and picture sync; e2e/ holds the browser checks
 src/data/          generated hero data, item catalog, build templates, timers
 src/engine/        threat, counters, build planner, guide, coach lines, endpoint replies
 src/vision/        the reader: prompt, answer schema, Gemini / Claude / demo

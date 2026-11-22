@@ -9,3 +9,6 @@ test-results
 
 # Scratch checkouts used by helper agents
 .claude/worktrees/
+
+# Screenshots written by the browser checks
+scripts/e2e/out/
