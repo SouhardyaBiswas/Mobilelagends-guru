@@ -6,6 +6,7 @@ import { planBuild } from "./engine/build";
 import { guessLaneOpponent } from "./engine/tips";
 import { buildInputs, gameSeconds, STAGE_LABEL, stageOf, StoreProvider, useStore } from "./state/store";
 import { CaptureProvider } from "./ui/CaptureContext";
+import { agoText, Dashboard, useWideScreen } from "./ui/Dashboard";
 import { DraftTab } from "./ui/DraftTab";
 import { LiveTab } from "./ui/LiveTab";
 import { SettingsTab } from "./ui/SettingsTab";
@@ -14,11 +15,6 @@ import { SCREEN_LABEL, useRoomSync } from "./ui/useRoomSync";
 
 type Tab = "draft" | "live" | "settings";
 
-const agoText = (now: number, at?: number) => {
-  if (!at) return "just now";
-  const sec = Math.max(0, Math.round((now - at) / 1000));
-  return sec < 5 ? "just now" : sec < 90 ? `${sec}s ago` : `${Math.round(sec / 60)} min ago`;
-};
 const LATE_GAME_SEC = 15 * 60;
 
 function Shell() {
@@ -73,6 +69,24 @@ function Shell() {
       setTab(session.phase === "live" ? "live" : "draft");
     }
   }, [session.phase]);
+
+  // Following on a wide screen (an iPad in landscape beside the phone that plays): one window, no tabs.
+  const wide = useWideScreen();
+  if (settings.sync.follow && wide) {
+    return (
+      <Dashboard
+        plan={plan}
+        hero={hero}
+        gameSec={gameSec}
+        laneOpponentId={laneOpponentId}
+        room={room}
+        now={now}
+        onRepeat={repeat}
+        settingsOpen={tab === "settings"}
+        onSettings={(open) => setTab(open ? "settings" : session.phase === "live" ? "live" : "draft")}
+      />
+    );
+  }
 
   const voiceOn = settings.speech.enabled;
   return (

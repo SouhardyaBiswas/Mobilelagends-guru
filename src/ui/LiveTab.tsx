@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, type ReactNode } from "react";
 import { speaker } from "../audio/speech";
 import { captureSupport } from "../capture/capture";
 import { heroById } from "../data/heroes";
@@ -24,7 +24,8 @@ const ACTION_LABEL: Record<Plan["next"]["action"], string> = {
   done: "Build complete",
 };
 
-function NowCard({ plan, onRepeat }: { plan: Plan; onRepeat: () => void }) {
+/** The one thing to do with your gold right now. `iconSize` lets the wide dashboard show a larger picture. */
+export function NowCard({ plan, onRepeat, iconSize = 84 }: { plan: Plan; onRepeat: () => void; iconSize?: number }) {
   const { state, dispatch } = useStore();
   const n = plan.next;
   const confirm = () => {
@@ -37,7 +38,7 @@ function NowCard({ plan, onRepeat }: { plan: Plan; onRepeat: () => void }) {
     <section className={`now action-${n.action}`} aria-live="polite">
       <span className="eyebrow">{ACTION_LABEL[n.action]}</span>
       <div className="now-main">
-        {target && <ItemIcon id={n.component && target === n.component ? componentId(n.component.name) : (n.item?.id ?? "")} name={target.name} size={84} />}
+        {target && <ItemIcon id={n.component && target === n.component ? componentId(n.component.name) : (n.item?.id ?? "")} name={target.name} size={iconSize} />}
         <h1>{n.say}</h1>
       </div>
       <p>{n.detail}</p>
@@ -61,7 +62,8 @@ function NowCard({ plan, onRepeat }: { plan: Plan; onRepeat: () => void }) {
   );
 }
 
-function ThreatPanel({ plan }: { plan: Plan }) {
+/** The enemy team by how dangerous each hero is. `compact` keeps one line per enemy, for the wide dashboard. */
+export function ThreatPanel({ plan, compact = false }: { plan: Plan; compact?: boolean }) {
   const { state, dispatch } = useStore();
   const s = state.session;
   const t = plan.threat;
@@ -92,7 +94,7 @@ function ThreatPanel({ plan }: { plan: Plan }) {
               const mark = s.manualFed[src.heroId];
               return (
                 <li key={src.heroId} className={src.fed ? "fed" : ""}>
-                  <HeroIcon hero={hero} size={40} />
+                  <HeroIcon hero={hero} size={compact ? 32 : 40} />
                   <span className="enemy-main">
                     <span className="enemy-name">
                       {hero.name}
@@ -100,11 +102,13 @@ function ThreatPanel({ plan }: { plan: Plan }) {
                       {src.fed && <span className="tag fedtag">fed</span>}
                     </span>
                     <span className="bar"><i style={{ width: `${Math.round(src.weight * 100 * 2.2)}%` }} /></span>
-                    <small>
-                      {live?.kills !== undefined ? `${live.kills}/${live.deaths ?? "?"}/${live.assists ?? "?"}` : "no live stats"}
-                      {live?.gold !== undefined ? ` · ${live.gold} gold` : ""}
-                      {live?.items?.length ? ` · ${live.items.map(ownedLabel).join(", ")}` : ""}
-                    </small>
+                    {!compact && (
+                      <small>
+                        {live?.kills !== undefined ? `${live.kills}/${live.deaths ?? "?"}/${live.assists ?? "?"}` : "no live stats"}
+                        {live?.gold !== undefined ? ` · ${live.gold} gold` : ""}
+                        {live?.items?.length ? ` · ${live.items.map(ownedLabel).join(", ")}` : ""}
+                      </small>
+                    )}
                   </span>
                   {!live && (
                     <button className={`btn tiny ${mark === 1 ? "hot" : mark === -1 ? "cold" : ""}`} onClick={() => dispatch({ type: "cycleFed", heroId: src.heroId })} title="Mark this enemy as fed or behind">
@@ -115,22 +119,25 @@ function ThreatPanel({ plan }: { plan: Plan }) {
               );
             })}
           </ul>
-          <p className="fine">The bar is each enemy's share of their team's kill pressure. Without live stats, tap Even to mark someone as fed or behind.</p>
+          {!compact && <p className="fine">The bar is each enemy's share of their team's kill pressure. Without live stats, tap Even to mark someone as fed or behind.</p>}
         </>
       )}
     </section>
   );
 }
 
-/** The match's memory: how the game has moved across every scoreboard read so far. */
-function StoryPanel() {
+/**
+ * The match's memory: how the game has moved across every scoreboard read so far.
+ * `lead` is shown above the sentences (the wide dashboard puts its storyboard there).
+ */
+export function StoryPanel({ lead }: { lead?: ReactNode } = {}) {
   const { state } = useStore();
   const story = useMemo(() => matchStory(state.session), [state.session]);
   if (!story) {
     return (
       <section className="panel">
         <h2>Match so far</h2>
-        <p className="hint">Open the scoreboard and send a screenshot. From then on every scoreboard is remembered, so the coach can tell who is pulling ahead and who is falling behind.</p>
+        {lead ?? <p className="hint">Open the scoreboard and send a screenshot. From then on every scoreboard is remembered, so the coach can tell who is pulling ahead and who is falling behind.</p>}
       </section>
     );
   }
@@ -148,6 +155,7 @@ function StoryPanel() {
           <i className="enemy-side" style={{ width: `${100 - minePct}%` }}>Them {(g.theirs / 1000).toFixed(1)}k</i>
         </div>
       )}
+      {lead}
       <ul className="how">
         {story.lines.map((line) => (
           <li key={line}>{line}</li>
@@ -244,12 +252,12 @@ function CapturePanel() {
 }
 
 /** What the coach understood from each recent screenshot — the place to look when something seems off. */
-function ReadsPanel({ reads }: { reads?: RoomRead[] }) {
-  const list = [...(reads ?? [])].reverse().slice(0, 12);
+export function ReadsPanel({ reads, limit = 12, sender = "the iPad" }: { reads?: RoomRead[]; limit?: number; sender?: string }) {
+  const list = [...(reads ?? [])].reverse().slice(0, limit);
   return (
     <section className="panel">
       <h2>Recent screenshots</h2>
-      {!list.length && <p className="hint">Each screenshot the iPad sends is listed here with what it was understood to be.</p>}
+      {!list.length && <p className="hint">Each screenshot {sender} sends is listed here with what it was understood to be.</p>}
       <ul className="log">
         {list.map((r, i) => (
           <li key={`${r.at}-${i}`} className={r.error ? "log-error" : "log-vision"}>

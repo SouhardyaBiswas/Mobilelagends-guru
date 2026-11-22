@@ -136,3 +136,25 @@ export function TeamRow({ label, ids, max, tone, exclude, onChange }: TeamRowPro
     </div>
   );
 }
+
+/** A whole team as a read-only row of portraits, for a screen that is looked at rather than tapped. */
+export function TeamStrip({ label, ids, tone, size = 44 }: { label: string; ids: number[]; tone: "ally" | "enemy"; size?: number }) {
+  return (
+    <div className={`team-strip tone-${tone}`}>
+      <div className="team-label">{label}</div>
+      <div className="strip">
+        {ids.map((id) => {
+          const hero = heroById(id);
+          if (!hero) return null;
+          return (
+            <span key={id} className="strip-hero">
+              <HeroIcon hero={hero} size={size} />
+              <span>{hero.name}</span>
+            </span>
+          );
+        })}
+        {!ids.length && <span className="muted">Not known yet</span>}
+      </div>
+    </div>
+  );
+}

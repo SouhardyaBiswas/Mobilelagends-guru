@@ -5,12 +5,14 @@ interface Props {
   plan: BuildPlan;
   /** When given, slots become toggles for "I own this". */
   onToggle?: (itemId: string) => void;
+  /** Tighter form for the wide dashboard: same content, laid out by the stylesheet to fit the space it is given. */
+  compact?: boolean;
 }
 
-export function BuildList({ plan, onToggle }: Props) {
+export function BuildList({ plan, onToggle, compact = false }: Props) {
   const nextId = plan.next.item?.id;
   return (
-    <ol className="build">
+    <ol className={compact ? "build compact" : "build"}>
       {plan.slots.map((slot, i) => {
         const isNext = !slot.owned && slot.item.id === nextId;
         const cls = `build-slot ${slot.owned ? "owned" : ""} ${isNext ? "next" : ""} kind-${slot.kind}`;

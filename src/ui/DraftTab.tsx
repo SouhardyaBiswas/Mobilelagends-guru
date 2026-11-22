@@ -4,11 +4,68 @@ import { heroById } from "../data/heroes";
 import { counterAdvice } from "../engine/coach";
 import { rankCounters } from "../engine/draft";
 import { useStore } from "../state/store";
-import { LANE_LABEL, LANES, type BuildPlan, type Hero, type ThreatProfile } from "../types";
+import { LANE_LABEL, LANES, type BuildPlan, type CounterPick, type Hero, type ThreatProfile } from "../types";
 import { demoRoster } from "../vision/demo";
 import { BuildList, SpellEmblem } from "./BuildList";
 import { Guide } from "./Guide";
 import { HeroIcon, HeroPicker, TeamRow } from "./HeroBits";
+
+/** The best heroes to pick into the draft as it stands. Shared by the Draft tab and the wide dashboard. */
+export function useCounterPicks(laneOpponentId?: number, limit = 8): CounterPick[] {
+  const s = useStore().state.session;
+  return useMemo(
+    () => rankCounters({ enemies: s.enemies, allies: s.allies, banned: s.banned, lane: s.lane, laneOpponent: laneOpponentId, limit }),
+    [s.enemies, s.allies, s.banned, s.lane, laneOpponentId, limit],
+  );
+}
+
+/** Counter-pick suggestions, best first. Tapping one makes it your hero. */
+export function CounterList({ picks }: { picks: CounterPick[] }) {
+  const { state, dispatch } = useStore();
+  const s = state.session;
+  const best = Math.max(1, ...picks.map((p) => p.score));
+  return (
+    <>
+      <span className="eyebrow">{s.enemies.length ? `Best into this enemy team${s.lane ? ` · ${LANE_LABEL[s.lane]}` : ""}` : "Strong this patch"}</span>
+      <ul className="counters">
+        {picks.map((p) => (
+          <li key={p.hero.id}>
+            <button className={`counter ${p.hero.id === s.myHeroId ? "on" : ""}`} onClick={() => dispatch({ type: "setMyHero", id: p.hero.id })}>
+              <HeroIcon hero={p.hero} />
+              <span className="counter-main">
+                <span className="counter-name">
+                  {p.hero.name}
+                  <span className={`score ${p.score < 0 ? "neg" : ""}`}>{p.score >= 0 ? "+" : ""}{p.score.toFixed(1)}</span>
+                </span>
+                <span className="bar"><i style={{ width: `${Math.max(4, (p.score / best) * 100)}%` }} /></span>
+                <span className="counter-why">{p.reasons[0]}</span>
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+      <p className="fine">Score = win-rate points gained versus these enemies in ranked play (Moonton stats), with your lane opponent counted double, plus team synergy and patch strength.</p>
+    </>
+  );
+}
+
+/** "Your lane" chips: tap one to choose it, tap it again to clear it. */
+export function LaneChips() {
+  const { state, dispatch } = useStore();
+  const s = state.session;
+  return (
+    <div className="field">
+      <span className="eyebrow">Your lane</span>
+      <div className="chips">
+        {LANES.map((lane) => (
+          <button key={lane} className={`chip ${s.lane === lane ? "on" : ""}`} onClick={() => dispatch({ type: "setLane", lane: s.lane === lane ? undefined : lane })}>
+            {LANE_LABEL[lane]}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export function DraftTab({ plan, hero, laneOpponentId, onStart }: { plan?: BuildPlan & { threat: ThreatProfile }; hero?: Hero; laneOpponentId?: number; onStart: () => void }) {
   const { state, dispatch } = useStore();
@@ -18,11 +75,7 @@ export function DraftTab({ plan, hero, laneOpponentId, onStart }: { plan?: Build
     () => [...s.enemies, ...s.allies, ...s.banned, ...(s.myHeroId ? [s.myHeroId] : [])],
     [s.enemies, s.allies, s.banned, s.myHeroId],
   );
-  const picks = useMemo(
-    () => rankCounters({ enemies: s.enemies, allies: s.allies, banned: s.banned, lane: s.lane, laneOpponent: laneOpponentId, limit: 8 }),
-    [s.enemies, s.allies, s.banned, s.lane, laneOpponentId],
-  );
-  const best = Math.max(1, ...picks.map((p) => p.score));
+  const picks = useCounterPicks(laneOpponentId);
 
   return (
     <div className="grid two">
@@ -32,16 +85,7 @@ export function DraftTab({ plan, hero, laneOpponentId, onStart }: { plan?: Build
         <TeamRow label="Your teammates" tone="ally" max={4} ids={s.allies} exclude={taken} onChange={(ids) => dispatch({ type: "setTeam", side: "allies", ids })} />
         <TeamRow label="Banned" tone="ban" max={10} ids={s.banned} exclude={taken} onChange={(ids) => dispatch({ type: "setTeam", side: "banned", ids })} />
 
-        <div className="field">
-          <span className="eyebrow">Your lane</span>
-          <div className="chips">
-            {LANES.map((lane) => (
-              <button key={lane} className={`chip ${s.lane === lane ? "on" : ""}`} onClick={() => dispatch({ type: "setLane", lane: s.lane === lane ? undefined : lane })}>
-                {LANE_LABEL[lane]}
-              </button>
-            ))}
-          </div>
-        </div>
+        <LaneChips />
 
         {!s.enemies.length && (
           <p className="hint">
@@ -102,29 +146,7 @@ export function DraftTab({ plan, hero, laneOpponentId, onStart }: { plan?: Build
         {s.enemies.length > 0 && s.enemies.length < 5 && (
           <p className="hint">{s.enemies.length} of 5 enemies known. The more that have picked, the better the suggestion — the last pick sees everything.</p>
         )}
-        {(
-          <>
-            <span className="eyebrow">{s.enemies.length ? `Best into this enemy team${s.lane ? ` · ${LANE_LABEL[s.lane]}` : ""}` : "Strong this patch"}</span>
-            <ul className="counters">
-              {picks.map((p) => (
-                <li key={p.hero.id}>
-                  <button className={`counter ${p.hero.id === s.myHeroId ? "on" : ""}`} onClick={() => dispatch({ type: "setMyHero", id: p.hero.id })}>
-                    <HeroIcon hero={p.hero} />
-                    <span className="counter-main">
-                      <span className="counter-name">
-                        {p.hero.name}
-                        <span className={`score ${p.score < 0 ? "neg" : ""}`}>{p.score >= 0 ? "+" : ""}{p.score.toFixed(1)}</span>
-                      </span>
-                      <span className="bar"><i style={{ width: `${Math.max(4, (p.score / best) * 100)}%` }} /></span>
-                      <span className="counter-why">{p.reasons[0]}</span>
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <p className="fine">Score = win-rate points gained versus these enemies in ranked play (Moonton stats), with your lane opponent counted double, plus team synergy and patch strength.</p>
-          </>
-        )}
+        <CounterList picks={picks} />
 
         {pickingMe && (
           <HeroPicker

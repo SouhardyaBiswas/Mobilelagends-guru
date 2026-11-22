@@ -72,16 +72,22 @@ export function BriefCard({ brief, open = false, lane = false }: { brief: HeroBr
   );
 }
 
+/** The pieces of the guide: the game plan, the "who is in your lane?" chips, the lane opponent's card, the other enemies' cards. */
+export type GuidePart = "plan" | "picker" | "lane" | "others";
+const ALL_PARTS: readonly GuidePart[] = ["plan", "picker", "lane", "others"];
+
 interface GuideProps {
   me: Hero;
   enemies: number[];
   threat: ThreatProfile;
   laneOpponentId?: number;
   onPickLane: (id: number) => void;
+  /** Which pieces to show, in this order. Everything by default; the wide dashboard splits them across columns. */
+  parts?: readonly GuidePart[];
 }
 
 /** The new-player view: what this game is about, then each enemy in plain language. */
-export function Guide({ me, enemies, threat, laneOpponentId, onPickLane }: GuideProps) {
+export function Guide({ me, enemies, threat, laneOpponentId, onPickLane, parts = ALL_PARTS }: GuideProps) {
   const plan = useMemo(() => gamePlan(me, enemies, threat, laneOpponentId), [me, enemies, threat, laneOpponentId]);
   const briefs = useMemo(
     () =>
@@ -94,26 +100,34 @@ export function Guide({ me, enemies, threat, laneOpponentId, onPickLane }: Guide
     [enemies, me, laneOpponentId],
   );
   if (!enemies.length) return <p className="hint">Add the enemy heroes and this turns into a plan for the match.</p>;
-  return (
-    <div className="guide">
-      <ol className="plan">
-        {plan.map((line) => (
-          <li key={line}>{line}</li>
-        ))}
-      </ol>
-      <div className="field">
-        <span className="eyebrow">Who is in your lane?</span>
-        <div className="chips">
-          {briefs.map((b) => (
-            <button key={b.hero.id} className={`chip ${b.hero.id === laneOpponentId ? "on" : ""}`} onClick={() => onPickLane(b.hero.id)}>
-              {b.hero.name}
-            </button>
-          ))}
-        </div>
-      </div>
-      {briefs.map((b) => (
-        <BriefCard key={b.hero.id} brief={b} lane={b.hero.id === laneOpponentId} open={b.hero.id === laneOpponentId} />
-      ))}
-    </div>
-  );
+  const section = (part: GuidePart) => {
+    switch (part) {
+      case "plan":
+        return (
+          <ol className="plan" key={part}>
+            {plan.map((line) => (
+              <li key={line}>{line}</li>
+            ))}
+          </ol>
+        );
+      case "picker":
+        return (
+          <div className="field" key={part}>
+            <span className="eyebrow">Who is in your lane?</span>
+            <div className="chips">
+              {briefs.map((b) => (
+                <button key={b.hero.id} className={`chip ${b.hero.id === laneOpponentId ? "on" : ""}`} onClick={() => onPickLane(b.hero.id)}>
+                  {b.hero.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+      case "lane":
+        return briefs.filter((b) => b.hero.id === laneOpponentId).map((b) => <BriefCard key={b.hero.id} brief={b} lane open />);
+      case "others":
+        return briefs.filter((b) => b.hero.id !== laneOpponentId).map((b) => <BriefCard key={b.hero.id} brief={b} />);
+    }
+  };
+  return <div className="guide">{parts.map(section)}</div>;
 }

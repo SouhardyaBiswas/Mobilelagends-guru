@@ -269,3 +269,230 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
 .paid { position: relative; display: block; height: 18px; border-radius: 99px; background: var(--bg); overflow: hidden; margin: 2px 0; }
 .paid i { position: absolute; inset: 0 auto 0 0; background: rgba(232, 184, 74, 0.45); border-radius: 99px; }
 .paid em { position: relative; font-style: normal; font-size: 11.5px; font-weight: 700; padding-left: 8px; line-height: 18px; color: var(--text); }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   DASHBOARD — follow mode on a screen at least 900px wide (src/ui/Dashboard.tsx)
+   An iPad in landscape, propped up beside the phone that plays, read at a glance.
+   Everything from here down is scoped to .dash; nothing above is changed by it.
+
+   Rules of this section:
+   · The page never scrolls. .dash is exactly one window tall; each column is a
+     stack of cells, and a panel that gets less room than it wants scrolls inside.
+   · Type: body 16px, secondary 14px, nothing smaller.
+   · One level of boxes: panels on the page. Rows inside a panel are not boxed.
+   ════════════════════════════════════════════════════════════════════════════ */
+.dash { height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; font-size: 16px; line-height: 1.4; }
+
+/* ── Dashboard: top bar ──────────────────────────────── */
+.dash-bar {
+  flex: none; display: flex; align-items: center; gap: 14px; min-height: 52px;
+  padding: 6px max(12px, env(safe-area-inset-right)) 6px max(12px, env(safe-area-inset-left)); padding-top: max(6px, env(safe-area-inset-top));
+  background: var(--surface); border-bottom: 1px solid var(--border);
+}
+.dash-room { display: flex; align-items: center; gap: 8px; flex: none; }
+.dash-room-label { color: var(--muted); font-size: 14px; }
+.dash-room strong { letter-spacing: 0.06em; }
+.dash .stages { margin: 0; flex: none; flex-wrap: nowrap; }
+.dash .stages .chip { min-height: 40px; padding: 0 12px; font-size: 15px; white-space: nowrap; }
+.dash-clock { flex: none; min-width: 64px; text-align: center; font-size: 26px; line-height: 1; font-variant-numeric: tabular-nums; }
+.dash-read { flex: 1 1 0; min-width: 0; display: grid; line-height: 1.25; }
+.dash-read strong, .dash-read small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dash-read.bad strong { color: #ffb4b4; }
+.dash-actions { display: flex; gap: 8px; flex: none; }
+.dash-bar .btn { min-height: 40px; padding: 6px 12px; }
+.dash-alert { flex: none; padding: 8px 16px; color: #ffb4b4; background: rgba(255, 107, 107, 0.1); border-bottom: 1px solid rgba(255, 107, 107, 0.35); }
+
+/* ── Dashboard: three columns of cells ───────────────── */
+.dash-body { flex: 1 1 0; min-height: 0; width: 100%; max-width: none; margin: 0; padding: 0; }
+.dash-grid {
+  height: 100%; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr); gap: 12px;
+  padding: 10px max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+}
+.dash-col { display: flex; flex-direction: column; gap: 10px; min-width: 0; min-height: 0; }
+.dash-col > * { flex: none; }
+.dash-colhead { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 12px; }
+.dash-colhead h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); white-space: nowrap; }
+.dash-colhead small { font-variant-numeric: tabular-nums; }
+/* A cell is one slot in a column; the panel inside it scrolls when the slot is smaller than the content. */
+.dash-col > .dash-cell { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.dash-col > .dash-cell.fit { flex: 0 1 auto; }
+.dash-col > .dash-cell.grow { flex: 1 1 0; min-height: 120px; }
+.dash-col > .dash-cell.log { flex: 0 1 auto; max-height: min(24%, 180px); }
+/* The build list's slot keeps room for its six items; the list changes shape with the slot's height (see below). */
+.dash-col > .dash-cell.build { flex: 1 0 128px; container: build / size; }
+.dash-cell > .panel { flex: 0 1 auto; min-height: 0; overflow: hidden auto; }
+.dash .panel {
+  padding: 12px 14px; gap: 10px; grid-template-columns: minmax(0, 1fr); align-content: start; scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+  /* A soft edge shows where a panel has more to scroll to; it fades out at either end of the content. */
+  background:
+    linear-gradient(var(--surface) 40%, transparent) top / 100% 28px no-repeat local,
+    linear-gradient(transparent, var(--surface) 60%) bottom / 100% 28px no-repeat local,
+    linear-gradient(rgba(139, 152, 173, 0.28), transparent) top / 100% 14px no-repeat scroll,
+    linear-gradient(transparent, rgba(139, 152, 173, 0.28)) bottom / 100% 14px no-repeat scroll,
+    var(--surface);
+}
+.dash .panel-head { flex-wrap: wrap; align-items: baseline; gap: 0 12px; }
+.dash .panel-head h2 { white-space: nowrap; }
+.dash-quiet { color: var(--muted); font-size: 14px; }
+
+/* ── Dashboard: type (body 16, secondary 14) ─────────── */
+.dash h2 { font-size: 17px; }
+.dash h3 { font-size: 14px; }
+.dash small, .dash .fine, .dash .hint, .dash .error, .dash .eyebrow, .dash .tag, .dash .chip, .dash .btn.tiny, .dash .split, .dash .log, .dash .standings,
+.dash .build-cost, .dash .build-why, .dash .counter-why, .dash .brief-sum, .dash .skill-meta, .dash .skill-text, .dash .setup-card p, .dash .team-label,
+.dash .slot, .dash .hero-cell, .dash .paid em, .dash .field, .dash .steps, .dash .meter, .dash code, .dash .standings.asks .endpoint { font-size: 14px; }
+.dash .how li { font-size: 16px; }
+.dash .eyebrow { letter-spacing: 0.07em; }
+.dash .tag { letter-spacing: 0.04em; padding: 0 7px; line-height: 20px; }
+.dash .paid { height: 20px; }
+.dash .paid em { line-height: 20px; }
+
+/* ── Dashboard: the one thing to do now ──────────────── */
+.dash .now { padding: 12px 14px; gap: 6px; grid-template-columns: minmax(0, 1fr); }
+.dash .now .row { flex-wrap: wrap; }
+.dash .now h1 { font-size: clamp(28px, 2.5vw, 34px); }
+.dash .now .eyebrow { font-size: 15px; }
+.dash .now-main { gap: 14px; }
+.dash .where { padding: 6px 10px; }
+.dash .now .btn { min-height: 40px; padding: 6px 12px; white-space: normal; text-align: left; }
+/* A share's label never clips: the bar gives it the room and the other side yields. */
+.dash .split i { min-width: max-content; padding: 0 8px; }
+.dash .chips.static .chip { padding: 3px 10px; }
+.dash .standings td { padding: 3px 4px; }
+.dash .plan { gap: 4px; }
+.ai-card .how { gap: 4px; }
+
+/* ── Dashboard: AI coach / coach's read ──────────────── */
+.ai-card.ai-coach { gap: 8px; }
+.ai-card .eyebrow { color: var(--gold); }
+.ai-meta { display: flex; align-items: center; gap: 8px; }
+.ai-headline { font-size: 21px; font-weight: 700; line-height: 1.25; letter-spacing: -0.005em; }
+.ai-avoid { color: var(--muted); }
+.ai-focus { display: flex; align-items: center; gap: 10px; }
+.ai-card.stale > :not(.panel-head) { opacity: 0.5; }
+.tag.sit-ahead { background: rgba(62, 207, 142, 0.18); color: #bff0d8; }
+.tag.sit-even { background: rgba(139, 152, 173, 0.2); color: var(--text); }
+.tag.sit-behind { background: rgba(255, 107, 107, 0.15); color: #ffb0b0; }
+
+/* ── Dashboard: storyboard (newest first) ────────────── */
+.beats { list-style: none; margin: 0 0 0 5px; padding: 0; display: grid; }
+.beats li { position: relative; display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 8px; padding: 0 0 10px 14px; border-left: 2px solid var(--border); }
+.beats li:last-child { padding-bottom: 0; }
+.beats li::before { content: ""; position: absolute; left: -6px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--muted); }
+.beats time { color: var(--muted); font-size: 14px; font-weight: 700; line-height: 22px; font-variant-numeric: tabular-nums; }
+.beats .beat-good::before { background: var(--ok); } .beats .beat-good time { color: var(--ok); }
+.beats .beat-bad::before { background: var(--enemy); } .beats .beat-bad time { color: var(--enemy); }
+
+/* ── Dashboard: positioning ──────────────────────────── */
+.pos-danger { padding: 6px 10px; border-left: 3px solid var(--enemy); border-radius: 0 8px 8px 0; background: rgba(255, 107, 107, 0.1); color: #ffc9c9; font-weight: 600; }
+
+/* ── Dashboard: rows inside panels are not boxes ─────── */
+.dash .build-slot { background: none; border: 0; border-radius: 10px; padding: 3px 4px; gap: 10px; }
+.dash .build-slot.next { box-shadow: none; }
+.dash .build-slot.next .build-name { color: var(--gold); }
+.dash .enemies li { background: none; border: 0; border-radius: 0; padding: 0; }
+.dash .enemies li.fed .enemy-name { color: #ffc2c2; }
+.dash .brief { background: none; border: 0; border-radius: 0; }
+.dash .brief > summary { padding: 0; }
+.dash .brief[open] > summary { padding-bottom: 10px; }
+.dash .brief-block { padding: 0 0 10px; }
+.dash .brief .fine { padding: 0; }
+.dash .brief:not(.lane) { border-top: 1px solid var(--border); padding-top: 10px; }
+.dash .setup-card { background: none; border: 0; border-radius: 0; padding: 0; }
+.dash .setup-card strong { font-size: 20px; }
+.dash .counter { background: none; border: 0; padding: 6px 8px; }
+.dash .counter.on { box-shadow: inset 3px 0 0 var(--gold); }
+.dash .counter-why { white-space: normal; }
+.dash .slot { width: 84px; background: none; }
+.dash .slot.filled { border-color: transparent; }
+.dash .slot span:last-child { max-width: 78px; }
+
+/* ── Dashboard: build list, shaped by the room it has ── */
+/* Least room (the default): three across — picture, name, a thin bar for gold already paid. */
+.dash-cell.build .panel-head, .dash-cell.build > .panel > h2 { display: none; }
+.dash .build.compact { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 10px; }
+.dash .build.compact .build-slot { position: relative; padding: 0; gap: 8px; }
+.dash .build.compact .build-n { position: absolute; left: -3px; top: -3px; z-index: 1; width: 20px; height: 20px; font-size: 14px; box-shadow: 0 0 0 2px var(--surface); }
+.dash .build.compact .build-name { font-size: 14px; line-height: 1.25; gap: 0 8px; }
+.dash .build.compact .build-cost, .dash .build.compact .tag, .dash .build.compact .build-why, .dash .build.compact .paid em { display: none; }
+.dash .build.compact .paid { height: 6px; margin: 3px 0 0; }
+@container build (max-width: 440px) {
+  /* A narrow column: smaller pictures, so the names keep their room. (The picture's size is set inline, hence !important.) */
+  .dash .build.compact { column-gap: 6px; }
+  .dash .build.compact .item-icon { width: 32px !important; height: 32px !important; }
+  .dash .build.compact .build-n { left: -7px; top: -7px; }
+  .dash .build.compact .build-slot { gap: 6px; }
+  .dash .build.compact .build-name { overflow-wrap: anywhere; }
+}
+@container build (min-height: 232px) {
+  /* More room: two across, with the heading, prices, the "counter" mark and the paid amount in words. */
+  .dash-cell.build .panel-head { display: flex; }
+  .dash-cell.build > .panel > h2 { display: block; }
+  .dash .build.compact { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 12px; }
+  .dash .build.compact .build-name { font-size: 16px; }
+  .dash .build.compact .build-cost, .dash .build.compact .tag.situational { display: inline; }
+  .dash .build.compact .paid { height: 20px; margin: 2px 0; }
+  .dash .build.compact .paid em { display: inline; }
+}
+@container build (min-height: 470px) {
+  /* Room to spare: one item per line, with the reason it is in the build. */
+  .dash .build.compact { grid-template-columns: minmax(0, 1fr); }
+  .dash .build.compact .build-why { display: block; }
+}
+
+/* ── Dashboard: teams, hero header ───────────────────── */
+.dash .panel.dash-teams { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.team-strip { display: grid; gap: 6px; align-content: start; min-width: 0; }
+.strip { display: grid; gap: 6px; }
+.strip-hero { display: flex; align-items: center; gap: 8px; font-weight: 600; min-width: 0; }
+.dash .setup-card { align-content: start; }
+.dash .setup-grid { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 12px; }
+.dash-me { display: flex; align-items: center; gap: 14px; }
+.dash-me > span { display: grid; }
+.dash-me h1 { font-size: 30px; line-height: 1.15; letter-spacing: -0.01em; }
+.dash-me strong { font-size: 22px; line-height: 1.2; }
+
+/* ── Dashboard: waiting and paused ───────────────────── */
+.dash-center { height: 100%; display: grid; place-items: center; gap: 24px; padding: 24px; overflow-y: auto; }
+.dash-center.with-side { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: stretch; overflow: hidden; }
+.dash-calm { width: min(700px, 100%); display: grid; gap: 14px; align-content: center; }
+.dash-calm h1 { font-size: 34px; line-height: 1.15; letter-spacing: -0.01em; }
+.dash-calm .plan { font-size: 18px; gap: 10px; }
+.dash-lead { font-size: 19px; color: #d7dce6; }
+.dash-say { display: grid; gap: 2px; }
+.dash-say strong { font-size: 46px; line-height: 1.1; color: var(--gold); letter-spacing: -0.01em; }
+.dash-side { display: flex; flex-direction: column; min-height: 0; width: 100%; }
+.dash-side > .dash-cell { display: flex; flex-direction: column; flex: 0 1 auto; min-height: 0; margin: auto 0; }
+
+/* ── Dashboard: settings ─────────────────────────────── */
+.dash-settings { height: 100%; overflow-y: auto; padding: 16px; }
+.dash-settings > .grid { max-width: 1280px; margin: 0 auto; }
+
+/* ── Dashboard: smaller screens ──────────────────────── */
+@media (max-width: 1279px) {
+  /* The room code stands next to the logo without its label. */
+  .dash-room-label { display: none; }
+}
+@media (max-width: 1100px) {
+  .dash-bar { gap: 10px; }
+  .dash-wide { display: none; }
+  .dash .stages .chip { padding: 0 10px; font-size: 14px; }
+  .dash-grid { gap: 10px; }
+}
+@media (max-width: 1023px) {
+  /* Below the smallest iPad in landscape: the last-screenshot line gets a row of its own, the build list goes two across. */
+  .dash-bar { flex-wrap: wrap; row-gap: 4px; }
+  .dash-read { order: 9; flex: 1 0 100%; display: flex; align-items: baseline; gap: 8px; }
+  .dash-actions { margin-left: auto; }
+  .dash-col > .dash-cell.build { flex-basis: 176px; }
+  .dash .build.compact { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* Where the first column is short of room, the reason behind the purchase gives way: it is spoken anyway, and
+   what to buy and where to find it stay. That is any short or narrow screen, and an iPad Air (820 tall) while
+   the AI coach card is showing, so that card is seen whole: headline, what to do, what to avoid, who to watch. */
+@media (max-height: 800px), (max-width: 1023px) {
+  .dash .now > p:not(.where) { display: none; }
+}
+@media (max-height: 860px) {
+  .dash-col:has(.ai-coach) .now > p:not(.where) { display: none; }
+}
