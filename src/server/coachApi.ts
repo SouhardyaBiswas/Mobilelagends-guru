@@ -321,14 +321,45 @@ function caller(request: Request) {
   return { key, provider, readerModel, coachModel, coachOff, demoScreen };
 }
 
-function pickVision(request: Request, roomId: string, stream: boolean): { vision: VisionCall; asked: string } {
+/**
+ * Screens that decide who is in the match. Naming ten heroes — on the draft screen from bare
+ * portraits — is where a fast model comes back empty-handed (every draft read in the first real
+ * match did), and getting the roster wrong spoils everything after it. They get the strong model.
+ */
+const ROSTER_SCREENS: ReadonlySet<string> = new Set(["draft", "loading"]);
+/** A roster re-read is only started this early in the request, and given this long. */
+const ROSTER_LATEST_START_MS = 20_000;
+const ROSTER_DEADLINE_MS = 28_000;
+
+/**
+ * The reader for this frame. Frames in a loop get the fast model — except during hero selection
+ * and loading, when the room is expecting a roster screen. A model named in the request wins.
+ */
+function pickVision(request: Request, roomId: string, stream: boolean, roster = false): { vision: VisionCall; asked: string } {
   const { key, provider, readerModel } = caller(request);
   if (provider === "demo") return { vision: demoFor(roomId), asked: "demo" };
-  const usual = stream ? STREAM_READER : DEFAULT_MODEL;
-  if (provider === "claude") return { vision: claudeVision(key, readerModel || usual.claude), asked: readerModel || usual.claude };
+  const usual = stream && !roster ? STREAM_READER : DEFAULT_MODEL;
+  const effort = roster && !readerModel ? "medium" : undefined;
+  if (provider === "claude") return { vision: claudeVision(key, readerModel || usual.claude, effort), asked: readerModel || usual.claude };
   if (provider === "gemini") return { vision: geminiVision(key, readerModel || usual.gemini), asked: readerModel || usual.gemini };
   throw new VisionError("Add your API key to the shortcut as the x-vision-key header.", "config");
 }
+
+/** The strong reader for a roster screen: the coach's model, thinking a little harder. Undefined for the demo. */
+function rosterReader(request: Request): { vision: VisionCall; asked: string } | undefined {
+  const { key, provider, coachModel } = caller(request);
+  if (provider === "claude") {
+    const model = coachModel || DEFAULT_MODEL.claude;
+    return { vision: claudeVision(key, model, "medium"), asked: model };
+  }
+  if (provider === "gemini") {
+    const model = coachModel || DEFAULT_MODEL.gemini;
+    return { vision: geminiVision(key, model), asked: model };
+  }
+  return undefined;
+}
+
+const heroesSeen = (obs: Observation) => obs.allies.length + obs.enemies.length + (obs.banned?.length ?? 0);
 
 /** The model the specialists use. Defaults to the strongest model for the caller's key. */
 function pickCoach(request: Request, session: () => Session): { ask: AskJson; asked: string } | undefined {
@@ -584,7 +615,8 @@ async function handle(request: Request): Promise<Response> {
 
   let reader: ReturnType<typeof pickVision>;
   try {
-    reader = pickVision(request, roomId, stream);
+    const expecting = stageOf(await roomSession());
+    reader = pickVision(request, roomId, stream, expecting === "draft" || expecting === "loading");
   } catch (err) {
     return failRead(400, err instanceof Error ? err.message : "Missing API key.");
   }
@@ -636,12 +668,26 @@ async function handle(request: Request): Promise<Response> {
   try {
     const before = latest;
     const { demoScreen } = caller(request);
-    const reply = await within(
-      reader.vision(image, { stage: stageOf(before), myHeroId: before.myHeroId, allies: before.allies, enemies: before.enemies, step: before.calls, force: demoScreen || undefined }),
-      READER_DEADLINE_MS,
-      "The model took too long to read the screenshot. Try again.",
-    );
-    const obs = normalizeObservation(reply.raw);
+    const context = { stage: stageOf(before), myHeroId: before.myHeroId, allies: before.allies, enemies: before.enemies, step: before.calls, force: demoScreen || undefined };
+    let reply = await within(reader.vision(image, context), READER_DEADLINE_MS, "The model took too long to read the screenshot. Try again.");
+    let obs = normalizeObservation(reply.raw);
+    let asked = reader.asked;
+    // A fast read that turned out to be hero selection or the loading screen is read again by the
+    // strong model: the roster is worth the extra seconds. The first read stands if this one fails.
+    const strong = ROSTER_SCREENS.has(obs.screen) ? rosterReader(request) : undefined;
+    if (strong && strong.asked !== reader.asked && Date.now() - started < ROSTER_LATEST_START_MS) {
+      try {
+        const better = await within(strong.vision(image, context), ROSTER_DEADLINE_MS, "The roster re-read took too long.");
+        const betterObs = normalizeObservation(better.raw);
+        if (ROSTER_SCREENS.has(betterObs.screen) && heroesSeen(betterObs) >= heroesSeen(obs)) {
+          reply = better;
+          obs = betterObs;
+        }
+        asked = `${reader.asked}+${strong.asked}`;
+      } catch (err) {
+        record({ t: "roster-fail", room: roomId, asked: strong.asked, error: err instanceof Error ? err.message : String(err) });
+      }
+    }
     // The read took seconds. Whatever the dashboard did meanwhile (bought an item, ended the match)
     // must survive, so apply the observation to the room as it is now, not as it was.
     if (stageOf(await roomSession()) === "done") return json(200, { title: "Paused", body: "", say: "", stop: true, halt: "yes", screen: obs.screen });
@@ -664,11 +710,13 @@ async function handle(request: Request): Promise<Response> {
     const battlefield = obs.screen === "gameplay" || obs.screen === "map";
     if (battlefield && stream) {
       // Battlefield frames arrive every few seconds; one short line each keeps the log readable.
-      record({ t: "frame", room: roomId, screen: obs.screen, clock: obs.gameTimeSec, gold: obs.myGold, bytes: bytes.length, upMs, ms: readAt - now, asked: reader.asked, model: reply.model, scene: obs.scene });
+      record({ t: "frame", room: roomId, screen: obs.screen, clock: obs.gameTimeSec, gold: obs.myGold, bytes: bytes.length, upMs, ms: readAt - now, asked, model: reply.model, scene: obs.scene });
     } else {
       record({
-        t: "read", room: roomId, store: store.kind, screen: obs.screen, clock: obs.gameTimeSec, gold: obs.myGold, bytes: bytes.length, upMs, ms: readAt - now, asked: reader.asked, model: reply.model,
-        me: obs.meHeroId ? heroName(obs.meHeroId) : undefined, allies: rowsFor(obs.allies), enemies: rowsFor(obs.enemies),
+        t: "read", room: roomId, store: store.kind, screen: obs.screen, clock: obs.gameTimeSec, gold: obs.myGold, bytes: bytes.length, upMs, ms: readAt - now, asked, model: reply.model,
+        me: obs.meHeroId ? heroName(obs.meHeroId) : undefined, allies: rowsFor(obs.allies), enemies: rowsFor(obs.enemies), banned: obs.banned?.map(heroName),
+        // What the room now believes, after the rules folded this read in.
+        roster: { me: latest.myHeroId ? heroName(latest.myHeroId) : undefined, lane: latest.lane, allies: latest.allies.map(heroName), enemies: latest.enemies.map(heroName) },
         myItems: obs.myItems, shop: obs.shop, scene: obs.scene, unknown: obs.unknown,
         // What the rules concluded from it.
         spent: latest.spent, owned: latest.owned, seen: latest.seenItems, partial: latest.seenPartial, said: answer?.title,

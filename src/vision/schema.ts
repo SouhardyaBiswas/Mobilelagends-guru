@@ -48,6 +48,7 @@ export const VISION_SCHEMA = {
     myGold: { type: "integer", description: "The user's current spendable gold if visible, else -1." },
     allies: { type: "array", items: PLAYER_SCHEMA, description: "The user's team, including the user." },
     enemies: { type: "array", items: PLAYER_SCHEMA },
+    banned: { type: "array", items: { type: "string" }, description: "Draft only: heroes shown as banned. Empty on every other screen." },
     myItems: {
       type: "array",
       items: { type: "string" },
@@ -64,7 +65,7 @@ export const VISION_SCHEMA = {
       description: "Gameplay and map screens only: one sentence on where the player's hero is and who is around. Empty string on every other screen.",
     },
   },
-  required: ["screen", "gameTime", "myGold", "allies", "enemies", "myItems", "recommended", "spare", "tip", "scene"],
+  required: ["screen", "gameTime", "myGold", "allies", "enemies", "banned", "myItems", "recommended", "spare", "tip", "scene"],
   additionalProperties: false,
 } as const;
 
@@ -203,6 +204,16 @@ export function normalizeObservation(raw: unknown): Observation {
   const myItems = itemIds(r.myItems);
 
   const screen = SCREENS.includes(r.screen as ScreenKind) ? (r.screen as ScreenKind) : "other";
+  // Bans only exist on the draft screen, and a banned hero is never also a pick.
+  const banned: number[] = [];
+  if (screen === "draft") {
+    for (const name of Array.isArray(r.banned) ? r.banned.slice(0, 10) : []) {
+      if (typeof name !== "string" || !name.trim()) continue;
+      const hero = findHero(name);
+      if (!hero) unknown.push(name.trim());
+      else if (!banned.includes(hero.id) && ![...allies, ...enemies].some((p) => p.heroId === hero.id)) banned.push(hero.id);
+    }
+  }
   const tip = typeof r.tip === "string" ? r.tip.trim().slice(0, 200) : "";
   const scene = (screen === "gameplay" || screen === "map") && typeof r.scene === "string" ? r.scene.replace(/\s+/g, " ").trim().slice(0, 220) : "";
 
@@ -213,6 +224,7 @@ export function normalizeObservation(raw: unknown): Observation {
     allies,
     enemies,
     meHeroId,
+    banned: banned.length ? banned : undefined,
     myItems: myItems.length ? myItems : undefined,
     shop: recommended.length || spare.length ? { recommended, spare } : undefined,
     tip: tip || undefined,

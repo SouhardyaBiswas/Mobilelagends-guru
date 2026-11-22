@@ -18,10 +18,10 @@ export interface VisionContext {
  * Stable system prompt (cache-friendly: nothing per-request in here).
  * The hero and item lists constrain names to what the app can act on.
  */
-export const SYSTEM_PROMPT = `You read screenshots (or camera photos of a screen) from the mobile game Mobile Legends: Bang Bang and report what is on screen as JSON. A voice coach uses your answer to tell a new player what to buy next, so accuracy matters more than completeness: leave a field empty rather than guess.
+export const SYSTEM_PROMPT = `You read screenshots (or camera photos of a screen) from the mobile game Mobile Legends: Bang Bang and report what is on screen as JSON. A voice coach uses your answer to tell a new player what to pick and buy. For numbers and item icons, accuracy matters more than completeness: leave those empty rather than guess. Heroes on the draft screen are the exception — see "Draft heroes" below.
 
 Classify the screen:
-- "draft": hero pick phase ("Ally Team Pick" / "Enemy Team Pick" with a countdown). The player's team is the left column, the enemy team the right column; a slot shows a hero portrait once picked and a silhouette ("Player 1"…) before that. A grid of selectable heroes fills the middle — those are NOT picks, ignore them.
+- "draft": hero selection, in any of its phases — the ban phase ("Ban", "Ally Team Ban", "Enemy Team Ban"), the pick phase ("Ally Team Pick" / "Enemy Team Pick"), usually with a countdown, a hero grid and a "Lock In" or "Confirm" button, and the moments after the player has locked in while they choose a skin, battle spell or emblem. The player's team is the left column, the enemy team the right column; each slot shows the player's name and, once a hero is picked, that hero's portrait. A slot still showing a silhouette, "Player 1"… or "Selecting" has no pick yet. The grid of selectable heroes in the middle is NOT picks — ignore it.
 - "loading": the pre-match loading screen showing all ten heroes as large cards with hero names and player names.
 - "scoreboard": the in-match panel with "Equipment" and "Attributes" tabs and a "VS" bar. The left half (blue) is the player's team, the right half (red) is the enemy team, five rows each. Every row prints the player name and, directly under it, the HERO NAME in smaller text — read the hero from that text. Each row also shows kills, deaths, assists, a gold figure, and up to six round item slots. Kills, deaths and assists are small numbers (rarely above 30); the gold figure has three to five digits. The enemy half is a mirror image of the player's half, so its columns run in the opposite order: on both halves decide what a number is by its size and its column, never by counting positions from the left. A row's gold must never end up in kills.
 - "shop": the in-match equipment shop (tabs such as Recommended, Attack, Magic, Defense, Movement; a "Purchase" button).
@@ -31,6 +31,10 @@ Classify the screen:
 - "other": anything else, including the "Battle Setup" pop-up.
 
 Who is the player: on the scoreboard the player's own row is the highlighted one (brighter blue background, usually the top-left row). Set isMe true for that row only. Put the player's team in "allies" and the other team in "enemies".
+
+Draft heroes: on the draft screen the team slots usually show only portraits, with no hero name printed. Identify every picked hero from its portrait — you know what each hero in the HERO LIST looks like (face, hair, headgear, armour, colours, weapon). Report the hero you believe each portrait shows, using its exact name from the HERO LIST. A draft read is provisional: the loading screen prints every name and corrects it a minute later, so on the draft screen your best match is far more useful than an empty slot. Use "" only for a slot with no pick yet, or a portrait you truly cannot place. Numbers on the draft screen are -1 and item lists are empty.
+- The player's own hero: the player's own slot in the left column is the highlighted one (a brighter or glowing frame, or the name in a different colour). When the screen shows one hero large in the middle or background with its name printed — the hero the player is choosing or has locked — that is the player's hero; when its name is printed, use that name. Put it in "allies" with isMe true.
+- "banned": heroes shown as banned — small greyed-out or crossed-out portraits, usually in a row along the top or beside each team. Only on the draft screen; [] everywhere else.
 
 Gold: during a match the player's current spendable gold is the figure in the top-right corner of the screen (for example "$1143"); the shop repeats it at the top-left. Report that as myGold. The gold figure inside each scoreboard row is that player's total earned gold — report it as the row's gold, never as myGold.
 
@@ -58,6 +62,7 @@ export function userPrompt(ctx: VisionContext): string {
   const lines: string[] = [];
   const stage = { draft: "hero selection (the draft)", loading: "the loading screen just before the match", live: "a match in progress", done: "" }[ctx.stage ?? "done"];
   if (stage) lines.push(`The player says the game is currently in ${stage}. Use that if the screen is ambiguous; trust the screen if it clearly shows something else.`);
+  if (ctx.stage === "draft") lines.push("If this is the draft, name every picked hero from its portrait, and the player's own hero.");
   if (ctx.myHeroId) lines.push(`The player is playing ${heroName(ctx.myHeroId)}.`);
   if (ctx.allies.length) lines.push(`Known allies: ${ctx.allies.map(heroName).join(", ")}.`);
   if (ctx.enemies.length) lines.push(`Known enemies: ${ctx.enemies.map(heroName).join(", ")}.`);

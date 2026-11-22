@@ -221,7 +221,7 @@ export const HERO_CORE: Record<string, Partial<Pick<BuildTemplate, "core" | "cor
 export function templateFor(hero: Hero, lane: Lane | undefined): BuildTemplate {
   const override = HERO_CORE[hero.name];
   // A tanky "support" (Lolita, Carmilla…) itemises like a tank, not an enchanter.
-  const base = hero.archetype === "support" && hero.ability.durability >= 60 ? TEMPLATES.tank : TEMPLATES[hero.archetype];
+  const base = baseTemplate(hero);
   const tpl: BuildTemplate = { ...base, ...override, coreWhy: override?.coreWhy ?? base.coreWhy };
   if (lane === "jungle") {
     // Junglers trade the second talent for objective damage.
@@ -234,6 +234,91 @@ export function templateFor(hero: Hero, lane: Lane | undefined): BuildTemplate {
   }
   return tpl;
 }
+
+/**
+ * Items each kind of hero actually buys, beyond its template. The AI coach picks only from these:
+ * given the whole catalog it put Radiant Armor (a frontliner's magic defense) in a marksman's
+ * build, and a new player cannot tell an off-role item from a good one.
+ */
+const MARKSMAN = [
+  "swift_boots", "tough_boots", "warrior_boots",
+  "windtalker", "berserkers_fury", "haas_claws", "blade_of_despair", "malefic_roar", "malefic_gun", "demon_hunter_sword",
+  "corrosion_scythe", "golden_staff", "great_dragon_spear", "endless_battle", "hunter_strike", "sea_halberd",
+  "wind_of_nature", "rose_gold_meteor", "immortality", "valkyries_shield",
+];
+const MAGE_ITEMS = [
+  "arcane_boots", "tough_boots", "magic_shoes", "demon_shoes",
+  "clock_of_destiny", "lightning_truncheon", "genius_wand", "holy_crystal", "blood_wings", "divine_glaive", "glowing_wand",
+  "ice_queen_wand", "wishing_lantern", "starlium_scythe", "concentrated_energy", "enchanted_talisman", "fleeting_time",
+  "feather_of_heaven", "winter_crown", "immortality", "valkyries_shield",
+];
+const PHYS_ASSASSIN = [
+  "tough_boots", "warrior_boots", "swift_boots", "rapid_boots",
+  "hunter_strike", "blade_of_the_heptaseas", "blade_of_despair", "malefic_roar", "sky_piercer", "endless_battle",
+  "great_dragon_spear", "war_axe", "sea_halberd", "berserkers_fury", "haas_claws", "demon_hunter_sword", "corrosion_scythe",
+  "golden_staff", "windtalker", "rose_gold_meteor", "immortality", "brute_force_breastplate", "queens_wings",
+];
+/** Damage items no frontliner or support builds. */
+const CARRY_ONLY = ["windtalker", "wind_of_nature", "malefic_gun", "holy_crystal", "lightning_truncheon", "feather_of_heaven"];
+const DEFENSE_ITEMS = ["antique_cuirass", "blade_armor", "chastise_pauldron", "brute_force_breastplate", "valkyries_shield", "radiant_armor", "oracle", "immortality", "queens_wings", "thunder_belt", "cursed_helmet", "guardian_helmet", "dominance_ice"];
+const PHYS_FIGHTER = [
+  "warrior_boots", "tough_boots", "swift_boots",
+  "war_axe", "hunter_strike", "blade_of_the_heptaseas", "blade_of_despair", "malefic_roar", "endless_battle", "great_dragon_spear",
+  "sea_halberd", "corrosion_scythe", "demon_hunter_sword", "golden_staff", "haas_claws", "berserkers_fury", "sky_piercer", "rose_gold_meteor",
+  ...DEFENSE_ITEMS,
+];
+const MAGIC_FIGHTER = [
+  "arcane_boots", "tough_boots", "warrior_boots", "magic_shoes",
+  "genius_wand", "concentrated_energy", "starlium_scythe", "divine_glaive", "glowing_wand", "ice_queen_wand", "clock_of_destiny",
+  "blood_wings", "winter_crown", "fleeting_time",
+  ...DEFENSE_ITEMS,
+];
+const TANK_ITEMS = ["tough_boots", "warrior_boots", "rapid_boots", "magic_shoes", "demon_shoes", "fleeting_time", ...DEFENSE_ITEMS];
+const SUPPORT_ITEMS = [
+  "magic_shoes", "tough_boots", "rapid_boots", "demon_shoes", "arcane_boots",
+  "flask_of_the_oasis", "enchanted_talisman", "fleeting_time", "ice_queen_wand", "glowing_wand", "clock_of_destiny",
+  ...DEFENSE_ITEMS,
+];
+
+const ROLE_ITEMS: Record<Archetype, string[]> = {
+  mm_crit: MARKSMAN,
+  mm_onhit: MARKSMAN,
+  mm_burst: MARKSMAN,
+  mm_magic: ["arcane_boots", "tough_boots", "swift_boots", "feather_of_heaven", "genius_wand", "holy_crystal", "divine_glaive", "blood_wings", "glowing_wand", "starlium_scythe", "wishing_lantern", "concentrated_energy", "winter_crown", "immortality", "valkyries_shield"],
+  mage: MAGE_ITEMS,
+  mage_tank: [...MAGE_ITEMS, ...DEFENSE_ITEMS],
+  assassin_phys: PHYS_ASSASSIN,
+  assassin_magic: MAGE_ITEMS,
+  fighter_phys: PHYS_FIGHTER,
+  fighter_magic: MAGIC_FIGHTER,
+  tank: TANK_ITEMS,
+  support_heal: SUPPORT_ITEMS,
+  support: SUPPORT_ITEMS,
+};
+
+/** The template a hero itemises from, with its signature core applied. */
+function baseTemplate(hero: Hero): BuildTemplate {
+  return hero.archetype === "support" && hero.ability.durability >= 60 ? TEMPLATES.tank : TEMPLATES[hero.archetype];
+}
+
+/**
+ * Every item that suits this hero: what its build template uses (so the rules and the coach always
+ * agree) plus what its kind of hero normally buys. Frontliners never get carry-only damage items.
+ */
+export function suitableItems(hero: Hero, lane?: Lane): Set<string> {
+  const tpl = templateFor(hero, lane);
+  const base = baseTemplate(hero);
+  const kind = base === TEMPLATES.tank ? "tank" : hero.archetype;
+  const fromTemplate = [tpl.boots, ...tpl.core, ...tpl.filler, tpl.antiheal, tpl.pen, tpl.tankShred, ...tpl.defense.physical, ...tpl.defense.magic];
+  const out = new Set([...fromTemplate, ...ROLE_ITEMS[kind]].filter((id): id is string => !!id));
+  if (FRONTLINE.has(ROLE_ITEMS[kind])) {
+    for (const id of CARRY_ONLY) if (!fromTemplate.includes(id)) out.delete(id);
+  }
+  return out;
+}
+
+/** Item lists of the heroes who stand in front: tanks, supports and fighters. */
+const FRONTLINE: ReadonlySet<string[]> = new Set([TANK_ITEMS, SUPPORT_ITEMS, PHYS_FIGHTER, MAGIC_FIGHTER]);
 
 export function bootsNote(lane: Lane | undefined): string | undefined {
   if (lane === "jungle") return "Add a free jungle blessing to your boots: Ice steals movement speed, Flame steals attack, Bloody steals HP.";

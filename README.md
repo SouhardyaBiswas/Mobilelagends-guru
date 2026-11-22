@@ -9,7 +9,7 @@ A coach for Mobile Legends: Bang Bang, built for a new player. You play on your 
 
 It reads only what is on your own screen, through screenshots you trigger. It never touches the game.
 
-> **Status:** the engine, the endpoint, the continuous-screenshot flow, the voice commands and the dashboard are covered by 91 unit tests and 125 scripted browser checks, and the reader has been run on real matches. The three specialists (coach, enemy tracker, positioning) have **not** yet been run against a real model — see [What is and isn't verified](#what-is-and-isnt-verified).
+> **Status:** the engine, the endpoint, the continuous-screenshot flow, the voice commands and the dashboard are covered by 114 unit tests and 125 scripted browser checks, and the reader has been run on real matches. The coach and enemy tracker have now run on one real match (and were corrected after it); positioning has **not** yet been run against a real model — see [What is and isn't verified](#what-is-and-isnt-verified).
 
 ## Phone plays, iPad shows the coach
 
@@ -35,7 +35,7 @@ The shortcuts send your own key with each screenshot (`x-vision-key` header); th
 | Header | What it sets | Default with a Claude key |
 |---|---|---|
 | `x-vision-key` | Your API key | — |
-| `x-vision-model` | The model that reads the screenshot | `claude-opus-5-5` for a single shot; `claude-haiku-5-5` for frames in continuous mode (`&stream=1`) |
+| `x-vision-model` | The model that reads the screenshot | `claude-opus-5-5` for a single shot; `claude-haiku-5-5` for frames in continuous mode (`&stream=1`). Hero selection and the loading screen are always read (or re-read) by the strong model: naming heroes from draft portraits is beyond the fast one |
 | `x-coach-model` | The model the specialists use | `claude-opus-5-5` |
 | `x-coach` | `off` uses the built-in rules only | on |
 
@@ -148,11 +148,20 @@ Three layers, each checking the one before.
 - Real reads from real matches reach the reader model and come back (Claude Haiku so far).
 
 **Verified here**
-- 91 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, the endpoint with two devices, voice stages, the frame loop and its auto-stop, the positioning flow, each specialist's answer being checked against the catalog and the match, the two-frame rule for pocket gold, and two server copies sharing one room through a cache that lags.
+- 114 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, the endpoint with two devices, voice stages, the frame loop and its auto-stop, the positioning flow, each specialist's answer being checked against the catalog and the match, the two-frame rule for pocket gold, and two server copies sharing one room through a cache that lags.
 - Tests transcribed from two real matches. One from screenshots: a scoreboard and the shop, with all eight prices matching the catalog at the emblem's 95%. One from the server's logs: six scoreboards and a shop read from a ranked match, including the three that came back with shifted columns and the missing starting gold.
 - 125 scripted browser checks: the single-device flow (22), a phone-sized follower (14), the iPad dashboard at 1180×820, 1024×768 and 1366×1024 in every stage with nothing scrolling off the page (70), and the dashboard driven by voice commands, single shots, the positioning flow and a frame loop while listening to what it says (19).
 
 **Learned from real matches**
+- Third match (ranked, Hanabi, from the server's logs). Fixed after it, each with a test that replays the logged reads:
+  - Every draft read named no heroes — Opus and Haiku alike — because the reader was told to leave anything uncertain empty and was never told it may recognise a hero from its portrait. The draft screen prints no names. The reader now names each pick from its portrait, the player's own hero and the bans, and draft screens always get the strong model.
+  - The ban phase was read as "not a game screen".
+  - Saying "draft mode" again (or tapping Hero selection) cleared the draft so far.
+  - The iPad's draft board had no way to choose your own hero; it now has one, plus bans, and the "waiting to see your hero" screen offers it too.
+  - The AI coach put Radiant Armor (a frontliner's item) in a marksman's build, and the enemy tracker told the player to buy "Athena-style items" and armor. The coach now builds only from the items that suit the player's hero (plus their own in-game list), and the tracker gives no buying advice.
+  - A lane left over from an earlier match stayed when a screenshot showed a hero who does not play it; the lane now follows the hero.
+  - A scoreboard whose pocket gold was not read left the build five minutes behind ("finish Swift Boots" at 5:09).
+  - The next match's draft, seven minutes after the last scoreboard, was coached as the old match.
 - Claude Haiku reads hero names, the clock and gold correctly, shifted the enemy columns on half the scoreboards, and its item icons are noise (the same inventory read as four different sets of items in four reads).
 - Its read of the shop's large inventory row matched the gold spent to within 2 gold.
 - In that ranked match the scoreboard's gold totals were about 300 short of what had been spent (the starting gold); in an earlier match they were not. The coach works out which case it is from the shop read rather than assuming.

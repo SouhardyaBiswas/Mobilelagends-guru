@@ -49,6 +49,52 @@ export function CounterList({ picks }: { picks: CounterPick[] }) {
   );
 }
 
+/**
+ * The player's own hero, as a slot to tap: shows the hero once known (from a screenshot or a tap)
+ * and opens the hero list to choose or correct it. On a following device the choice reaches the room.
+ */
+export function MyHeroButton({ size = 52, hint = "tap to change" }: { size?: number; hint?: string }) {
+  const { state, dispatch } = useStore();
+  const s = state.session;
+  const [picking, setPicking] = useState(false);
+  const hero = s.myHeroId ? heroById(s.myHeroId) : undefined;
+  const taken = [...s.enemies, ...s.allies, ...s.banned];
+  return (
+    <>
+      <button className={`me-slot ${hero ? "filled" : ""}`} onClick={() => setPicking(true)}>
+        {hero ? (
+          <>
+            <HeroIcon hero={hero} size={size} />
+            <span>
+              <span className="eyebrow">Your hero</span>
+              <strong>{hero.name}</strong>
+              <small>
+                {hero.roles.join(" / ")} · {hint}
+              </small>
+            </span>
+          </>
+        ) : (
+          <span>
+            <strong>Choose your hero</strong>
+            <small>Not read from a screenshot yet — tap to pick it yourself</small>
+          </span>
+        )}
+      </button>
+      {picking && (
+        <HeroPicker
+          title="Your hero"
+          exclude={taken.filter((id) => id !== s.myHeroId)}
+          onClose={() => setPicking(false)}
+          onPick={(id) => {
+            dispatch({ type: "setMyHero", id });
+            setPicking(false);
+          }}
+        />
+      )}
+    </>
+  );
+}
+
 /** "Your lane" chips: tap one to choose it, tap it again to clear it. */
 export function LaneChips() {
   const { state, dispatch } = useStore();

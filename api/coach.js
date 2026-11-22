@@ -16831,7 +16831,7 @@ var require_affinity = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		unstable_getAffinityId
 	});
 }));
-// src/data/generated/heroes.json
+// src/data/builds.ts
 var import_functions = (/* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var __defProp = Object.defineProperty;
 	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -16912,6 +16912,714 @@ var import_functions = (/* @__PURE__ */ __commonJSMin(((exports, module) => {
 		waitUntil
 	});
 })))();
+var CARRY_DEF_PHYS = ["wind_of_nature", "immortality"];
+var CARRY_DEF_MAGIC = ["rose_gold_meteor", "valkyries_shield"];
+var MAGE_DEF = ["winter_crown", "immortality"];
+var FRONT_PHYS = [
+	"antique_cuirass",
+	"blade_armor",
+	"chastise_pauldron",
+	"brute_force_breastplate"
+];
+var FRONT_MAGIC = [
+	"valkyries_shield",
+	"radiant_armor",
+	"oracle"
+];
+var FLICKER = {
+	name: "Flicker",
+	reason: "A blink to escape a dive or reposition for the kill."
+};
+var TEMPLATES = {
+	mm_crit: {
+		label: "Crit marksman",
+		boots: "swift_boots",
+		core: ["windtalker", "berserkers_fury"],
+		coreWhy: "Attack speed first, then crit — your damage comes from basic attacks.",
+		filler: [
+			"haas_claws",
+			"blade_of_despair",
+			"malefic_roar",
+			"great_dragon_spear"
+		],
+		antiheal: "sea_halberd",
+		pen: "malefic_roar",
+		tankShred: "demon_hunter_sword",
+		defense: {
+			physical: CARRY_DEF_PHYS,
+			magic: CARRY_DEF_MAGIC
+		},
+		maxDefense: 2,
+		spell: FLICKER,
+		emblem: {
+			name: "Marksman",
+			talents: [
+				"Fatal",
+				"Weapon Master",
+				"Weakness Finder"
+			],
+			reason: "Crit, more stats from your items, and a slow on your basic attacks."
+		}
+	},
+	mm_onhit: {
+		label: "On-hit marksman",
+		boots: "swift_boots",
+		core: [
+			"corrosion_scythe",
+			"demon_hunter_sword",
+			"golden_staff"
+		],
+		coreWhy: "The attack-speed trio: every hit slows, shreds HP and triggers your passive faster.",
+		filler: [
+			"malefic_roar",
+			"haas_claws",
+			"blade_of_despair"
+		],
+		antiheal: "sea_halberd",
+		pen: "malefic_roar",
+		tankShred: "demon_hunter_sword",
+		defense: {
+			physical: CARRY_DEF_PHYS,
+			magic: CARRY_DEF_MAGIC
+		},
+		maxDefense: 2,
+		spell: {
+			name: "Inspire",
+			reason: "A burst of attack speed for your on-hit damage. Take Flicker instead if they have divers."
+		},
+		emblem: {
+			name: "Marksman",
+			talents: [
+				"Swift",
+				"Weapon Master",
+				"Weakness Finder"
+			],
+			reason: "Attack speed, more stats from your items, and a slow on your basic attacks."
+		}
+	},
+	mm_burst: {
+		label: "Burst marksman",
+		boots: "swift_boots",
+		core: ["hunter_strike", "blade_of_despair"],
+		coreWhy: "Skill damage and penetration — you burst with abilities, not sustained attacks.",
+		filler: [
+			"malefic_roar",
+			"berserkers_fury",
+			"endless_battle",
+			"great_dragon_spear"
+		],
+		antiheal: "sea_halberd",
+		pen: "malefic_roar",
+		tankShred: "demon_hunter_sword",
+		defense: {
+			physical: CARRY_DEF_PHYS,
+			magic: CARRY_DEF_MAGIC
+		},
+		maxDefense: 2,
+		spell: FLICKER,
+		emblem: {
+			name: "Assassin",
+			talents: [
+				"Rupture",
+				"Weapon Master",
+				"Quantum Charge"
+			],
+			reason: "Penetration, more stats from your items, and speed plus healing on basic attacks."
+		}
+	},
+	mm_magic: {
+		label: "Magic marksman",
+		boots: "arcane_boots",
+		core: ["feather_of_heaven", "genius_wand"],
+		coreWhy: "Attack speed with magic on-hit, then penetration.",
+		filler: [
+			"holy_crystal",
+			"divine_glaive",
+			"blood_wings"
+		],
+		antiheal: "glowing_wand",
+		pen: "divine_glaive",
+		tankShred: "glowing_wand",
+		defense: {
+			physical: MAGE_DEF,
+			magic: ["winter_crown", "valkyries_shield"]
+		},
+		maxDefense: 2,
+		spell: FLICKER,
+		emblem: {
+			name: "Mage",
+			talents: [
+				"Swift",
+				"Weapon Master",
+				"Impure Rage"
+			],
+			reason: "Attack speed, more stats from your items, and max-HP damage on skills."
+		}
+	},
+	mage: {
+		label: "Mage",
+		boots: "arcane_boots",
+		core: ["clock_of_destiny", "lightning_truncheon"],
+		coreWhy: "Clock first so it stacks, then Lightning Truncheon for burst.",
+		filler: [
+			"genius_wand",
+			"holy_crystal",
+			"divine_glaive",
+			"blood_wings"
+		],
+		antiheal: "glowing_wand",
+		pen: "divine_glaive",
+		tankShred: "glowing_wand",
+		defense: {
+			physical: MAGE_DEF,
+			magic: ["winter_crown", "valkyries_shield"]
+		},
+		maxDefense: 2,
+		spell: FLICKER,
+		emblem: {
+			name: "Mage",
+			talents: [
+				"Rupture",
+				"Bargain Hunter",
+				"Lethal Ignition"
+			],
+			reason: "Penetration, cheaper items, and bonus damage when you land a burst."
+		}
+	},
+	mage_tank: {
+		label: "Sustain mage",
+		boots: "tough_boots",
+		core: ["clock_of_destiny", "oracle"],
+		coreWhy: "Clock for HP and power, Oracle to amplify your own shields and healing.",
+		filler: [
+			"glowing_wand",
+			"genius_wand",
+			"thunder_belt",
+			"immortality"
+		],
+		antiheal: "dominance_ice",
+		pen: "genius_wand",
+		tankShred: "glowing_wand",
+		defense: {
+			physical: FRONT_PHYS,
+			magic: FRONT_MAGIC
+		},
+		maxDefense: 4,
+		spell: FLICKER,
+		emblem: {
+			name: "Mage",
+			talents: [
+				"Agility",
+				"Festival of Blood",
+				"Impure Rage"
+			],
+			reason: "Movement speed, spell vamp, and max-HP damage on skills."
+		}
+	},
+	assassin_phys: {
+		label: "Physical assassin",
+		boots: "tough_boots",
+		core: ["hunter_strike", "blade_of_the_heptaseas"],
+		coreWhy: "Cooldown and penetration to delete squishy targets.",
+		filler: [
+			"blade_of_despair",
+			"malefic_roar",
+			"sky_piercer"
+		],
+		antiheal: "sea_halberd",
+		pen: "malefic_roar",
+		defense: {
+			physical: ["immortality", "brute_force_breastplate"],
+			magic: ["rose_gold_meteor", "valkyries_shield"]
+		},
+		maxDefense: 2,
+		spell: {
+			name: "Execute",
+			reason: "Finishes low-health targets through shields and escapes."
+		},
+		emblem: {
+			name: "Assassin",
+			talents: [
+				"Rupture",
+				"Master Assassin",
+				"Killing Spree"
+			],
+			reason: "Penetration, more damage to isolated targets, and a heal when you hit low-health heroes."
+		}
+	},
+	assassin_magic: {
+		label: "Magic assassin",
+		boots: "arcane_boots",
+		core: ["genius_wand", "holy_crystal"],
+		coreWhy: "Penetration then raw magic power to one-shot carries.",
+		filler: [
+			"divine_glaive",
+			"blood_wings",
+			"starlium_scythe"
+		],
+		antiheal: "glowing_wand",
+		pen: "divine_glaive",
+		defense: {
+			physical: MAGE_DEF,
+			magic: ["winter_crown", "valkyries_shield"]
+		},
+		maxDefense: 2,
+		spell: {
+			name: "Execute",
+			reason: "Finishes low-health targets through shields and escapes."
+		},
+		emblem: {
+			name: "Assassin",
+			talents: [
+				"Rupture",
+				"Master Assassin",
+				"Lethal Ignition"
+			],
+			reason: "Penetration, more damage to isolated targets, and bonus damage when you land a burst."
+		}
+	},
+	fighter_phys: {
+		label: "Fighter",
+		boots: "warrior_boots",
+		core: ["war_axe", "hunter_strike"],
+		coreWhy: "War Axe for sustained fights, then cooldown and penetration.",
+		filler: [
+			"thunder_belt",
+			"queens_wings",
+			"malefic_roar",
+			"immortality"
+		],
+		antiheal: "sea_halberd",
+		pen: "malefic_roar",
+		defense: {
+			physical: FRONT_PHYS,
+			magic: FRONT_MAGIC
+		},
+		maxDefense: 3,
+		spell: FLICKER,
+		emblem: {
+			name: "Fighter",
+			talents: [
+				"Firmness",
+				"Festival of Blood",
+				"Brave Smite"
+			],
+			reason: "Defense, spell vamp, and healing when your skills hit."
+		}
+	},
+	fighter_magic: {
+		label: "Magic fighter",
+		boots: "arcane_boots",
+		core: ["genius_wand", "concentrated_energy"],
+		coreWhy: "Penetration, then spell vamp to stay in the fight.",
+		filler: [
+			"holy_crystal",
+			"starlium_scythe",
+			"divine_glaive"
+		],
+		antiheal: "glowing_wand",
+		pen: "divine_glaive",
+		defense: {
+			physical: [
+				"winter_crown",
+				"antique_cuirass",
+				"immortality"
+			],
+			magic: ["winter_crown", "valkyries_shield"]
+		},
+		maxDefense: 2,
+		spell: FLICKER,
+		emblem: {
+			name: "Fighter",
+			talents: [
+				"Rupture",
+				"Festival of Blood",
+				"Brave Smite"
+			],
+			reason: "Penetration, spell vamp, and healing when your skills hit."
+		}
+	},
+	tank: {
+		label: "Tank",
+		boots: "tough_boots",
+		core: [],
+		coreWhy: "",
+		filler: [
+			"thunder_belt",
+			"immortality",
+			"guardian_helmet",
+			"cursed_helmet"
+		],
+		antiheal: "dominance_ice",
+		defense: {
+			physical: FRONT_PHYS,
+			magic: FRONT_MAGIC
+		},
+		maxDefense: 5,
+		spell: FLICKER,
+		emblem: {
+			name: "Tank",
+			talents: [
+				"Vitality",
+				"Tenacity",
+				"Concussive Blast"
+			],
+			reason: "HP, damage reduction when low, and area damage that scales with your HP."
+		}
+	},
+	support_heal: {
+		label: "Healer",
+		boots: "magic_shoes",
+		core: ["flask_of_the_oasis", "enchanted_talisman"],
+		coreWhy: "Stronger heals and the cooldown and mana to keep casting them.",
+		filler: [
+			"fleeting_time",
+			"oracle",
+			"immortality"
+		],
+		antiheal: "dominance_ice",
+		defense: {
+			physical: ["antique_cuirass", "chastise_pauldron"],
+			magic: ["valkyries_shield", "radiant_armor"]
+		},
+		maxDefense: 3,
+		spell: FLICKER,
+		emblem: {
+			name: "Support",
+			talents: [
+				"Agility",
+				"Pull Yourself Together",
+				"Focusing Mark"
+			],
+			reason: "Movement speed, shorter battle-spell cooldown, and a mark that makes allies hit your target harder."
+		}
+	},
+	support: {
+		label: "Support",
+		boots: "tough_boots",
+		core: ["enchanted_talisman"],
+		coreWhy: "Cooldown and mana so your utility is always up.",
+		filler: [
+			"fleeting_time",
+			"thunder_belt",
+			"immortality",
+			"oracle"
+		],
+		antiheal: "dominance_ice",
+		defense: {
+			physical: [
+				"antique_cuirass",
+				"chastise_pauldron",
+				"blade_armor"
+			],
+			magic: ["valkyries_shield", "radiant_armor"]
+		},
+		maxDefense: 4,
+		spell: FLICKER,
+		emblem: {
+			name: "Support",
+			talents: [
+				"Agility",
+				"Pull Yourself Together",
+				"Focusing Mark"
+			],
+			reason: "Movement speed, shorter battle-spell cooldown, and a mark that makes allies hit your target harder."
+		}
+	}
+};
+/** Heroes whose signature build differs from their archetype's default core. */
+var HERO_CORE = {
+	Esmeralda: {
+		boots: "tough_boots",
+		core: ["clock_of_destiny", "oracle"],
+		filler: [
+			"dominance_ice",
+			"thunder_belt",
+			"immortality",
+			"glowing_wand"
+		]
+	},
+	Aldous: {
+		boots: "tough_boots",
+		core: ["thunder_belt", "endless_battle"],
+		coreWhy: "Your stacks are the damage — build to survive long enough to land the punch."
+	},
+	Sun: {
+		boots: "swift_boots",
+		core: ["corrosion_scythe", "demon_hunter_sword"],
+		coreWhy: "Your clones copy on-hit effects, so attack speed scales three times over."
+	},
+	Argus: {
+		boots: "swift_boots",
+		core: ["corrosion_scythe", "demon_hunter_sword"],
+		coreWhy: "Attack speed charges your passive and keeps targets in range."
+	},
+	Zilong: {
+		boots: "swift_boots",
+		core: ["corrosion_scythe", "demon_hunter_sword"],
+		coreWhy: "You win by out-hitting people, so stack attack speed."
+	},
+	Masha: {
+		boots: "swift_boots",
+		core: ["corrosion_scythe", "demon_hunter_sword"],
+		coreWhy: "Attack speed is what feeds your HP bars."
+	}
+};
+function templateFor(hero, lane) {
+	const override = HERO_CORE[hero.name];
+	const base = baseTemplate(hero);
+	const tpl = {
+		...base,
+		...override,
+		coreWhy: override?.coreWhy ?? base.coreWhy
+	};
+	if (lane === "jungle") {
+		const talents = tpl.emblem.talents.map((t, i) => i === 1 ? "Seasoned Hunter" : t);
+		return {
+			...tpl,
+			spell: {
+				name: "Retribution",
+				reason: "Required to jungle, and it unlocks the jungle blessing on your boots."
+			},
+			emblem: {
+				...tpl.emblem,
+				talents,
+				reason: "Your usual emblem, with Seasoned Hunter for extra damage to Turtle and Lord."
+			}
+		};
+	}
+	return tpl;
+}
+/**
+* Items each kind of hero actually buys, beyond its template. The AI coach picks only from these:
+* given the whole catalog it put Radiant Armor (a frontliner's magic defense) in a marksman's
+* build, and a new player cannot tell an off-role item from a good one.
+*/
+var MARKSMAN = [
+	"swift_boots",
+	"tough_boots",
+	"warrior_boots",
+	"windtalker",
+	"berserkers_fury",
+	"haas_claws",
+	"blade_of_despair",
+	"malefic_roar",
+	"malefic_gun",
+	"demon_hunter_sword",
+	"corrosion_scythe",
+	"golden_staff",
+	"great_dragon_spear",
+	"endless_battle",
+	"hunter_strike",
+	"sea_halberd",
+	"wind_of_nature",
+	"rose_gold_meteor",
+	"immortality",
+	"valkyries_shield"
+];
+var MAGE_ITEMS = [
+	"arcane_boots",
+	"tough_boots",
+	"magic_shoes",
+	"demon_shoes",
+	"clock_of_destiny",
+	"lightning_truncheon",
+	"genius_wand",
+	"holy_crystal",
+	"blood_wings",
+	"divine_glaive",
+	"glowing_wand",
+	"ice_queen_wand",
+	"wishing_lantern",
+	"starlium_scythe",
+	"concentrated_energy",
+	"enchanted_talisman",
+	"fleeting_time",
+	"feather_of_heaven",
+	"winter_crown",
+	"immortality",
+	"valkyries_shield"
+];
+var PHYS_ASSASSIN = [
+	"tough_boots",
+	"warrior_boots",
+	"swift_boots",
+	"rapid_boots",
+	"hunter_strike",
+	"blade_of_the_heptaseas",
+	"blade_of_despair",
+	"malefic_roar",
+	"sky_piercer",
+	"endless_battle",
+	"great_dragon_spear",
+	"war_axe",
+	"sea_halberd",
+	"berserkers_fury",
+	"haas_claws",
+	"demon_hunter_sword",
+	"corrosion_scythe",
+	"golden_staff",
+	"windtalker",
+	"rose_gold_meteor",
+	"immortality",
+	"brute_force_breastplate",
+	"queens_wings"
+];
+/** Damage items no frontliner or support builds. */
+var CARRY_ONLY = [
+	"windtalker",
+	"wind_of_nature",
+	"malefic_gun",
+	"holy_crystal",
+	"lightning_truncheon",
+	"feather_of_heaven"
+];
+var DEFENSE_ITEMS = [
+	"antique_cuirass",
+	"blade_armor",
+	"chastise_pauldron",
+	"brute_force_breastplate",
+	"valkyries_shield",
+	"radiant_armor",
+	"oracle",
+	"immortality",
+	"queens_wings",
+	"thunder_belt",
+	"cursed_helmet",
+	"guardian_helmet",
+	"dominance_ice"
+];
+var PHYS_FIGHTER = [
+	"warrior_boots",
+	"tough_boots",
+	"swift_boots",
+	"war_axe",
+	"hunter_strike",
+	"blade_of_the_heptaseas",
+	"blade_of_despair",
+	"malefic_roar",
+	"endless_battle",
+	"great_dragon_spear",
+	"sea_halberd",
+	"corrosion_scythe",
+	"demon_hunter_sword",
+	"golden_staff",
+	"haas_claws",
+	"berserkers_fury",
+	"sky_piercer",
+	"rose_gold_meteor",
+	...DEFENSE_ITEMS
+];
+var MAGIC_FIGHTER = [
+	"arcane_boots",
+	"tough_boots",
+	"warrior_boots",
+	"magic_shoes",
+	"genius_wand",
+	"concentrated_energy",
+	"starlium_scythe",
+	"divine_glaive",
+	"glowing_wand",
+	"ice_queen_wand",
+	"clock_of_destiny",
+	"blood_wings",
+	"winter_crown",
+	"fleeting_time",
+	...DEFENSE_ITEMS
+];
+var TANK_ITEMS = [
+	"tough_boots",
+	"warrior_boots",
+	"rapid_boots",
+	"magic_shoes",
+	"demon_shoes",
+	"fleeting_time",
+	...DEFENSE_ITEMS
+];
+var SUPPORT_ITEMS = [
+	"magic_shoes",
+	"tough_boots",
+	"rapid_boots",
+	"demon_shoes",
+	"arcane_boots",
+	"flask_of_the_oasis",
+	"enchanted_talisman",
+	"fleeting_time",
+	"ice_queen_wand",
+	"glowing_wand",
+	"clock_of_destiny",
+	...DEFENSE_ITEMS
+];
+var ROLE_ITEMS = {
+	mm_crit: MARKSMAN,
+	mm_onhit: MARKSMAN,
+	mm_burst: MARKSMAN,
+	mm_magic: [
+		"arcane_boots",
+		"tough_boots",
+		"swift_boots",
+		"feather_of_heaven",
+		"genius_wand",
+		"holy_crystal",
+		"divine_glaive",
+		"blood_wings",
+		"glowing_wand",
+		"starlium_scythe",
+		"wishing_lantern",
+		"concentrated_energy",
+		"winter_crown",
+		"immortality",
+		"valkyries_shield"
+	],
+	mage: MAGE_ITEMS,
+	mage_tank: [...MAGE_ITEMS, ...DEFENSE_ITEMS],
+	assassin_phys: PHYS_ASSASSIN,
+	assassin_magic: MAGE_ITEMS,
+	fighter_phys: PHYS_FIGHTER,
+	fighter_magic: MAGIC_FIGHTER,
+	tank: TANK_ITEMS,
+	support_heal: SUPPORT_ITEMS,
+	support: SUPPORT_ITEMS
+};
+/** The template a hero itemises from, with its signature core applied. */
+function baseTemplate(hero) {
+	return hero.archetype === "support" && hero.ability.durability >= 60 ? TEMPLATES.tank : TEMPLATES[hero.archetype];
+}
+/**
+* Every item that suits this hero: what its build template uses (so the rules and the coach always
+* agree) plus what its kind of hero normally buys. Frontliners never get carry-only damage items.
+*/
+function suitableItems(hero, lane) {
+	const tpl = templateFor(hero, lane);
+	const kind = baseTemplate(hero) === TEMPLATES.tank ? "tank" : hero.archetype;
+	const fromTemplate = [
+		tpl.boots,
+		...tpl.core,
+		...tpl.filler,
+		tpl.antiheal,
+		tpl.pen,
+		tpl.tankShred,
+		...tpl.defense.physical,
+		...tpl.defense.magic
+	];
+	const out = new Set([...fromTemplate, ...ROLE_ITEMS[kind]].filter((id) => !!id));
+	if (FRONTLINE.has(ROLE_ITEMS[kind])) {
+		for (const id of CARRY_ONLY) if (!fromTemplate.includes(id)) out.delete(id);
+	}
+	return out;
+}
+/** Item lists of the heroes who stand in front: tanks, supports and fighters. */
+var FRONTLINE = /* @__PURE__ */ new Set([
+	TANK_ITEMS,
+	SUPPORT_ITEMS,
+	PHYS_FIGHTER,
+	MAGIC_FIGHTER
+]);
+function bootsNote(lane) {
+	if (lane === "jungle") return "Add a free jungle blessing to your boots: Ice steals movement speed, Flame steals attack, Bloody steals HP.";
+	if (lane === "roam") return "Add a free roam blessing to your boots: Conceal for team stealth, Encourage for ally defense, Favor if you heal or shield, Dire Hit for a bonus hit.";
+}
+// src/data/generated/heroes.json
 var heroes_default = /*#__PURE__*/ JSON.parse("[{\"id\":1,\"name\":\"Miya\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Damage\"],\"ability\":{\"durability\":10,\"offense\":70,\"effects\":40,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_da894b37bfb5cadb32307f371f31918a.png\",\"tags\":{\"Buff\":2,\"AOE\":2,\"CC\":1,\"Conceal\":1,\"Remove CC\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":3,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":0,\"conceal\":2,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[3,15,27],\"desc\":\"Miya counters heroes who rely on targeted CC effects, such as Saber and Eudora, because she can easily escape their CC and respond with a strong counterattack. The split arrows from her 1st Skill are also very effective against heroes that summon units, such as Sun.\"},\"weak\":{\"ids\":[52,101],\"desc\":\"Miya is countered by heroes with a lot of AOE damage, such as Pharsa and Yve, because they can still hit her while she is concealed.\"},\"assist\":{\"ids\":[6,70],\"desc\":\"Miya works well with Tanks who have powerful CC abilities like Belerick and Tigreal since their CCs give her more opportunities to dish out damage.\"}},\"meta\":{\"win\":49.63,\"pick\":2.13,\"ban\":4.12}},{\"id\":2,\"name\":\"Balmond\",\"roles\":[\"Fighter\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Damage\",\"Regen\"],\"ability\":{\"durability\":80,\"offense\":30,\"effects\":20,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_df9a6990b1946d045e4d3a46c90725cf.png\",\"tags\":{\"Heal\":1,\"Mobility\":1,\"Slow\":1,\"AOE\":1,\"Buff\":1,\"Burst\":1},\"sig\":{\"phys\":2,\"magic\":0,\"trueDmg\":2,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":1,\"hardCc\":2,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[18,15],\"desc\":\"Balmond is strong against squishy heroes who lack the ability to escape once he closes the gap on them, such as Layla and Eudora.\"},\"weak\":{\"ids\":[53,43],\"desc\":\"Balmond is countered by ranged heroes who can deal damage to Balmond outside of his attack range, such as Lesley and Irithel.\"},\"assist\":{\"ids\":[55,14],\"desc\":\"Balmond is best with Support heroes that can boost his Mobility and Survivability. Examples include Angela and Rafaela.\"}},\"meta\":{\"win\":46.5,\"pick\":0.62,\"ban\":0.39}},{\"id\":3,\"name\":\"Saber\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\",\"roam\"],\"specialities\":[\"Charge\",\"Finisher\"],\"ability\":{\"durability\":20,\"offense\":60,\"effects\":60,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_6bbfac806f29d29f17fea9e98d2d2fee.png\",\"tags\":{\"Debuff\":1,\"AOE\":1,\"Buff\":1,\"Mobility\":1,\"Burst\":1,\"CC\":1},\"sig\":{\"phys\":6,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[18,15],\"desc\":\"Saber's deadly combo makes him strong against squishy heroes, such as Layla and Eudora.\"},\"weak\":{\"ids\":[34,76],\"desc\":\"Saber is countered by Support heroes with Survivability buffs, like Estes and Faramis.\"},\"assist\":{\"ids\":[75,33],\"desc\":\"Saber works well with high-damage heroes who can help him burst down enemy heroes in teamfights, such as Kadita and Cyclops.\"}},\"meta\":{\"win\":51.4,\"pick\":1.04,\"ban\":25.61}},{\"id\":4,\"name\":\"Alice\",\"roles\":[\"Tank\",\"Mage\"],\"lanes\":[\"exp\",\"jungle\"],\"specialities\":[\"Charge\",\"Regen\"],\"ability\":{\"durability\":50,\"offense\":50,\"effects\":70,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_18300163a5a912a84adb52b8d59b4618.png\",\"tags\":{\"AOE\":4,\"Heal\":1,\"Mobility\":1,\"Slow\":1,\"CC\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[91,61],\"desc\":\"With her great sustainability in combat plus her mobility and CC, Alice counters heroes that lack burst and can't escape from melee enemies, such as Cecilion and Chang'e.\"},\"weak\":{\"ids\":[87,58],\"desc\":\"Alice is countered by heroes with Execute or Healing Reduction who can impede her from healing herself during the Ultimate. Heroes like Baxia or Martis can reduce her healing or kill her before she can heal.\"},\"assist\":{\"ids\":[2,85],\"desc\":\"To compensate for Alice's weaknesses in the early game and form a balanced team, pair her with strong early game heroes, like Balmond or Dyrroth.\"}},\"meta\":{\"win\":50.35,\"pick\":0.88,\"ban\":13.54}},{\"id\":5,\"name\":\"Nana\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Poke\",\"Burst\"],\"ability\":{\"durability\":50,\"offense\":60,\"effects\":100,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_ee1e0d80d87bb614a0c552ef028f85ce.png\",\"tags\":{\"Death Immunity\":1,\"AOE\":1,\"CC\":2,\"Debuff\":1,\"Burst\":1},\"sig\":{\"phys\":0,\"magic\":3,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[15,75],\"desc\":\"Nana's Passive gives her great survivability, making her strong against heroes with deadly combos, like Eudora and Kadita.\"},\"weak\":{\"ids\":[16,24],\"desc\":\"Nana can be countered by heroes with strong chasing abilities, like Zilong, Natalia, because they can chase Nana through her Passive duration.\"},\"assist\":{\"ids\":[14,10],\"desc\":\"Nana works best with heroes with CC skills, that will help her get the kills, such as Rafaela and Franco.\"}},\"meta\":{\"win\":47.15,\"pick\":1.62,\"ban\":3.59}},{\"id\":6,\"name\":\"Tigreal\",\"roles\":[\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Crowd Control\"],\"ability\":{\"durability\":80,\"offense\":10,\"effects\":100,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_8b30576754be1a4f8bebd09df8d6bec7.png\",\"tags\":{\"Buff\":1,\"AOE\":2,\"Slow\":1,\"Charge\":1,\"CC\":2},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[16,22],\"desc\":\"Tigreal's Passive can negate enemy Basic Attacks, making him strong against heroes that deal damage with their Basic Attacks, such as Zilong and Freya.\"},\"weak\":{\"ids\":[61,50],\"desc\":\"But as a melee hero, Tigreal is countered by Ranged Mage heroes like Chang'e and Zhask.\"},\"assist\":{\"ids\":[38,46],\"desc\":\"Tigreal works well with heroes with strong initiation skills, that gives him a better chance to hit the enemies with his CC skills, such as Vexana and Odette.\"}},\"meta\":{\"win\":45.42,\"pick\":2.01,\"ban\":7.7}},{\"id\":7,\"name\":\"Alucard\",\"roles\":[\"Fighter\",\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Damage\"],\"ability\":{\"durability\":50,\"offense\":50,\"effects\":10,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_0f51b6906e08897aa02330d65b0deeac.png\",\"tags\":{\"Buff\":2,\"Mobility\":1,\"AOE\":2,\"Burst\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":1,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[42,109],\"desc\":\"Alucard has great chase abilities and damage resistance, making him powerful against squishy Assassins like Harley and Aamon.\"},\"weak\":{\"ids\":[10,32],\"desc\":\"But he can be countered by heroes with powerful control abilities like Franco and Johnson. If controlled, Alucard won't be able to steal HP and can be easily eliminated.\"},\"assist\":{\"ids\":[41,115],\"desc\":\"He's best with heroes with crowd control, such as Gatotkaca and Xavier, which makes up for his lack of powerful control abilities.\"}},\"meta\":{\"win\":49.16,\"pick\":0.49,\"ban\":0.32}},{\"id\":8,\"name\":\"Karina\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Finisher\",\"Magic Damage\"],\"ability\":{\"durability\":50,\"offense\":70,\"effects\":10,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_f49394186dc0e55d545da8377be83280.png\",\"tags\":{\"Buff\":2,\"Damage\":1,\"Speed Up\":1,\"AOE\":1,\"Burst\":1,\"Mobility\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":2,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":3,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[18,60],\"desc\":\"Karina counters Marksmen that lack mobility, such as Layla and Hanabi, since her 1st Skill can neutralize their Basic Attacks and they can't escape her high mobility and burst damage.\"},\"weak\":{\"ids\":[9,78],\"desc\":\"Karina is countered by Tanky heroes with CC abilities, like Akai and Khufra because they can tank her damage, and protect their allies from her.\"},\"assist\":{\"ids\":[6,76],\"desc\":\"Karina works well with heroes who can pull enemies together, such as Tigreal and Faramis, since her Ultimate and 2nd Skill also hits anyone near her main target, setting them up to be chain killed by her Ultimate.\"}},\"meta\":{\"win\":49.15,\"pick\":0.95,\"ban\":5.49}},{\"id\":9,\"name\":\"Akai\",\"roles\":[\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Guard\",\"Crowd Control\"],\"ability\":{\"durability\":90,\"offense\":30,\"effects\":90,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_28f223447f0174336ff0922d364d81d3.png\",\"tags\":{\"Buff\":1,\"Mobility\":1,\"CC\":2,\"AOE\":2},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":3,\"hardCc\":4,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[15,46],\"desc\":\"Akai is strong against heroes with poor Mobility since he can easily catch and eliminate them with his Ultimate, such as Eudora and Odette.\"},\"weak\":{\"ids\":[5,48],\"desc\":\"Akai is countered by heroes with CC removers or transformation abilities that allow them to escape or counter Akai's Ultimate, such as Nana and Diggie.\"},\"assist\":{\"ids\":[3,15],\"desc\":\"Akai works best with heroes who can deal high burst damage as they can help him take down enemies caught in his Ultimate, such as Saber and Eudora.\"}},\"meta\":{\"win\":50.21,\"pick\":0.33,\"ban\":1.07}},{\"id\":10,\"name\":\"Franco\",\"roles\":[\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Initiator\",\"Control\"],\"ability\":{\"durability\":80,\"offense\":10,\"effects\":100,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_9bed3c0095335606e0ce616c6e5a8553.png\",\"tags\":{\"Buff\":1,\"CC\":2,\"Damage\":1,\"Slow\":1,\"Burst\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[66,34,18],\"desc\":\"Heroes with low mobility like Vale, Estes and Layla.\"},\"weak\":{\"ids\":[89,17,77],\"desc\":\"Heroes with high mobility or Control Immunity such as Wanwan, Fanny and Badang.\"},\"assist\":{\"ids\":[66,8,100],\"desc\":\"Heroes with high burst damage such as Vale, Karina and Brody to take advantage of his CC.\"}},\"meta\":{\"win\":41.75,\"pick\":0.93,\"ban\":3.01}},{\"id\":11,\"name\":\"Bane\",\"roles\":[\"Fighter\",\"Mage\"],\"lanes\":[\"jungle\",\"exp\"],\"specialities\":[\"Push\",\"Burst\"],\"ability\":{\"durability\":50,\"offense\":60,\"effects\":40,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_7e4e74bb161da0f477cc0d1819fa39e6.png\",\"tags\":{\"Burst\":2,\"Damage\":1,\"Heal\":1,\"AOE\":1,\"CC\":1},\"sig\":{\"phys\":2,\"magic\":2,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[49,70],\"desc\":\"Bane counters Tanks with high HP but low damage, such as Hylos and Belerick, because he can out-sustain them and deals HP percentage-based damage.\"},\"weak\":{\"ids\":[66,115],\"desc\":\"Bane is countered by Mages that deal heavy damage from afar, such as Vale and Xavier who can deal significant damage to him before he can get in range.\"},\"assist\":{\"ids\":[6,96],\"desc\":\"Bane works best with heroes like as Tigreal and Luo Yi who can pull enemies together so he can do even more damage with his AOE.\"}},\"meta\":{\"win\":51.59,\"pick\":0.28,\"ban\":0.18}},{\"id\":12,\"name\":\"Bruno\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Burst\"],\"ability\":{\"durability\":20,\"offense\":60,\"effects\":20,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_2a733ac5b7d1f97093e82940af6f5008.png\",\"tags\":{\"Buff\":2,\"Damage\":1,\"Slow\":1,\"Mobility\":1,\"Burst\":1,\"CC\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":1,\"crit\":1,\"maxHp\":0,\"hardCc\":3,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[60,1],\"desc\":\"Bruno is strong against Marksmen that are weaker in the early game like Hanabi and Miya who Bruno can out-trade thanks to his high damage.\"},\"weak\":{\"ids\":[41,117],\"desc\":\"Bruno is countered by Tanks with high Physical Defense like Gatotkaca and Fredrinn that take greatly reduced damage from his attacks.\"},\"assist\":{\"ids\":[10,78],\"desc\":\"Bruno is best with Supports that can force enemies to engage and allow him to make use of his early game damage, such as Franco and Khufra.\"}},\"meta\":{\"win\":53.79,\"pick\":0.65,\"ban\":0.38}},{\"id\":13,\"name\":\"Clint\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Burst\"],\"ability\":{\"durability\":30,\"offense\":70,\"effects\":40,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_fd120c3e9261a233442ee88a1d7c9f58.png\",\"tags\":{\"Burst\":1,\"AOE\":2,\"Mobility\":1,\"CC\":1,\"Slow\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":1,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[31,1],\"desc\":\"Clint counters heroes with comparatively shorter range like Moskov and Miya thanks to the superior range of his skills and Basic Attacks.\"},\"weak\":{\"ids\":[114,40],\"desc\":\"Clint is countered by Marksmen with burst damage like Melissa and Karrie since he lacks burst in the early and mid game to trade blows with them.\"},\"assist\":{\"ids\":[14,55],\"desc\":\"Clint works best with Supportsthat can enhance his kiting ability, such as Rafaela and Angela.\"}},\"meta\":{\"win\":50.14,\"pick\":0.74,\"ban\":0.63}},{\"id\":14,\"name\":\"Rafaela\",\"roles\":[\"Support\"],\"lanes\":[\"roam\"],\"specialities\":[\"Regen\",\"Guard\"],\"ability\":{\"durability\":60,\"offense\":20,\"effects\":70,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_68277dce415742c4a98883151c693a07.png\",\"tags\":{\"Buff\":1,\"AOE\":2,\"Slow\":1,\"Heal\":1,\"Speed Up\":1,\"CC\":1},\"sig\":{\"phys\":0,\"magic\":2,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[88,99],\"desc\":\"Rafaela has great healing and decent mobility, and performs well against heroes that lack burst damage or mobility, such as Masha and Barats.\"},\"weak\":{\"ids\":[84,21],\"desc\":\"Rafaela struggles against bursty and agile Assassins, like Ling and Hayabusa.\"},\"assist\":{\"ids\":[22,37],\"desc\":\"When teamed up with Fighters like Freya and Lapu-Lapu, Rafaela can boost their offensive power and survivability.\"}},\"meta\":{\"win\":53.98,\"pick\":0.78,\"ban\":10.66}},{\"id\":15,\"name\":\"Eudora\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Control\",\"Burst\"],\"ability\":{\"durability\":10,\"offense\":80,\"effects\":80,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_87b2a655b254c136dce8976e21935a80.png\",\"tags\":{\"Buff\":1,\"AOE\":1,\"CC\":1,\"Damage\":1,\"Burst\":1},\"sig\":{\"phys\":0,\"magic\":7,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[131,31],\"desc\":\"Eudora possesses strong targeted CC and burst capabilities, allowing her to keep squishy heroes like Moskov and Obsidia in check.\"},\"weak\":{\"ids\":[21,75],\"desc\":\"Eudora lacks self-preservation and struggles against dive heroes or Assassins who can negate targeted CC, such as Hayabusa and Kadita.\"},\"assist\":{\"ids\":[48,6],\"desc\":\"Eudora's skills can deal massive AOE damage, so pairing her with heroes who can group enemies, like Diggie and Tigreal, will make it easier to maximize her damage.\"}},\"meta\":{\"win\":50.17,\"pick\":1.72,\"ban\":43.43}},{\"id\":16,\"name\":\"Zilong\",\"roles\":[\"Fighter\",\"Assassin\"],\"lanes\":[\"exp\"],\"specialities\":[\"Chase\",\"Damage\"],\"ability\":{\"durability\":20,\"offense\":50,\"effects\":60,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_9db57da4f0daef6d432676e4f19101ed.png\",\"tags\":{\"Buff\":2,\"Heal\":1,\"CC\":1,\"Damage\":1,\"Mobility\":1,\"Debuff\":1,\"Speed Up\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":5,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[18,86],\"desc\":\"The immunity to Slow effects that Zilong gets from his Ultimate makes him strong against squishy heroes without CC skills, such as Layla and Lylia.\"},\"weak\":{\"ids\":[10,5],\"desc\":\"Zilong is still vulnerable to non-slow CC skills, making him weak against heroes with powerful single-target CC skills, such as Franco and Nana.\"},\"assist\":{\"ids\":[52,60],\"desc\":\"Zilong works best with heroes with strong defensive abilities that can hold off enemy attacks while he solos the lane, such as Pharsa and Hanabi.\"}},\"meta\":{\"win\":46.35,\"pick\":0.7,\"ban\":0.5}},{\"id\":17,\"name\":\"Fanny\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Finisher\"],\"ability\":{\"durability\":60,\"offense\":70,\"effects\":10,\"difficulty\":100},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_3391df36d6dcc54dd1c417098e15ec59.png\",\"tags\":{\"Buff\":1,\"AOE\":1,\"Mobility\":2,\"Burst\":1},\"sig\":{\"phys\":2,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[40,43],\"desc\":\"Fanny counters squishy heroes that lack targeted CC like Karrie and Irithel who cannot stop Fanny's extreme mobility while she bursts them down.\"},\"weak\":{\"ids\":[62,78],\"desc\":\"Fanny is countered by heroes that can restrict mobility, such as Kaja and Khufra, since they can easily shutdown her main advantage.\"},\"assist\":{\"ids\":[19,41],\"desc\":\"Fanny works best with heroes that can chain AOE CC to keep the enemy pinned, such as Minotaur and Gatotkaca, so she can deal damage without interruption.\"}},\"meta\":{\"win\":42.79,\"pick\":0.65,\"ban\":1.99}},{\"id\":18,\"name\":\"Layla\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Damage\"],\"ability\":{\"durability\":10,\"offense\":80,\"effects\":10,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_b2b38e9406ea0de0b866db7674feea0f.png\",\"tags\":{\"Buff\":3,\"Burst\":2,\"AOE\":1,\"CC\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":1,\"maxHp\":0,\"hardCc\":1,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[6,70],\"desc\":\"Layla's relatively longer attack range lets her counter slow Tanks like Tigreal and Belerick.\"},\"weak\":{\"ids\":[8,84],\"desc\":\"Layla is countered by Assassins with high burst damage, such as Karina and Ling, as they can get the jump on Layla and melt her easily.\"},\"assist\":{\"ids\":[74,70],\"desc\":\"Layla works best with Tanks that can protect backline heroes, such as Minsitthar and Belerick, since their protection gives Layla more opportunities to deal damage.\"}},\"meta\":{\"win\":49.47,\"pick\":1.78,\"ban\":1.81}},{\"id\":19,\"name\":\"Minotaur\",\"roles\":[\"Tank\",\"Support\"],\"lanes\":[\"roam\"],\"specialities\":[\"Crowd Control\"],\"ability\":{\"durability\":100,\"offense\":10,\"effects\":80,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_3ecd2c0843df7ec85044dafff6bf4553.png\",\"tags\":{\"Buff\":2,\"CC\":2,\"AOE\":1,\"Heal\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":1,\"heal\":2,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":2,\"hardCc\":2,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[103,116],\"desc\":\"Minotaur is strong against heroes that rely on chaining skills or attacks, like Paquito and Julian because he can interrupt their combos with his CC.\"},\"weak\":{\"ids\":[18,53],\"desc\":\"Minotaur is countered by long-range Marksmen like Layla and Lesley since his lack of speed makes him an easy target.\"},\"assist\":{\"ids\":[79,114],\"desc\":\"Minotaur works best with burst damage Marksmen, such as Granger and Melissa, since his CC's give them more opportunities to deal damage.\"}},\"meta\":{\"win\":53.86,\"pick\":1.01,\"ban\":8.65}},{\"id\":20,\"name\":\"Lolita\",\"roles\":[\"Support\",\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Guard\",\"Crowd Control\"],\"ability\":{\"durability\":100,\"offense\":10,\"effects\":90,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_474cea36a4bfdc7bf7d94530853a99b2.png\",\"tags\":{\"Shield\":2,\"Mobility\":1,\"CC\":2,\"Damage\":1,\"AOE\":1},\"sig\":{\"phys\":2,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":7,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":2,\"hardCc\":3,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[71,33],\"desc\":\"Lolita's shield makes her strong against heroes who rely on projectiles and ranged skills, such as Kimmy and Cyclops.\"},\"weak\":{\"ids\":[84,103],\"desc\":\"Lolita is countered by melee heroes with high burst damage like Ling and Paquito.\"},\"assist\":{\"ids\":[60,18],\"desc\":\"Due to her powerful defensive and CC abilities, Lolita is great at protecting Marksmen like Hanabi and Layla.\"}},\"meta\":{\"win\":53.38,\"pick\":0.08,\"ban\":0.2}},{\"id\":21,\"name\":\"Hayabusa\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Burst\"],\"ability\":{\"durability\":40,\"offense\":50,\"effects\":10,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_9cc074562291a02644a0ddae28eeaa42.png\",\"tags\":{\"Buff\":2,\"Damage\":1,\"Mobility\":1,\"Summon\":1,\"Burst\":1},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":1,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":3},\"relation\":{\"strong\":{\"ids\":[61,91],\"desc\":\"Hayabusa counters squishy heroes that lack CC to shutdown the blinks from his 2nd Skill, and who are also easy targets for his Ultimate, such as Chang'e and Cecilion.\"},\"weak\":{\"ids\":[10,62],\"desc\":\"Hayabusa is countered by heroes with targeted CC like Franco and Kaja who can lock him down before he can blink away.\"},\"assist\":{\"ids\":[37,28],\"desc\":\"Hayabusa works best with Fighters like Lapu-Lapu and Alpha who can initiate with him to quickly focus down key targets.\"}},\"meta\":{\"win\":48.19,\"pick\":0.72,\"ban\":1.53}},{\"id\":22,\"name\":\"Freya\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\",\"jungle\"],\"specialities\":[\"Chase\",\"Damage\"],\"ability\":{\"durability\":60,\"offense\":70,\"effects\":60,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_b9c34c88762ca8e66ccd4d84071bf0bc.png\",\"tags\":{\"Buff\":2,\"CC\":1,\"Shield\":1,\"Mobility\":1,\"Damage\":1,\"Morph\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":2,\"basic\":3,\"atkSpeed\":1,\"crit\":1,\"maxHp\":0,\"hardCc\":1,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[53,121],\"desc\":\"Freya not only has exceptional mobility, she also excels in prolonged engagements, making her highly effective against fragile, low-HP Marksmen, such as Lesley and Ixia. Her excellent sustained damage and mobility also allows her to counter Tanks with low damage, like Uranus and Baxia.\"},\"weak\":{\"ids\":[106,130],\"desc\":\"However, all of Freya's skills have movement components, making her vulnerable to Phoveus's unique counter. Using her skills near Phoveus will allow him to quickly gain energy for his enhanced Basic Attacks. Freya is vulnerable to CC and movement-disabling effects, so Minsitthar and Obsidia's Ultimates can lock her down completely.\"},\"assist\":{\"ids\":[70,41],\"desc\":\"In order for Freya to maximize her damage, she prefers heroes with CC like Belerick and Gatotkaca to lock down the enemy for her.\"}},\"meta\":{\"win\":50.02,\"pick\":1.12,\"ban\":8.17}},{\"id\":23,\"name\":\"Gord\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Poke\",\"Burst\"],\"ability\":{\"durability\":10,\"offense\":70,\"effects\":80,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_9513f5e10ec33f76747732eaf2082259.png\",\"tags\":{\"Buff\":1,\"Slow\":1,\"CC\":1,\"AOE\":1,\"Burst\":1},\"sig\":{\"phys\":0,\"magic\":3,\"trueDmg\":1,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[99,117],\"desc\":\"Gord is strong against melee heroes with poor Mobility, such as Barats and Fredrinn.\"},\"weak\":{\"ids\":[17,47],\"desc\":\"Gord is countered by heroes with gap closers, such as Fanny and Lancelot.\"},\"assist\":{\"ids\":[49,70],\"desc\":\"Gord works well with tanky heroes with reliable CCs, like Hylos and Belerick.\"}},\"meta\":{\"win\":52.45,\"pick\":0.57,\"ban\":0.55}},{\"id\":24,\"name\":\"Natalia\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\",\"roam\"],\"specialities\":[\"Chase\",\"Finisher\"],\"ability\":{\"durability\":10,\"offense\":60,\"effects\":60,\"difficulty\":90},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_fbb5065b6ff174d1a20ccf5b7f523514.png\",\"tags\":{\"Buff\":3,\"Mobility\":1,\"AOE\":1,\"Slow\":1},\"sig\":{\"phys\":2,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":3,\"atkSpeed\":0,\"crit\":2,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":1,\"conceal\":2,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[119,43],\"desc\":\"Natalia counters squishy heroes who lack CC and burst like as Novaria and Irithel since they can't stop Natalia's burst damage.\"},\"weak\":{\"ids\":[74,62],\"desc\":\"Natalia is countered by heroes who can restrict her mobility like Minsitthar and Kaja since they can easily shutdown her main advantage.\"},\"assist\":{\"ids\":[30,38],\"desc\":\"Natalia works best with heroes with high AOE damage such as Yi Sun-shin and Vexana. She can stay hidden while they poke the enemy, then pounce on targets that get low on HP.\"}},\"meta\":{\"win\":51.24,\"pick\":0.31,\"ban\":2.19}},{\"id\":25,\"name\":\"Kagura\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Poke\",\"Finisher\"],\"ability\":{\"durability\":30,\"offense\":90,\"effects\":40,\"difficulty\":90},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_da424b020b8ac8235d64a1b8a09aa749.png\",\"tags\":{\"Shield\":2,\"CC\":4,\"Damage\":3,\"Slow\":2,\"Remove CC\":1,\"Mobility\":2,\"Burst\":2},\"sig\":{\"phys\":0,\"magic\":6,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":2,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":6,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[18,15],\"desc\":\"Kagura's Ultimate can deal high burst damage, making her strong against back-row heroes with no dash or blink, such as Layla and Eudora.\"},\"weak\":{\"ids\":[118,58],\"desc\":\"Kagura is countered by heroes with more than one control immunity abilities that allow them to escape her various CC skills, heroes like Joy and Martis are good examples.\"},\"assist\":{\"ids\":[93,6],\"desc\":\"Kagura works well with tank heroes with strong CC skills that allow her to deal more damage with her Ultimate, such as Atlas and Tigreal.\"}},\"meta\":{\"win\":50.63,\"pick\":0.83,\"ban\":1.34}},{\"id\":26,\"name\":\"Chou\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\",\"roam\"],\"specialities\":[\"Chase\",\"Control\"],\"ability\":{\"durability\":50,\"offense\":30,\"effects\":80,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_158209b180032c4564b8f3bde8c48888.png\",\"tags\":{\"Buff\":1,\"AOE\":1,\"Mobility\":2,\"CC\":1,\"Burst\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":1,\"atkSpeed\":0,\"crit\":1,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[82,28],\"desc\":\"Chou counters slower Fighters like Terizla and Alpha that have a hard time dealing with his quick hit and run tactics.\"},\"weak\":{\"ids\":[53,52],\"desc\":\"Chou is countered by heroes with very long-range like Lesley and Pharsa that can take out a chunk of his HP before he can get close.\"},\"assist\":{\"ids\":[55,14],\"desc\":\"Chou works best with Healers that can boost his survivability and speed, such as Angela and Rafaela.\"}},\"meta\":{\"win\":45.02,\"pick\":1.04,\"ban\":3.04}},{\"id\":27,\"name\":\"Sun\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\",\"jungle\"],\"specialities\":[\"Push\",\"Damage\"],\"ability\":{\"durability\":50,\"offense\":50,\"effects\":10,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_117b5cdcc13232157075ce7b7f6177e9.png\",\"tags\":{\"Debuff\":1,\"Heal\":1,\"Summon\":3,\"AOE\":1,\"Mobility\":2,\"Burst\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":1,\"maxHp\":0,\"hardCc\":0,\"slow\":1,\"immune\":0,\"conceal\":1,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[10,41],\"desc\":\"Sun can deal great sustained damage and has armor-busting capabilities, making him a good counter to tanks with low damage output, such as Franco and Gatotkaca.\"},\"weak\":{\"ids\":[29],\"desc\":\"Fighter heroes with Lifesteal can counter Sun, however. For example, heroes like Ruby can steal a lot of HP by hitting Sun and his Dopplegangers.\"},\"assist\":{\"ids\":[70,6],\"desc\":\"Pair Sun with tanks who have strong CC abilities such as Belerick or Tigreal to create opportunities for Sun to deal damage.\"}},\"meta\":{\"win\":53.99,\"pick\":1.72,\"ban\":44.33}},{\"id\":28,\"name\":\"Alpha\",\"roles\":[\"Fighter\"],\"lanes\":[\"jungle\",\"exp\"],\"specialities\":[\"Charge\",\"Damage\"],\"ability\":{\"durability\":60,\"offense\":40,\"effects\":70,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_86c9f91f530727db6498f920d19180d1.png\",\"tags\":{\"Damage\":1,\"Slow\":2,\"AOE\":2,\"Heal\":1,\"Mobility\":1,\"CC\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":4,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":3,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[18,121],\"desc\":\"Alpha counters heroes that lack mobility, such as Layla and Ixia, because these heroes have a hard time avoiding his skills.\"},\"weak\":{\"ids\":[26,56],\"desc\":\"Alpha is countered by heroes that are very mobile, such as Chou and Gusion, because they have a lot of ways to dodge Alpha's skills.\"},\"assist\":{\"ids\":[38,63],\"desc\":\"Alpha works well with heroes that can initiate with CC like Vexana and Selena. With their help, he'll have a much easier time landing his skills.\"}},\"meta\":{\"win\":48.93,\"pick\":1.34,\"ban\":0.71}},{\"id\":29,\"name\":\"Ruby\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Crowd Control\",\"Regen\"],\"ability\":{\"durability\":90,\"offense\":20,\"effects\":90,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_4b96c75b136290576d849309722d4d20.png\",\"tags\":{\"Buff\":1,\"AOE\":3,\"Slow\":1,\"CC\":2},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":3,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[64,80],\"desc\":\"Ruby is strong against Fighter heroes with high burst damage. She can easily survive their burst with her excellent Regen and Lifesteal abilities. Such as Aldous and Guinevere.\"},\"weak\":{\"ids\":[89,43],\"desc\":\"Ruby is countered by Marksman heroes with good Mobility. Because they can easily dodge her 2nd and Ultimate skills. Like Wanwan and Irithel.\"},\"assist\":{\"ids\":[52,75],\"desc\":\"Ruby works best with heroes who can deal high AOE burst damage. Their skills can deal more damage to enemies who are stunned and pulled by her 2nd and Ultimate skills. Such as Pharsa and Kadita.\"}},\"meta\":{\"win\":49.17,\"pick\":0.32,\"ban\":0.32}},{\"id\":30,\"name\":\"Yi Sun-shin\",\"roles\":[\"Assassin\",\"Marksman\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Finisher\",\"Chase\"],\"ability\":{\"durability\":40,\"offense\":90,\"effects\":40,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_961378be3f498d42c25b3defd1635ad1.png\",\"tags\":{\"Buff\":1,\"Mobility\":1,\"AOE\":2,\"Burst\":1,\"CC\":1},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":1,\"crit\":1,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[59,82],\"desc\":\"Yi Sun-shin counters heroes that lack CC like Uranus and Terizla who are at the mercy of his ability to jump in and out of melee range using his 2 weapons.\"},\"weak\":{\"ids\":[10,62],\"desc\":\"Yi Sun-shin is countered by heroes with CC skills, such as Franco and Kaja who can lock him down and stop him from freely swapping weapons.\"},\"assist\":{\"ids\":[28,98],\"desc\":\"Yi Sun-shin works best with Fighters who can initiate, such as Alpha and Khaleed, so he can follow up and unleash his full damage after they have CC'd the enemy.\"}},\"meta\":{\"win\":48.91,\"pick\":0.9,\"ban\":2.09}},{\"id\":31,\"name\":\"Moskov\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Chase\"],\"ability\":{\"durability\":20,\"offense\":60,\"effects\":60,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_a60a866ab6752a7f66766e720da987ea.png\",\"tags\":{\"Buff\":2,\"Mobility\":1,\"CC\":1,\"Damage\":1,\"Slow\":1,\"Teleport\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":3,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[72,2],\"desc\":\"Moskov's 1st Skill provides a blink effect, making him a threat to fighters with poor mobility like Thamuz and Balmond.\"},\"weak\":{\"ids\":[47,24],\"desc\":\"Moskov is countered by heroes with high mobility, such as Lancelot and Natalia, who can quickly close the gap and take him out.\"},\"assist\":{\"ids\":[117,41],\"desc\":\"Moskov works well with heroes like Atlas and Gatotkaca who can CC groups of enemies so he can focus on maximizing the damage of his piercing AOE.\"}},\"meta\":{\"win\":50.38,\"pick\":0.9,\"ban\":0.27}},{\"id\":32,\"name\":\"Johnson\",\"roles\":[\"Tank\",\"Support\"],\"lanes\":[\"roam\"],\"specialities\":[\"Support\",\"Crowd Control\"],\"ability\":{\"durability\":80,\"offense\":30,\"effects\":90,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_85ff988c6660b4d04f8dd3d40df988bb.png\",\"tags\":{\"Shield\":1,\"CC\":2,\"AOE\":2,\"Slow\":1,\"Morph\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":3,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[7,16],\"desc\":\"Johnson counters melee heroes with high burst like Alucard and Zilong because of Johnson's high Physical Defense and CC ability.\"},\"weak\":{\"ids\":[73,25],\"desc\":\"Johnson is countered by agile heroes who deal Magic Damage such as Harith and Kagura because they can easily dodge Johnson's skills while their damage is not affected by his Physical Defense.\"},\"assist\":{\"ids\":[46,75],\"desc\":\"Johnson works well with heroes that need help initiating like Odette and Kadita since they can just jump into Johnson's Ultimate for a ride.\"}},\"meta\":{\"win\":49.74,\"pick\":0.71,\"ban\":1.96}},{\"id\":33,\"name\":\"Cyclops\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Damage\",\"Control\"],\"ability\":{\"durability\":30,\"offense\":100,\"effects\":70,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_6b62c64ce43e682ee7660652d5b057e4.png\",\"tags\":{\"Buff\":1,\"AOE\":1,\"Burst\":1,\"CC\":1,\"Damage\":1},\"sig\":{\"phys\":0,\"magic\":3,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[82,28],\"desc\":\"Cyclops' short skill cooldown makes him strong against mid-ranged heroes with poor Mobility, such as Terizla and Alpha.\"},\"weak\":{\"ids\":[47,7,25],\"desc\":\"Cyclops lacks Dash or Blink skills, making him the preferred target for heroes with gap closers and CC skills. Such as Lancelot, Alucard and Kagura.\"},\"assist\":{\"ids\":[70,74],\"desc\":\"Cyclops is best with tanky heroes with strong CC skills, like Belerick and Minsitthar.\"}},\"meta\":{\"win\":51.85,\"pick\":0.83,\"ban\":1.11}},{\"id\":34,\"name\":\"Estes\",\"roles\":[\"Support\"],\"lanes\":[\"roam\"],\"specialities\":[\"Regen\",\"Guard\"],\"ability\":{\"durability\":70,\"offense\":10,\"effects\":20,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_ff4de3b0aabd1d2f6e184db1c831f6a9.png\",\"tags\":{\"Buff\":3,\"Heal\":2,\"Slow\":1,\"AOE\":1},\"sig\":{\"phys\":0,\"magic\":3,\"trueDmg\":0,\"heal\":4,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":4,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[57,4],\"desc\":\"Estes counters heroes with no burst damage, he can easily heal through minor damages from heroes like Faramis and Alice.\"},\"weak\":{\"ids\":[3,15],\"desc\":\"Estes is countered by heroes with high burst damage. Heroes like Saber and Eudora can easily burst down Estes or the hero he protects in a few seconds.\"},\"assist\":{\"ids\":[53,60],\"desc\":\"Estes works best with typical Marksman heroes, his healing will allow them to deal more damage. Heroes like Lesley and Hanabi are good examples here.\"}},\"meta\":{\"win\":52.75,\"pick\":0.62,\"ban\":47.35}},{\"id\":35,\"name\":\"Hilda\",\"roles\":[\"Fighter\",\"Tank\"],\"lanes\":[\"roam\",\"exp\"],\"specialities\":[\"Damage\",\"Regen\"],\"ability\":{\"durability\":90,\"offense\":40,\"effects\":40,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_acd700708dc515f5c63a08f8835a9941.png\",\"tags\":{\"Buff\":2,\"AOE\":1,\"Speed Up\":1,\"Damage\":1,\"CC\":2,\"Burst\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":1,\"basic\":3,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[16,18],\"desc\":\"Hilda excels in prolonged battles. She works well against heroes with lower burst damage. Such as Zilong and Layla.\"},\"weak\":{\"ids\":[72,59],\"desc\":\"Hilda is countered by heroes with high sustain. Such as Thamuz and Uranus. This is because they can utilize their healing abilities to prevent being executed.\"},\"assist\":{\"ids\":[14,10],\"desc\":\"Hilda works well with tanky heroes, which can create room for her to dish out more damage. Such as Atlas and Tigreal.\"}},\"meta\":{\"win\":51.2,\"pick\":0.57,\"ban\":14.09}},{\"id\":36,\"name\":\"Aurora\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Crowd Control\",\"Poke\"],\"ability\":{\"durability\":40,\"offense\":70,\"effects\":100,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_f9b2be0150361018bb98f941b9667c42.png\",\"tags\":{\"Death Immunity\":1,\"AOE\":3,\"Slow\":1,\"CC\":2},\"sig\":{\"phys\":0,\"magic\":6,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":5,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[67,72,82],\"desc\":\"Aurora counters heroes who like to charge in, such as Leomord, Thamuz, and Terizla, since her skills can stop them dead in their tracks.\"},\"weak\":{\"ids\":[84,75,80],\"desc\":\"Because most of Aurora's skills have delayed effects, she is countered by high mobility heroes who can dodge them with ease, such as Ling, Kadita, and Guinevere.\"},\"assist\":{\"ids\":[121,22,40],\"desc\":\"With her very powerful CC abilities, Aurora works well with heroes who deal high sustained damage, like Ixia, Freya, and Karrie.\"}},\"meta\":{\"win\":48.8,\"pick\":0.64,\"ban\":0.38}},{\"id\":37,\"name\":\"Lapu-Lapu\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Chase\",\"Burst\"],\"ability\":{\"durability\":80,\"offense\":40,\"effects\":40,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_28036c4584c914c5aad4d2feeafb2452.png\",\"tags\":{\"Buff\":2,\"Shield\":2,\"AOE\":3,\"Mobility\":3,\"Damage\":1,\"Morph\":1,\"CC\":1,\"Reduce DMG\":1,\"Burst\":1},\"sig\":{\"phys\":9,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":2,\"basic\":3,\"atkSpeed\":0,\"crit\":2,\"maxHp\":0,\"hardCc\":2,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":4},\"relation\":{\"strong\":{\"ids\":[18,15],\"desc\":\"Lapu-Lapu is strong against squishy heroes who lack movement abilities, such as Layla and Eudora, because he has high burst damage and can use his mobility to get on top of them.\"},\"weak\":{\"ids\":[53,31],\"desc\":\"Lapu-Lapu is countered by agile Marksmen who can knock him away, such as Lesley and Moskov. They can speed up or blink to avoid Lapu-Lapu's Ultimate, and use knockback effects to interrupt his 1st Skill in Great Sword stance or to keep him away.\"},\"assist\":{\"ids\":[6,93],\"desc\":\"Lapu-Lapu works well with heroes who can pull enemies together, like Tigreal and Atlas, to allow his AOE skills to hit more targets and get more Damage Reduction from his 2nd Skill in Great Sword stance by hitting more heroes.\"}},\"meta\":{\"win\":47.89,\"pick\":0.34,\"ban\":0.27}},{\"id\":38,\"name\":\"Vexana\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Poke\",\"Control\"],\"ability\":{\"durability\":20,\"offense\":90,\"effects\":50,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_743edd1702084c4ed247908d698bca77.png\",\"tags\":{\"Damage\":2,\"CC\":1,\"AOE\":2,\"Summon\":1},\"sig\":{\"phys\":0,\"magic\":6,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[18,43,115],\"desc\":\"Backline DPS heroes such as Layla, Irithel and Xavier.\"},\"weak\":{\"ids\":[3,109,8],\"desc\":\"Mobile Assassins such as Saber, Aamon and Karina.\"},\"assist\":{\"ids\":[93,105],\"desc\":\"Heroes with powerful CC such as Atlas or high damage output like Beatrix to burst down enemies.\"}},\"meta\":{\"win\":49.23,\"pick\":1.53,\"ban\":1.15}},{\"id\":39,\"name\":\"Roger\",\"roles\":[\"Fighter\",\"Marksman\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Finisher\",\"Burst\"],\"ability\":{\"durability\":60,\"offense\":40,\"effects\":10,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_b40e578f13465b3ae99d0a9baac7ecc9.png\",\"tags\":{\"Buff\":3,\"Damage\":1,\"Debuff\":1,\"Speed Up\":2,\"Morph\":2,\"Mobility\":3,\"Burst\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":0,\"atkSpeed\":2,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[60,46],\"desc\":\"Roger counters squishy heroes that lack mobility such as Hanabi and Odette because they cannot easily escape from him.\"},\"weak\":{\"ids\":[74,78],\"desc\":\"Roger is countered by heroes that can restrict his mobility and prevent him from jumping in and out using his two forms, like Minsitthar and Khufra.\"},\"assist\":{\"ids\":[52,38],\"desc\":\"Roger works best with heroes with high AOE damage that can nuke the enemy team to low HP for him to finish off, such as Pharsa and Vexana.\"}},\"meta\":{\"win\":48.3,\"pick\":0.27,\"ban\":0.1}},{\"id\":40,\"name\":\"Karrie\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Damage\"],\"ability\":{\"durability\":30,\"offense\":80,\"effects\":10,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_294576f2bd0dcbcc9041031969d0eb09.png\",\"tags\":{\"Buff\":2,\"AOE\":1,\"Slow\":1,\"Mobility\":1,\"Damage\":1,\"Burst\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":1,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[6,117],\"desc\":\"Tanks such as Tigreal and Fredrinn that take more damage from her HP percent attacks.\"},\"weak\":{\"ids\":[115,18,5],\"desc\":\"Long range heroes such as Xavier, Layla and Nana due to Karrie's medium range.\"},\"assist\":{\"ids\":[3,109],\"desc\":\"Assassins like Saber and Aamon who can eliminate ranged threats so Karrie can focus the frontline.\"}},\"meta\":{\"win\":48.95,\"pick\":0.58,\"ban\":0.87}},{\"id\":41,\"name\":\"Gatotkaca\",\"roles\":[\"Tank\",\"Fighter\"],\"lanes\":[\"roam\",\"exp\"],\"specialities\":[\"Crowd Control\",\"Burst\"],\"ability\":{\"durability\":90,\"offense\":30,\"effects\":90,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_96f9dbbc096e0f0a28f9b9e587d06a9c.png\",\"tags\":{\"Buff\":1,\"Heal\":1,\"AOE\":1,\"Slow\":1,\"CC\":2,\"Mobility\":2},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":5,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[18,94],\"desc\":\"Due to his great CC and high Physical Defense, Gatotkaca counters Marksmen with no mobility skills like Layla and Popol and Kupa..\"},\"weak\":{\"ids\":[48,89],\"desc\":\"Gatotkaca is countered by heroes that can remove CC like Diggie and Wanwan who will greatly reduce his effectiveness.\"},\"assist\":{\"ids\":[25,66],\"desc\":\"Gatotkaca works best with heroes with strong CC and damage, such as Kagura and Vale who can give his Ultimate even more value.\"}},\"meta\":{\"win\":45.49,\"pick\":0.57,\"ban\":0.31}},{\"id\":42,\"name\":\"Harley\",\"roles\":[\"Assassin\",\"Mage\"],\"lanes\":[\"jungle\",\"mid\"],\"specialities\":[\"Burst\",\"Poke\"],\"ability\":{\"durability\":30,\"offense\":90,\"effects\":10,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_3aa6964c07a70f9b125da447f320e1ac.png\",\"tags\":{\"Debuff\":1,\"AOE\":1,\"Buff\":1,\"Mobility\":1,\"Speed Up\":1,\"Burst\":1,\"Slow\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[91,121],\"desc\":\"Harley counters squishy heroes with poor mobility, such as Cecilion and Ixia, since he can deal burst damage while being on the move.\"},\"weak\":{\"ids\":[20,59],\"desc\":\"Harley is countered by tanky heroes like Lolita and Uranus, because Harley can't deal enough meaningful damage to them and they can block and tank his Ultimate for their teammates.\"},\"assist\":{\"ids\":[9,78],\"desc\":\"Harley is best with heroes who can disrupt the enemy formation like Akai and Khufra. He can follow them into the fight and burst down the squishy targets.\"}},\"meta\":{\"win\":48.4,\"pick\":0.82,\"ban\":3}},{\"id\":43,\"name\":\"Irithel\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Burst\"],\"ability\":{\"durability\":10,\"offense\":80,\"effects\":10,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_a65d1e2ced64fbfdfcefdcfba719b3fd.png\",\"tags\":{\"Buff\":2,\"AOE\":2,\"Debuff\":1,\"Slow\":1,\"Mobility\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":3,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[1,28],\"desc\":\"Irithel counters heroes with a shorter Basic Attack range than her or ones that lack mobility and can be easily kited, such as Miya and Alpha.\"},\"weak\":{\"ids\":[77,90],\"desc\":\"Irithel is countered by heroes with strong CC capabilities or can restrict movement, such as Badang and Silvanna. Because Irithel does not have any Blink skills, her advantage vanishes once her mobility is restricted.\"},\"assist\":{\"ids\":[57,49],\"desc\":\"Irithel works best with heroes that can slow or provide hard CC such as Valir and Hylos because they allow her more opportunities to deal damage.\"}},\"meta\":{\"win\":53.06,\"pick\":0.42,\"ban\":0.26}},{\"id\":44,\"name\":\"Grock\",\"roles\":[\"Tank\",\"Fighter\"],\"lanes\":[\"roam\"],\"specialities\":[\"Crowd Control\",\"Initiator\"],\"ability\":{\"durability\":90,\"offense\":40,\"effects\":80,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_f8b8c8964d3202b7b762947ac96f1ed3.png\",\"tags\":{\"Buff\":1,\"CC\":2,\"AOE\":3,\"Mobility\":1},\"sig\":{\"phys\":6,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":2,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":0,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[23,18],\"desc\":\"Grock works well against heroes who cannot Blink over his wallto escape his CC,such as Gord and Layla.\"},\"weak\":{\"ids\":[71,42],\"desc\":\"Grock is countered by Magic Damage heroes with Blink who can kite him with relative ease,such as Kimmy and Harley.\"},\"assist\":{\"ids\":[46,52],\"desc\":\"Grock's Ultimate is a powerful CC that covers a wide area,so he pairs well with Mages like Odette and Pharsa to maximize their AOE damage.\"}},\"meta\":{\"win\":46.68,\"pick\":0.34,\"ban\":0.73}},{\"id\":45,\"name\":\"Argus\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Charge\",\"Burst\"],\"ability\":{\"durability\":70,\"offense\":50,\"effects\":50,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_0bd96658e5b8ec578226ea1622bd7231.png\",\"tags\":{\"Buff\":2,\"Mobility\":1,\"Debuff\":1,\"CC\":1,\"Damage\":1,\"Death Immunity\":1},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":0,\"heal\":2,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":2,\"crit\":6,\"maxHp\":0,\"hardCc\":4,\"slow\":1,\"immune\":3,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[23,36],\"desc\":\"Argus counters heroes with poor mobility who cannot escape his attacks once he closes in, such as Gord and Aurora.\"},\"weak\":{\"ids\":[41,6],\"desc\":\"Argus is countered by Tanks with high Physical Defense, like Gatotkaca and Tigreal, because a lot of his damage comes from Basic Attacks.\"},\"assist\":{\"ids\":[55,14],\"desc\":\"Argus works well with utility Supports like Angela and Rafaela who can provide extra Movement Speed and CC to allow Argus to stick to his targets and dish out maximum damage.\"}},\"meta\":{\"win\":56.99,\"pick\":0.53,\"ban\":0.99}},{\"id\":46,\"name\":\"Odette\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Burst\",\"Poke\"],\"ability\":{\"durability\":30,\"offense\":100,\"effects\":70,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_d9251718a8894546ba04cfa9ca68dedc.png\",\"tags\":{\"Buff\":1,\"AOE\":1,\"Slow\":1,\"CC\":1,\"Damage\":1,\"Burst\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[18,43],\"desc\":\"Odette's Ultimate is capable of unleashing massive damage and is effective against heroes lacking interruption skills, such as Layla and Irithel.\"},\"weak\":{\"ids\":[19,111],\"desc\":\"Odette is countered by heroes with Crowd Control skills, such as Minotaur and Edith, because they can easily interrupt her Ultimate.\"},\"assist\":{\"ids\":[32,54],\"desc\":\"Pair Odette with heroes who can relocate their teammates like Johnson and Jawhead to make it easier for her to find the perfect position for her Ultimate.\"}},\"meta\":{\"win\":49.83,\"pick\":0.54,\"ban\":0.26}},{\"id\":47,\"name\":\"Lancelot\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Burst\"],\"ability\":{\"durability\":40,\"offense\":50,\"effects\":10,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_dc4b821e49b904715172136017798da3.png\",\"tags\":{\"Buff\":1,\"Mobility\":2,\"AOE\":2,\"Slow\":1,\"Burst\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":2,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[91,52],\"desc\":\"Lancelot counters long-range Mages, such as Cecilion and Pharsa, because there is a delay to their skills and Lancelot can use his 1st Skill to dodge them while going in for the kill.\"},\"weak\":{\"ids\":[74,106],\"desc\":\"Lancelot is weak against heroes who can counter his mobility like Minsitthar and Phoveus, as his 1st Skill and Ultimate will be heavily restricted.\"},\"assist\":{\"ids\":[93,6],\"desc\":\"Lancelot works well with heroes who can pull enemies together, like Atlas and Tigreal, because they allow him to hit more enemies with his AOE skills.\"}},\"meta\":{\"win\":42.92,\"pick\":0.48,\"ban\":0.47}},{\"id\":48,\"name\":\"Diggie\",\"roles\":[\"Support\"],\"lanes\":[\"roam\"],\"specialities\":[\"Guard\",\"Poke\"],\"ability\":{\"durability\":40,\"offense\":40,\"effects\":20,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_b1bdf46136cb8a7903dae6d58e8349cb.png\",\"tags\":{\"Buff\":1,\"AOE\":1,\"Slow\":1,\"CC\":1,\"Damage\":1,\"CC Immune\":1,\"Speed Up\":1},\"sig\":{\"phys\":0,\"magic\":2,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":2,\"immune\":2,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[93,20],\"desc\":\"Diggie counters close range, CC focused heroes like Atlas and Lolita since he can pull them away and remove their CCs with his Ultimate.\"},\"weak\":{\"ids\":[84,109],\"desc\":\"Diggie is countered by agile and bursty Assassins like Ling and Aamon because his own lack of defense makes him an easy target.\"},\"assist\":{\"ids\":[18,1],\"desc\":\"Diggie works best with Marksmen that lack mobility or survivability like Layla and Miya because his skills can protect them very well.\"}},\"meta\":{\"win\":54.69,\"pick\":0.2,\"ban\":3.83}},{\"id\":49,\"name\":\"Hylos\",\"roles\":[\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Guard\",\"Initiator\"],\"ability\":{\"durability\":100,\"offense\":20,\"effects\":80,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_195ad9af866afaab415ae23a6be13b45.png\",\"tags\":{\"Buff\":1,\"CC\":1,\"Damage\":1,\"AOE\":1,\"Debuff\":1,\"Speed Up\":1,\"Heal\":1},\"sig\":{\"phys\":0,\"magic\":2,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":3,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[18,23],\"desc\":\"Hylos is strong against heroes without mobility skills that can't easily escape his 2nd Skill, like Layla and Gord.\"},\"weak\":{\"ids\":[40,53],\"desc\":\"Hylos is countered by high mobility heroes like Karrie and Lesley, as they are hard for him to lock down and can also take him out.\"},\"assist\":{\"ids\":[82,74],\"desc\":\"Hylos works best with heroes that need faster Movement Speed to engage, such as Terizla and Minsitthar.\"}},\"meta\":{\"win\":48.51,\"pick\":0.27,\"ban\":0.24}},{\"id\":50,\"name\":\"Zhask\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Chase\",\"Damage\"],\"ability\":{\"durability\":10,\"offense\":100,\"effects\":40,\"difficulty\":70},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_d8f170087cb2d5b71bb22a0a4664a927.png\",\"tags\":{\"Summon\":2,\"CC\":1,\"AOE\":1,\"Slow\":1,\"Damage\":1,\"Morph\":1,\"Buff\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":1,\"crit\":1,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[64,103],\"desc\":\"Zhask is strong against burst damage heroes like Aldous and Paquito because his high HP after fusing with his Nightmaric Spawn, makes him tough to burst down.\"},\"weak\":{\"ids\":[52,91],\"desc\":\"Zhask is countered by agile or long range heroes, such as Pharsa and Cecilion, because they can quickly step out of range of his immobile Nightmaric Spawn.\"},\"assist\":{\"ids\":[70,20],\"desc\":\"Zhask works best with heroes that can lock down enemies so he can have more time to deal damage, like Belerick and Lolita.\"}},\"meta\":{\"win\":52.57,\"pick\":0.33,\"ban\":0.42}},{\"id\":51,\"name\":\"Helcurt\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\",\"roam\"],\"specialities\":[\"Push\",\"Burst\"],\"ability\":{\"durability\":30,\"offense\":50,\"effects\":50,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_6abf0c552b59b8ca4cbc1af3662ef176.png\",\"tags\":{\"Buff\":2,\"Mobility\":1,\"CC\":1,\"Burst\":1,\"Debuff\":1},\"sig\":{\"phys\":2,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":1,\"crit\":1,\"maxHp\":0,\"hardCc\":0,\"slow\":0,\"immune\":0,\"conceal\":1,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[18,61,66],\"desc\":\"Helcurt can swiftly approach enemies with his mobility and quickly take down heroes like Layla, Chang'e, and Vale with his burst damage.\"},\"weak\":{\"ids\":[117,70,41],\"desc\":\"Helcurt should avoid tank heroes that he can't burst down, such as Fredrinn, Belerick, and Gatotkaca. Once Helcurt is caught by their CC, they can make short work of him with their teammates.\"},\"assist\":{\"ids\":[6,81,82],\"desc\":\"Helcurt's Ultimate is a great tool to obscure the enemy's vision and makes it easier for him and his team to engage. Additionally, heroes with CC like Tigreal, Esmeralda, and Terizla work great with Helcurt to secure kills.\"}},\"meta\":{\"win\":47.86,\"pick\":0.61,\"ban\":4.7}},{\"id\":52,\"name\":\"Pharsa\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Burst\",\"Poke\"],\"ability\":{\"durability\":20,\"offense\":90,\"effects\":50,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_10151d43910e62f7aa9ce08df481a20f.png\",\"tags\":{\"Damage\":2,\"Slow\":1,\"CC\":1,\"AOE\":1,\"Burst\":1,\"Morph\":1,\"Speed Up\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[18,60,115],\"desc\":\"Pharsa can deal high burst damage from a very long range. A great counter to enemy back-row heroes with poor Mobility, such as Layla, Hanabi and Xavier.\"},\"weak\":{\"ids\":[10,16,74],\"desc\":\"Pharsa should beware of any displacement ability skill. Heroes like Franco, Zilong and Minsitthar can easily interrupt Pharsa's Ultimate.\"},\"assist\":{\"ids\":[93,10],\"desc\":\"Pharsa is best with heroes who can CC the enemy so that her skills can hit them. Atlas and Franco are good examples of this.\"}},\"meta\":{\"win\":47.06,\"pick\":0.31,\"ban\":0.18}},{\"id\":53,\"name\":\"Lesley\",\"roles\":[\"Marksman\",\"Assassin\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Burst\"],\"ability\":{\"durability\":10,\"offense\":70,\"effects\":20,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_08770893183018333f54a98e63c41ee3.png\",\"tags\":{\"Buff\":2,\"CC\":1,\"Mobility\":1,\"Burst\":1},\"sig\":{\"phys\":2,\"magic\":0,\"trueDmg\":1,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":4,\"maxHp\":0,\"hardCc\":1,\"slow\":0,\"immune\":0,\"conceal\":1,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[41,117],\"desc\":\"Lesley is strong against tank heroes who rely heavily on equipment. Because her attacks can deal True Damage that will ignore the defense these heroes get from the equipment. Such as Gatotkaca and Fredrinn.\"},\"weak\":{\"ids\":[84,47],\"desc\":\"Lesley is countered by Assassin heroes with multiple movement abilities, which will cause her to lose her range advantage. Such as Ling and Lancelot.\"},\"assist\":{\"ids\":[19,87],\"desc\":\"Lesley works best with tank heroes who can provide better attacking conditions for her, like Minotaur and Baxia.\"}},\"meta\":{\"win\":48.45,\"pick\":1.95,\"ban\":8.96}},{\"id\":54,\"name\":\"Jawhead\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\",\"roam\"],\"specialities\":[\"Charge\",\"Burst\"],\"ability\":{\"durability\":60,\"offense\":30,\"effects\":60,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_bd87c30b6c7de6ae3b5aa56162c48c8b.png\",\"tags\":{\"Buff\":1,\"Burst\":1,\"Shield\":1,\"CC\":2,\"Mobility\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":5,\"slow\":0,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[3,15],\"desc\":\"Jawhead counters squishy heroes with no defensive skills that he can burst down after connecting with his Ultimate, such as Saber and Eudora.\"},\"weak\":{\"ids\":[111,72],\"desc\":\"Jawhead is countered by heroes with high sustained damage or high survivability, like Edith and Thamuz, because they can survive Jawhead's burst damage and beat him in a prolonged battle.\"},\"assist\":{\"ids\":[46,70],\"desc\":\"Jawhead works best with heroes that benefit from a quick engage like Odette and Belerick because he can throw them into the enemy for a surprise attack.\"}},\"meta\":{\"win\":47.88,\"pick\":0.35,\"ban\":0.35}},{\"id\":55,\"name\":\"Angela\",\"roles\":[\"Support\"],\"lanes\":[\"roam\"],\"specialities\":[\"Guard\",\"Support\"],\"ability\":{\"durability\":30,\"offense\":20,\"effects\":50,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_c7e0183956b2c2fd6d3fa0b18fe46917.png\",\"tags\":{\"Speed Up\":1,\"Heal\":1,\"AOE\":1,\"Slow\":1,\"CC\":1,\"Attach\":1,\"Shield\":1},\"sig\":{\"phys\":0,\"magic\":3,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":2,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[59,70],\"desc\":\"Angela counters heroes with low mobility, such as Uranus and Belerick, by slowing them even further and speeding up her allies.\"},\"weak\":{\"ids\":[84,42],\"desc\":\"Angela is countered by nimble Assassins with burst damage, such as Ling and Harley.\"},\"assist\":{\"ids\":[47,109],\"desc\":\"Angela works best with highly mobile Assassins such as Lancelot and Aamon since she can provide CC and heals while increasing their mobility even further.\"}},\"meta\":{\"win\":49.99,\"pick\":1.77,\"ban\":12.68}},{\"id\":56,\"name\":\"Gusion\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Burst\",\"Magic Damage\"],\"ability\":{\"durability\":30,\"offense\":90,\"effects\":10,\"difficulty\":80},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_c6cd232de60da5372a7101a203e56554.png\",\"tags\":{\"Buff\":2,\"Heal\":1,\"Damage\":1,\"Mobility\":2,\"AOE\":1,\"Slow\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[18,60],\"desc\":\"Gusion is strong against squishy heroes who lack movement abilities, so that Gusion can easily chase them down. Like Layla and Hanabi.\"},\"weak\":{\"ids\":[10,62],\"desc\":\"Gusion is countered by tank heroes with good single-target CC. Once controlled by them, Gusion will have a hard time escaping. Such as Franco and Kaja.\"},\"assist\":{\"ids\":[38,52],\"desc\":\"Gusion works well with heroes with strong opening CC, which will allow him to hit the target more easily with his 1st Skill, such as Vexana and Pharsa.\"}},\"meta\":{\"win\":48.68,\"pick\":1.24,\"ban\":3.23}},{\"id\":57,\"name\":\"Valir\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Damage\",\"Guard\"],\"ability\":{\"durability\":20,\"offense\":70,\"effects\":70,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_bf16690876761b80822df90eb3320d69.png\",\"tags\":{\"CC\":2,\"Damage\":1,\"AOE\":2,\"Slow\":1,\"Remove CC\":1,\"Buff\":1},\"sig\":{\"phys\":0,\"magic\":6,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":3,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[2,117],\"desc\":\"Valir excels in both sustained damage and Crowd Control. He counters heroes lacking mobility like Balmond and Fredrinn.\"},\"weak\":{\"ids\":[47,17],\"desc\":\"Valir is countered by agile Assassins like Lancelot and Fanny because they can easily evade his 1st Skill.\"},\"assist\":{\"ids\":[98,95],\"desc\":\"Teaming up with Fighters with strong initiation like Khaleed and Yu Zhong can simultaneously enhance the entire team's combat potential.\"}},\"meta\":{\"win\":53.92,\"pick\":1.26,\"ban\":4.41}},{\"id\":58,\"name\":\"Martis\",\"roles\":[\"Fighter\"],\"lanes\":[\"jungle\",\"exp\"],\"specialities\":[\"Finisher\",\"Charge\"],\"ability\":{\"durability\":60,\"offense\":30,\"effects\":50,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_cc8124b0eb6ca22d950b000744d69fbf.png\",\"tags\":{\"Buff\":2,\"CC\":1,\"AOE\":2,\"Mobility\":1,\"Burst\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":1,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[18,46],\"desc\":\"Martis counters squishy heroes with no mobility skills, such as Layla and Odette, who have a hard time avoiding his 1st Skill - 2nd Skill combo. Their relatively low HP also makes it easier for Martis to put them into execute range for his Ultimate.\"},\"weak\":{\"ids\":[72,117],\"desc\":\"Martis is countered by Fighters with high combat sustainability, such as Thamuz and Fredrinn, because they can survive Martis' burst damage and defeat him in prolonged battles.\"},\"assist\":{\"ids\":[28,98],\"desc\":\"Martis works best with Fighters that initiate teamfights like Alpha and Khaleed who he can follow up to secure a kill and chain more kills with his Ultimate.\"}},\"meta\":{\"win\":47.21,\"pick\":0.63,\"ban\":0.44}},{\"id\":59,\"name\":\"Uranus\",\"roles\":[\"Tank\"],\"lanes\":[\"exp\"],\"specialities\":[\"Regen\"],\"ability\":{\"durability\":100,\"offense\":20,\"effects\":20,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_2e15a0a506aaecd9b3de40a8cc9f7ec7.png\",\"tags\":{\"Heal\":1,\"AOE\":1,\"Slow\":1,\"Mobility\":1,\"Shield\":1,\"Buff\":1,\"Speed Up\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":3,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":3,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[6,10],\"desc\":\"Uranus has great sustainability, making him strong against heroes with low-damage abilities, such as Tigreal and Franco.\"},\"weak\":{\"ids\":[18,53],\"desc\":\"Uranus lacks Mobility and CC abilities which makes him an easy target for ranged heroes, such as Layla and Lesley.\"},\"assist\":{\"ids\":[105,60],\"desc\":\"Uranus becomes much more powerful when working with high-damage heroes like Beatrix and Hanabi.\"}},\"meta\":{\"win\":49.5,\"pick\":0.29,\"ban\":0.32}},{\"id\":60,\"name\":\"Hanabi\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Damage\"],\"ability\":{\"durability\":20,\"offense\":70,\"effects\":80,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_8a9c1966feb34e85d7bdcc1ed01ffb5d.png\",\"tags\":{\"Buff\":2,\"Shield\":1,\"AOE\":2,\"CC\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":5,\"basic\":4,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":0,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[6,70],\"desc\":\"Hanabi counters heroes that rely heavily on CC abilities, such as Tigreal and Belerick, since Hanabi can use her 1st Skill to ignore CC.\"},\"weak\":{\"ids\":[47,16],\"desc\":\"Hanabi is weak against heroes with high burst damage, such as Lancelot and Zilong, because they can quickly take down her shield.\"},\"assist\":{\"ids\":[92,93],\"desc\":\"Hanabi works well with heroes who can initiate with CC, such as Carmilla and Atlas, so she can focus on maximizing her bounce and Ultimate damage.\"}},\"meta\":{\"win\":52.81,\"pick\":2.42,\"ban\":4.09}},{\"id\":61,\"name\":\"Chang'e\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Poke\",\"Burst\"],\"ability\":{\"durability\":40,\"offense\":80,\"effects\":20,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_46cfe9c30e8a14f85b4d022496aca274.png\",\"tags\":{\"Debuff\":1,\"AOE\":1,\"Slow\":1,\"Buff\":1,\"Shield\":1,\"Burst\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":2,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":3,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[15,46],\"desc\":\"Chang'e is strong against squishy heroes who have low mobility and short damage range, such as Eudora and Odette. Chang'e can easily hit them with her long-range skills while dodging their attacks.\"},\"weak\":{\"ids\":[69,42],\"desc\":\"Chang'e is countered by agile Assassins with high burst like Hanzo and Harley, as they can avoid Chang'e's skills and use their high burst damage to kill her since she lacks self-protection.\"},\"assist\":{\"ids\":[41,6],\"desc\":\"Chang'e works well with Tanks who can pull enemies together, like Gatotkaca and Tigreal, because Chang'e can follow them into teamfights to deal massive damage.\"}},\"meta\":{\"win\":48.17,\"pick\":0.59,\"ban\":0.31}},{\"id\":62,\"name\":\"Kaja\",\"roles\":[\"Support\"],\"lanes\":[\"roam\"],\"specialities\":[\"Initiator\",\"Charge\"],\"ability\":{\"durability\":80,\"offense\":20,\"effects\":70,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_d558bb881e18a070eaeda1e1fdc248a8.png\",\"tags\":{\"Debuff\":1,\"AOE\":1,\"Slow\":1,\"Mobility\":1,\"CC\":2},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":2,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":3,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[18,121,38],\"desc\":\"Kaja does well against carries with no mobility skills, such as Layla, Ixia, and Vexana. Once he flies in and lassoes them, there's no hope of escape.\"},\"weak\":{\"ids\":[25,30,126],\"desc\":\"Now, if you're up against Kaja, remember that while his Ultimate can't be Purified, heroes with mobility like Kagura, Yi Sun-shin, and Suyou can still dodge it with a dash.\"},\"assist\":{\"ids\":[46,52,121],\"desc\":\"He also pairs well with allies with AoE, like Odette, Pharsa, and Ixia. Kaja can hold enemies in place while they pile on the damage. The perfect set!\"}},\"meta\":{\"win\":49.65,\"pick\":0.65,\"ban\":18.65}},{\"id\":63,\"name\":\"Selena\",\"roles\":[\"Assassin\",\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Initiator\",\"Finisher\"],\"ability\":{\"durability\":30,\"offense\":70,\"effects\":100,\"difficulty\":80},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_c3f967121519ae40509c5b2fdf52b19d.png\",\"tags\":{\"Buff\":3,\"Summon\":1,\"Slow\":1,\"CC\":1,\"Speed Up\":3,\"Morph\":2,\"Burst\":1,\"Shield\":1,\"Mobility\":1},\"sig\":{\"phys\":0,\"magic\":8,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":3,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[23,18],\"desc\":\"Selena is strong against squishy heroes with poor Mobility, simply because it's hard for them to dodge her 2nd Skill. Such as Gord and Layla.\"},\"weak\":{\"ids\":[60,89],\"desc\":\"But Selena is weak against heroes that can resist or remove her CC abilities, such as Hanabi and Wanwan.\"},\"assist\":{\"ids\":[115,105],\"desc\":\"Selena works well with ranged heroes that can deal high burst damage, such as Xavier and Beatrix.\"}},\"meta\":{\"win\":48.62,\"pick\":1.32,\"ban\":5.02}},{\"id\":64,\"name\":\"Aldous\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Burst\",\"Support\"],\"ability\":{\"durability\":70,\"offense\":30,\"effects\":50,\"difficulty\":70},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_0eb32187d08f14779585a8be53b83f01.png\",\"tags\":{\"Shield\":1,\"Damage\":2,\"Buff\":2,\"CC\":1,\"Mobility\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[16,67],\"desc\":\"Aldous is strong against heroes who cannot pressure him in the early game, so that he can easily build up the damage buff for his 1st Skill. Such as Zilong and Leomord.\"},\"weak\":{\"ids\":[58,85],\"desc\":\"Aldous is countered by heroes who are strong in the early game. They would make it very difficult for Aldous to build up the damage buff he needs. Heroes like Martis and Dyrroth are good examples here.\"},\"assist\":{\"ids\":[2,12],\"desc\":\"Aldous works well with heroes that are strong in the early game so that he can farm efficiently, such as Balmond and Bruno.\"}},\"meta\":{\"win\":53.18,\"pick\":0.51,\"ban\":0.66}},{\"id\":65,\"name\":\"Claude\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Burst\",\"Chase\"],\"ability\":{\"durability\":30,\"offense\":60,\"effects\":10,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_e1097b9d3e1d5e9f14600d32e8b18acd.png\",\"tags\":{\"Buff\":2,\"AOE\":1,\"Mobility\":1,\"Summon\":1,\"Burst\":1,\"Shield\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":3,\"atkSpeed\":2,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[38,112],\"desc\":\"Claude is strong against heroes with weak CC abilities and poor Mobility, so he can easily dodge their attacks with his 2nd Skill, such as Vexana and Luo Yi.\"},\"weak\":{\"ids\":[15,10],\"desc\":\"Claude is countered by heroes with powerful CC abilities. Their CC abilities will cause Claude to lose his Mobility advantage. Like Eudora and Franco.\"},\"assist\":{\"ids\":[55,76],\"desc\":\"Claude works best with heroes who can buff him, like Angela and Faramis.\"}},\"meta\":{\"win\":48.83,\"pick\":0.77,\"ban\":0.22}},{\"id\":66,\"name\":\"Vale\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Burst\",\"Crowd Control\"],\"ability\":{\"durability\":20,\"offense\":100,\"effects\":70,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_2a7a8d1531a1c4f8524880413535348d.png\",\"tags\":{\"Buff\":1,\"Speed Up\":1,\"AOE\":3,\"CC\":2},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[82,35],\"desc\":\"Vale counters slow Fighters like Terizla and Hilda because he can chip away their HP with his skills from afar while using his high Movement Speed to dodge their skills.\"},\"weak\":{\"ids\":[21,84],\"desc\":\"Vale is countered by agile Assassins that can become untargetable like Hayabusa and Ling, as it will be difficult to catch them with his CC while they can eliminate Vale easily with their high damage.\"},\"assist\":{\"ids\":[20,70],\"desc\":\"Vale works well with frontline Tanks like Lolita and Belerick who can protect him while he continuously pokes the enemy.\"}},\"meta\":{\"win\":50.08,\"pick\":0.5,\"ban\":0.2}},{\"id\":67,\"name\":\"Leomord\",\"roles\":[\"Fighter\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Burst\"],\"ability\":{\"durability\":70,\"offense\":50,\"effects\":30,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_554cdf13a7587fe08c5deed60132c61c.png\",\"tags\":{\"Buff\":2,\"AOE\":2,\"Slow\":3,\"Mobility\":2,\"Summon\":2,\"Morph\":2,\"CC\":1},\"sig\":{\"phys\":6,\"magic\":0,\"trueDmg\":0,\"heal\":2,\"vamp\":0,\"shield\":0,\"basic\":8,\"atkSpeed\":0,\"crit\":8,\"maxHp\":0,\"hardCc\":3,\"slow\":4,\"immune\":0,\"conceal\":0,\"dash\":3},\"relation\":{\"strong\":{\"ids\":[46,52,101,91],\"desc\":\"Mages without mobility such as Odette, Pharsa, Yve and Cecilion will fall to Leomord's high movement speed and burst damage.\"},\"weak\":{\"ids\":[106,10,9,5],\"desc\":\"Heroes with CC like Phoveus, Franco, Akai and Nana.\"},\"assist\":{\"ids\":[52,38],\"desc\":\"Heroes with AOE or CC like Pharsa and Vexana that can follow up after Leomord breaks the enemy formation.\"}},\"meta\":{\"win\":50.02,\"pick\":0.29,\"ban\":0.63}},{\"id\":68,\"name\":\"Lunox\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Burst\",\"Damage\"],\"ability\":{\"durability\":30,\"offense\":90,\"effects\":20,\"difficulty\":90},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_e162688afdcaf3f6498af30badfe31c5.png\",\"tags\":{\"Buff\":3,\"AOE\":7,\"Heal\":3,\"Damage\":3,\"Slow\":3,\"Invincible\":2,\"Mobility\":2,\"Burst\":1},\"sig\":{\"phys\":0,\"magic\":11,\"trueDmg\":0,\"heal\":0,\"vamp\":3,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":4,\"immune\":3,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[101,86],\"desc\":\"Lunox counters heroes that lack burst damage and healing, such as Yve and Lylia, because Lunox can use her self-healing to get the upper hand in a trade.\"},\"weak\":{\"ids\":[122,84],\"desc\":\"Lunox is countered by heroes with high mobility since her 2nd Skill has limited range and she lacks CC. Nimble heroes like Nolan and Ling can get in and out of her range all too easily.\"},\"assist\":{\"ids\":[10,19],\"desc\":\"Lunox is best paired with heroes with strong CC abilities like Franco and Minotaur. While Lunox lacks hard CC, if she can spam her skills on a stationary target, she can deal a ton of damage.\"}},\"meta\":{\"win\":51.55,\"pick\":0.56,\"ban\":1.27}},{\"id\":69,\"name\":\"Hanzo\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Poke\",\"Burst\"],\"ability\":{\"durability\":70,\"offense\":80,\"effects\":20,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_d2d28d2fcb060726fa27553920ca1a33.png\",\"tags\":{\"Buff\":2,\"Burst\":1,\"AOE\":2,\"Slow\":1,\"Morph\":1,\"Mobility\":1,\"Damage\":1,\"CC\":1},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":4,\"atkSpeed\":1,\"crit\":2,\"maxHp\":0,\"hardCc\":1,\"slow\":4,\"immune\":2,\"conceal\":0,\"dash\":4},\"relation\":{\"strong\":{\"ids\":[18,121,125],\"desc\":\"Hanzo's Ultimate enables him to poke or dive with relative safety, making him a serious threat to squishy heroes without mobility, like Layla, Ixia, and Zhuxin, while also disrupting the enemy in teamfights.\"},\"weak\":{\"ids\":[17,47,120],\"desc\":\"Hanzo fares less favorably against heroes with lots of mobility, such as Fanny, Lancelot, and Arlott, since it's difficult to build stacks on them, thus limiting Hanzo's damage.\"},\"assist\":{\"ids\":[36,70,6],\"desc\":\"Hanzo has high burst potential but needs time to stack his Passive, so he works best with heroes who can keep the enemy CC'd, like Aurora, Belerick, and Tigreal.\"}},\"meta\":{\"win\":49.88,\"pick\":0.35,\"ban\":4.9}},{\"id\":70,\"name\":\"Belerick\",\"roles\":[\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Crowd Control\",\"Regen\"],\"ability\":{\"durability\":90,\"offense\":40,\"effects\":100,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_5f2a9eca0bafd4ed8dc39a93c771b3af.png\",\"tags\":{\"Buff\":1,\"CC\":2,\"AOE\":2,\"Speed Up\":1,\"Heal\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":3,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[47,84],\"desc\":\"Belerick excels at controlling enemies at close range, making him a great counter against squishy Assassins who need to get close to deal damage, like Lancelot and Ling.\"},\"weak\":{\"ids\":[57,115],\"desc\":\"Belerick is countered by heroes with long-range attacks like Valir and Xavier.\"},\"assist\":{\"ids\":[107,1],\"desc\":\"Belerick works well with heroes who can dish out a lot of damage against enemies CC'd by his taunt, such as Miya and Natan.\"}},\"meta\":{\"win\":51.94,\"pick\":1.67,\"ban\":56.26}},{\"id\":71,\"name\":\"Kimmy\",\"roles\":[\"Marksman\",\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Damage\",\"Magic Damage\"],\"ability\":{\"durability\":30,\"offense\":80,\"effects\":50,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_61295dfefd369004e5e4a7f4fc86647b.png\",\"tags\":{\"Damage\":2,\"Speed Up\":1,\"Buff\":1,\"CC\":2,\"AOE\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":0,\"vamp\":1,\"shield\":0,\"basic\":3,\"atkSpeed\":2,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":4,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[79,91],\"desc\":\"Kimmy's ability to Basic Attack while moving makes her effective against heroes who rely on skillshots like Granger and Cecilion.\"},\"weak\":{\"ids\":[3,47],\"desc\":\"As a Marksman who cannot lock onto targets with Basic Attacks, Kimmy can be countered by heroes with high burst damage and mobility, such as Saber and Lancelot.\"},\"assist\":{\"ids\":[77,29],\"desc\":\"Kimmy excels at controlling and grouping enemies while dealing substantial damage, so she works well with heroes who have AOE CC like Badang and Ruby.\"}},\"meta\":{\"win\":48.25,\"pick\":0.83,\"ban\":0.69}},{\"id\":72,\"name\":\"Thamuz\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\",\"jungle\"],\"specialities\":[\"Chase\",\"Damage\"],\"ability\":{\"durability\":70,\"offense\":40,\"effects\":20,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_b5ad55e408b68acf6a86e7ff76f5f569.png\",\"tags\":{\"Debuff\":1,\"AOE\":2,\"Slow\":1,\"Mobility\":1,\"Buff\":2},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":1,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":4,\"atkSpeed\":1,\"crit\":0,\"maxHp\":1,\"hardCc\":0,\"slow\":3,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[16,27],\"desc\":\"Thamuz is good against other sustained damage Fighters like Zilong and Sun because he has the top notch laning power.\"},\"weak\":{\"ids\":[40,43],\"desc\":\"Thamuz is countered by agile Marksmen, such as Karrie and Irithel, since he lacks CC and relies on Basic Attacks, making him an easy target to kite.\"},\"assist\":{\"ids\":[55,14],\"desc\":\"Thamuz can play to his strength when working with Supports who provide Movement Speed or CC, such as Angela and Rafaela, because they enable him to stay on his targets.\"}},\"meta\":{\"win\":48.94,\"pick\":0.86,\"ban\":1.6}},{\"id\":73,\"name\":\"Harith\",\"roles\":[\"Mage\"],\"lanes\":[\"gold\"],\"specialities\":[\"Chase\",\"Damage\"],\"ability\":{\"durability\":40,\"offense\":50,\"effects\":10,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_d228a823b477fdf6c458c829c2e62bcf.png\",\"tags\":{\"Buff\":3,\"AOE\":1,\"Mobility\":1,\"Slow\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":1,\"shield\":1,\"basic\":3,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":5},\"relation\":{\"strong\":{\"ids\":[70,32],\"desc\":\"Harith is a very agile hero and his Ultimate reduces the duration of control effects, so he is excellent at countering heroes who rely on CC and have relatively long casting animations, like Belerick and Johnson.\"},\"weak\":{\"ids\":[119,52],\"desc\":\"Harith is countered by heroes who can quickly escape from his Ultimate, such as Novaria and Pharsa.\"},\"assist\":{\"ids\":[74,19],\"desc\":\"Harith pairs well with heroes who have AOE CC and can make it harder for enemies to escape his Ultimate's range, such as Minsitthar and Minotaur.\"}},\"meta\":{\"win\":47.45,\"pick\":0.15,\"ban\":0.05}},{\"id\":74,\"name\":\"Minsitthar\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Initiator\",\"Crowd Control\"],\"ability\":{\"durability\":60,\"offense\":40,\"effects\":80,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_c5d24a1dad6cef21de2698a4ed1d80ce.png\",\"tags\":{\"CC\":3,\"Damage\":2,\"Reduce DMG\":1,\"Buff\":1,\"Summon\":1},\"sig\":{\"phys\":6,\"magic\":0,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":1,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":2,\"hardCc\":7,\"slow\":3,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[97,120],\"desc\":\"Minsitthar is strong against heroes that rely on mobility skills since his Ultimate disables them. Minsitthar can instantly negate the advantages of heroes like Lancelot, Benedetta and Arlott.\"},\"weak\":{\"ids\":[16,108],\"desc\":\"Minsitthar is countered by heroes with high Movement Speed, such as Zilong and Aulus, who can easily dodge his 1st Skill and run out of his Ultimate.\"},\"assist\":{\"ids\":[114,60],\"desc\":\"Minsitthar works best with high damage Marksmen, such as Melissa and Hanabi, because he can create more opportunities for them to deal damage.\"}},\"meta\":{\"win\":52.46,\"pick\":0.6,\"ban\":3.6}},{\"id\":75,\"name\":\"Kadita\",\"roles\":[\"Mage\",\"Assassin\"],\"lanes\":[\"mid\"],\"specialities\":[\"Burst\",\"Charge\"],\"ability\":{\"durability\":40,\"offense\":80,\"effects\":80,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_99c0a77d0e01b06ad3f4351f8ef2869c.png\",\"tags\":{\"Heal\":1,\"Mobility\":1,\"AOE\":2,\"CC\":1,\"Burst\":1,\"Invincible\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":2,\"immune\":2,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[36,15],\"desc\":\"Kadita excels at countering heroes that lack mobility, such as Aurora and Eudora, because it's difficult for them to escape Kadita's 2nd Skill, and knocking them airborne sets them up for her Ultimate.\"},\"weak\":{\"ids\":[13,105],\"desc\":\"Kadita is countered by heroes with long range and high mobility, such as Clint and Beatrix, since it's difficult for Kadita to close in on them or hit them with her 2nd Skill.\"},\"assist\":{\"ids\":[93,6],\"desc\":\"Kadita works well with heroes who possess strong CC abilities, such as Atlas and Tigreal, as their CC will make it easier for Kadita to hit more enemies with her Ultimate.\"}},\"meta\":{\"win\":50.95,\"pick\":0.76,\"ban\":2.8}},{\"id\":76,\"name\":\"Faramis\",\"roles\":[\"Support\",\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Guard\",\"Charge\"],\"ability\":{\"durability\":40,\"offense\":60,\"effects\":10,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_04e575d648d7f7ac1174f4369595c3a2.png\",\"tags\":{\"Buff\":3,\"CC\":1,\"AOE\":1,\"Burst\":1,\"Death Immunity\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[3,15],\"desc\":\"Faramis' ability to temporarily prevent teammates from being killed makes him a good pick against heroes that go all-in to burst down a target, like Saber and Eudora.\"},\"weak\":{\"ids\":[119,52],\"desc\":\"Faramis is countered by high mobility heroes that are difficult for him to catch with his 1st Skill, such as Novaria and Pharsa.\"},\"assist\":{\"ids\":[67,58],\"desc\":\"Faramis works well with heroes that are designed to dive into the enemy, such as Leomord and Martis, as he'll be able to maximize the life-saving effect of his Ultimate.\"}},\"meta\":{\"win\":50.51,\"pick\":0.1,\"ban\":0.36}},{\"id\":77,\"name\":\"Badang\",\"roles\":[\"Fighter\"],\"lanes\":[\"roam\",\"exp\"],\"specialities\":[\"Charge\",\"Burst\"],\"ability\":{\"durability\":40,\"offense\":70,\"effects\":50,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_a81815e34246147b672d48209089da9c.png\",\"tags\":{\"CC\":2,\"Damage\":1,\"AOE\":2,\"Slow\":1,\"Mobility\":1,\"Burst\":1},\"sig\":{\"phys\":7,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":6,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[18,46],\"desc\":\"Badang counters squishy heroes with low mobility like Layla and Odette who have a hard time escaping from his 2nd Skill into Ultimate combo.\"},\"weak\":{\"ids\":[89,84],\"desc\":\"Badang is countered by agile heroes such as Wanwan and Ling who can dodge or escape his 2nd Skill, greatly diminishing his damage and CC.\"},\"assist\":{\"ids\":[6,96],\"desc\":\"Badang works best with heroes that can pull enemies together to make it easier for him to land his 2nd Skill and Ultimate combo, such as Tigreal and Luo Yi.\"}},\"meta\":{\"win\":50.18,\"pick\":1.35,\"ban\":3.72}},{\"id\":78,\"name\":\"Khufra\",\"roles\":[\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Initiator\",\"Crowd Control\"],\"ability\":{\"durability\":90,\"offense\":20,\"effects\":100,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_2fe99f4001211d18b3d2b95d0d3dc395.png\",\"tags\":{\"Heal\":1,\"Damage\":1,\"Mobility\":1,\"CC\":2,\"Slow\":1,\"Buff\":1,\"AOE\":1},\"sig\":{\"phys\":4,\"magic\":2,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":5,\"slow\":4,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[118,47],\"desc\":\"Khufra's 2nd Skill can be used to interrupt movement abilities, making him strong against heroes who fight with movement abilities, such as Joy and Lancelot.\"},\"weak\":{\"ids\":[117,104],\"desc\":\"Khufra is countered by resilient tank heroes, as his CC abilities pose no threat to these heroes. Heroes like Fredrinn and Gloo are good examples here.\"},\"assist\":{\"ids\":[15,52],\"desc\":\"Khufra works best with heroes with strong CC abilities that make it easier for his 1st Skill to hit, such as Eudora and Pharsa.\"}},\"meta\":{\"win\":54.81,\"pick\":0.37,\"ban\":2.3}},{\"id\":79,\"name\":\"Granger\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Burst\",\"Finisher\"],\"ability\":{\"durability\":30,\"offense\":70,\"effects\":10,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_a7729262d5b4abdc34ae5181e964c235.png\",\"tags\":{\"Damage\":1,\"Buff\":2,\"Burst\":2,\"Mobility\":1,\"Slow\":1},\"sig\":{\"phys\":2,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":1,\"maxHp\":0,\"hardCc\":0,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[61,91],\"desc\":\"Granger counters squishy heroes who lack mobility, such as Chang'e and Cecilion, who have a hard time dodging his 1st Skill and are vulnerable to the high damage of his Ultimate.\"},\"weak\":{\"ids\":[3,21],\"desc\":\"Granger is countered by heroes with strong single target killing power. Despite having good mobility, Granger lacks other defensive measures. Heroes like Saber and Hayabusa can quickly get the jump on Granger and finish him off.\"},\"assist\":{\"ids\":[10,62],\"desc\":\"Granger pairs well with heroes that have strong CC abilities, such as Franco and Kaja, who can hold enemies in place for Granger's entire 1st Skill.\"}},\"meta\":{\"win\":42.85,\"pick\":1.32,\"ban\":1.67}},{\"id\":80,\"name\":\"Guinevere\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Burst\",\"Magic Damage\"],\"ability\":{\"durability\":40,\"offense\":50,\"effects\":70,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_901bdd5d4432a2c0290dfc71df615a5a.png\",\"tags\":{\"Buff\":2,\"Damage\":2,\"Mobility\":1,\"CC\":2,\"Burst\":1},\"sig\":{\"phys\":0,\"magic\":7,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":3,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":5,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[16,90],\"desc\":\"Guinevere is strong against heroes with poor sustainability or who are simply weak in the early game. This is because Guinevere can easily deliver her poking combo and escape. Heroes like Zilong and Silvanna are good examples here.\"},\"weak\":{\"ids\":[77,26],\"desc\":\"But Guinevere is countered by heroes with CC immunities or strong CC skills. Since she needs to chain her CC to unleash her full damage potential, such as Badang and Chou.\"},\"assist\":{\"ids\":[10,49],\"desc\":\"Guinevere works best with heroes with good single-target CC that will give her a better environment to farm and deal damage, such as Franco and Hylos.\"}},\"meta\":{\"win\":51.23,\"pick\":0.81,\"ban\":1.75}},{\"id\":81,\"name\":\"Esmeralda\",\"roles\":[\"Tank\",\"Mage\"],\"lanes\":[\"exp\"],\"specialities\":[\"Regen\",\"Mixed Damage\"],\"ability\":{\"durability\":90,\"offense\":30,\"effects\":60,\"difficulty\":70},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_4661a64a2c6b724e7b67032fcbface27.png\",\"tags\":{\"Buff\":3,\"Shield\":2,\"AOE\":1,\"Burst\":1,\"Mobility\":1},\"sig\":{\"phys\":4,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":7,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[9,20],\"desc\":\"Esmeralda works well against heroes with shields, like Akai and Lolita, because her skills not only ignore their shields, but she also converts them into her own.\"},\"weak\":{\"ids\":[40,53],\"desc\":\"Esmeralda is countered by highly mobile Marksmen, such as Karrie and Lesley, because she lacks the burst damage to finish them off quickly and can't keep up with their mobility.\"},\"assist\":{\"ids\":[93,6],\"desc\":\"Esmeralda works best with heroes that can pull enemies together like Atlas and Tigreal to allow her to hit more targets with her Ultimate.\"}},\"meta\":{\"win\":47.07,\"pick\":0.83,\"ban\":2.16}},{\"id\":82,\"name\":\"Terizla\",\"roles\":[\"Fighter\",\"Tank\"],\"lanes\":[\"exp\"],\"specialities\":[\"Burst\",\"Crowd Control\"],\"ability\":{\"durability\":90,\"offense\":30,\"effects\":40,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_c4bb270c28c7be663f57e993b0d6d3d8.png\",\"tags\":{\"Buff\":1,\"AOE\":2,\"Speed Up\":1,\"Burst\":1,\"Slow\":1,\"CC\":1},\"sig\":{\"phys\":6,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":2,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":4,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[16,27],\"desc\":\"Terizla is strong against light melee fighters cause they'll have a hard time surviving his heavy skill damage, such as Zilong and Sun.\"},\"weak\":{\"ids\":[120,53],\"desc\":\"Terizla is countered by heroes with good Mobility or long attack range, because it will be diffcult to hit them with his skills. Such as Arlott and Lesley.\"},\"assist\":{\"ids\":[41,93],\"desc\":\"Terizla works best with heroes who have strong initiation skills that allow him to deal more damage with his skills, heroes like Gatotkaca and Atlas are good examples here.\"}},\"meta\":{\"win\":50.64,\"pick\":0.35,\"ban\":0.18}},{\"id\":83,\"name\":\"X.Borg\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Regen\",\"Burst\"],\"ability\":{\"durability\":80,\"offense\":30,\"effects\":10,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_efe9c7ed8d8f84f1bb0f88a3e08de5fc.png\",\"tags\":{\"Buff\":1,\"AOE\":1,\"CC\":1,\"Burst\":1,\"Mobility\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":2,\"heal\":2,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[82,108],\"desc\":\"X.Borg counters Fighters that lack mobility, such as Terizla and Aulus. His 1st Skill has a large range and can be cast while moving, making it easy for him to kite.\"},\"weak\":{\"ids\":[58,85],\"desc\":\"X.Borg is countered by Fighters with burst damage like Martis and Dyrroth. They can quickly burst down X.Borg when he is Armorless.\"},\"assist\":{\"ids\":[8,58],\"desc\":\"X.Borg pairs well with heroes who excel in burst damage, such as Karina and Martis. X.Borg's AOE damage will leave enemies low enough for his teammate to finishing off.\"}},\"meta\":{\"win\":49.91,\"pick\":0.57,\"ban\":1.94}},{\"id\":84,\"name\":\"Ling\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Burst\"],\"ability\":{\"durability\":50,\"offense\":60,\"effects\":30,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_017bade52b9fc94bbc12615de6d75c08.png\",\"tags\":{\"Buff\":2,\"Mobility\":2,\"Damage\":1,\"Burst\":1,\"CC\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":3,\"maxHp\":0,\"hardCc\":1,\"slow\":3,\"immune\":1,\"conceal\":3,\"dash\":5},\"relation\":{\"strong\":{\"ids\":[18,60],\"desc\":\"Ling's excellent pursuit abilities and high burst damage make him strong against squishy heroes, like Layla and Hanabi.\"},\"weak\":{\"ids\":[15,54],\"desc\":\"Ling is countered by heroes with strong single-target CC and high burst damage, as they can easily control Ling and burst him down. Such as Eudora and Jawhead.\"},\"assist\":{\"ids\":[55,78],\"desc\":\"Ling works best with support heroes with CC abilities, that make Ling more flexible in different situations. Such as Angela and Khufra.\"}},\"meta\":{\"win\":52.39,\"pick\":0.67,\"ban\":0.61}},{\"id\":85,\"name\":\"Dyrroth\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\",\"jungle\"],\"specialities\":[\"Charge\",\"Burst\"],\"ability\":{\"durability\":50,\"offense\":50,\"effects\":20,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_8ec13b59871b2862d773beac2d69fa3e.png\",\"tags\":{\"Buff\":1,\"Heal\":1,\"AOE\":1,\"Slow\":2,\"Mobility\":1,\"Damage\":1,\"Burst\":1},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":4,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[23,60],\"desc\":\"Dyrroth has good chasing abilities and good melee burst damage, he is strong against heroes with poor Mobility, such as Gord and Hanabi.\"},\"weak\":{\"ids\":[38,70],\"desc\":\"Being a melee hero makes Dyrroth weak against heroes with Slow and kiting abilities, such as Vexana and Belerick.\"},\"assist\":{\"ids\":[10,62],\"desc\":\"Dyrroth's high melee burst damage works best with heroes with single-target CC, such as Franco and Kaja.\"}},\"meta\":{\"win\":49.33,\"pick\":1.64,\"ban\":1.67}},{\"id\":86,\"name\":\"Lylia\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Push\",\"Damage\"],\"ability\":{\"durability\":50,\"offense\":100,\"effects\":20,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_706573f138055c3df3df94948b4f26bd.png\",\"tags\":{\"Buff\":2,\"Speed Up\":1,\"AOE\":2,\"Slow\":2,\"Heal\":1},\"sig\":{\"phys\":0,\"magic\":3,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[92,49],\"desc\":\"Lylia counters Tank heroes without Blink skills, such as Carmilla and Hylos, who cannot easily escape Gloom's AOE range and are more susceptible to Lylia's high sustained damage.\"},\"weak\":{\"ids\":[122,84],\"desc\":\"Since most of Lylia's damage comes from detonating her 2nd Skill, but setting up Gloom can be quite slow, nimble Assassins like Nolan and Ling counter Lylia as she'll have a tough time hitting them.\"},\"assist\":{\"ids\":[19,10],\"desc\":\"Lylia excels in prolonged battles, and works well with heroes with strong CC, like Franco and Minotaur.\"}},\"meta\":{\"win\":49,\"pick\":0.47,\"ban\":0.39}},{\"id\":87,\"name\":\"Baxia\",\"roles\":[\"Tank\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Support\",\"Damage\"],\"ability\":{\"durability\":100,\"offense\":30,\"effects\":60,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_80e408203869ca99302af195ac4f756c.png\",\"tags\":{\"Buff\":1,\"Debuff\":1,\"Speed Up\":2,\"CC\":1,\"Damage\":1,\"Slow\":1,\"AOE\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":5,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[61,90],\"desc\":\"Baxia counters heroes with multi-hit skills or those who rely on shields or HP Regen, such as Chang'e and Silvanna, thanks to his Passive.\"},\"weak\":{\"ids\":[40,53],\"desc\":\"Baxia is countered by agile Marksmen who deal True Damage like Karrie and Lesley because they can easily stay out of Baxia's range while dealing massive damage to him.\"},\"assist\":{\"ids\":[72,28],\"desc\":\"Baxia can utilize his AOE damage and slow effect to help sustained damage heroes like Thamuz and Alpha stay on their targets.\"}},\"meta\":{\"win\":45.87,\"pick\":0.05,\"ban\":0.1}},{\"id\":88,\"name\":\"Masha\",\"roles\":[\"Fighter\",\"Tank\"],\"lanes\":[\"exp\"],\"specialities\":[\"Push\",\"Damage\"],\"ability\":{\"durability\":50,\"offense\":70,\"effects\":30,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_4d79ba6ebb0a0f2bf542917f0b19d056.png\",\"tags\":{\"Buff\":1,\"AOE\":1,\"Mobility\":1,\"Slow\":1,\"CC\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[15,75],\"desc\":\"Burst Mages like Eudora and Kadita are ideal prey for Masha. With three HP bars and CC removal plus damage negation when losing a bar, Masha has built-in anti-burst against them.\"},\"weak\":{\"ids\":[17,65],\"desc\":\"Choose highly mobile heroes with multiple dashes, such as Fanny or Claude. Thwart her initiation, then focus her down before she goes Feral.\"},\"assist\":{\"ids\":[93,19],\"desc\":\"Masha also pairs well with CC heroes like Atlas and Minotaur. Once they pull the enemies together, she can tear them to shreds with her savage claws!\"}},\"meta\":{\"win\":59.08,\"pick\":0.48,\"ban\":41.27}},{\"id\":89,\"name\":\"Wanwan\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Burst\"],\"ability\":{\"durability\":20,\"offense\":60,\"effects\":30,\"difficulty\":80},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_44bfa1dc44deb8d7620605faaa9ffae7.png\",\"tags\":{\"Buff\":1,\"Mobility\":1,\"AOE\":2,\"CC\":1,\"Remove CC\":1,\"Burst\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":1,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":3,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":3},\"relation\":{\"strong\":{\"ids\":[117,96],\"desc\":\"Wanwan is exceptional in dashing and powerful against heroes with short ranges or heavy weight, such as Fredrinn and Luo Yi.\"},\"weak\":{\"ids\":[47,23],\"desc\":\"However, due to her lack of durability and short attack range, Mages with longer ranges like Gord can poke her easily. She also lacks survival abilities when taking Burst damage and can be weak against Burst Assassins like Lancelot.\"},\"assist\":{\"ids\":[10,70],\"desc\":\"She's best with Supporting Tanks with powerful crowd control, like Franco and Belerick. They can help Wanwan hit more Weaknesses and unlock her Ultimate.\"}},\"meta\":{\"win\":47.52,\"pick\":0.14,\"ban\":0.14}},{\"id\":90,\"name\":\"Silvanna\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Initiator\",\"Magic Damage\"],\"ability\":{\"durability\":50,\"offense\":40,\"effects\":70,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_5e7b297af7c6e32a420b897aa4998071.png\",\"tags\":{\"Buff\":1,\"Debuff\":1,\"Mobility\":1,\"CC\":2,\"AOE\":2,\"Shield\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":1,\"shield\":1,\"basic\":3,\"atkSpeed\":2,\"crit\":1,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[18,57],\"desc\":\"Silvanna has a long attack range and powerful crowd control abilities,which makes her stronger against back-row Mages and Marksmen,such as Layla and Valir.\"},\"weak\":{\"ids\":[58],\"desc\":\"But she can be weak against Fighters with multiple CCs like Martis because they can easily interrupt her 2nd Skill.\"},\"assist\":{\"ids\":[93,6],\"desc\":\"Pairing Silvanna with Tanks gives her sufficient space to dish out damage. For example, Atlas and Tigreal.\"}},\"meta\":{\"win\":51.45,\"pick\":1,\"ban\":2.15}},{\"id\":91,\"name\":\"Cecilion\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Poke\",\"Burst\"],\"ability\":{\"durability\":40,\"offense\":100,\"effects\":50,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_045399c265021d47da6512e6de20b64f.png\",\"tags\":{\"Buff\":1,\"AOE\":2,\"Speed Up\":2,\"CC\":1,\"Burst\":1,\"Shield\":1,\"Slow\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":2,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":3,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[2,82],\"desc\":\"Cecilion counters less mobile Fighters like Balmond and Terizla because these heroes have a hard time getting close to Cecilion while Cecilion can more easily hit them with his skills.\"},\"weak\":{\"ids\":[84,17],\"desc\":\"Cecilion is countered by Assassins who can quickly close the gap like Ling and Fanny because Cecilion lacks defensive tools and his normal skills cannot hit enemies in melee range.\"},\"assist\":{\"ids\":[92,19],\"desc\":\"Cecilion works well with Tanks with sustained CC abilities, such as Carmilla and Minotaur, since their CC can help Cecilion land his skills.\"}},\"meta\":{\"win\":50.67,\"pick\":0.65,\"ban\":0.17}},{\"id\":92,\"name\":\"Carmilla\",\"roles\":[\"Support\",\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Crowd Control\",\"Damage\"],\"ability\":{\"durability\":90,\"offense\":20,\"effects\":80,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_6fb8f120dafdcbc1b5da2a2667016ad5.png\",\"tags\":{\"Buff\":1,\"Debuff\":1,\"Damage\":1,\"Heal\":1,\"Speed Up\":1,\"CC\":2},\"sig\":{\"phys\":0,\"magic\":3,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":3,\"slow\":4,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[85,37],\"desc\":\"Carmilla counters melee Fighters with low durability, such as Dyrroth and Lapu-Lapu, because she can rapidly steal their Defenses with her 1st Skill and Passive while healing herself.\"},\"weak\":{\"ids\":[60,89],\"desc\":\"Carmilla is countered by heroes that can ignore or remove her CC, such as Hanabi and Wanwan, since they can't be locked down by Carmilla's 2nd Skill or Ultimate.\"},\"assist\":{\"ids\":[91,36],\"desc\":\"Carmilla is best paired with sustained damage Mages with CC abilities like Cecilion and Aurora, as her Ultimate can greatly amplify their strengths.\"}},\"meta\":{\"win\":52.98,\"pick\":1.28,\"ban\":22.94}},{\"id\":93,\"name\":\"Atlas\",\"roles\":[\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Crowd Control\",\"Initiator\"],\"ability\":{\"durability\":80,\"offense\":10,\"effects\":90,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_d974ac796678180ff8724b88e192898b.png\",\"tags\":{\"Buff\":1,\"Debuff\":1,\"AOE\":2,\"Mobility\":1,\"CC\":2},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":5,\"slow\":3,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[38,15],\"desc\":\"Atlas counters squishy heroes without mobility skills like Vexana and Eudora because they cannot reliably escape his CC.\"},\"weak\":{\"ids\":[57,31],\"desc\":\"Atlas is countered by heroes who can knock him away, such as Valir and Moskov, since they can easily stop his 2nd Skill which Atlas relies on to land his other skills.\"},\"assist\":{\"ids\":[66,121],\"desc\":\"Atlas works well with heroes with high AOE damage like Vale and Ixia because Atlas can pull enemies together and keep them CC'd.\"}},\"meta\":{\"win\":50.45,\"pick\":0.89,\"ban\":8.76}},{\"id\":94,\"name\":\"Popol and Kupa\",\"roles\":[\"Marksman\"],\"lanes\":[\"jungle\",\"gold\"],\"specialities\":[\"Control\",\"Burst\"],\"ability\":{\"durability\":40,\"offense\":70,\"effects\":70,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_f37281ad588cf152cfafdd662f7edc9b.png\",\"tags\":{\"Buff\":4,\"Damage\":2,\"CC\":4,\"Mobility\":2,\"Shield\":2,\"Summon\":2},\"sig\":{\"phys\":6,\"magic\":0,\"trueDmg\":2,\"heal\":6,\"vamp\":0,\"shield\":4,\"basic\":4,\"atkSpeed\":2,\"crit\":0,\"maxHp\":2,\"hardCc\":4,\"slow\":4,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[100,23,101],\"desc\":\"Squishies with low mobility like Brody, Gord, and Yve are Popol and Kupa's favorite prey. Combo their Skill 1 and Skill 3 for an inescapable CC chain.\"},\"weak\":{\"ids\":[56,8,133],\"desc\":\"But against bursty Assassins like Gusion, Karina, or Hirara, Popol and Kupa need to tread carefully. One misstep and they'll close in, putting an end to your hunt.\"},\"assist\":{\"ids\":[132,6,93],\"desc\":\"Strong initiators like Marcel, Tigreal, and Atlas make ideal hunting companions. They can easily follow up on Popol's CC, diving the enemy formation to focus the main prey.\"}},\"meta\":{\"win\":50.21,\"pick\":0.47,\"ban\":1.44}},{\"id\":95,\"name\":\"Yu Zhong\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Regen\",\"Damage\"],\"ability\":{\"durability\":70,\"offense\":40,\"effects\":70,\"difficulty\":70},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_9823ce4fe5eb89c0082b24f6d5ea67f6.png\",\"tags\":{\"Buff\":2,\"AOE\":1,\"Slow\":1,\"Mobility\":2,\"CC\":1,\"Morph\":1},\"sig\":{\"phys\":7,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[108,16],\"desc\":\"Yu Zhong counters squishy Fighter heroes such as Aulus and Zilong, because they can't easily dodge Yu Zhong's skills and have a hard time with him in the early game.\"},\"weak\":{\"ids\":[53,40],\"desc\":\"Yu Zhong is countered by nimble Marksman heroes such as Lesley and Karrie, since it's hard for Yu Zhong to land his skills, making him a vulnerable and easy target.\"},\"assist\":{\"ids\":[38,115],\"desc\":\"Yu Zhong works well with Mages that can initiate with CC such as Vexana and Xavier. Their control effects allow Yu Zhong to land his skills more easily.\"}},\"meta\":{\"win\":48.8,\"pick\":0.67,\"ban\":0.73}},{\"id\":96,\"name\":\"Luo Yi\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Support\",\"Crowd Control\"],\"ability\":{\"durability\":20,\"offense\":100,\"effects\":40,\"difficulty\":80},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_26e03fd72532d11c7b32911b95b8d559.png\",\"tags\":{\"Burst\":1,\"CC\":1,\"AOE\":2,\"Slow\":1,\"Teleport\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[15,23],\"desc\":\"Luo Yi counters heroes with low mobility such as Eudora and Gord because they are easy targets for her Sigils and Yin-Yang Reactions.\"},\"weak\":{\"ids\":[59,117],\"desc\":\"Luo Yi is countered by Fighters or Tanks with high HP recovery like Uranus and Fredrinn because she can't deal enough damage to finish them off quickly.\"},\"assist\":{\"ids\":[109,8],\"desc\":\"Luo Yi works best with Junglers who are often looking for fights around the map, such as Aamon and Karina, because she can use her Ultimate to cut down their travel time.\"}},\"meta\":{\"win\":47,\"pick\":0.17,\"ban\":0.07}},{\"id\":97,\"name\":\"Benedetta\",\"roles\":[\"Assassin\",\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Chase\",\"Burst\"],\"ability\":{\"durability\":60,\"offense\":50,\"effects\":20,\"difficulty\":80},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_b4a5e537894bdc00787e80e4d3ada5dd.png\",\"tags\":{\"Mobility\":4,\"Damage\":1,\"AOE\":1,\"Buff\":1,\"Burst\":1},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":2,\"immune\":2,\"conceal\":0,\"dash\":4},\"relation\":{\"strong\":{\"ids\":[54,80],\"desc\":\"Benedetta's 2nd Skill can effectively block enemy CC, making her a great counter to heroes with predictable CC skills, such as Jawhead and Guinevere.\"},\"weak\":{\"ids\":[74,106],\"desc\":\"Benedetta is countered by heroes with skills that shutdown mobility skills, such as Minsitthar and Phoveus, since all of Benedetta's skills are considered mobility.\"},\"assist\":{\"ids\":[32,41],\"desc\":\"Benedetta works well with strong CC initiators, like Johnson and Gatotkaca, because they allow her to maximize the effects of her Ultimate.\"}},\"meta\":{\"win\":52.07,\"pick\":0.42,\"ban\":0.39}},{\"id\":98,\"name\":\"Khaleed\",\"roles\":[\"Fighter\"],\"lanes\":[\"roam\",\"exp\"],\"specialities\":[\"Damage\",\"Regen\"],\"ability\":{\"durability\":80,\"offense\":50,\"effects\":50,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_540a6a9d343842674ce002082366ec9d.png\",\"tags\":{\"Speed Up\":1,\"Damage\":1,\"AOE\":1,\"Reduce DMG\":1,\"Heal\":1,\"CC\":1,\"Mobility\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":1,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[33,115],\"desc\":\"Khaleed counters heroes who lack mobility like Cyclops and Xavier since they will have difficult time avoiding his combo.\"},\"weak\":{\"ids\":[83,26],\"desc\":\"Khaleed is countered by heroes who have the ability to knock him back or airborne to interrupt his 2nd Skill, such as X.Borg and Chou.\"},\"assist\":{\"ids\":[39,8],\"desc\":\"Because Khaleed can deal a lot of AOE damage, he works well with heroes like Roger and Karina who excel at finishing off multiple low HP targets.\"}},\"meta\":{\"win\":50.19,\"pick\":0.13,\"ban\":0.09}},{\"id\":99,\"name\":\"Barats\",\"roles\":[\"Tank\",\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Damage\",\"Crowd Control\"],\"ability\":{\"durability\":100,\"offense\":30,\"effects\":90,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_6495be044c2d28106e200f6918391d54.png\",\"tags\":{\"Buff\":1,\"AOE\":2,\"CC\":2,\"Mobility\":1},\"sig\":{\"phys\":7,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":4,\"hardCc\":2,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[70,20],\"desc\":\"Barats counters Tank heroes that rely on CC skills, such as Belerick and Lolita, since the extra Resilience provided by his Passive will greatly reduce the duration of their CC.\"},\"weak\":{\"ids\":[9,31],\"desc\":\"Barats is countered by agile Marksmen who can deal high damage to Tanks, such as Karrie and Moskov, because Barats lacks mobility and his skills can be avoided, making these heroes very difficult to kill.\"},\"assist\":{\"ids\":[102,55],\"desc\":\"Barats works best with Supports who can give him Movement Speed to make up for his lack of mobility, such as Mathilda and Angela.\"}},\"meta\":{\"win\":51.57,\"pick\":0.63,\"ban\":2.87}},{\"id\":100,\"name\":\"Brody\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Burst\",\"Finisher\"],\"ability\":{\"durability\":40,\"offense\":70,\"effects\":50,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_cbb309b63cdf838fce79bd9cb95d4ed7.png\",\"tags\":{\"Buff\":1,\"AOE\":2,\"Slow\":1,\"Mobility\":1,\"CC\":1,\"Burst\":1},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":4,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":3,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[109,113],\"desc\":\"Brody is strong against heroes with poor survivability in the early game and heroes without dash, because he can easily lock on them and attack beyond their reach. Like Aamon and Yin.\"},\"weak\":{\"ids\":[58,89],\"desc\":\"Brody is countered by heroes with CC immunity and multiple movement abilities, because they can quickly close in on Brody, giving him no chance to stack the Abyss Mark. Such as Martis and Wanwan.\"},\"assist\":{\"ids\":[49,74],\"desc\":\"Brody works best with heroes who can perform lock-on attacks or heroes with area CC abilities, as they can give Brody more room to deal damage and farm better. Such as Hylos and Minsitthar.\"}},\"meta\":{\"win\":49.93,\"pick\":0.8,\"ban\":1.31}},{\"id\":101,\"name\":\"Yve\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Poke\",\"Burst\"],\"ability\":{\"durability\":40,\"offense\":80,\"effects\":40,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_d9b0a1d92b1c4b3643d6332fd66aa8e6.png\",\"tags\":{\"Shield\":1,\"AOE\":2,\"Buff\":1,\"Slow\":1,\"Burst\":1,\"CC\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":3,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[117,99,108],\"desc\":\"Yve counters Tanks and Fighters with low mobility like Fredrinn, Barats, and Aulus due to her long range skills.\"},\"weak\":{\"ids\":[113,3,8],\"desc\":\"Yve's low survivability makes her a target for divers and burst damage heroes like Yin, Saber, and Karina.\"},\"assist\":{\"ids\":[19,41,93],\"desc\":\"Yve's works best with Tanks and Supports with strong CC to lockdown enemies for her Ultimate, like Minotaur, Gatotkaca, and Atlas.\"}},\"meta\":{\"win\":52.1,\"pick\":0.06,\"ban\":0.04}},{\"id\":102,\"name\":\"Mathilda\",\"roles\":[\"Support\",\"Assassin\"],\"lanes\":[\"roam\"],\"specialities\":[\"Initiator\",\"Guard\"],\"ability\":{\"durability\":80,\"offense\":20,\"effects\":40,\"difficulty\":70},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_24d08ed788a9f5984bcf3b732ddcaf04.png\",\"tags\":{\"Damage\":1,\"Speed Up\":1,\"Burst\":1,\"Mobility\":2,\"Shield\":2},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":3,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":3},\"relation\":{\"strong\":{\"ids\":[23,66],\"desc\":\"Mathilda excels in harassment and single-target CC, making her a great counter to squishy heroes with no escape skills, like Gord and Vale.\"},\"weak\":{\"ids\":[10,74],\"desc\":\"Mathilda is countered by Tanks with multiple CC skills, such as Franco and Minsitthar.\"},\"assist\":{\"ids\":[3,15],\"desc\":\"Mathilda works well with high burst damage heroes who can use Guiding Wind and follow up her Ultimate to secure kills, such as Saber and Eudora.\"}},\"meta\":{\"win\":44.43,\"pick\":0.13,\"ban\":0.18}},{\"id\":103,\"name\":\"Paquito\",\"roles\":[\"Fighter\",\"Assassin\"],\"lanes\":[\"exp\",\"jungle\"],\"specialities\":[\"Chase\",\"Damage\"],\"ability\":{\"durability\":60,\"offense\":50,\"effects\":40,\"difficulty\":90},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_5ab87805b9107b126a3bab64a8a199ad.png\",\"tags\":{\"Buff\":1,\"Damage\":1,\"AOE\":1,\"Shield\":1,\"Burst\":2,\"Mobility\":1,\"CC\":1},\"sig\":{\"phys\":7,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":3,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":3,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[23,18],\"desc\":\"Paquito is a hero with dash and high burst damage, making him strong against squishy heroes without defensive abilities, such as Gord and Layla.\"},\"weak\":{\"ids\":[10,62],\"desc\":\"Paquito is an agile hero, but he is also kind of squishy, which makes him weak against heroes with strong CC abilities. Such as Franco and Kaja.\"},\"assist\":{\"ids\":[55,14],\"desc\":\"Paquito works best with support heroes who can buff him, like Angela and Rafaela.\"}},\"meta\":{\"win\":49.97,\"pick\":1.19,\"ban\":14.02}},{\"id\":104,\"name\":\"Gloo\",\"roles\":[\"Tank\"],\"lanes\":[\"roam\",\"exp\"],\"specialities\":[\"Regen\",\"Control\"],\"ability\":{\"durability\":100,\"offense\":30,\"effects\":100,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_c472fe0233e5ef84a3ac9ba4a229d09f.png\",\"tags\":{\"Slow\":1,\"Buff\":1,\"AOE\":2,\"CC\":2,\"Attach\":1,\"Heal\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[91,61],\"desc\":\"Gloo is strong against Mage heroes without good CC. Because he can easily attach himself to them, and take them where he wants them to go. Such as Cecilion and Chang'e.\"},\"weak\":{\"ids\":[40,53],\"desc\":\"Gloo is countered by Marksman heroes with good mobility. It's difficult for Gloo to attach himself to them, and he can easily be killed if he tries. Such as Karrie and Lesley.\"},\"assist\":{\"ids\":[15,3],\"desc\":\"Gloo works best with high burst damage heroes, as they can quickly take down the enemy hero that he brings back with his Ultimate. Like Eudora and Saber.\"}},\"meta\":{\"win\":52.08,\"pick\":0.69,\"ban\":40.65}},{\"id\":105,\"name\":\"Beatrix\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Damage\"],\"ability\":{\"durability\":30,\"offense\":80,\"effects\":10,\"difficulty\":70},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_4687eca874feec9017b448a0b9110d65.png\",\"tags\":{\"Buff\":12,\"Morph\":8,\"Mobility\":4,\"Burst\":2,\"AOE\":3,\"Slow\":1},\"sig\":{\"phys\":8,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":8,\"shield\":0,\"basic\":8,\"atkSpeed\":0,\"crit\":8,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[49,70],\"desc\":\"Beatrix is strong against heroes without movement abilities, as they can be easily hit by her skills, such as Hylos and Belerick.\"},\"weak\":{\"ids\":[15,84],\"desc\":\"Beatrix is countered by high burst damage heroes with strong single-target CC, as they can catch her with a CC and burst her down. Such as Eudora and Ling.\"},\"assist\":{\"ids\":[78,93],\"desc\":\"Beatrix works best with tank heroes with good CC abilities, as they can help improve the accuracy of Beatrix's skills. Like Khufra and Atlas.\"}},\"meta\":{\"win\":50.3,\"pick\":0.64,\"ban\":0.42}},{\"id\":106,\"name\":\"Phoveus\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Regen\",\"Damage\"],\"ability\":{\"durability\":60,\"offense\":80,\"effects\":50,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_af21c0dd8b5308c27974bff900803a9a.png\",\"tags\":{\"Buff\":1,\"AOE\":2,\"Slow\":1,\"CC\":1,\"Mobility\":1,\"Burst\":1},\"sig\":{\"phys\":2,\"magic\":3,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":3},\"relation\":{\"strong\":{\"ids\":[89,120,26],\"desc\":\"Enemies with multiple mobility abilities can greatly reduce Phoveus's cooldowns, so he can use his enhanced Basic Attacks and skills more often when facing heroes like Wanwan, Arlott, and Chou.\"},\"weak\":{\"ids\":[36,57,38],\"desc\":\"Phoveus will struggle against ranged heroes with strong CC, such as Aurora, Valir, and Vexana.\"},\"assist\":{\"ids\":[41,19,6],\"desc\":\"Tanks with good initiation like Gatotkaca, Minotaur, and Tigreal can create opportunities for Phoveus to maximize his damage while they take some of the incoming damage.\"}},\"meta\":{\"win\":48.38,\"pick\":0.28,\"ban\":0.91}},{\"id\":107,\"name\":\"Natan\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Burst\",\"Magic Damage\"],\"ability\":{\"durability\":20,\"offense\":60,\"effects\":20,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_da02742f59013365923b216420bc4082.png\",\"tags\":{\"Buff\":1,\"Burst\":1,\"CC\":1,\"Summon\":1,\"Mobility\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[6,41],\"desc\":\"Natan is strong against Tanks with low mobility such as Tigreal and Gatotkaca because he can easily avoid their control abilities with his UIltimate and get more hits in with his Basic Attacks on slower targets.\"},\"weak\":{\"ids\":[3,15],\"desc\":\"Natan is countered by heroes with targeted control and high burst like Saber and Eudora that can lock him down and finish him off.\"},\"assist\":{\"ids\":[32,28],\"desc\":\"Natan's Ultimate allows him to blink a great distance, so he works best with initiator heroes such as Johnson and Alpha because he can dive with them and unleash a lot of damage.\"}},\"meta\":{\"win\":51.37,\"pick\":0.31,\"ban\":0.13}},{\"id\":108,\"name\":\"Aulus\",\"roles\":[\"Fighter\"],\"lanes\":[\"jungle\",\"exp\"],\"specialities\":[\"Damage\",\"Charge\"],\"ability\":{\"durability\":60,\"offense\":60,\"effects\":10,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_1366d775809e52ee6526b5b58d93cdff.png\",\"tags\":{\"Buff\":2,\"Speed Up\":1,\"CC\":1,\"Mobility\":1,\"Burst\":1},\"sig\":{\"phys\":6,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":3,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[60,1,23],\"desc\":\"Aulus's strong engage and sustained combat capabilities, along with his Control Immunity, makes him a good counter to squishy, low-mobility heroes like Hanabi, Miya, and Gord.\"},\"weak\":{\"ids\":[10,114,8],\"desc\":\"Since Aulus's damage relies on landing his enhanced Basic Attacks, heroes who can keep him at bay and avoid them are a tough matchup, such as Franco, Melissa, and Karina.\"},\"assist\":{\"ids\":[55,112],\"desc\":\"Aulus is a dive Fighter and he thrives with reliable ranged Support, such as Angela and Floryn.\"}},\"meta\":{\"win\":53.03,\"pick\":0.66,\"ban\":20.64}},{\"id\":109,\"name\":\"Aamon\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Magic Damage\"],\"ability\":{\"durability\":30,\"offense\":70,\"effects\":10,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_b3a7602fe7ffd1e54bf8ea79ceadfa72.png\",\"tags\":{\"Buff\":2,\"Damage\":2,\"Burst\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":4,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":1,\"conceal\":5,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[115,91],\"desc\":\"Squishy heroes with low mobility such as Layla and Hanabi.\"},\"weak\":{\"ids\":[2,117],\"desc\":\"Tanky heroes or those that deal damage over time such as Balmond and Fredrinn.\"},\"assist\":{\"ids\":[14,112],\"desc\":\"Support heroes that can provide buffs such as Rafaela and Floryn.\"}},\"meta\":{\"win\":50.2,\"pick\":0.65,\"ban\":2.64}},{\"id\":110,\"name\":\"Valentina\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Burst\",\"Finisher\"],\"ability\":{\"durability\":50,\"offense\":40,\"effects\":40,\"difficulty\":80},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_24837021ec9d7aaf41b13fa55b6d13c9.png\",\"tags\":{\"Buff\":2,\"Heal\":1,\"Damage\":1,\"CC\":1,\"Mobility\":1,\"Morph\":1,\"Slow\":1},\"sig\":{\"phys\":1,\"magic\":2,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[60,76],\"desc\":\"Heroes that lack mobility or burst such as Hanabi and Faramis are suspectible to Valentina's low cooldown skills that provide soft CC and sustained damage.\"},\"weak\":{\"ids\":[21,24,69],\"desc\":\"Heroes with gap closers or high burst like Hayabusa, Natalia, and Hanzo.\"},\"assist\":{\"ids\":[92,93],\"desc\":\"Heroes that can buff or CC such as Carmilla and Atlas to give her more opportunities to deal damage.\"}},\"meta\":{\"win\":44.4,\"pick\":0.14,\"ban\":0.13}},{\"id\":111,\"name\":\"Edith\",\"roles\":[\"Tank\",\"Marksman\"],\"lanes\":[\"exp\"],\"specialities\":[\"Control\",\"Burst\"],\"ability\":{\"durability\":70,\"offense\":30,\"effects\":100,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_daab57918de01a6d5bb2ed6f45808a7e.png\",\"tags\":{\"Buff\":4,\"CC\":3,\"AOE\":2,\"Charge\":1,\"Morph\":2,\"Burst\":1},\"sig\":{\"phys\":3,\"magic\":7,\"trueDmg\":0,\"heal\":0,\"vamp\":2,\"shield\":2,\"basic\":4,\"atkSpeed\":2,\"crit\":0,\"maxHp\":7,\"hardCc\":5,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[16,108],\"desc\":\"Edith is strong against heroes that are not very agile and on the fragile side, such as Zilong and Aulus, because her skills deal enough burst damage to eliminate them after connecting with her 2nd Skill.\"},\"weak\":{\"ids\":[60,89],\"desc\":\"Edith is countered by Marksmen that can negate CC like Hanabi and Wanwan, since she will have a hard time locking them down.\"},\"assist\":{\"ids\":[19,93],\"desc\":\"Edith works best with heroes like Minotaur and Atlas that can more reliably CC a target first, allowing her to follow up with her own CC.\"}},\"meta\":{\"win\":53.12,\"pick\":0.27,\"ban\":0.12}},{\"id\":112,\"name\":\"Floryn\",\"roles\":[\"Support\"],\"lanes\":[\"roam\"],\"specialities\":[\"Poke\",\"Guard\"],\"ability\":{\"durability\":60,\"offense\":10,\"effects\":70,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_5a57b91e4914cf071a3849e352e530a5.png\",\"tags\":{\"Buff\":1,\"Damage\":2,\"Heal\":2,\"CC\":1},\"sig\":{\"phys\":0,\"magic\":2,\"trueDmg\":0,\"heal\":3,\"vamp\":0,\"shield\":2,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[59,20],\"desc\":\"Floryn excels at sustained healing and counters Tanks with low damage output, such as Uranus and Lolita.\"},\"weak\":{\"ids\":[8,3],\"desc\":\"Floryn is countered by high mobility and burst damage Assassins, like Karina and Saber.\"},\"assist\":{\"ids\":[82,72],\"desc\":\"Floryn works well with tanky Fighters, such as Terizla and Thamuz, because they are easier to keep alive with heals and can peel enemies off of her.\"}},\"meta\":{\"win\":54.07,\"pick\":0.96,\"ban\":13.64}},{\"id\":113,\"name\":\"Yin\",\"roles\":[\"Fighter\",\"Assassin\"],\"lanes\":[\"jungle\",\"exp\"],\"specialities\":[\"Burst\",\"Control\"],\"ability\":{\"durability\":50,\"offense\":60,\"effects\":80,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_ee1c12c84f49514a30e405fb5c617796.png\",\"tags\":{\"Buff\":4,\"Burst\":2,\"Speed Up\":1,\"Mobility\":2,\"CC\":4},\"sig\":{\"phys\":7,\"magic\":0,\"trueDmg\":0,\"heal\":2,\"vamp\":2,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":7,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[18,91],\"desc\":\"Yin counters squishy heroes without Blink skills like Layla and Cecilion because they will have a hard time dodging his Golden Rings. Once they are stunned or trapped in his Ultimate, Yin can easily finish them off.\"},\"weak\":{\"ids\":[117,77],\"desc\":\"Yin is countered by Fighters that can interrupt skills, such as Fredrinn and Badang, because they can easily interrupt his Ultimate during the initial delay. These heroes can also hold their own in a duel, making them risky targets for Yin's Ultimate.\"},\"assist\":{\"ids\":[102,14],\"desc\":\"Yin works best with Supports that can enhance his mobility, such as Mathilda and Rafaela to help him get to the enemy and eliminate key targets.\"}},\"meta\":{\"win\":49.76,\"pick\":0.52,\"ban\":1.72}},{\"id\":114,\"name\":\"Melissa\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Damage\"],\"ability\":{\"durability\":20,\"offense\":90,\"effects\":40,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_1fa7436301fea3f13fbcd4772051d22d.png\",\"tags\":{\"Buff\":3,\"Mobility\":1,\"Debuff\":1,\"AOE\":1,\"Summon\":1},\"sig\":{\"phys\":1,\"magic\":2,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":1,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[27,16],\"desc\":\"Fighters like Sun and Zilong that can't get past her Ultimate.\"},\"weak\":{\"ids\":[115,5],\"desc\":\"Long range Mages such as Xavier and Nana.\"},\"assist\":{\"ids\":[6,19],\"desc\":\"Tanks that can chain CC such as Tigreal and Minotaur, allowing her to keep enemies linked.\"}},\"meta\":{\"win\":50.94,\"pick\":0.43,\"ban\":0.96}},{\"id\":115,\"name\":\"Xavier\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Damage\",\"Burst\"],\"ability\":{\"durability\":20,\"offense\":100,\"effects\":80,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_df0a8dfc494f85ed9bbc4512cc1e5d3c.png\",\"tags\":{\"CC\":1,\"Damage\":1,\"AOE\":2,\"Slow\":1,\"Burst\":1,\"Buff\":1},\"sig\":{\"phys\":0,\"magic\":3,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[60,76],\"desc\":\"Xavier possesses short cooldowns, a soft CC, good sustainability and performs well against heroes without Blink or burst damage, such as Hanabi and Faramis.\"},\"weak\":{\"ids\":[97,21,24],\"desc\":\"Xavier is countered by heroes with high mobility that can quickly close a gap such as Benedetta, Hayabusa, and Natalia.\"},\"assist\":{\"ids\":[92,93],\"desc\":\"He works well alongside heroes that can buff or provide CC to give him more opportunities to deal damage, such as Carmilla and Atlas.\"}},\"meta\":{\"win\":52.61,\"pick\":1.1,\"ban\":0.8}},{\"id\":116,\"name\":\"Julian\",\"roles\":[\"Assassin\",\"Fighter\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Magic Damage\"],\"ability\":{\"durability\":60,\"offense\":60,\"effects\":70,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_5511ddc0ad2789b525f32ef572b017eb.png\",\"tags\":{\"Buff\":2,\"Damage\":5,\"Slow\":2,\"Mobility\":2,\"CC\":2,\"Conceal\":1},\"sig\":{\"phys\":0,\"magic\":10,\"trueDmg\":0,\"heal\":0,\"vamp\":2,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":3,\"immune\":1,\"conceal\":1,\"dash\":3},\"relation\":{\"strong\":{\"ids\":[91,64],\"desc\":\"Julian is a hero who can constantly grow his own advantage, so he is strong against heroes who are weak in the early game, like Cecilion and Aldous.\"},\"weak\":{\"ids\":[118,73],\"desc\":\"Julian needs to hit enemy heroes with his skills to bring out his potential, so he is countered by heroes with good Mobility. Such as Joy and Harith.\"},\"assist\":{\"ids\":[55,48],\"desc\":\"Julian works best with powerful support heroes who can buff him, like Angela and Diggie.\"}},\"meta\":{\"win\":49.88,\"pick\":0.68,\"ban\":0.77}},{\"id\":117,\"name\":\"Fredrinn\",\"roles\":[\"Fighter\",\"Tank\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Damage\",\"Chase\"],\"ability\":{\"durability\":80,\"offense\":50,\"effects\":60,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_dea170bfd5f26c41fb04e5edf72afedb.png\",\"tags\":{\"Buff\":1,\"Heal\":1,\"Damage\":1,\"Mobility\":1,\"CC\":2,\"AOE\":2,\"Burst\":1},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":1,\"hardCc\":3,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[66,15],\"desc\":\"Fredrinn is strong against Mage heroes who rely on skill bursts, as it is difficult for them to one-shot him with their bursts. Instead, once Fredrinn has enough Combo Points, he can use his 2nd Ultimate to easily finish them off. Such as Vale and Eudora.\"},\"weak\":{\"ids\":[40,53],\"desc\":\"Fredrinn is countered by Marksman heroes who can deal True Damage, as they can take him down very easily. Heroes like Kerrie and Lesley are good examples here.\"},\"assist\":{\"ids\":[55,112],\"desc\":\"Fredrinn works best with support heroes, who can further improve his survivability, like Angela and Floryn.\"}},\"meta\":{\"win\":51.38,\"pick\":0.4,\"ban\":1.56}},{\"id\":118,\"name\":\"Joy\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Damage\"],\"ability\":{\"durability\":30,\"offense\":70,\"effects\":10,\"difficulty\":90},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_d3a3a55c22000ae78732fed8cba2efef.png\",\"tags\":{\"Damage\":2,\"Speed Up\":2,\"Summon\":1,\"Mobility\":1,\"AOE\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":0,\"vamp\":1,\"shield\":1,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[115,38],\"desc\":\"Joy is strong against heroes that lack mobility or rely on CC, like Xavier and Vexana, because she has an easier time hitting them with her 2nd Skill while being immune to their CC's.\"},\"weak\":{\"ids\":[74,78],\"desc\":\"Joy is countered by heroes that can restrict mobility skills, such as Minsitthar and Khufra, due to her kit's heavy reliance on her 2nd Skill.\"},\"assist\":{\"ids\":[55,49],\"desc\":\"Joy works best with heroes with that can provide powerful support or have strong initiation, like Angela and Hylos.\"}},\"meta\":{\"win\":48.72,\"pick\":0.14,\"ban\":0.18}},{\"id\":119,\"name\":\"Novaria\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Burst\",\"Poke\"],\"ability\":{\"durability\":30,\"offense\":90,\"effects\":30,\"difficulty\":70},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_57eeea6d5bd8d21229de8df79751db9f.png\",\"tags\":{\"Buff\":3,\"Slow\":1,\"AOE\":1,\"Burst\":1},\"sig\":{\"phys\":0,\"magic\":3,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":4,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[15,46],\"desc\":\"Novaria counters Mages with shorter range and low mobility, such as Eudora and Odette, because these heroes can't reach Novaria while Novaria can hit them with her 2nd Skill.\"},\"weak\":{\"ids\":[3,21],\"desc\":\"Novaria is countered by Assassins with strong targeted burst damage, such as Saber and Hayabusa, because they can easily close in on Novaria and burst her down.\"},\"assist\":{\"ids\":[105,18],\"desc\":\"Novaria works well with other long-range heroes like Beatrix and Layla because her Ultimate makes any target a sitting duck for her team to pick off.\"}},\"meta\":{\"win\":49.09,\"pick\":1.15,\"ban\":3.79}},{\"id\":120,\"name\":\"Arlott\",\"roles\":[\"Fighter\",\"Assassin\"],\"lanes\":[\"exp\"],\"specialities\":[\"Charge\",\"Burst\"],\"ability\":{\"durability\":60,\"offense\":60,\"effects\":50,\"difficulty\":70},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_f666faa5ec6be5353f10dcd1d8997a42.png\",\"tags\":{\"Buff\":1,\"CC\":2,\"AOE\":2,\"Damage\":1,\"Mobility\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[27,16],\"desc\":\"Arlott counters Fighters with relatively lower HP, such as Sun and Zilong. Arlott can deal high burst damage and has excellent chasing and control abilities, allowing him to quickly eliminate more fragile Fighters.\"},\"weak\":{\"ids\":[72,117],\"desc\":\"Arlott is countered by tanky Fighters that can withstand lots of damage, like Thamuz and Fredrinn, because he lacks the burst to take them out quickly and will lose in a prolonged battle.\"},\"assist\":{\"ids\":[41,93],\"desc\":\"Arlott works well with Tanks who can initiate with CC, such as Gatotkaca and Atlas. Their CC will also mark enemies for Arlott, allowing him to use his 2nd Skill even more for tons of damage.\"}},\"meta\":{\"win\":47.53,\"pick\":0.52,\"ban\":0.69}},{\"id\":121,\"name\":\"Ixia\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Damage\"],\"ability\":{\"durability\":30,\"offense\":70,\"effects\":50,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_f070d82521ecd2e14d4ef3f25880830a.png\",\"tags\":{\"Damage\":1,\"Heal\":1,\"Burst\":1,\"CC\":1,\"AOE\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":1,\"vamp\":1,\"shield\":0,\"basic\":7,\"atkSpeed\":0,\"crit\":1,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[117,11],\"desc\":\"Ixia's skills make her a nice kiter. She works well against heroes with short ranges or poor Slow abilities, such as Fredrinn and Bane.\"},\"weak\":{\"ids\":[3,109],\"desc\":\"Ixia lacks survivability, that's why she can be countered by heroes with high burst damage or strong control abilities such as Saber and Aamon.\"},\"assist\":{\"ids\":[117,11],\"desc\":\"With her Ultimate, Ixia is capable of dealing impressive sustained damage. So she works best with heroes with area CC abilities, like Atlas and Vexana.\"}},\"meta\":{\"win\":50.2,\"pick\":0.8,\"ban\":0.86}},{\"id\":122,\"name\":\"Nolan\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Burst\"],\"ability\":{\"durability\":30,\"offense\":60,\"effects\":20,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_9012ee9f73fbb4db4e1953e5fb5172e1.png\",\"tags\":{\"Damage\":1,\"AOE\":1,\"Mobility\":1,\"Burst\":1},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":4},\"relation\":{\"strong\":{\"ids\":[60,15],\"desc\":\"Nolan counters squishy heroes that lack mobility skills like Hanabi and Eudora because they have a hard time avoiding his rifts while Nolan's own mobility makes them easy targets.\"},\"weak\":{\"ids\":[72,117],\"desc\":\"Nolan is countered by tanky heroes with high sustained damage, such as Thamuz and Fredrinn, who can survive Nolan's burst and kill him afterwards.\"},\"assist\":{\"ids\":[6,41],\"desc\":\"Nolan works well with Tanks that can initiate and CC the enemy so Nolan to focus on dealing as much damage as possible, such as Tigreal and Gatotkaca.\"}},\"meta\":{\"win\":49.89,\"pick\":2.16,\"ban\":24.96}},{\"id\":123,\"name\":\"Cici\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Damage\",\"Regen\"],\"ability\":{\"durability\":50,\"offense\":60,\"effects\":30,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_60e3e11da30f404c77fff9e22d3bdc72.png\",\"tags\":{\"Buff\":1,\"Burst\":1,\"Mobility\":1,\"CC\":1,\"Slow\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":1,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":3},\"relation\":{\"strong\":{\"ids\":[117,19],\"desc\":\"Because of Cici's great kiting ability and her 1st Skill dealing Max HP damage, Cici counters certain Tanks like Fredrinn and Minotaur.\"},\"weak\":{\"ids\":[3,62],\"desc\":\"Cici is countered by heroes with targeted CC skills who can stop her dead in her tracks, such as Saber and Kaja.\"},\"assist\":{\"ids\":[55,112],\"desc\":\"Cici works well with heroes that have buffs and can boost survivability. Supports like Angela and Floryn can help Cici gain an early advantage by greatly amplifying her combat capabilities to end the game before it drags on too long.\"}},\"meta\":{\"win\":49.22,\"pick\":0.71,\"ban\":1.26}},{\"id\":124,\"name\":\"Chip\",\"roles\":[\"Support\",\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Support\",\"Crowd Control\"],\"ability\":{\"durability\":80,\"offense\":20,\"effects\":60,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_79224d297f14377ad2eda8543432330d.png\",\"tags\":{\"Heal\":1,\"CC\":1,\"AOE\":1,\"Speed Up\":1,\"Teleport\":2},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":2,\"basic\":3,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":3,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[38,18,121],\"desc\":\"Chip possesses strong initiation and CC abilities, making him a great counter against heroes with low mobility or those who are relatively squishy, such as Vexana, Layla, and Ixia.\"},\"weak\":{\"ids\":[99,6],\"desc\":\"Since enemies can also use Chip's Connecting Portals, certain heroes with strong teamfighting abilities, like Barats and Tigreal, can use them to their advantage.\"},\"assist\":{\"ids\":[28,60,75],\"desc\":\"Chip's Ultimate allows his team to group up from anywhere, so he works well with heroes who can't cross the map quickly but excel in teamfights, such as Alpha, Hanabi, and Kadita.\"}},\"meta\":{\"win\":47.66,\"pick\":0.04,\"ban\":0.22}},{\"id\":125,\"name\":\"Zhuxin\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Damage\",\"Crowd Control\"],\"ability\":{\"durability\":40,\"offense\":80,\"effects\":80,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_595f85bc90df3889c711c6b1f02dc02d.png\",\"tags\":{\"Buff\":2,\"AOE\":1,\"Damage\":1,\"CC\":1,\"Shield\":1,\"Mobility\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[33,94],\"desc\":\"Zhuxin is a good counter to enemies with less range and low mobility, such as Popol and Kupa and Cyclops, where she has a big advantage.\"},\"weak\":{\"ids\":[3,17],\"desc\":\"Like most Mages, Zhuxin is countered by heroes with high mobility and burst, such as Fanny and Saber, who can quickly take her down.\"},\"assist\":{\"ids\":[123,71,70],\"desc\":\"Zhuxin can provide great damage and CC, but she can't realize her potential until later in the game, so heroes with CC can help Zhuxin get through the early period. Zhuxin also works well with sustained damage heroes like Belerick, Kimmy, and Cici to dish out a surprising amount of damage.\"}},\"meta\":{\"win\":49.18,\"pick\":0.24,\"ban\":0.43}},{\"id\":126,\"name\":\"Suyou\",\"roles\":[\"Assassin\",\"Fighter\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Burst\"],\"ability\":{\"durability\":60,\"offense\":60,\"effects\":50,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_5e4ca70172332dde18bb1dc158ccc5c8.png\",\"tags\":{\"Buff\":1,\"Mobility\":1,\"CC\":1,\"AOE\":1,\"Burst\":1,\"Damage\":1,\"Debuff\":1},\"sig\":{\"phys\":10,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[121,115],\"desc\":\"Suyou's powerful long-range burst and pursuit abilities make it impossible for heroes without Blinks or Charges, such as Xavier and Ixia, to escape.\"},\"weak\":{\"ids\":[114,77],\"desc\":\"Because Suyou requires hold-casting skills, heroes with control can easily interrupt his attacks, such as Badang and Melissa.\"},\"assist\":{\"ids\":[14,6],\"desc\":\"Heroes that provide control (like Tigreal) make it easier for Suyou to deal massive damage; heroes that provide recovery and extra movement speed (like Rafaela) help Suyou kite better.\"}},\"meta\":{\"win\":49.66,\"pick\":1.19,\"ban\":1.74}},{\"id\":127,\"name\":\"Lukas\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\",\"jungle\"],\"specialities\":[\"Regen\",\"Damage\"],\"ability\":{\"durability\":70,\"offense\":50,\"effects\":60,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_63040edd0cf15b815fcbbb8b2d08d7f7.png\",\"tags\":{\"Buff\":5,\"Damage\":2,\"CC\":2,\"Mobility\":2,\"Morph\":1,\"Burst\":1},\"sig\":{\"phys\":14,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":6,\"atkSpeed\":3,\"crit\":0,\"maxHp\":0,\"hardCc\":6,\"slow\":0,\"immune\":4,\"conceal\":0,\"dash\":5},\"relation\":{\"strong\":{\"ids\":[60,121],\"desc\":\"Lukas excels in close-quarter combat and is a good counter to heroes with low mobility and CC, like Hanabi and Ixia.\"},\"weak\":{\"ids\":[17,57,116],\"desc\":\"Lukas needs to stay close to enemies to deal damage, which makes him vulnerable to heroes with strong burst and CC, such as Fanny, Valir, and Julian.\"},\"assist\":{\"ids\":[93,6,41],\"desc\":\"Lukas's Sacred Beast form has extended attack range and enhanced mobility, which synergizes well with heroes possessing AOE CC, such as Atlas, Tigreal, and Gatotkaca.\"}},\"meta\":{\"win\":51.13,\"pick\":0.75,\"ban\":26.96}},{\"id\":128,\"name\":\"Kalea\",\"roles\":[\"Support\",\"Fighter\"],\"lanes\":[\"roam\"],\"specialities\":[\"Control\",\"Regen\"],\"ability\":{\"durability\":60,\"offense\":20,\"effects\":90,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_4f3d4649e301c76daf20bd8811f3095c.png\",\"tags\":{\"Buff\":1,\"AOE\":1,\"Mobility\":1,\"CC\":2},\"sig\":{\"phys\":7,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":6,\"atkSpeed\":1,\"crit\":0,\"maxHp\":3,\"hardCc\":2,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":3},\"relation\":{\"strong\":{\"ids\":[18,61],\"desc\":\"Kalea counters heroes who lack mobility like Layla and Chang'e.\"},\"weak\":{\"ids\":[48,19],\"desc\":\"However, Kalea cannot grab enemies with Control Immunity, so heroes like Diggie and Minotaur can effectively counter her.\"},\"assist\":{\"ids\":[15,42,13],\"desc\":\"Kalea's strong single-target CC makes her work well with heroes who have high single-target burst, like Eudora, Harley, and Clint.\"}},\"meta\":{\"win\":50.74,\"pick\":0.71,\"ban\":7.99}},{\"id\":129,\"name\":\"Zetian\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Damage\",\"Crowd Control\"],\"ability\":{\"durability\":40,\"offense\":70,\"effects\":50,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_8d965f05f84621a51f799aeb8fb5f4c4.png\",\"tags\":{\"Shield\":1,\"CC\":2,\"AOE\":2,\"Slow\":1,\"Debuff\":1},\"sig\":{\"phys\":0,\"magic\":6,\"trueDmg\":0,\"heal\":0,\"vamp\":2,\"shield\":1,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[2,16],\"desc\":\"Zetian's Passive counters melee heroes with limited gap closers like Balmond and Zilong, allowing her to continue poking the enemy from a safe distance.\"},\"weak\":{\"ids\":[110],\"desc\":\"Zetian's Ultimate can strike down anywhere on the map, but having such a powerful Ult means a hero like Valentina can also use it against Zetian's team.\"},\"assist\":{\"ids\":[112,14],\"desc\":\"While Zetian already has decent survivability, when paired with supports who can protect allies like Floryn and Rafaela, Fighters with limited range will struggle even more to approach Zetian. And with the healing from these supports, Zetian can win any ranged battle of attrition.\"}},\"meta\":{\"win\":50.75,\"pick\":1.61,\"ban\":4.75}},{\"id\":130,\"name\":\"Obsidia\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Damage\"],\"ability\":{\"durability\":30,\"offense\":80,\"effects\":10,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_9c3daef5625bfade5c4cb8a219845dd3.png\",\"tags\":{\"Buff\":1,\"Damage\":1,\"AOE\":1,\"Speed Up\":1,\"CC\":1,\"Mobility\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":5,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[21,22,47],\"desc\":\"Obsidia's Ultimate will disable dash and blink skills, making her excellent at countering heroes who rely on them, such as Hayabusa, Freya, and Lancelot.\"},\"weak\":{\"ids\":[12,18],\"desc\":\"Obsidia struggles during the early laning phase, making her vulnerable to other Marksmen with strong early game, such as Bruno and Layla.\"},\"assist\":{\"ids\":[55,34],\"desc\":\"Obsidia usually reaches her damage potential in the mid-to-late game, so she wants support heroes who can help her in the early game, like Angela and Estes.\"}},\"meta\":{\"win\":53.01,\"pick\":2.08,\"ban\":52.57}},{\"id\":131,\"name\":\"Sora\",\"roles\":[\"Fighter\",\"Assassin\"],\"lanes\":[\"exp\"],\"specialities\":[\"Charge\",\"Burst\"],\"ability\":{\"durability\":60,\"offense\":60,\"effects\":50,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_8143d7bbd4318d7c699908e808de885e.png\",\"tags\":{\"Buff\":4,\"Damage\":8,\"Mobility\":3,\"CC\":2},\"sig\":{\"phys\":16,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":8,\"hardCc\":6,\"slow\":4,\"immune\":2,\"conceal\":0,\"dash\":6},\"relation\":{\"strong\":{\"ids\":[18,1,60],\"desc\":\"Sora excels at diving in with explosive burst damage and AOE CC, so squishy heroes without escape abilities—like Layla, Miya, and Hanabi—will find themselves helpless against Sora's relentless assault.\"},\"weak\":{\"ids\":[57,17,120],\"desc\":\"Sora relies on landing his 1st Skill to get Cloudstep stacks. Heroes with high mobility or Knockbacks, like Fanny, Arlott, and Valir, can prevent Sora from gaining this precious resource.\"},\"assist\":{\"ids\":[41,6,19],\"desc\":\"Sora's transformed Ultimate deals considerable damage, and pairing him with Tigreal, Minotaur, Gatotkaca, and other strong CC heroes will maximize Sora's damage potential.\"}},\"meta\":{\"win\":49.51,\"pick\":0.68,\"ban\":4.56}},{\"id\":132,\"name\":\"Marcel\",\"roles\":[\"Support\"],\"lanes\":[\"roam\"],\"specialities\":[\"Crowd Control\",\"Support\"],\"ability\":{\"durability\":70,\"offense\":30,\"effects\":100,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_df7603c292198bf4aa7b551d401ea5c1.png\",\"tags\":{\"CC\":2,\"AOE\":1,\"Speed Up\":1},\"sig\":{\"phys\":2,\"magic\":0,\"trueDmg\":1,\"heal\":0,\"vamp\":0,\"shield\":2,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[18,38],\"desc\":\"Marcel is more effective against low-mobility heroes, such as Layla and Vexana, as they are easily caught by his Ultimate, allowing him and his allies to secure easy kills.\"},\"weak\":{\"ids\":[84,83],\"desc\":\"Heroes who possess Invincibility or Untargetable effects that can bypass Marcel's CC, like Ling and X.Borg, will reduce his impact on the battlefield.\"},\"assist\":{\"ids\":[60,121],\"desc\":\"Because of Marcel's excellent AOE CC, he pairs well with allies with high AOE damage, like Hanabi and Ixia, to maximize their damage potential.\"}},\"meta\":{\"win\":57.25,\"pick\":0.28,\"ban\":43.06}},{\"id\":133,\"name\":\"Hirara\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Finisher\"],\"ability\":{\"durability\":40,\"offense\":70,\"effects\":40,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_71224844b111f09367df00e4f9b97753.png\",\"tags\":{\"Buff\":2,\"Mobility\":1,\"AOE\":2,\"Burst\":1,\"Invincible\":1,\"CC\":1},\"sig\":{\"phys\":2,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":1,\"conceal\":0,\"dash\":4},\"relation\":{\"strong\":{\"ids\":[52,121,113,56],\"desc\":\"Hirara's high mobility allows her to dive the enemy backline with ease, making her an excellent counter to squishy heroes who lack self-protection, like Ixia and Pharsa.The untargetable effect from Hirara's 2nd + 1st Combo Skill is great against delayed skills that deal high damage, giving her a big advantage when facing heroes like Yin and Gusion.\"},\"weak\":{\"ids\":[3,24],\"desc\":\"However, while Hirara is quick and nimble, she is also quite fragile. Against burst Assassins with targeted abilities, such as Saber and Natalia, it can be difficult to predict their attacks and use her 2nd + 1st Combo Skill in time. If she gets caught, she'll be taken down instantly.\"},\"assist\":{\"ids\":[55,19],\"desc\":\"Hirara has high damage output in the early-to-mid game, but the delay in her skills makes landing them less consistent. Hirara works especially well with strong early-game heroes with CC, such as Angela and Minotaur, allowing her to build an early advantage more easily.\"}},\"meta\":{\"win\":50,\"pick\":0.61,\"ban\":67.53}}]");
 var matchups_default = {
 	versus: /* @__PURE__ */ JSON.parse("{\"1\":{\"2\":-1.52,\"3\":3.05,\"8\":-1.66,\"31\":2.15,\"41\":-2.37,\"43\":2.2,\"49\":-1.58,\"70\":-3.72,\"72\":-1.62,\"73\":2.08,\"75\":1.52,\"80\":1.99,\"86\":-1.63,\"98\":-1.6,\"128\":2.19,\"130\":2.22},\"2\":{\"1\":1.52,\"3\":3.27,\"14\":-2.47,\"34\":-3.02,\"40\":-2.9,\"55\":-3.86,\"57\":-3.43,\"58\":2.02,\"60\":-1.96,\"61\":-1.53,\"65\":-2.29,\"69\":-2.53,\"75\":1.72,\"83\":-3.36,\"99\":2.39,\"101\":-4.12,\"106\":2.23,\"117\":2.03,\"123\":-4.45,\"124\":2.18,\"126\":-1.36,\"127\":2.42,\"128\":1.7},\"3\":{\"1\":-3.05,\"2\":-3.27,\"5\":-2.26,\"7\":-2.95,\"12\":2.55,\"13\":1.5,\"21\":2.4,\"24\":3.54,\"27\":-2.87,\"28\":-2.95,\"31\":2,\"32\":-2.51,\"35\":-2.49,\"36\":-1.67,\"41\":-2.62,\"43\":2.62,\"45\":-2.3,\"49\":-2.11,\"54\":-1.81,\"58\":-2.34,\"60\":-2.67,\"62\":2.18,\"66\":-1.68,\"67\":-3.14,\"68\":3.49,\"70\":-2.36,\"72\":-1.88,\"84\":4.14,\"87\":-3.23,\"97\":2.47,\"100\":2.19,\"101\":3.07,\"105\":2.44,\"107\":2.02,\"110\":3.29,\"117\":-2.57,\"122\":3.98,\"133\":2.36},\"4\":{\"6\":3.65,\"9\":3.12,\"13\":1.48,\"19\":2.6,\"23\":-1.96,\"32\":2.83,\"34\":-3.9,\"35\":2.18,\"38\":2.73,\"40\":-3.94,\"42\":-2.28,\"44\":3.38,\"48\":-4.03,\"50\":2.65,\"55\":-4.52,\"57\":-3.71,\"58\":1.71,\"72\":-2.42,\"75\":1.92,\"76\":3.37,\"77\":1.86,\"78\":3.65,\"81\":2.5,\"82\":1.81,\"85\":-2.76,\"86\":-1.73,\"87\":-3.7,\"93\":3.32,\"94\":2.62,\"99\":3.37,\"101\":-2.93,\"104\":3.7,\"106\":3.03,\"107\":-2.42,\"108\":2.84,\"111\":-3.4,\"112\":-4.13,\"116\":-2.16,\"123\":-2.88,\"124\":4.8,\"131\":1.99},\"5\":{\"3\":2.26,\"9\":-1.89,\"20\":2.7,\"30\":-1.43,\"46\":2.9,\"49\":-2.1,\"81\":-1.77,\"85\":2,\"93\":-2.68,\"98\":-2.45,\"101\":-3.16,\"104\":-2.83,\"114\":1.77,\"126\":-1.42},\"6\":{\"4\":-3.65,\"7\":1.96,\"10\":1.95,\"16\":2.62,\"20\":2.08,\"34\":2.79,\"46\":1.8,\"53\":2.03,\"57\":-2.4,\"60\":-1.85,\"83\":-2.96,\"85\":1.71,\"108\":-2.32,\"116\":1.51,\"129\":-2.56},\"7\":{\"3\":2.74,\"6\":-1.96,\"9\":-2.02,\"24\":3.12,\"27\":2.85,\"47\":1.99,\"56\":1.66,\"58\":-1.7,\"72\":-2.54,\"73\":2.46,\"78\":-3.13,\"98\":-2.8,\"99\":-2.89,\"101\":2.2,\"102\":3.61,\"106\":-3.21,\"113\":-2.59,\"114\":-2.92,\"117\":-3.1},\"8\":{\"1\":1.66,\"12\":2.39,\"13\":-3.26,\"16\":2.69,\"24\":4.48,\"29\":-2.9,\"30\":1.65,\"51\":3,\"60\":2.64,\"64\":2.83,\"68\":-3.16,\"71\":3.3,\"73\":-2.47,\"74\":2.59,\"76\":-1.98,\"77\":2.18,\"79\":-5.01,\"84\":3.04,\"100\":-4.37,\"103\":-2.5,\"104\":-2.76,\"111\":2.11,\"118\":-2.58,\"123\":-2.57,\"131\":-1.92,\"132\":3,\"133\":-2.64},\"9\":{\"4\":-3.12,\"5\":1.89,\"7\":2.02,\"33\":-2.56,\"40\":-3.01,\"60\":-1.89,\"62\":-2.91,\"73\":1.94,\"77\":-1.53,\"79\":2.06,\"80\":1.85,\"81\":-3.15,\"90\":1.89,\"125\":-3.39,\"132\":-3.75},\"10\":{\"6\":-1.99,\"17\":2.61,\"22\":1.95,\"27\":-2.53,\"32\":-2.2,\"34\":2.11,\"48\":2.98,\"55\":2.7,\"69\":-2.85,\"87\":2.67,\"89\":2.79,\"93\":-2.27,\"94\":-2.14,\"112\":2.45,\"124\":-2.22},\"11\":{\"20\":-5.52,\"39\":-3.03,\"46\":2.31,\"51\":-1.88,\"70\":1.75,\"76\":2.81,\"78\":2.23,\"87\":2.42,\"93\":-2.31,\"101\":-3.17,\"106\":3.05,\"113\":-1.91,\"119\":-2.03,\"122\":-1.88,\"124\":2.87,\"128\":2.27},\"12\":{\"3\":-2.55,\"8\":-2.39,\"13\":-1.51,\"17\":2.75,\"18\":-1.9,\"20\":-4.06,\"46\":-2.27,\"53\":-3.44,\"84\":3.17,\"86\":1.49,\"88\":2.42,\"89\":3.57,\"97\":2.52,\"109\":-2.69,\"118\":2.74,\"130\":2.61,\"132\":2.41,\"133\":1.98},\"13\":{\"3\":-1.5,\"4\":-1.48,\"8\":3.26,\"12\":1.51,\"17\":-2.57,\"20\":3.4,\"24\":1.87,\"48\":1.67,\"54\":-1.28,\"68\":1.64,\"70\":1.81,\"73\":-1.33,\"78\":-1.54,\"87\":1.51,\"102\":-1.36,\"104\":-1.29,\"132\":1.41},\"14\":{\"2\":2.47,\"15\":-2.12,\"18\":-2.12,\"24\":3.39,\"40\":2.39,\"46\":-2.66,\"49\":2.43,\"57\":3.45,\"66\":-1.8,\"83\":2.4,\"86\":2.28,\"90\":-2.12,\"121\":-2.55,\"123\":2.38,\"127\":-2.32,\"131\":-2.38,\"132\":2.93},\"15\":{\"14\":2.13,\"16\":2.16,\"21\":1.89,\"24\":2.42,\"36\":-1.51,\"43\":2.27,\"47\":-1.62,\"49\":-1.86,\"50\":-1.99,\"51\":2.32,\"67\":-2.14,\"88\":-2.85,\"93\":-2.92,\"99\":-2.31,\"108\":-1.76,\"112\":2.67},\"16\":{\"6\":-2.62,\"8\":-2.69,\"15\":-2.16,\"17\":2.08,\"20\":-2.91,\"32\":-2.49,\"37\":-2.01,\"40\":2.15,\"41\":-2.37,\"48\":2.38,\"49\":-2.31,\"55\":1.92,\"70\":-2.52,\"77\":-1.48,\"83\":3.17,\"93\":-2.37,\"94\":-2.55,\"98\":-2.06,\"115\":2.14,\"123\":2.55,\"124\":-2.81,\"129\":-1.57},\"17\":{\"10\":-2.61,\"12\":-2.75,\"13\":2.58,\"16\":-2.08,\"26\":-2.28,\"31\":-2.92,\"71\":2.92,\"76\":-2.57,\"77\":-2.61,\"79\":3.54,\"87\":3.85,\"93\":2.71,\"101\":2.95,\"104\":3.37,\"106\":-2.41,\"127\":-2.08,\"128\":-2.4},\"18\":{\"12\":1.9,\"14\":2.12,\"20\":-2.1,\"27\":-2.73,\"32\":-2.75,\"43\":2.65,\"44\":-1.73,\"46\":1.85,\"48\":3.02,\"49\":-2.18,\"59\":-2.22,\"65\":-1.97,\"69\":-1.97,\"78\":-2.33,\"93\":-3.83,\"106\":1.92,\"111\":1.95,\"114\":1.9,\"132\":1.96},\"19\":{\"4\":-2.6,\"20\":3.31,\"32\":2.68,\"33\":2.56,\"46\":2.3,\"54\":2.06,\"71\":-2.14,\"78\":2.41,\"90\":2.56,\"101\":-2.86,\"105\":-2.46,\"115\":-2.11,\"121\":-2.3,\"125\":-2.42,\"132\":-2.42},\"20\":{\"5\":-2.7,\"6\":-2.08,\"11\":5.52,\"12\":4.06,\"13\":-3.4,\"16\":2.91,\"18\":2.1,\"19\":-3.31,\"21\":1.76,\"22\":-2.26,\"23\":-3.35,\"25\":-5.2,\"29\":2.22,\"30\":1.83,\"33\":9.39,\"36\":-5.74,\"38\":-1.44,\"40\":3.35,\"42\":4.76,\"44\":-2.19,\"50\":-5.19,\"52\":-3.2,\"54\":2.58,\"55\":3.96,\"56\":3.2,\"57\":2.97,\"60\":3.86,\"61\":5.43,\"65\":-2.74,\"67\":-3.79,\"69\":-2.42,\"71\":2.98,\"73\":-3.7,\"75\":-5.27,\"76\":5.73,\"77\":2.19,\"78\":-3.9,\"79\":2.08,\"81\":-6.02,\"82\":-2.15,\"91\":-4.22,\"93\":-3.32,\"94\":-2.72,\"96\":6.19,\"98\":-4.97,\"99\":-2.54,\"101\":-7.9,\"102\":4.61,\"103\":-2.08,\"107\":3.01,\"108\":-2.42,\"109\":3.45,\"110\":-2.69,\"111\":5.63,\"112\":4.18,\"114\":-3.54,\"115\":3.41,\"118\":-2.94,\"121\":-2.76,\"125\":-7.06,\"128\":-1.88,\"129\":-4.5,\"131\":-1.82,\"133\":-2.35},\"21\":{\"3\":-2.4,\"15\":-1.89,\"20\":-1.76,\"40\":2.01,\"50\":-2.13,\"77\":-1.28,\"83\":2.17,\"91\":1.47,\"101\":2.64,\"105\":2.15,\"109\":2.85,\"113\":-1.78,\"117\":-2.21,\"122\":2.01,\"124\":-1.96,\"125\":2.49,\"130\":-1.75},\"22\":{\"10\":-1.93,\"20\":2.26,\"25\":1.99,\"27\":1.83,\"28\":-1.99,\"74\":-4.27,\"84\":2.17,\"87\":-2.44,\"88\":3.34,\"98\":2.29,\"101\":2.44,\"102\":2.37,\"106\":-4.4,\"111\":-2.06,\"118\":2.47},\"23\":{\"4\":1.96,\"20\":3.35,\"24\":-3.15,\"29\":1.8,\"34\":2.01,\"42\":-2.01,\"51\":-2.74,\"84\":-2.83,\"89\":-2.05,\"97\":-2.28,\"99\":3.46,\"102\":-2.03,\"104\":-2.38,\"106\":2.59,\"117\":3.09},\"24\":{\"3\":-3.54,\"7\":-3.84,\"8\":-4.48,\"13\":-1.87,\"14\":-3.47,\"15\":-2.42,\"23\":3.15,\"26\":-1.65,\"33\":-4.99,\"38\":1.82,\"40\":2.59,\"51\":2.57,\"52\":1.95,\"55\":-2.9,\"56\":-1.77,\"57\":2.86,\"65\":2.65,\"66\":1.99,\"67\":-2.41,\"69\":5.42,\"71\":2.36,\"74\":3.79,\"78\":-2.89,\"84\":5.31,\"91\":1.53,\"96\":2.18,\"98\":-3.27,\"100\":-2.68,\"102\":-4.35,\"103\":-3.44,\"108\":-2.38,\"115\":4.44,\"119\":3.18,\"121\":3.84,\"122\":3.58,\"126\":-2.42,\"127\":-2.49,\"129\":-2.98,\"130\":-2.34},\"25\":{\"20\":5.08,\"22\":-1.92,\"46\":-1.88,\"57\":1.73,\"60\":1.86,\"62\":-1.85,\"66\":1.95,\"69\":1.95,\"73\":-1.88,\"76\":-2.26,\"81\":-1.7,\"90\":1.98,\"106\":-2.13,\"110\":-2.06,\"117\":-1.77,\"118\":-2.4},\"26\":{\"17\":2.28,\"24\":1.65,\"33\":-2.25,\"78\":-1.83,\"81\":-2.38,\"83\":3.1,\"86\":1.51,\"87\":2.16,\"97\":1.62,\"105\":2.05,\"106\":-2.28,\"107\":2.08,\"121\":1.96,\"127\":-1.9},\"27\":{\"3\":2.88,\"7\":-2.85,\"10\":2.53,\"18\":2.73,\"22\":-1.83,\"29\":-3.62,\"40\":2.85,\"42\":3.15,\"48\":3.27,\"53\":2.3,\"54\":3.97,\"69\":2.52,\"71\":-3.55,\"76\":-2.98,\"77\":-1.98,\"90\":-2.09,\"106\":2.92,\"107\":-5.53,\"108\":-1.92,\"118\":-3.84,\"125\":-2.55,\"126\":-2.19,\"132\":-3.75},\"28\":{\"3\":2.76,\"22\":1.99,\"46\":2.59,\"47\":-1.89,\"48\":-2.41,\"57\":-2.63,\"61\":-1.54,\"69\":-2.02,\"83\":-3.15,\"86\":-2.48,\"87\":2.36,\"89\":-2.39,\"97\":-4.04,\"99\":2.41,\"101\":-2.83,\"102\":-2.73,\"106\":3.61,\"117\":2.32,\"133\":-2.21},\"29\":{\"8\":2.5,\"20\":-2.22,\"23\":-1.8,\"27\":3.62,\"37\":-2.11,\"45\":2.48,\"68\":2.27,\"82\":-1.78,\"83\":-3.17,\"87\":2.68,\"98\":-2.1,\"99\":-1.82,\"101\":-1.91,\"104\":3.74,\"106\":-3.35,\"108\":-1.7,\"120\":-1.9},\"30\":{\"5\":1.43,\"8\":-1.65,\"20\":-1.83,\"59\":-2.02,\"72\":1.82,\"76\":-1.45,\"78\":1.94,\"81\":-1.16,\"87\":-2.42,\"89\":1.88,\"97\":1.68,\"101\":-1.36,\"114\":1.58,\"115\":-1.29,\"133\":1.67},\"31\":{\"1\":-2.15,\"3\":-2,\"17\":2.92,\"33\":-2.13,\"54\":-1.61,\"58\":-2.18,\"60\":-2.11,\"73\":2.79,\"85\":-2.18,\"93\":2.09,\"101\":2.42,\"104\":4.92,\"105\":2.33,\"111\":-2,\"118\":4.39},\"32\":{\"3\":2.51,\"4\":-2.83,\"10\":2.2,\"16\":2.46,\"18\":2.75,\"19\":-2.77,\"44\":-1.93,\"47\":-1.7,\"65\":-2.04,\"70\":-2.86,\"73\":-2.42,\"75\":-2.31,\"78\":-2.78,\"82\":-2.17,\"85\":2.13,\"86\":-2.42,\"88\":-2.63,\"92\":-2.23,\"93\":-3.06,\"98\":-2.08,\"104\":-4.17,\"107\":-2.46,\"113\":2.37,\"132\":-3.38},\"33\":{\"9\":2.72,\"19\":-2.59,\"20\":-9.39,\"24\":4.99,\"26\":2.25,\"31\":2.13,\"34\":-4.1,\"64\":3.1,\"72\":-1.73,\"84\":2.6,\"87\":-3.02,\"89\":3.4,\"91\":-1.73,\"93\":-2.53,\"94\":-2.24,\"102\":2.79,\"118\":2.8,\"121\":-2.64,\"132\":3.31},\"34\":{\"2\":3.02,\"4\":3.9,\"6\":-2.79,\"10\":-2.11,\"23\":-2.01,\"33\":4.1,\"38\":-1.37,\"39\":3.38,\"48\":3.51,\"50\":2.48,\"53\":3.15,\"59\":2.44,\"64\":2.54,\"66\":-2.48,\"75\":-1.71,\"76\":4.11,\"78\":2.52,\"81\":2.39,\"88\":3.48,\"93\":-3.1,\"96\":-3.3,\"102\":2.75,\"105\":-4.97,\"108\":2.1,\"113\":-2.28,\"119\":1.92,\"121\":-5.59,\"122\":-3.97,\"123\":3.63,\"130\":2.5,\"131\":-4.7},\"35\":{\"3\":2.49,\"4\":-2.18,\"40\":-2.75,\"42\":2.45,\"43\":2.58,\"51\":2.68,\"56\":1.79,\"66\":1.98,\"68\":-2.48,\"71\":-2.39,\"78\":-2.31,\"79\":3.39,\"81\":-2.97,\"92\":-2.16,\"93\":-2.59,\"110\":2.53,\"113\":2.8,\"119\":2.01,\"122\":1.59,\"125\":-2.37},\"36\":{\"3\":1.67,\"15\":1.51,\"20\":5.74,\"39\":-1.99,\"41\":-1.58,\"46\":2.15,\"47\":-1.27,\"48\":-2.15,\"70\":-1.56,\"73\":1.82,\"78\":1.44,\"97\":-1.88,\"101\":-2.03,\"111\":2.1,\"113\":-2.01,\"114\":1.67,\"117\":1.45,\"118\":-2.01,\"133\":-1.52},\"37\":{\"16\":2.01,\"29\":2.11,\"45\":1.93,\"60\":2.2,\"65\":-1.94,\"66\":2.12,\"68\":-1.85,\"73\":-2.54,\"81\":-3.32,\"90\":3.05,\"94\":2.29,\"97\":-2,\"101\":-2.48,\"102\":-1.81,\"110\":-1.73,\"118\":-2.92,\"123\":-1.53,\"124\":2.03,\"126\":-1.31},\"38\":{\"4\":-2.73,\"20\":1.44,\"24\":-1.82,\"34\":1.37,\"46\":1.75,\"50\":2.07,\"69\":-1.89,\"83\":-1.96,\"92\":-1.88,\"97\":-1.89,\"102\":-1.81,\"104\":2.88,\"111\":1.78,\"124\":1.92,\"132\":-2.3},\"39\":{\"11\":3.03,\"34\":-3.38,\"36\":1.99,\"42\":2.52,\"51\":2.03,\"56\":2.27,\"67\":-2.06,\"81\":-1.8,\"87\":2.52,\"90\":2.03,\"94\":-1.76,\"99\":-2.13,\"101\":-2.61,\"109\":2.03,\"112\":-2.76,\"113\":1.67,\"124\":-3.95,\"125\":-2.08,\"126\":-1.32,\"133\":-2.09},\"40\":{\"2\":2.9,\"4\":3.94,\"9\":3.01,\"14\":-2.39,\"16\":-2.15,\"20\":-3.35,\"21\":-2.01,\"24\":-2.59,\"27\":-2.85,\"35\":2.84,\"45\":-2.84,\"49\":2.95,\"59\":2.97,\"67\":2.91,\"72\":2.14,\"73\":2.44,\"74\":-2.74,\"80\":-1.82,\"81\":3.23,\"82\":2.17,\"83\":-2.21,\"87\":3.36,\"117\":2.34,\"132\":-2.8},\"41\":{\"1\":2.38,\"3\":2.62,\"16\":2.29,\"36\":1.58,\"45\":2.07,\"46\":2.83,\"53\":-2.98,\"55\":-2.01,\"59\":-2.82,\"61\":-1.64,\"64\":-2.25,\"83\":-3.18,\"85\":1.81,\"87\":-2.2,\"102\":-2.94,\"110\":2.67,\"114\":1.88,\"119\":-2.22,\"132\":-3.14},\"42\":{\"4\":2.28,\"20\":-4.44,\"23\":1.85,\"27\":-3.15,\"35\":-2.51,\"39\":-2.61,\"57\":2.13,\"94\":-2.68,\"104\":-2.72,\"105\":2.03,\"114\":2.37,\"118\":1.78,\"124\":-2.75,\"125\":2.19,\"126\":1.7},\"43\":{\"1\":-2.2,\"3\":-2.62,\"15\":-2.3,\"18\":-2.65,\"35\":-2.58,\"47\":2.08,\"53\":-2.14,\"73\":-2.3,\"83\":2.47,\"86\":1.83,\"89\":2.56,\"97\":1.92,\"100\":-3.07,\"105\":2.16,\"107\":2.51,\"113\":2.42,\"121\":2.55,\"124\":2.68,\"132\":1.79},\"44\":{\"4\":-3.14,\"18\":1.73,\"20\":2.19,\"32\":1.93,\"45\":1.57,\"46\":1.72,\"48\":1.97,\"55\":-2.08,\"58\":1.75,\"62\":-2.4,\"73\":-3.01,\"81\":-2.67,\"87\":-2.81,\"91\":-1.91,\"105\":1.76,\"110\":-2.33,\"113\":2.11,\"132\":-2.59},\"45\":{\"3\":2.3,\"29\":-2.5,\"37\":-1.93,\"40\":2.84,\"41\":-2.07,\"44\":-1.57,\"51\":2.49,\"59\":-3.12,\"64\":-2.93,\"68\":2.7,\"80\":2.28,\"81\":-2.2,\"82\":-3.21,\"85\":1.74,\"99\":-3.45,\"120\":2.24},\"46\":{\"5\":-2.9,\"6\":-1.8,\"11\":-2.52,\"12\":2.27,\"14\":2.66,\"18\":-1.85,\"19\":-2.3,\"25\":1.88,\"28\":-2.59,\"36\":-2.15,\"38\":-1.75,\"41\":-2.83,\"44\":-1.72,\"62\":4.7,\"66\":-3.22,\"68\":2.21,\"72\":-1.9,\"73\":2.38,\"76\":3.02,\"82\":-2.07,\"86\":-1.86,\"102\":3.5,\"110\":2.68,\"111\":-2.96,\"116\":-1.91,\"124\":3.15,\"125\":2.32,\"126\":1.67,\"132\":2.91,\"133\":1.8},\"47\":{\"7\":-1.99,\"15\":1.62,\"28\":1.89,\"32\":1.7,\"36\":1.27,\"43\":-1.98,\"55\":-3.03,\"76\":-2.67,\"79\":1.58,\"83\":1.64,\"87\":1.98,\"93\":2.57,\"112\":-2.36,\"113\":2.11,\"123\":-1.91,\"124\":1.62,\"132\":-2.32},\"48\":{\"4\":3.67,\"10\":-3.13,\"13\":-1.67,\"16\":-2.38,\"18\":-3.21,\"27\":-3.27,\"28\":2.41,\"34\":-3.41,\"36\":2.15,\"44\":-1.97,\"50\":-3.06,\"51\":-3.45,\"52\":-1.54,\"54\":-2.23,\"57\":2.74,\"59\":-2.09,\"61\":-3.41,\"67\":2.37,\"69\":-3.1,\"72\":-1.81,\"76\":3.89,\"79\":-2.39,\"80\":3.06,\"81\":-3.15,\"88\":2.09,\"95\":1.84,\"100\":2.17,\"113\":-3.12,\"116\":-1.9,\"119\":-2.73,\"123\":2.65,\"125\":3.18,\"127\":2.53,\"129\":1.64,\"130\":2.77,\"133\":2.17},\"49\":{\"1\":1.58,\"3\":2.11,\"5\":2.12,\"14\":-2.43,\"15\":1.86,\"16\":2.31,\"18\":2.1,\"40\":-2.93,\"57\":-2.75,\"66\":2.13,\"71\":-2.83,\"73\":3.28,\"83\":-3.77,\"91\":-1.67,\"95\":-2.68,\"101\":-3.02,\"113\":2.43,\"116\":1.35,\"117\":2.09,\"123\":-2.77,\"125\":-2.98},\"50\":{\"4\":-2.65,\"15\":1.99,\"20\":3.95,\"21\":2.34,\"34\":-2.48,\"38\":-2.07,\"48\":2.89,\"59\":-2.12,\"62\":2.5,\"67\":-3.05,\"70\":-2.93,\"76\":-3.41,\"87\":-2.39,\"89\":2.17,\"107\":-3.82,\"110\":2.46,\"113\":2.07,\"120\":2.22,\"124\":2.92},\"51\":{\"8\":-3,\"11\":1.88,\"15\":-2.32,\"23\":2.75,\"24\":-2.57,\"35\":-2.73,\"39\":-2.03,\"45\":-2.61,\"48\":2.94,\"54\":-1.6,\"57\":3.28,\"63\":-1.62,\"64\":-2.54,\"69\":2.59,\"83\":3.64,\"91\":1.5,\"96\":3.58,\"98\":-2.22,\"102\":-2.78,\"103\":-1.62,\"115\":3.06,\"122\":1.67,\"124\":-3.07,\"127\":-2.03,\"128\":-1.89,\"129\":-1.87,\"130\":-2.94},\"52\":{\"20\":3.2,\"24\":-1.95,\"48\":1.54,\"57\":1.26,\"60\":1.34,\"69\":-1.63,\"76\":3.36,\"85\":1.26,\"87\":-2.36,\"88\":-1.64,\"104\":-1.89,\"110\":-2.49,\"114\":1.85,\"124\":-3.97,\"129\":-1.36,\"133\":-1.83},\"53\":{\"6\":-2.03,\"12\":3.44,\"27\":-2.3,\"34\":-2.95,\"41\":2.98,\"43\":2.14,\"65\":3.83,\"70\":2.86,\"87\":2.57,\"88\":-2.95,\"92\":2.15,\"94\":-2.27,\"98\":1.98,\"104\":-2.56,\"132\":3.76},\"54\":{\"3\":1.81,\"13\":1.28,\"19\":-2.06,\"20\":-2.58,\"27\":-3.97,\"31\":1.61,\"48\":2.23,\"51\":1.6,\"79\":1.88,\"81\":-3.36,\"94\":-3.25,\"98\":-2.63,\"101\":2.5,\"104\":-3.44,\"110\":2.93,\"120\":2.2,\"122\":1.99},\"55\":{\"2\":3.86,\"4\":4.52,\"10\":-2.7,\"16\":-1.92,\"20\":-3.96,\"24\":2.9,\"41\":2.01,\"44\":2.08,\"47\":3.11,\"58\":1.46,\"59\":2.63,\"62\":1.6,\"64\":2.12,\"67\":1.96,\"68\":-1.86,\"76\":3.3,\"82\":2.1,\"83\":3.11,\"90\":-2.14,\"108\":1.9,\"111\":-2.11,\"115\":2.29,\"132\":4.53},\"56\":{\"7\":-1.66,\"20\":-3.2,\"24\":1.77,\"35\":-1.79,\"39\":-2.19,\"57\":2.15,\"67\":-1.78,\"78\":-1.88,\"83\":1.82,\"94\":-1.78,\"101\":2.46,\"104\":-1.78,\"109\":2.32,\"115\":1.61,\"124\":-1.89,\"126\":1.54},\"57\":{\"2\":3.43,\"4\":3.59,\"6\":2.4,\"14\":-3.45,\"20\":-2.97,\"24\":-2.86,\"25\":-1.73,\"28\":2.63,\"42\":-2.13,\"48\":-3.35,\"49\":2.87,\"51\":-3.39,\"52\":-1.26,\"56\":-2.15,\"62\":-3.47,\"67\":3.41,\"72\":2.8,\"82\":2.46,\"97\":-3.16,\"99\":2.64,\"102\":-2.98,\"111\":1.89,\"117\":4.12,\"119\":-2.04},\"58\":{\"2\":-1.97,\"3\":2.34,\"4\":-1.7,\"7\":1.7,\"31\":2.08,\"44\":-1.75,\"55\":-1.46,\"61\":-1.48,\"73\":2.02,\"74\":-2.84,\"78\":1.73,\"83\":-3.7,\"87\":-1.95,\"101\":-1.95,\"114\":1.68,\"124\":2.34,\"128\":1.88,\"131\":1.75,\"132\":-2.28},\"59\":{\"18\":2.22,\"30\":2.02,\"34\":-2.44,\"40\":-2.83,\"41\":2.82,\"45\":3.12,\"48\":2.09,\"50\":2.27,\"55\":-2.63,\"64\":-2.76,\"71\":-2.46,\"73\":-2.95,\"79\":2.17,\"85\":-3.18,\"96\":-2.69,\"99\":2.36,\"106\":3.13,\"110\":3.36,\"113\":2.69,\"115\":-2.34,\"118\":-2.38},\"60\":{\"2\":1.96,\"3\":2.67,\"6\":1.85,\"8\":-2.64,\"9\":1.89,\"20\":-3.86,\"25\":-1.86,\"31\":2.11,\"37\":-2.2,\"52\":-1.34,\"86\":-2.29,\"89\":-2.89,\"94\":2.23,\"97\":-2.54,\"98\":-1.96,\"101\":-2.97,\"105\":-3.3,\"118\":-2.7,\"119\":-1.87,\"121\":-2.49,\"124\":2.22,\"128\":2.14},\"61\":{\"2\":1.53,\"20\":-5.49,\"28\":1.54,\"41\":1.64,\"48\":3.23,\"58\":1.48,\"65\":-2.8,\"81\":-2.6,\"83\":1.43,\"94\":-2.52,\"104\":-2.73,\"110\":1.48,\"113\":1.6,\"125\":-2.39},\"62\":{\"3\":-2.18,\"9\":2.87,\"25\":1.85,\"44\":2.37,\"46\":-4.7,\"50\":-2.5,\"55\":-1.6,\"57\":3.47,\"68\":-3.46,\"71\":2.16,\"86\":1.69,\"96\":1.52,\"104\":2.19,\"105\":2.17,\"114\":-2.13,\"132\":-1.76},\"63\":{\"51\":1.62,\"66\":1.64,\"78\":-1.9,\"83\":1.81,\"89\":-1.82,\"94\":-2.05,\"97\":1.94,\"101\":1.52,\"104\":-2.38,\"105\":1.67,\"106\":-1.95,\"110\":-1.75,\"113\":1.63,\"117\":-1.89,\"121\":1.83,\"124\":-2.8,\"127\":-1.69},\"64\":{\"8\":-2.56,\"33\":-2.45,\"34\":-2.54,\"41\":2.37,\"45\":2.93,\"51\":2.5,\"55\":-2.12,\"59\":2.76,\"69\":2.52,\"73\":-2.47,\"77\":-1.12,\"81\":-3.25,\"83\":2.31,\"87\":3.71,\"94\":-2.39,\"101\":3.13,\"102\":-2.37,\"115\":2.65,\"119\":1.99,\"130\":-2.14},\"65\":{\"2\":2.29,\"18\":1.97,\"20\":2.74,\"24\":-2.65,\"32\":2.04,\"37\":2.04,\"53\":-3.83,\"61\":2.8,\"87\":-2.45,\"93\":2.01,\"95\":1.6,\"107\":-2.3,\"109\":-2.89,\"111\":-2.46,\"121\":2.31},\"66\":{\"3\":1.68,\"14\":1.8,\"24\":-1.99,\"25\":-1.95,\"34\":2.48,\"35\":-1.98,\"37\":-2.21,\"46\":3.22,\"49\":-2.1,\"63\":-1.64,\"67\":-2.25,\"76\":2.1,\"78\":-2.34,\"84\":-2.17,\"87\":2.21,\"90\":1.67,\"93\":-2.28,\"98\":-2.19,\"101\":-3.73,\"104\":-2.84,\"114\":1.91},\"67\":{\"3\":3.14,\"15\":2.36,\"20\":3.79,\"24\":2.41,\"39\":2.06,\"40\":-2.68,\"48\":-2.37,\"50\":3.05,\"55\":-1.96,\"56\":1.78,\"57\":-3.41,\"66\":2.25,\"70\":2.37,\"71\":-1.78,\"88\":2.3,\"90\":2.42,\"94\":2.72,\"98\":1.77,\"114\":-3,\"125\":-2.41},\"68\":{\"3\":-3.49,\"8\":3.16,\"13\":-1.64,\"29\":-2.61,\"35\":2.48,\"37\":1.85,\"45\":-2.7,\"46\":-2.21,\"55\":1.86,\"62\":3.46,\"69\":2.8,\"79\":-2.06,\"80\":-2.21,\"81\":3.17,\"89\":3.23,\"91\":1.46,\"95\":2,\"98\":2.34,\"104\":4.14,\"117\":-2.94,\"123\":2.69},\"69\":{\"2\":2.53,\"10\":2.85,\"18\":1.97,\"20\":2.42,\"24\":-5.42,\"25\":-1.95,\"27\":-2.52,\"28\":2.02,\"38\":1.89,\"48\":3.08,\"51\":-2.52,\"52\":1.63,\"64\":-2.65,\"68\":-2.8,\"71\":-2.29,\"75\":-2.41,\"84\":-3.36,\"89\":-2.68,\"91\":1.8,\"96\":1.92,\"100\":1.91,\"119\":2.21,\"121\":3.06,\"130\":-2.15,\"133\":-2.47},\"70\":{\"1\":3.72,\"3\":2.36,\"11\":-1.75,\"13\":-1.81,\"16\":2.52,\"32\":2.81,\"36\":1.56,\"50\":2.93,\"53\":-2.86,\"67\":-2.37,\"71\":2.45,\"90\":2.87,\"100\":-2.9,\"105\":-2.98,\"114\":2.33,\"115\":-3.27,\"123\":-2.67,\"132\":-2.85},\"71\":{\"8\":-3.3,\"17\":-2.84,\"19\":2.14,\"20\":-2.98,\"24\":-2.36,\"27\":3.55,\"35\":2.39,\"49\":2.7,\"59\":2.34,\"62\":-2.15,\"67\":1.78,\"69\":2.29,\"70\":-2.45,\"78\":2.44,\"93\":2.46,\"113\":2.27,\"116\":1.29,\"120\":-2.14},\"72\":{\"1\":1.62,\"3\":1.88,\"4\":2.42,\"7\":2.5,\"30\":-1.82,\"33\":1.73,\"40\":-2.14,\"46\":1.9,\"48\":1.81,\"57\":-2.79,\"76\":2.02,\"85\":1.65,\"89\":-2.63,\"97\":-2.26,\"101\":-3.86,\"123\":-4.81},\"73\":{\"1\":-2.08,\"7\":-2.46,\"8\":2.47,\"9\":-1.94,\"13\":1.33,\"20\":3.7,\"25\":1.88,\"31\":-2.79,\"32\":2.42,\"36\":-1.82,\"37\":2.54,\"40\":-2.44,\"43\":2.3,\"44\":3.01,\"46\":-2.38,\"49\":-3.28,\"58\":-2.02,\"59\":2.95,\"64\":2.64,\"74\":-3.25,\"87\":0.52,\"89\":-3.24,\"95\":1.79,\"101\":2.88,\"102\":2.49,\"106\":-5.24,\"111\":-3.23,\"114\":-3.43,\"126\":2.31,\"129\":1.82},\"74\":{\"8\":-2.59,\"22\":4.27,\"24\":-3.79,\"40\":2.74,\"58\":2.89,\"73\":3.25,\"83\":-2.38,\"85\":1.81,\"87\":-3.18,\"95\":-2.52,\"106\":4.05,\"108\":-2.46,\"110\":2.78,\"113\":-3.24,\"116\":1.67,\"124\":2.85,\"127\":2.77,\"128\":1.64},\"75\":{\"1\":-1.52,\"2\":-1.72,\"4\":-1.92,\"20\":4.89,\"32\":2.31,\"34\":1.71,\"69\":2.41,\"89\":-1.78,\"90\":1.89,\"93\":1.67,\"106\":-1.71,\"121\":2.94,\"125\":-1.99,\"132\":-3.09},\"76\":{\"4\":-3.2,\"8\":1.98,\"11\":-2.81,\"17\":2.57,\"20\":-5.73,\"25\":2.26,\"27\":2.98,\"30\":1.45,\"34\":-4.11,\"46\":-3.02,\"47\":3.15,\"48\":-3.89,\"50\":3.41,\"52\":-3.36,\"55\":-3.3,\"66\":-2.1,\"72\":-2.02,\"84\":2.73,\"85\":-2.2,\"87\":-7.41,\"89\":3.09,\"94\":2.36,\"96\":-2.56,\"104\":5.61,\"108\":2.53,\"111\":-3.63,\"112\":-2.77,\"114\":-3.42,\"115\":-2.16,\"116\":-2.77,\"128\":-2.23,\"129\":1.64},\"77\":{\"4\":-1.86,\"8\":-2.18,\"9\":1.53,\"16\":1.48,\"17\":2.58,\"20\":-2.19,\"21\":1.28,\"27\":1.98,\"64\":1.12,\"78\":-2.03,\"81\":-2.11,\"106\":-1.88,\"118\":1.19},\"78\":{\"4\":-3.38,\"7\":3.13,\"11\":-2.43,\"13\":1.54,\"18\":2.33,\"19\":-2.41,\"20\":3.9,\"24\":2.89,\"26\":1.83,\"30\":-1.94,\"32\":2.78,\"34\":-2.52,\"35\":2.31,\"36\":-1.44,\"56\":1.88,\"58\":-1.73,\"63\":1.9,\"66\":2.34,\"71\":-2.44,\"77\":2.03,\"80\":2.31,\"89\":2.93,\"90\":3.07,\"100\":1.75,\"101\":-2.83,\"102\":2.87,\"103\":2.46,\"105\":2.08,\"124\":-3.97,\"125\":-3.34,\"128\":-1.95,\"131\":2.24,\"132\":-2.41},\"79\":{\"8\":5.01,\"9\":-2.06,\"17\":-3.54,\"20\":-2.08,\"35\":-3.39,\"47\":-1.58,\"48\":2.39,\"54\":-2.08,\"59\":-2.17,\"68\":2.06,\"81\":-1.91,\"87\":2.62,\"101\":2.11,\"105\":2.39,\"107\":2.18,\"121\":2.3,\"123\":-1.99},\"80\":{\"1\":-1.99,\"9\":-1.85,\"40\":1.82,\"45\":-2.26,\"48\":-3.06,\"68\":2.22,\"78\":-2.31,\"81\":1.9,\"88\":-2.3,\"89\":-3.17,\"101\":1.89,\"112\":1.78,\"116\":1.94,\"118\":-2.17,\"124\":-2.61,\"131\":-1.73},\"81\":{\"4\":-2.5,\"5\":1.77,\"9\":3.59,\"20\":5.82,\"25\":1.7,\"26\":2.38,\"30\":1.16,\"34\":-2.39,\"35\":2.97,\"37\":3.36,\"39\":1.8,\"40\":-3.23,\"44\":2.67,\"45\":2.2,\"48\":3.15,\"54\":3.43,\"61\":2.6,\"64\":3.33,\"68\":-3.17,\"77\":2.11,\"79\":1.91,\"80\":-1.9,\"85\":-3.29,\"95\":-1.67,\"102\":4.57,\"103\":2.96,\"106\":3.01,\"107\":-2.92,\"111\":-2.9,\"113\":3.49,\"116\":-2.39,\"117\":-2.55,\"121\":-2.53,\"132\":3.57},\"82\":{\"4\":-1.81,\"20\":2.15,\"29\":1.78,\"32\":2.17,\"40\":-2.17,\"45\":3.21,\"46\":2.07,\"55\":-2.1,\"57\":-2.46,\"83\":-4.1,\"86\":-2.36,\"87\":2.35,\"94\":1.96,\"101\":-2.47,\"106\":3.01,\"114\":1.7,\"115\":-1.81,\"118\":-2.41},\"83\":{\"2\":3.36,\"6\":2.96,\"14\":-2.4,\"16\":-3.17,\"21\":-2.17,\"26\":-3.1,\"28\":3.15,\"29\":3.17,\"38\":1.96,\"40\":2.21,\"41\":3.18,\"43\":-2.47,\"47\":-1.64,\"49\":3.86,\"51\":-3.64,\"55\":-3.11,\"56\":-1.82,\"58\":3.75,\"61\":-1.43,\"63\":-1.81,\"64\":-2.31,\"74\":2.38,\"82\":4.26,\"84\":-3.47,\"87\":6.53,\"92\":3.08,\"97\":-3.96,\"99\":4.98,\"101\":-2.96,\"102\":-3.8,\"103\":-3.35,\"106\":4.15,\"110\":-3.57,\"112\":-3.42,\"116\":-2,\"117\":2.44,\"118\":-2.67,\"120\":-2.97,\"122\":-2.37,\"123\":2.84,\"126\":-1.7,\"133\":-2.2},\"84\":{\"3\":-4.14,\"8\":-3.05,\"12\":-3.17,\"22\":-2.17,\"23\":2.83,\"24\":-5.31,\"33\":-2.6,\"66\":2.17,\"69\":3.36,\"76\":-2.73,\"83\":3.44,\"90\":3.11,\"92\":2.11,\"93\":3.26,\"104\":3.62,\"110\":-2.98,\"112\":-3.13,\"114\":-2.54,\"119\":3.17,\"126\":-1.45,\"127\":-3.33},\"85\":{\"4\":2.76,\"5\":-2,\"6\":-1.71,\"31\":2.23,\"32\":-2.08,\"41\":-1.81,\"45\":-1.74,\"52\":-1.26,\"59\":3.18,\"72\":-1.65,\"74\":-1.81,\"76\":2.2,\"81\":3.29,\"90\":-1.77,\"110\":2.16,\"125\":2.08},\"86\":{\"1\":1.63,\"4\":1.73,\"12\":-1.49,\"14\":-2.28,\"26\":-1.51,\"28\":2.34,\"32\":2.42,\"43\":-1.83,\"46\":1.86,\"60\":2.29,\"62\":-1.69,\"82\":2.36,\"87\":2.73,\"97\":-1.58,\"98\":-1.86,\"99\":1.88,\"102\":-2.1,\"103\":-1.68,\"110\":-1.8,\"116\":1.4,\"118\":-2.33,\"123\":-1.46,\"126\":-1.29},\"87\":{\"3\":3.23,\"4\":3.33,\"10\":-2.67,\"11\":-2.68,\"13\":-1.51,\"17\":-3.85,\"22\":2.44,\"26\":-2.16,\"28\":-2.36,\"29\":-2.68,\"30\":2.42,\"33\":3.02,\"39\":-2.63,\"40\":-3.23,\"41\":2.2,\"44\":2.81,\"47\":-1.98,\"50\":2.49,\"52\":2.36,\"53\":-2.57,\"58\":1.95,\"64\":-3.71,\"65\":2.45,\"66\":-2.21,\"73\":-0.52,\"74\":3.85,\"76\":7.41,\"79\":-2.62,\"82\":-2.35,\"83\":-6.53,\"86\":-2.73,\"96\":-3.29,\"97\":-2.85,\"98\":-5.82,\"101\":-5.3,\"105\":-2.6,\"107\":2.45,\"111\":2.36,\"116\":1.37,\"117\":2.99,\"118\":2.69,\"122\":-2.25,\"127\":3.2,\"128\":2.58,\"130\":3.85},\"88\":{\"12\":-2.31,\"15\":2.85,\"22\":-3.34,\"32\":2.63,\"34\":-3.3,\"48\":-2.09,\"52\":1.64,\"53\":2.95,\"67\":-2.3,\"80\":2.3,\"89\":-2.65,\"95\":1.96,\"100\":2.4,\"102\":-2.48,\"104\":3.02,\"109\":2.74,\"112\":-2.19,\"114\":-2.25,\"119\":2.12,\"122\":1.61,\"123\":2.41,\"127\":-1.99},\"89\":{\"10\":-2.79,\"12\":-3.57,\"23\":2.05,\"28\":2.39,\"30\":-1.88,\"33\":-3.4,\"43\":-2.91,\"50\":-2.17,\"60\":2.88,\"63\":1.82,\"68\":-3.23,\"69\":2.68,\"72\":2.63,\"73\":3.24,\"75\":1.78,\"76\":-3.26,\"78\":-2.93,\"80\":3.17,\"88\":2.65,\"93\":4.27,\"95\":2.02,\"97\":3.23,\"100\":1.89,\"102\":-3.02,\"103\":-1.72,\"104\":3.36,\"105\":2.5,\"106\":-6.34,\"113\":4.58,\"121\":4.08,\"127\":-2.33,\"132\":-3.41},\"90\":{\"9\":-1.89,\"14\":2.12,\"19\":-2.56,\"25\":-1.98,\"27\":2.09,\"37\":-3.13,\"39\":-2.03,\"55\":2.14,\"66\":-1.67,\"67\":-2.42,\"70\":-2.87,\"75\":-1.89,\"78\":-3.13,\"84\":-3.13,\"85\":1.77,\"92\":-2.07,\"95\":-1.85,\"97\":-3.07,\"99\":-3.57,\"109\":2.8,\"110\":2.34,\"111\":-3.26,\"112\":2.57},\"91\":{\"20\":4.22,\"21\":-1.47,\"24\":-1.53,\"33\":1.73,\"44\":1.91,\"49\":1.67,\"51\":-1.5,\"68\":-1.46,\"69\":-1.8,\"98\":2.11,\"99\":1.92,\"106\":1.82,\"117\":1.91,\"121\":-1.82,\"124\":2.96},\"92\":{\"32\":2.23,\"35\":2.16,\"38\":2.11,\"53\":-2.15,\"83\":-3.08,\"84\":-2.11,\"90\":2.07,\"94\":3.11,\"97\":-2.08,\"104\":1.99,\"110\":-4.06,\"115\":-2.08,\"124\":3.27},\"93\":{\"4\":-3.31,\"5\":2.68,\"10\":2.27,\"11\":2.31,\"15\":2.95,\"16\":2.37,\"17\":-2.71,\"18\":3.83,\"20\":3.32,\"31\":-2.09,\"32\":3.06,\"33\":2.53,\"34\":3.1,\"35\":2.59,\"47\":-2.57,\"65\":-2.01,\"66\":2.28,\"71\":-2.46,\"75\":-1.67,\"84\":-3.19,\"89\":-4.27,\"94\":3.37,\"95\":-1.67,\"97\":-2.79,\"109\":2.4,\"110\":-3.05,\"115\":-2.39,\"132\":-5.8},\"94\":{\"4\":-2.62,\"10\":2.14,\"16\":2.55,\"20\":2.72,\"33\":2.24,\"37\":-3,\"39\":1.76,\"42\":2.68,\"53\":2.41,\"54\":3.25,\"56\":1.78,\"60\":-2.23,\"61\":2.52,\"63\":2.29,\"64\":2.39,\"67\":-3.96,\"76\":-2.68,\"82\":-1.96,\"92\":-3.2,\"93\":-3.37,\"95\":-1.76,\"96\":-1.89,\"102\":2.99,\"114\":-3.21,\"115\":-3.16,\"124\":-3.03,\"131\":-2.57,\"132\":-3.46},\"95\":{\"48\":-1.84,\"49\":2.22,\"65\":-1.6,\"68\":-2,\"73\":-1.79,\"74\":2.32,\"81\":1.67,\"88\":-1.96,\"89\":-2.02,\"90\":1.85,\"93\":1.67,\"94\":1.76,\"104\":2.54,\"110\":-2.51,\"123\":-1.74},\"96\":{\"20\":-3.52,\"24\":-2.18,\"34\":3.3,\"51\":-2.3,\"59\":2.54,\"62\":-1.52,\"69\":-1.92,\"76\":2.56,\"87\":3.29,\"94\":1.89,\"97\":-2.57,\"98\":2.89,\"102\":-5.14,\"105\":-1.84,\"111\":2.22,\"114\":2.06,\"117\":2.06,\"118\":-1.78,\"119\":-1.72,\"124\":3.99},\"97\":{\"3\":-2.47,\"12\":-2.47,\"23\":2.28,\"26\":-1.62,\"28\":4.04,\"30\":-1.68,\"36\":1.88,\"37\":2,\"38\":1.89,\"43\":-1.92,\"57\":2.85,\"60\":2.54,\"63\":-1.94,\"72\":2.26,\"83\":3.96,\"86\":1.58,\"87\":3.38,\"89\":-3.23,\"90\":3.07,\"92\":2.08,\"93\":2.79,\"96\":3.73,\"102\":-2.93,\"106\":-3.39,\"121\":2.86,\"130\":-2.73},\"98\":{\"1\":1.6,\"5\":2.45,\"7\":2.8,\"16\":2.06,\"20\":4.97,\"22\":-2.69,\"24\":3.27,\"29\":2.1,\"32\":2.08,\"51\":2.22,\"53\":-1.98,\"54\":2.63,\"60\":1.96,\"66\":2.19,\"67\":-1.77,\"68\":-2.34,\"86\":1.86,\"87\":3.34,\"91\":-2.11,\"96\":-2.89,\"101\":-2.9,\"106\":-2.87,\"108\":-3.51,\"113\":2.77,\"117\":-2.38,\"124\":-2.56,\"128\":-2.71},\"99\":{\"2\":-2.39,\"4\":-3.33,\"7\":2.89,\"15\":2.33,\"20\":2.54,\"23\":-3.46,\"28\":-2.41,\"29\":1.82,\"39\":2.13,\"45\":3.45,\"57\":-2.64,\"59\":-2.36,\"83\":-4.98,\"86\":-1.88,\"90\":3.57,\"91\":-1.92,\"100\":2.31,\"101\":-3.14,\"105\":-2.75,\"106\":3.42,\"115\":-2.2},\"100\":{\"3\":-2.19,\"8\":4.37,\"24\":2.68,\"43\":3.07,\"48\":-2.17,\"69\":-1.91,\"70\":2.9,\"78\":-1.75,\"88\":-2.39,\"89\":-1.89,\"99\":-2.12,\"107\":2.11,\"118\":2.44},\"101\":{\"2\":4.12,\"3\":-3.07,\"4\":2.93,\"5\":3.16,\"7\":-2.2,\"11\":3.36,\"17\":-2.99,\"19\":2.91,\"20\":7.9,\"21\":-2.79,\"22\":-2.97,\"28\":3.24,\"29\":1.91,\"30\":1.36,\"31\":-2.42,\"36\":2.03,\"37\":2.48,\"39\":2.61,\"49\":3.24,\"54\":-2.5,\"56\":-2.91,\"58\":1.95,\"60\":2.97,\"63\":-1.52,\"64\":-3.13,\"66\":5.37,\"72\":4.92,\"73\":-2.88,\"78\":2.83,\"79\":-2.11,\"80\":-1.89,\"82\":2.91,\"83\":2.96,\"87\":5.3,\"98\":3.41,\"99\":3.05,\"108\":1.97,\"109\":3.1,\"110\":-3.38,\"111\":2.94,\"116\":2.35,\"118\":-3.57,\"120\":-3.02,\"121\":-2.97,\"122\":-2.81,\"128\":-3.42,\"130\":3},\"102\":{\"7\":-3.61,\"13\":1.37,\"20\":-4.61,\"22\":-2.37,\"23\":2.03,\"24\":4.35,\"28\":2.73,\"33\":-2.7,\"34\":-2.75,\"37\":1.81,\"38\":1.81,\"41\":3.17,\"46\":-3.5,\"51\":2.71,\"57\":2.98,\"64\":2.37,\"73\":-2.49,\"78\":-2.89,\"81\":-4.57,\"83\":3.8,\"86\":2.1,\"88\":2.48,\"89\":3.02,\"94\":-2.99,\"96\":5.14,\"97\":3.01,\"111\":-2.8,\"114\":-3.14,\"124\":-4.2},\"103\":{\"8\":2.5,\"20\":2.08,\"24\":3.38,\"51\":1.62,\"78\":-2.46,\"81\":-2.96,\"83\":3.2,\"86\":1.68,\"89\":1.72,\"106\":-1.91,\"114\":-1.95,\"117\":-1.99,\"124\":-2.18},\"104\":{\"4\":-3.8,\"5\":2.83,\"8\":2.76,\"13\":1.29,\"17\":-3.37,\"23\":2.38,\"29\":-4.08,\"31\":-4.92,\"32\":4.17,\"38\":-2.88,\"42\":2.72,\"52\":1.89,\"53\":2.56,\"54\":3.44,\"56\":1.78,\"61\":2.8,\"62\":-2.19,\"63\":2.38,\"66\":2.92,\"68\":-4.14,\"76\":-5.61,\"84\":-3.62,\"88\":-3.02,\"89\":-3.36,\"92\":-1.99,\"95\":-2.54,\"107\":-5.2,\"108\":-3.65,\"109\":4.52,\"113\":2.68,\"115\":-2.34,\"117\":-3.42,\"119\":2.23,\"123\":-2.56,\"125\":-3.82,\"129\":1.95},\"105\":{\"3\":-2.44,\"19\":2.53,\"21\":-2.15,\"26\":-2.05,\"31\":-2.38,\"34\":4.97,\"42\":-2.03,\"43\":-2.22,\"44\":-1.76,\"60\":3.3,\"62\":-2.12,\"63\":-1.67,\"70\":2.98,\"78\":-2.08,\"79\":-2.39,\"87\":2.84,\"89\":-2.5,\"96\":1.84,\"99\":2.75,\"111\":3.19,\"112\":2.58,\"116\":1.66,\"118\":-3.2},\"106\":{\"2\":-2.23,\"4\":-3.03,\"7\":3.59,\"11\":-3.05,\"17\":2.41,\"18\":-1.92,\"22\":4.4,\"23\":-3.63,\"25\":2.13,\"26\":2.28,\"27\":-2.92,\"28\":-3.61,\"29\":3.35,\"59\":-3.92,\"63\":1.95,\"73\":5.24,\"74\":-4.05,\"75\":1.71,\"77\":1.88,\"81\":-3.01,\"82\":-3.65,\"83\":-4.15,\"89\":6.34,\"91\":-1.82,\"97\":3.28,\"98\":2.87,\"99\":-3.43,\"103\":1.91,\"110\":4.24,\"115\":-2.12,\"116\":-2.16,\"120\":1.97,\"124\":2.87,\"127\":2.75,\"128\":2.02,\"131\":2.5,\"133\":2.43},\"107\":{\"3\":-2.02,\"4\":2.42,\"20\":-3.01,\"26\":-2.08,\"27\":5.53,\"32\":2.46,\"43\":-2.68,\"50\":3.82,\"65\":2.3,\"79\":-2.13,\"81\":2.92,\"87\":-2.45,\"100\":-2.11,\"104\":5.2,\"120\":-2.29,\"122\":-2.27,\"126\":1.65,\"131\":-1.86},\"108\":{\"4\":-2.84,\"6\":2.32,\"15\":1.76,\"20\":2.42,\"24\":2.38,\"27\":1.92,\"29\":1.7,\"34\":-2.1,\"55\":-1.9,\"74\":2.39,\"76\":-2.53,\"98\":2.78,\"101\":-1.97,\"104\":3.65,\"112\":-2.54,\"116\":-1.64,\"125\":-2.1},\"109\":{\"12\":2.69,\"20\":-3.45,\"21\":-2.85,\"39\":-2.03,\"56\":-2.32,\"65\":2.89,\"88\":-2.74,\"90\":-2.8,\"93\":-2.4,\"101\":-3.1,\"104\":-4.52,\"115\":2.38,\"123\":4.34,\"132\":3.29},\"110\":{\"3\":-2.96,\"20\":2.69,\"25\":2.06,\"35\":-2.53,\"37\":1.73,\"41\":-2.67,\"44\":2.33,\"46\":-2.7,\"50\":-2.46,\"52\":2.49,\"54\":-2.93,\"59\":-3.36,\"61\":-1.48,\"63\":1.75,\"74\":-2.65,\"83\":3.22,\"84\":2.98,\"85\":-2.16,\"86\":1.8,\"90\":-2.26,\"92\":4.06,\"93\":3.05,\"95\":2.51,\"101\":3.38,\"106\":-3.61,\"116\":-2.36,\"124\":-2.84,\"127\":2.74,\"128\":-1.99,\"129\":2.38,\"132\":-2.92,\"133\":2.1},\"111\":{\"4\":3.4,\"8\":-2.11,\"18\":-2.07,\"20\":-5.63,\"22\":2.06,\"31\":2,\"36\":-2.53,\"38\":-1.78,\"46\":2.98,\"55\":2.11,\"57\":-1.89,\"65\":2.54,\"73\":3.23,\"76\":3.63,\"81\":3.14,\"87\":-2.36,\"90\":3.26,\"96\":-2.4,\"101\":-2.94,\"102\":2.8,\"105\":-3.19,\"116\":1.59},\"112\":{\"4\":4.03,\"10\":-2.45,\"15\":-2.67,\"20\":-4.18,\"39\":2.76,\"47\":2.36,\"76\":2.77,\"80\":-1.78,\"83\":3.42,\"84\":3.05,\"88\":2.19,\"90\":-2.57,\"105\":-2.58,\"108\":2.54,\"113\":-2.74,\"121\":-2.57,\"122\":-2.19,\"129\":1.95,\"132\":4.54},\"113\":{\"7\":2.55,\"11\":1.91,\"21\":1.78,\"32\":-2.37,\"34\":2.28,\"35\":-2.85,\"36\":2.36,\"39\":-1.67,\"43\":-2.59,\"44\":-2.11,\"47\":-2.11,\"48\":3.07,\"49\":-3.3,\"50\":-2.07,\"59\":-2.8,\"61\":-1.6,\"63\":-1.63,\"71\":-2.27,\"74\":3.24,\"81\":-3.32,\"89\":-4.58,\"98\":-2.84,\"104\":-2.68,\"112\":2.74,\"114\":1.81,\"121\":2.61,\"126\":-1.41,\"128\":1.89,\"130\":-2.13,\"131\":1.6,\"133\":-2.23},\"114\":{\"5\":-1.91,\"7\":2.48,\"18\":-1.9,\"20\":3.54,\"30\":-1.58,\"36\":-1.67,\"41\":-1.88,\"42\":-2.37,\"52\":-2.13,\"58\":-1.68,\"62\":2.13,\"66\":-1.94,\"67\":3,\"70\":-2.33,\"73\":3.43,\"76\":3.42,\"82\":-1.69,\"84\":2.54,\"88\":2.25,\"94\":2.95,\"96\":-2.06,\"102\":3.14,\"103\":1.95,\"113\":-1.81,\"118\":2.8,\"121\":-2.03,\"124\":3.01,\"125\":2.4,\"131\":2.3},\"115\":{\"16\":-2.14,\"19\":2.11,\"20\":-3.41,\"24\":-4.44,\"30\":1.29,\"51\":-3.06,\"55\":-2.29,\"56\":-1.61,\"59\":2.34,\"64\":-2.65,\"70\":3.27,\"76\":2.16,\"82\":1.81,\"92\":2.08,\"93\":2.39,\"94\":2.9,\"99\":2.2,\"104\":2.34,\"106\":2.12,\"109\":-2.44,\"132\":2.44},\"116\":{\"4\":2.16,\"6\":-1.51,\"46\":1.91,\"48\":1.9,\"49\":-1.35,\"71\":-1.29,\"74\":-1.67,\"76\":2.52,\"80\":-1.94,\"81\":2.39,\"83\":2,\"86\":-1.4,\"87\":-1.37,\"101\":-2.35,\"105\":-1.66,\"106\":2.16,\"108\":1.64,\"110\":2.36,\"111\":-1.59},\"117\":{\"2\":-2.03,\"3\":2.57,\"7\":3.1,\"21\":2.21,\"23\":-3.09,\"25\":1.77,\"28\":-2.32,\"36\":-1.45,\"40\":-2.34,\"49\":-2.09,\"57\":-4.12,\"63\":1.89,\"68\":2.94,\"81\":2.55,\"83\":-2.44,\"87\":-2.99,\"91\":-2.25,\"96\":-2.06,\"98\":2.42,\"103\":1.99,\"104\":3.42,\"118\":2.74,\"121\":-2.58},\"118\":{\"8\":2.58,\"12\":-2.74,\"20\":2.94,\"22\":-2.47,\"25\":2.4,\"27\":3.84,\"31\":-4.39,\"33\":-2.8,\"36\":2.01,\"37\":3.65,\"42\":-1.78,\"59\":2.38,\"60\":2.72,\"77\":-1.19,\"80\":2.17,\"82\":2.41,\"83\":2.67,\"86\":2.59,\"87\":-2.69,\"96\":1.78,\"100\":-2.9,\"101\":3.57,\"105\":3.2,\"114\":-2.89,\"117\":-2.67,\"124\":5.58,\"126\":1.7,\"132\":-2.58,\"133\":-2.68},\"119\":{\"11\":2.03,\"24\":-3.18,\"34\":-1.92,\"35\":-2.01,\"41\":2.22,\"48\":2.73,\"57\":2.04,\"60\":1.87,\"64\":-1.99,\"69\":-2.21,\"84\":-2.9,\"88\":-2.12,\"96\":1.83,\"104\":-2.23,\"121\":1.73},\"120\":{\"29\":1.9,\"45\":-2.21,\"50\":-2.16,\"54\":-2.2,\"71\":2.05,\"83\":2.97,\"101\":2.62,\"106\":-1.97,\"107\":2.29,\"122\":1.57,\"123\":2.57,\"124\":-2.8,\"125\":2.47,\"127\":-2.2},\"121\":{\"14\":2.66,\"19\":2.3,\"20\":2.76,\"24\":-3.62,\"26\":-1.96,\"33\":2.64,\"34\":5.59,\"43\":-2.55,\"60\":2.49,\"63\":-1.83,\"65\":-2.31,\"69\":-3.06,\"75\":-2.94,\"79\":-2.3,\"81\":2.53,\"89\":-4.08,\"91\":1.82,\"97\":-2.82,\"101\":2.93,\"112\":2.61,\"113\":-2.61,\"114\":2.03,\"117\":2.76,\"119\":-1.73},\"122\":{\"3\":-3.98,\"11\":1.88,\"21\":-1.99,\"24\":-3.46,\"34\":3.97,\"35\":-1.59,\"51\":-1.67,\"54\":-1.99,\"83\":2.37,\"87\":2.25,\"88\":-1.61,\"101\":2.72,\"107\":2.32,\"112\":2.19,\"120\":-1.57,\"125\":2.38},\"123\":{\"2\":4.45,\"4\":2.88,\"8\":2.58,\"14\":-2.38,\"16\":-2.59,\"34\":-3.5,\"37\":1.53,\"47\":1.91,\"48\":-2.65,\"49\":2.74,\"68\":-2.69,\"70\":2.67,\"72\":4.81,\"79\":1.99,\"83\":-2.84,\"86\":1.46,\"88\":-2.58,\"95\":1.74,\"104\":2.56,\"109\":-4.34,\"120\":-2.55},\"124\":{\"2\":-2.21,\"4\":-4.8,\"10\":2.22,\"11\":-3.8,\"16\":2.81,\"21\":1.96,\"37\":-2.03,\"38\":-1.92,\"39\":3.95,\"42\":2.41,\"43\":-2.68,\"46\":-3.03,\"47\":-1.62,\"50\":-3.62,\"51\":2.88,\"52\":6.25,\"56\":1.89,\"58\":-2.34,\"60\":-2.22,\"63\":2.66,\"74\":-2.85,\"78\":5.13,\"80\":2.61,\"91\":-2.96,\"92\":-3.27,\"94\":3.03,\"96\":-4.48,\"98\":2.95,\"102\":3.35,\"103\":2.18,\"106\":-2.87,\"110\":2.84,\"114\":-3.01,\"118\":-5.58,\"120\":2.8,\"125\":3.91,\"132\":-2.65,\"133\":2.62},\"125\":{\"9\":3.39,\"19\":2.42,\"20\":7.06,\"21\":-2.49,\"27\":2.55,\"35\":2.37,\"39\":2.08,\"42\":-2.19,\"46\":-2.32,\"48\":-3.01,\"49\":2.86,\"61\":2.39,\"67\":2.59,\"75\":1.99,\"78\":3.34,\"85\":-2.08,\"104\":3.68,\"108\":2.1,\"114\":-2.4,\"120\":-2.54,\"122\":-2.32,\"124\":-3.32,\"127\":2.48,\"130\":2.38},\"126\":{\"2\":1.36,\"5\":1.42,\"24\":2.42,\"27\":2.19,\"37\":1.31,\"39\":1.32,\"42\":-1.68,\"46\":-1.67,\"56\":-1.54,\"73\":-2.1,\"83\":1.7,\"84\":1.45,\"86\":1.29,\"107\":-1.65,\"113\":1.41,\"118\":-1.7},\"127\":{\"2\":-2.53,\"14\":2.32,\"17\":2.08,\"24\":2.49,\"26\":2.16,\"48\":-2.53,\"51\":2.03,\"63\":1.69,\"74\":-2.53,\"84\":3.33,\"87\":-3.2,\"88\":1.99,\"89\":2.33,\"106\":-2.75,\"110\":-2.74,\"120\":2.14,\"125\":-2.48},\"128\":{\"1\":-1.96,\"2\":-1.7,\"11\":-2.27,\"17\":2.32,\"20\":1.88,\"51\":1.89,\"58\":-1.88,\"60\":-2.06,\"74\":-1.64,\"76\":2.23,\"78\":1.95,\"87\":-2.58,\"98\":2.25,\"101\":2.28,\"106\":-2.02,\"110\":1.99,\"113\":-1.89,\"133\":1.72},\"129\":{\"6\":2.56,\"16\":1.57,\"20\":4.5,\"24\":2.98,\"48\":-1.64,\"51\":1.87,\"52\":1.36,\"73\":-1.82,\"76\":-1.64,\"104\":-1.95,\"110\":-2.38,\"112\":-1.95},\"130\":{\"1\":-2.3,\"12\":-2.35,\"21\":1.75,\"24\":2.34,\"34\":-2.5,\"48\":-2.56,\"51\":2.94,\"64\":2.09,\"69\":2.15,\"87\":-3.85,\"97\":2.73,\"101\":-3,\"113\":2.13,\"125\":-2.38},\"131\":{\"4\":-1.99,\"8\":1.92,\"14\":2.38,\"20\":1.82,\"34\":4.7,\"58\":-1.71,\"78\":-2.24,\"80\":1.73,\"94\":2.6,\"106\":-2.5,\"107\":1.86,\"113\":-1.6,\"114\":-2.3},\"132\":{\"8\":-3,\"9\":3.75,\"12\":-2.41,\"13\":-1.41,\"14\":-2.93,\"18\":-1.96,\"19\":2.42,\"27\":3.75,\"32\":3.5,\"33\":-3.31,\"38\":2.3,\"40\":2.8,\"41\":3.14,\"43\":-1.79,\"44\":2.59,\"46\":-2.91,\"47\":2.32,\"53\":-3.76,\"55\":-4.53,\"58\":2.28,\"62\":1.76,\"70\":2.85,\"75\":3.09,\"78\":2.41,\"81\":-3.49,\"89\":3.41,\"93\":5.8,\"94\":3.46,\"109\":-3.68,\"110\":3.25,\"112\":-4.54,\"115\":-2.44,\"118\":2.58,\"124\":2.65},\"133\":{\"3\":-2.36,\"8\":2.62,\"12\":-1.98,\"20\":2.35,\"28\":2.21,\"30\":-1.67,\"36\":1.52,\"39\":2.55,\"46\":-1.8,\"48\":-2.17,\"52\":1.83,\"69\":2.41,\"83\":2.2,\"106\":-2.43,\"110\":-2.1,\"113\":2.23,\"118\":2.68,\"124\":-2.62,\"128\":-1.72}}"),
@@ -17744,489 +18452,6 @@ function findItem(text) {
 		id,
 		name: ownedLabel(id)
 	} : void 0;
-}
-// src/data/builds.ts
-var CARRY_DEF_PHYS = ["wind_of_nature", "immortality"];
-var CARRY_DEF_MAGIC = ["rose_gold_meteor", "valkyries_shield"];
-var MAGE_DEF = ["winter_crown", "immortality"];
-var FRONT_PHYS = [
-	"antique_cuirass",
-	"blade_armor",
-	"chastise_pauldron",
-	"brute_force_breastplate"
-];
-var FRONT_MAGIC = [
-	"valkyries_shield",
-	"radiant_armor",
-	"oracle"
-];
-var FLICKER = {
-	name: "Flicker",
-	reason: "A blink to escape a dive or reposition for the kill."
-};
-var TEMPLATES = {
-	mm_crit: {
-		label: "Crit marksman",
-		boots: "swift_boots",
-		core: ["windtalker", "berserkers_fury"],
-		coreWhy: "Attack speed first, then crit — your damage comes from basic attacks.",
-		filler: [
-			"haas_claws",
-			"blade_of_despair",
-			"malefic_roar",
-			"great_dragon_spear"
-		],
-		antiheal: "sea_halberd",
-		pen: "malefic_roar",
-		tankShred: "demon_hunter_sword",
-		defense: {
-			physical: CARRY_DEF_PHYS,
-			magic: CARRY_DEF_MAGIC
-		},
-		maxDefense: 2,
-		spell: FLICKER,
-		emblem: {
-			name: "Marksman",
-			talents: [
-				"Fatal",
-				"Weapon Master",
-				"Weakness Finder"
-			],
-			reason: "Crit, more stats from your items, and a slow on your basic attacks."
-		}
-	},
-	mm_onhit: {
-		label: "On-hit marksman",
-		boots: "swift_boots",
-		core: [
-			"corrosion_scythe",
-			"demon_hunter_sword",
-			"golden_staff"
-		],
-		coreWhy: "The attack-speed trio: every hit slows, shreds HP and triggers your passive faster.",
-		filler: [
-			"malefic_roar",
-			"haas_claws",
-			"blade_of_despair"
-		],
-		antiheal: "sea_halberd",
-		pen: "malefic_roar",
-		tankShred: "demon_hunter_sword",
-		defense: {
-			physical: CARRY_DEF_PHYS,
-			magic: CARRY_DEF_MAGIC
-		},
-		maxDefense: 2,
-		spell: {
-			name: "Inspire",
-			reason: "A burst of attack speed for your on-hit damage. Take Flicker instead if they have divers."
-		},
-		emblem: {
-			name: "Marksman",
-			talents: [
-				"Swift",
-				"Weapon Master",
-				"Weakness Finder"
-			],
-			reason: "Attack speed, more stats from your items, and a slow on your basic attacks."
-		}
-	},
-	mm_burst: {
-		label: "Burst marksman",
-		boots: "swift_boots",
-		core: ["hunter_strike", "blade_of_despair"],
-		coreWhy: "Skill damage and penetration — you burst with abilities, not sustained attacks.",
-		filler: [
-			"malefic_roar",
-			"berserkers_fury",
-			"endless_battle",
-			"great_dragon_spear"
-		],
-		antiheal: "sea_halberd",
-		pen: "malefic_roar",
-		tankShred: "demon_hunter_sword",
-		defense: {
-			physical: CARRY_DEF_PHYS,
-			magic: CARRY_DEF_MAGIC
-		},
-		maxDefense: 2,
-		spell: FLICKER,
-		emblem: {
-			name: "Assassin",
-			talents: [
-				"Rupture",
-				"Weapon Master",
-				"Quantum Charge"
-			],
-			reason: "Penetration, more stats from your items, and speed plus healing on basic attacks."
-		}
-	},
-	mm_magic: {
-		label: "Magic marksman",
-		boots: "arcane_boots",
-		core: ["feather_of_heaven", "genius_wand"],
-		coreWhy: "Attack speed with magic on-hit, then penetration.",
-		filler: [
-			"holy_crystal",
-			"divine_glaive",
-			"blood_wings"
-		],
-		antiheal: "glowing_wand",
-		pen: "divine_glaive",
-		tankShred: "glowing_wand",
-		defense: {
-			physical: MAGE_DEF,
-			magic: ["winter_crown", "valkyries_shield"]
-		},
-		maxDefense: 2,
-		spell: FLICKER,
-		emblem: {
-			name: "Mage",
-			talents: [
-				"Swift",
-				"Weapon Master",
-				"Impure Rage"
-			],
-			reason: "Attack speed, more stats from your items, and max-HP damage on skills."
-		}
-	},
-	mage: {
-		label: "Mage",
-		boots: "arcane_boots",
-		core: ["clock_of_destiny", "lightning_truncheon"],
-		coreWhy: "Clock first so it stacks, then Lightning Truncheon for burst.",
-		filler: [
-			"genius_wand",
-			"holy_crystal",
-			"divine_glaive",
-			"blood_wings"
-		],
-		antiheal: "glowing_wand",
-		pen: "divine_glaive",
-		tankShred: "glowing_wand",
-		defense: {
-			physical: MAGE_DEF,
-			magic: ["winter_crown", "valkyries_shield"]
-		},
-		maxDefense: 2,
-		spell: FLICKER,
-		emblem: {
-			name: "Mage",
-			talents: [
-				"Rupture",
-				"Bargain Hunter",
-				"Lethal Ignition"
-			],
-			reason: "Penetration, cheaper items, and bonus damage when you land a burst."
-		}
-	},
-	mage_tank: {
-		label: "Sustain mage",
-		boots: "tough_boots",
-		core: ["clock_of_destiny", "oracle"],
-		coreWhy: "Clock for HP and power, Oracle to amplify your own shields and healing.",
-		filler: [
-			"glowing_wand",
-			"genius_wand",
-			"thunder_belt",
-			"immortality"
-		],
-		antiheal: "dominance_ice",
-		pen: "genius_wand",
-		tankShred: "glowing_wand",
-		defense: {
-			physical: FRONT_PHYS,
-			magic: FRONT_MAGIC
-		},
-		maxDefense: 4,
-		spell: FLICKER,
-		emblem: {
-			name: "Mage",
-			talents: [
-				"Agility",
-				"Festival of Blood",
-				"Impure Rage"
-			],
-			reason: "Movement speed, spell vamp, and max-HP damage on skills."
-		}
-	},
-	assassin_phys: {
-		label: "Physical assassin",
-		boots: "tough_boots",
-		core: ["hunter_strike", "blade_of_the_heptaseas"],
-		coreWhy: "Cooldown and penetration to delete squishy targets.",
-		filler: [
-			"blade_of_despair",
-			"malefic_roar",
-			"sky_piercer"
-		],
-		antiheal: "sea_halberd",
-		pen: "malefic_roar",
-		defense: {
-			physical: ["immortality", "brute_force_breastplate"],
-			magic: ["rose_gold_meteor", "valkyries_shield"]
-		},
-		maxDefense: 2,
-		spell: {
-			name: "Execute",
-			reason: "Finishes low-health targets through shields and escapes."
-		},
-		emblem: {
-			name: "Assassin",
-			talents: [
-				"Rupture",
-				"Master Assassin",
-				"Killing Spree"
-			],
-			reason: "Penetration, more damage to isolated targets, and a heal when you hit low-health heroes."
-		}
-	},
-	assassin_magic: {
-		label: "Magic assassin",
-		boots: "arcane_boots",
-		core: ["genius_wand", "holy_crystal"],
-		coreWhy: "Penetration then raw magic power to one-shot carries.",
-		filler: [
-			"divine_glaive",
-			"blood_wings",
-			"starlium_scythe"
-		],
-		antiheal: "glowing_wand",
-		pen: "divine_glaive",
-		defense: {
-			physical: MAGE_DEF,
-			magic: ["winter_crown", "valkyries_shield"]
-		},
-		maxDefense: 2,
-		spell: {
-			name: "Execute",
-			reason: "Finishes low-health targets through shields and escapes."
-		},
-		emblem: {
-			name: "Assassin",
-			talents: [
-				"Rupture",
-				"Master Assassin",
-				"Lethal Ignition"
-			],
-			reason: "Penetration, more damage to isolated targets, and bonus damage when you land a burst."
-		}
-	},
-	fighter_phys: {
-		label: "Fighter",
-		boots: "warrior_boots",
-		core: ["war_axe", "hunter_strike"],
-		coreWhy: "War Axe for sustained fights, then cooldown and penetration.",
-		filler: [
-			"thunder_belt",
-			"queens_wings",
-			"malefic_roar",
-			"immortality"
-		],
-		antiheal: "sea_halberd",
-		pen: "malefic_roar",
-		defense: {
-			physical: FRONT_PHYS,
-			magic: FRONT_MAGIC
-		},
-		maxDefense: 3,
-		spell: FLICKER,
-		emblem: {
-			name: "Fighter",
-			talents: [
-				"Firmness",
-				"Festival of Blood",
-				"Brave Smite"
-			],
-			reason: "Defense, spell vamp, and healing when your skills hit."
-		}
-	},
-	fighter_magic: {
-		label: "Magic fighter",
-		boots: "arcane_boots",
-		core: ["genius_wand", "concentrated_energy"],
-		coreWhy: "Penetration, then spell vamp to stay in the fight.",
-		filler: [
-			"holy_crystal",
-			"starlium_scythe",
-			"divine_glaive"
-		],
-		antiheal: "glowing_wand",
-		pen: "divine_glaive",
-		defense: {
-			physical: [
-				"winter_crown",
-				"antique_cuirass",
-				"immortality"
-			],
-			magic: ["winter_crown", "valkyries_shield"]
-		},
-		maxDefense: 2,
-		spell: FLICKER,
-		emblem: {
-			name: "Fighter",
-			talents: [
-				"Rupture",
-				"Festival of Blood",
-				"Brave Smite"
-			],
-			reason: "Penetration, spell vamp, and healing when your skills hit."
-		}
-	},
-	tank: {
-		label: "Tank",
-		boots: "tough_boots",
-		core: [],
-		coreWhy: "",
-		filler: [
-			"thunder_belt",
-			"immortality",
-			"guardian_helmet",
-			"cursed_helmet"
-		],
-		antiheal: "dominance_ice",
-		defense: {
-			physical: FRONT_PHYS,
-			magic: FRONT_MAGIC
-		},
-		maxDefense: 5,
-		spell: FLICKER,
-		emblem: {
-			name: "Tank",
-			talents: [
-				"Vitality",
-				"Tenacity",
-				"Concussive Blast"
-			],
-			reason: "HP, damage reduction when low, and area damage that scales with your HP."
-		}
-	},
-	support_heal: {
-		label: "Healer",
-		boots: "magic_shoes",
-		core: ["flask_of_the_oasis", "enchanted_talisman"],
-		coreWhy: "Stronger heals and the cooldown and mana to keep casting them.",
-		filler: [
-			"fleeting_time",
-			"oracle",
-			"immortality"
-		],
-		antiheal: "dominance_ice",
-		defense: {
-			physical: ["antique_cuirass", "chastise_pauldron"],
-			magic: ["valkyries_shield", "radiant_armor"]
-		},
-		maxDefense: 3,
-		spell: FLICKER,
-		emblem: {
-			name: "Support",
-			talents: [
-				"Agility",
-				"Pull Yourself Together",
-				"Focusing Mark"
-			],
-			reason: "Movement speed, shorter battle-spell cooldown, and a mark that makes allies hit your target harder."
-		}
-	},
-	support: {
-		label: "Support",
-		boots: "tough_boots",
-		core: ["enchanted_talisman"],
-		coreWhy: "Cooldown and mana so your utility is always up.",
-		filler: [
-			"fleeting_time",
-			"thunder_belt",
-			"immortality",
-			"oracle"
-		],
-		antiheal: "dominance_ice",
-		defense: {
-			physical: [
-				"antique_cuirass",
-				"chastise_pauldron",
-				"blade_armor"
-			],
-			magic: ["valkyries_shield", "radiant_armor"]
-		},
-		maxDefense: 4,
-		spell: FLICKER,
-		emblem: {
-			name: "Support",
-			talents: [
-				"Agility",
-				"Pull Yourself Together",
-				"Focusing Mark"
-			],
-			reason: "Movement speed, shorter battle-spell cooldown, and a mark that makes allies hit your target harder."
-		}
-	}
-};
-/** Heroes whose signature build differs from their archetype's default core. */
-var HERO_CORE = {
-	Esmeralda: {
-		boots: "tough_boots",
-		core: ["clock_of_destiny", "oracle"],
-		filler: [
-			"dominance_ice",
-			"thunder_belt",
-			"immortality",
-			"glowing_wand"
-		]
-	},
-	Aldous: {
-		boots: "tough_boots",
-		core: ["thunder_belt", "endless_battle"],
-		coreWhy: "Your stacks are the damage — build to survive long enough to land the punch."
-	},
-	Sun: {
-		boots: "swift_boots",
-		core: ["corrosion_scythe", "demon_hunter_sword"],
-		coreWhy: "Your clones copy on-hit effects, so attack speed scales three times over."
-	},
-	Argus: {
-		boots: "swift_boots",
-		core: ["corrosion_scythe", "demon_hunter_sword"],
-		coreWhy: "Attack speed charges your passive and keeps targets in range."
-	},
-	Zilong: {
-		boots: "swift_boots",
-		core: ["corrosion_scythe", "demon_hunter_sword"],
-		coreWhy: "You win by out-hitting people, so stack attack speed."
-	},
-	Masha: {
-		boots: "swift_boots",
-		core: ["corrosion_scythe", "demon_hunter_sword"],
-		coreWhy: "Attack speed is what feeds your HP bars."
-	}
-};
-function templateFor(hero, lane) {
-	const override = HERO_CORE[hero.name];
-	const base = hero.archetype === "support" && hero.ability.durability >= 60 ? TEMPLATES.tank : TEMPLATES[hero.archetype];
-	const tpl = {
-		...base,
-		...override,
-		coreWhy: override?.coreWhy ?? base.coreWhy
-	};
-	if (lane === "jungle") {
-		const talents = tpl.emblem.talents.map((t, i) => i === 1 ? "Seasoned Hunter" : t);
-		return {
-			...tpl,
-			spell: {
-				name: "Retribution",
-				reason: "Required to jungle, and it unlocks the jungle blessing on your boots."
-			},
-			emblem: {
-				...tpl.emblem,
-				talents,
-				reason: "Your usual emblem, with Seasoned Hunter for extra damage to Turtle and Lord."
-			}
-		};
-	}
-	return tpl;
-}
-function bootsNote(lane) {
-	if (lane === "jungle") return "Add a free jungle blessing to your boots: Ice steals movement speed, Flame steals attack, Bloody steals HP.";
-	if (lane === "roam") return "Add a free roam blessing to your boots: Conceal for team stealth, Encourage for ally defense, Favor if you heal or shield, Dire Hit for a bonus hit.";
 }
 // src/engine/threat.ts
 /** How much of a team's kill pressure a role normally carries. */
@@ -23660,12 +23885,32 @@ function tidyOwned(owned) {
 	const builtFrom = new Set([...full].map((id) => itemById(id)?.component).filter((c) => !!c).map((c) => componentId(c.name)));
 	return uniq(owned).filter((id) => !(id.startsWith("comp:") && builtFrom.has(id)));
 }
-/** Merge a roster reading. Screens that print hero names replace what we had; portrait-only reads just fill gaps. */
-function mergeRoster(current, seen, authoritative, exclude) {
-	const clean = seen.filter((id) => !exclude.includes(id));
-	if (authoritative && clean.length >= 3) return uniq(clean).slice(0, 5);
-	return uniq([...current, ...clean]).slice(0, 5);
+/**
+* Merge a roster reading. Screens that print hero names replace what we had. A draft read names
+* heroes from portraits: picks only ever grow during a draft, so a read that names at least as many
+* as we hold is the newer, fuller picture and replaces it; a thinner one only fills gaps.
+*/
+function mergeRoster(current, seen, authoritative, exclude, max = 5) {
+	const clean = uniq(seen.filter((id) => !exclude.includes(id)));
+	const kept = current.filter((id) => !exclude.includes(id));
+	if (authoritative && clean.length >= 3) return clean.slice(0, max);
+	if (!authoritative && clean.length && clean.length >= kept.length) return clean.slice(0, max);
+	return uniq([...clean, ...kept]).slice(0, max);
 }
+/** The lane a hero is played in: the one already chosen if this hero plays it, otherwise the hero's main lane. */
+function laneFor(heroId, lane) {
+	const hero = heroId !== void 0 ? heroById(heroId) : void 0;
+	if (!hero?.lanes.length) return lane;
+	return lane && hero.lanes.includes(lane) ? lane : hero.lanes[0];
+}
+/** A match screen this long after the last one, followed by hero selection or loading, means the match is over. */
+var MATCH_GAP_MS = 9e4;
+/** Saying "draft mode" again within this long of the first time is the same hero selection, not a new one. */
+var DRAFT_REPEAT_MS = 3e5;
+/** Typical gold carried between shop visits, for when a scoreboard's pocket-gold figure could not be read. */
+var TYPICAL_POCKET = 400;
+/** Pocket gold read this recently still describes the pocket. */
+var POCKET_FRESH_MS = 6e4;
 var overlap = (a, b) => a.filter((id) => b.includes(id)).length;
 /**
 * Work out the shop's discount from printed prices. An item the player already
@@ -23709,29 +23954,39 @@ function orientObservation(obs, s) {
 * hero names, so two are enough; a scoreboard only shows portraits, so it needs
 * most of the lobby to disagree before we believe it.
 */
-function isNewMatch(s, obs) {
+function isNewMatch(s, obs, now) {
 	const textScreen = obs.screen === "loading" || obs.screen === "draft";
 	if (!textScreen && obs.screen !== "scoreboard") return false;
-	if (s.phase !== "live" && s.owned.length === 0) return false;
 	const seen = [...obs.allies, ...obs.enemies].map((p) => p.heroId);
 	const known = [
 		...s.allies,
 		...s.enemies,
 		...s.myHeroId ? [s.myHeroId] : []
 	];
+	if (obs.screen === "draft" && s.liveAt !== void 0 && now - s.liveAt > MATCH_GAP_MS) return overlap(seen, known) < 3;
+	if (s.phase !== "live" && s.owned.length === 0) return false;
 	return seen.length >= (textScreen ? 2 : 6) && known.length >= 4 && overlap(seen, known) * 3 <= seen.length;
 }
 function applyObservation(s0, obs0, now, costUsd = 0) {
 	let s = s0;
 	let obs = obs0;
-	if (isNewMatch(s, obs)) s = {
+	if (isNewMatch(s, obs, now)) s = {
 		...EMPTY_SESSION,
 		lane: s.lane,
 		log: s.log,
 		matchId: s.matchId + 1,
-		stage: "draft"
+		stage: "draft",
+		stageAt: now
 	};
 	else obs = orientObservation(obs, s);
+	const matchSeen = s.liveAt !== void 0 || s.history.length > 0 || s.owned.length > 0 || Object.keys(s.enemyLive).length > 0;
+	if ((obs.screen === "draft" || obs.screen === "loading") && s.phase === "live" && !matchSeen) s = {
+		...s,
+		phase: "draft",
+		clockStart: void 0,
+		clockSure: void 0,
+		pendingClock: void 0
+	};
 	const next = {
 		...s,
 		calls: s.calls + 1,
@@ -23742,11 +23997,16 @@ function applyObservation(s0, obs0, now, costUsd = 0) {
 	if (printed || obs.screen === "draft") {
 		const seenAllies = obs.allies.map((p) => p.heroId);
 		const seenEnemies = obs.enemies.map((p) => p.heroId);
-		if (obs.meHeroId && (printed || !next.myHeroId)) next.myHeroId = obs.meHeroId;
+		const drafting = obs.screen === "draft" && s.phase !== "live";
+		if (obs.meHeroId && (printed || drafting || !next.myHeroId)) {
+			if (obs.meHeroId !== s.myHeroId) next.owned = s.phase === "live" ? s.owned : [];
+			next.myHeroId = obs.meHeroId;
+		}
 		const me = next.myHeroId;
 		next.enemies = mergeRoster(s.enemies, seenEnemies, printed, me ? [me] : []);
-		next.allies = mergeRoster(s.allies, seenAllies.filter((id) => id !== me), printed, [...next.enemies, ...me ? [me] : []]);
-		if (!next.lane && me) next.lane = heroById(me)?.lanes[0];
+		next.allies = mergeRoster(s.allies, seenAllies.filter((id) => id !== me), printed, [...next.enemies, ...me ? [me] : []], 4);
+		if (obs.banned?.length) next.banned = uniq([...s.banned, ...obs.banned]).filter((id) => id !== me && !next.allies.includes(id) && !next.enemies.includes(id)).slice(0, 10);
+		if (me) next.lane = laneFor(me, next.lane);
 	}
 	if (obs.screen === "scoreboard") {
 		const doubt = { ...s.doubt ?? {} };
@@ -23761,6 +24021,11 @@ function applyObservation(s0, obs0, now, costUsd = 0) {
 		if (mine?.gold !== void 0 && obs.myGold !== void 0 && mine.gold >= obs.myGold && !doubt[mine.heroId]) {
 			next.spent = mine.gold - obs.myGold + (next.goldOffset ?? 0);
 			next.spentAt = now;
+		} else if (mine?.gold !== void 0 && obs.myGold === void 0 && !doubt[mine.heroId]) {
+			const recent = s.gold !== void 0 && s.goldAt !== void 0 && now - s.goldAt <= POCKET_FRESH_MS;
+			const estimate = mine.gold - (recent ? s.gold : TYPICAL_POCKET) + (next.goldOffset ?? 0);
+			if (estimate > (next.spent ?? 0)) next.spent = estimate;
+			if (!recent) next.gold = void 0;
 		}
 	}
 	let goldBelieved = obs.myGold !== void 0;
@@ -23829,6 +24094,7 @@ function applyObservation(s0, obs0, now, costUsd = 0) {
 			next.pendingClock = void 0;
 		} else next.pendingClock = candidate;
 	}
+	if (inMatch) next.liveAt = now;
 	if (inMatch && next.myHeroId) {
 		next.phase = "live";
 		next.clockStart ??= now;
@@ -23880,7 +24146,14 @@ function applyObservation(s0, obs0, now, costUsd = 0) {
 		next.idleFrames = 0;
 		next.resultFrames = 0;
 	}
+	if (next.stage !== s0.stage || next.matchId !== s0.matchId) next.stageAt = now;
 	return next;
+}
+/** Is there a match in this session that a new hero selection must clear away? */
+function holdsMatch(s, now) {
+	if (s.phase === "live" || s.history.length > 0 || s.owned.length > 0 || s.liveAt !== void 0) return true;
+	if (stageOf(s) === "draft") return s.stageAt !== void 0 && now - s.stageAt > DRAFT_REPEAT_MS;
+	return s.stage === "loading" || s.stage === "done" || s.stage === "live";
 }
 /** Add a line to the storyboard; a line for the same moment replaces the one already there. */
 function addBeat(story, beat) {
@@ -23896,16 +24169,15 @@ function sessionReducer(s, a) {
 			...s,
 			[a.side]: uniq(a.ids).slice(0, a.side === "banned" ? 10 : a.side === "allies" ? 4 : 5)
 		};
-		case "setMyHero": {
-			const hero = a.id ? heroById(a.id) : void 0;
-			return {
-				...s,
-				myHeroId: a.id,
-				lane: hero && (!s.lane || !hero.lanes.includes(s.lane)) ? hero.lanes[0] : s.lane,
-				allies: s.allies.filter((id) => id !== a.id),
-				owned: a.id === s.myHeroId ? s.owned : []
-			};
-		}
+		case "setMyHero": return {
+			...s,
+			myHeroId: a.id,
+			lane: laneFor(a.id, s.lane),
+			allies: s.allies.filter((id) => id !== a.id),
+			enemies: s.enemies.filter((id) => id !== a.id),
+			banned: s.banned.filter((id) => id !== a.id),
+			owned: a.id === s.myHeroId ? s.owned : []
+		};
 		case "setLane": return {
 			...s,
 			lane: a.lane
@@ -23944,7 +24216,10 @@ function sessionReducer(s, a) {
 			goldAt: void 0,
 			pendingGold: void 0,
 			idleFrames: void 0,
-			resultFrames: void 0
+			resultFrames: void 0,
+			liveAt: void 0,
+			stage: "live",
+			stageAt: a.now
 		};
 		case "newMatch": return {
 			...EMPTY_SESSION,
@@ -24008,36 +24283,50 @@ function sessionReducer(s, a) {
 			pendingClock: void 0
 		};
 		case "observe": return applyObservation(s, a.obs, a.now, a.costUsd);
-		case "setStage":
+		case "setStage": {
+			const at = a.stage === stageOf(s) ? s.stageAt ?? a.now : a.now;
 			switch (a.stage) {
-				case "draft": return {
-					...EMPTY_SESSION,
-					lane: s.lane,
-					log: s.log,
-					matchId: s.matchId + 1,
-					stage: "draft"
-				};
+				case "draft":
+					if (!holdsMatch(s, a.now)) return {
+						...s,
+						phase: "draft",
+						stage: "draft",
+						stageAt: at
+					};
+					return {
+						...EMPTY_SESSION,
+						lane: s.lane,
+						log: s.log,
+						matchId: s.matchId + 1,
+						stage: "draft",
+						stageAt: a.now
+					};
 				case "loading": return {
 					...s,
 					phase: "draft",
-					stage: "loading"
+					stage: "loading",
+					stageAt: at
 				};
 				case "live": return s.phase === "live" ? {
 					...s,
-					stage: "live"
+					stage: "live",
+					stageAt: at
 				} : {
 					...s,
 					phase: "live",
 					stage: "live",
+					stageAt: at,
 					clockStart: s.clockStart ?? a.now
 				};
 				case "done": return {
 					...s,
 					phase: "draft",
-					stage: "done"
+					stage: "done",
+					stageAt: at
 				};
 			}
 			return s;
+		}
 		case "ai": return {
 			...s,
 			ai: a.advice,
@@ -24132,6 +24421,7 @@ How to decide
 - Judge who is dangerous from kills, deaths and gold in THIS match, not from a hero's reputation. An enemy well ahead on gold or kills is fed: build and play around that one.
 - Purchase order matters more than the final build. Put first what helps most in the next few minutes: the player's main damage item, or a defensive answer when they keep dying to one fed enemy.
 - Counters. Anti-heal (Sea Halberd, Glowing Wand or Dominance Ice) only when enemy healing or shields are a real part of their team. Physical defense against a fed physical hero, magic defense against a fed magic hero. Penetration when they stack armor or magic resistance. A carry (marksman, mage, assassin) takes at most two defensive items.
+- Build only from the items listed under ITEMS THAT SUIT the player. The rest of the catalog is for other roles: a marksman never takes a tank's or a support's item, and roam or jungle boots blessings are only for those lanes. Do not name off-role items anywhere in your answer.
 - One pair of boots. Never repeat an item. Never drop an item the player already owns: owned items stay at the front of the build in the same order, followed by the item they are part-way through buying.
 - When two items are about equally good, prefer the one from the player's in-game list: that is one tap for them to buy.
 - Item lists seen on other heroes come from tiny icons and are often wrong. Do not rely on them.
@@ -24244,6 +24534,7 @@ function coachBrief(s, now) {
 	const started = plan.slots.find((x) => !x.owned && x.paid);
 	lines.push(`OWNS (from the inventory when it could be read, otherwise estimated from gold spent): ${owned.join(", ") || "nothing yet"}.` + (started ? ` Part-way through ${started.item.name} (${started.paid} of ${started.price} paid).` : ""));
 	if (s.plannedBuild?.length) lines.push(`IN-GAME LIST (one tap to buy): ${s.plannedBuild.map((id) => itemById(id)?.name ?? id).join(", ")}.`);
+	lines.push(`ITEMS THAT SUIT ${hero.name} (${templateFor(hero, s.lane).label}${s.lane ? `, ${s.lane} lane` : ""}): ${[...allowedItems(s, hero)].map((id) => itemById(id)?.name ?? id).join(", ")}.`);
 	lines.push(`CURRENT PLAN: ${plan.slots.map((x, i) => `${i + 1}. ${x.item.name}${x.owned ? " (owned)" : ""}`).join("  ")}. Next step by the rules: ${plan.next.say}`);
 	lines.push("TEAMMATES");
 	for (const id of s.allies) {
@@ -24269,25 +24560,48 @@ function coachBrief(s, now) {
 	return lines.join("\n");
 }
 var text$2 = (v, max) => typeof v === "string" ? v.replace(/\s+/g, " ").trim().slice(0, max) : "";
+/** Items the coach may put in this player's build: what suits the hero, plus whatever they already own or their own in-game list holds. */
+function allowedItems(s, hero) {
+	const out = suitableItems(hero, s.lane);
+	for (const id of [
+		...s.owned,
+		...s.seenItems ?? [],
+		...s.plannedBuild ?? []
+	]) if (!id.startsWith("comp:")) out.add(id);
+	return out;
+}
+/** Catalog items a line of text names, by name or alias. */
+function itemsNamedIn(line) {
+	const lower = line.toLowerCase();
+	return ITEMS.filter((i) => [i.name, ...i.aliases ?? []].some((n) => lower.includes(n.toLowerCase()))).map((i) => i.id);
+}
 /**
 * Check the coach's answer against what the app knows before any of it is shown:
-* unknown items and heroes are dropped, and what the player already owns stays
-* at the front of the build whatever the model said.
+* unknown items and heroes are dropped, items that do not suit the player's hero
+* are dropped, and what the player already owns stays at the front of the build
+* whatever the model said.
 */
 function normalizeCoach(raw, s, model, now) {
 	const r = raw ?? {};
-	const headline = text$2(r.headline, 140);
-	if (!headline) return void 0;
 	const hero = s.myHeroId ? heroById(s.myHeroId) : void 0;
+	const allowed = hero ? allowedItems(s, hero) : void 0;
+	const onRole = (line) => !allowed || itemsNamedIn(line).every((id) => allowed.has(id));
+	let headline = text$2(r.headline, 140);
+	if (!headline) return void 0;
 	const sec = gameSeconds(s, now);
+	const situation = r.situation === "ahead" || r.situation === "behind" ? r.situation : "even";
+	const doNow = (Array.isArray(r.do_now) ? r.do_now : []).map((x) => text$2(x, 160)).filter((line) => line && onRole(line)).slice(0, 3);
+	const avoid = text$2(r.avoid, 160);
+	if (!onRole(headline)) headline = doNow[0] ?? "";
+	if (!headline) return void 0;
 	const advice = {
 		at: now,
 		clock: sec,
 		model,
-		situation: r.situation === "ahead" || r.situation === "behind" ? r.situation : "even",
+		situation,
 		headline,
-		doNow: (Array.isArray(r.do_now) ? r.do_now : []).map((x) => text$2(x, 160)).filter(Boolean).slice(0, 3),
-		avoid: text$2(r.avoid, 160) || void 0
+		doNow,
+		avoid: onRole(avoid) && avoid || void 0
 	};
 	const focus = findHero(text$2(r.focus_hero, 40));
 	if (focus && s.enemies.includes(focus.id)) advice.focus = {
@@ -24300,6 +24614,7 @@ function normalizeCoach(raw, s, model, now) {
 		const found = findItem(text$2(entry?.item, 60));
 		const item = found && !found.id.startsWith("comp:") ? itemById(found.id) : void 0;
 		if (!item || ids.includes(item.id)) continue;
+		if (allowed && !allowed.has(item.id)) continue;
 		if (item.category === "boots" && ids.some((id) => itemById(id)?.category === "boots")) continue;
 		ids.push(item.id);
 		why[item.id] = text$2(entry?.why, 160);
@@ -24385,7 +24700,8 @@ Judging threat
 - From this match's kills, deaths and gold, not from the hero's reputation. "high" for whoever is clearly ahead (well above their team's average gold, or many more kills than deaths); "low" for whoever is behind; "medium" otherwise.
 
 Notes
-- One line per enemy, under 16 words, written to the player: what this hero will try to do to them and the simplest answer (keep distance, stay near the turret, wait for their dash, buy a named kind of defense).
+- One line per enemy, under 16 words, written to the player: what this hero will try to do to them and the simplest way to play against it (keep distance, stay near the turret, wait for their dash, fight beside a named teammate).
+- Never tell the player what to buy or build. The coach's build panel chooses items for the player's hero; advice to buy defense meant for another role only confuses a new player.
 - summary: one line under 18 words: who to respect, and who is weak enough to fight.
 
 Use only hero names from the match state.
@@ -24455,6 +24771,14 @@ function enemyBrief(s, now, hasPicture) {
 	return lines.join("\n");
 }
 var text$1 = (v, max) => typeof v === "string" ? v.replace(/\s+/g, " ").trim().slice(0, max) : "";
+/** Drop any clause that tells the player what to buy: items come from the build panel, which knows the player's role. */
+function withoutShopping(note) {
+	const clauses = note.split(/(?<=[;,.])\s+/);
+	const shopping = (c) => /\b(buy|buying|build|building|purchase|grab)\b/i.test(c) || /-style items?\b/i.test(c) || /\b(magic|physical) (defen[cs]e|resist)/i.test(c) || /\barmou?r\b/i.test(c);
+	const kept = clauses.filter((c) => !shopping(c));
+	if (kept.length === clauses.length) return note;
+	return kept.join(" ").replace(/[;,]\s*$/, ".").trim();
+}
 /**
 * Check the tracker's answer: only enemies in this match, only catalog items, and
 * an item counts as known only if the previous read named it for that hero too.
@@ -24477,7 +24801,7 @@ function normalizeEnemies(raw, s, previous, model, now) {
 		enemies.push({
 			heroId: hero.id,
 			threat: row.threat === "high" || row.threat === "low" ? row.threat : "medium",
-			note: text$1(row.note, 160),
+			note: withoutShopping(text$1(row.note, 160)),
 			items: [.../* @__PURE__ */ new Set([...before?.items ?? [], ...named.filter((id) => seenBefore.has(id))])].slice(0, 6),
 			maybe: named.filter((id) => !seenBefore.has(id))
 		});
@@ -24744,11 +25068,13 @@ function coachReply(session, obs, called, origin) {
 	const { screen } = obs;
 	const hero = session.myHeroId ? heroById(session.myHeroId) : void 0;
 	const picture = (path) => path ? `${origin}/${path}` : void 0;
-	if (!hero && (screen === "draft" || screen === "loading") && session.enemies.length) {
+	const preMatch = screen === "draft" || screen === "loading";
+	if (!hero && preMatch && session.enemies.length) {
 		const laneOpponent = guessLaneOpponent(session.lane, session.enemies);
 		const picks = rankCounters({
 			enemies: session.enemies,
 			allies: session.allies,
+			banned: session.banned,
 			lane: session.lane,
 			laneOpponent,
 			limit: 3
@@ -24764,7 +25090,16 @@ function coachReply(session, obs, called, origin) {
 		};
 	}
 	if (!hero) {
-		const say = screen === "draft" ? "Pick the hero you play best. I'll suggest counters once the enemy picks show." : "I can't see which hero is yours yet. Open the scoreboard and tap again.";
+		if (screen === "draft") {
+			const say = "No enemy picks yet. Take the hero you play best; I'll suggest counters once the enemy picks show.";
+			return {
+				title: "Hero selection",
+				body: say,
+				say,
+				screen
+			};
+		}
+		const say = "I can't see which hero is yours yet. Open the scoreboard and tap again.";
 		return {
 			title: "Can't see your hero yet",
 			body: say,
@@ -24773,6 +25108,16 @@ function coachReply(session, obs, called, origin) {
 		};
 	}
 	if (!session.enemies.length) {
+		if (preMatch) {
+			const say = `You're on ${hero.name}. I'll give you the lane plan as soon as the enemy picks show.`;
+			return {
+				title: `You: ${hero.name}`,
+				body: say,
+				say,
+				icon: hero.icon || void 0,
+				screen
+			};
+		}
 		const say = "Open the scoreboard once so I can see the enemy team, then tap again.";
 		return {
 			title: "Open the scoreboard",
@@ -24849,6 +25194,7 @@ function answerQuestion(session, topic) {
 		const picks = rankCounters({
 			enemies: session.enemies,
 			allies: session.allies,
+			banned: session.banned,
 			lane: session.lane,
 			laneOpponent,
 			limit: 3
@@ -56008,10 +56354,10 @@ var init_sdk = __esmMin((() => {
 * Stable system prompt (cache-friendly: nothing per-request in here).
 * The hero and item lists constrain names to what the app can act on.
 */
-var SYSTEM_PROMPT = `You read screenshots (or camera photos of a screen) from the mobile game Mobile Legends: Bang Bang and report what is on screen as JSON. A voice coach uses your answer to tell a new player what to buy next, so accuracy matters more than completeness: leave a field empty rather than guess.
+var SYSTEM_PROMPT = `You read screenshots (or camera photos of a screen) from the mobile game Mobile Legends: Bang Bang and report what is on screen as JSON. A voice coach uses your answer to tell a new player what to pick and buy. For numbers and item icons, accuracy matters more than completeness: leave those empty rather than guess. Heroes on the draft screen are the exception — see "Draft heroes" below.
 
 Classify the screen:
-- "draft": hero pick phase ("Ally Team Pick" / "Enemy Team Pick" with a countdown). The player's team is the left column, the enemy team the right column; a slot shows a hero portrait once picked and a silhouette ("Player 1"…) before that. A grid of selectable heroes fills the middle — those are NOT picks, ignore them.
+- "draft": hero selection, in any of its phases — the ban phase ("Ban", "Ally Team Ban", "Enemy Team Ban"), the pick phase ("Ally Team Pick" / "Enemy Team Pick"), usually with a countdown, a hero grid and a "Lock In" or "Confirm" button, and the moments after the player has locked in while they choose a skin, battle spell or emblem. The player's team is the left column, the enemy team the right column; each slot shows the player's name and, once a hero is picked, that hero's portrait. A slot still showing a silhouette, "Player 1"… or "Selecting" has no pick yet. The grid of selectable heroes in the middle is NOT picks — ignore it.
 - "loading": the pre-match loading screen showing all ten heroes as large cards with hero names and player names.
 - "scoreboard": the in-match panel with "Equipment" and "Attributes" tabs and a "VS" bar. The left half (blue) is the player's team, the right half (red) is the enemy team, five rows each. Every row prints the player name and, directly under it, the HERO NAME in smaller text — read the hero from that text. Each row also shows kills, deaths, assists, a gold figure, and up to six round item slots. Kills, deaths and assists are small numbers (rarely above 30); the gold figure has three to five digits. The enemy half is a mirror image of the player's half, so its columns run in the opposite order: on both halves decide what a number is by its size and its column, never by counting positions from the left. A row's gold must never end up in kills.
 - "shop": the in-match equipment shop (tabs such as Recommended, Attack, Magic, Defense, Movement; a "Purchase" button).
@@ -56021,6 +56367,10 @@ Classify the screen:
 - "other": anything else, including the "Battle Setup" pop-up.
 
 Who is the player: on the scoreboard the player's own row is the highlighted one (brighter blue background, usually the top-left row). Set isMe true for that row only. Put the player's team in "allies" and the other team in "enemies".
+
+Draft heroes: on the draft screen the team slots usually show only portraits, with no hero name printed. Identify every picked hero from its portrait — you know what each hero in the HERO LIST looks like (face, hair, headgear, armour, colours, weapon). Report the hero you believe each portrait shows, using its exact name from the HERO LIST. A draft read is provisional: the loading screen prints every name and corrects it a minute later, so on the draft screen your best match is far more useful than an empty slot. Use "" only for a slot with no pick yet, or a portrait you truly cannot place. Numbers on the draft screen are -1 and item lists are empty.
+- The player's own hero: the player's own slot in the left column is the highlighted one (a brighter or glowing frame, or the name in a different colour). When the screen shows one hero large in the middle or background with its name printed — the hero the player is choosing or has locked — that is the player's hero; when its name is printed, use that name. Put it in "allies" with isMe true.
+- "banned": heroes shown as banned — small greyed-out or crossed-out portraits, usually in a row along the top or beside each team. Only on the draft screen; [] everywhere else.
 
 Gold: during a match the player's current spendable gold is the figure in the top-right corner of the screen (for example "$1143"); the shop repeats it at the top-left. Report that as myGold. The gold figure inside each scoreboard row is that player's total earned gold — report it as the row's gold, never as myGold.
 
@@ -56052,6 +56402,7 @@ function userPrompt(ctx) {
 		done: ""
 	}[ctx.stage ?? "done"];
 	if (stage) lines.push(`The player says the game is currently in ${stage}. Use that if the screen is ambiguous; trust the screen if it clearly shows something else.`);
+	if (ctx.stage === "draft") lines.push("If this is the draft, name every picked hero from its portrait, and the player's own hero.");
 	if (ctx.myHeroId) lines.push(`The player is playing ${heroName(ctx.myHeroId)}.`);
 	if (ctx.allies.length) lines.push(`Known allies: ${ctx.allies.map(heroName).join(", ")}.`);
 	if (ctx.enemies.length) lines.push(`Known enemies: ${ctx.enemies.map(heroName).join(", ")}.`);
@@ -56162,6 +56513,11 @@ var VISION_SCHEMA = {
 			type: "array",
 			items: PLAYER_SCHEMA
 		},
+		banned: {
+			type: "array",
+			items: { type: "string" },
+			description: "Draft only: heroes shown as banned. Empty on every other screen."
+		},
 		myItems: {
 			type: "array",
 			items: { type: "string" },
@@ -56192,6 +56548,7 @@ var VISION_SCHEMA = {
 		"myGold",
 		"allies",
 		"enemies",
+		"banned",
 		"myItems",
 		"recommended",
 		"spare",
@@ -56339,6 +56696,13 @@ function normalizeObservation(raw) {
 	const spare = shopEntries(r.spare);
 	const myItems = itemIds(r.myItems);
 	const screen = SCREENS.includes(r.screen) ? r.screen : "other";
+	const banned = [];
+	if (screen === "draft") for (const name of Array.isArray(r.banned) ? r.banned.slice(0, 10) : []) {
+		if (typeof name !== "string" || !name.trim()) continue;
+		const hero = findHero(name);
+		if (!hero) unknown.push(name.trim());
+		else if (!banned.includes(hero.id) && ![...allies, ...enemies].some((p) => p.heroId === hero.id)) banned.push(hero.id);
+	}
 	const tip = typeof r.tip === "string" ? r.tip.trim().slice(0, 200) : "";
 	const scene = (screen === "gameplay" || screen === "map") && typeof r.scene === "string" ? r.scene.replace(/\s+/g, " ").trim().slice(0, 220) : "";
 	return {
@@ -56348,6 +56712,7 @@ function normalizeObservation(raw) {
 		allies,
 		enemies,
 		meHeroId,
+		banned: banned.length ? banned : void 0,
 		myItems: myItems.length ? myItems : void 0,
 		shop: recommended.length || spare.length ? {
 			recommended,
@@ -56397,7 +56762,7 @@ function claudeAsk(apiKey, model) {
 		maxRetries: 1,
 		timeout: 45e3
 	});
-	return async ({ system, user, images = [], schema }) => {
+	return async ({ system, user, images = [], schema, effort = "low" }) => {
 		const common = {
 			model,
 			max_tokens: 16e3,
@@ -56407,7 +56772,7 @@ function claudeAsk(apiKey, model) {
 				cache_control: { type: "ephemeral" }
 			}],
 			output_config: {
-				effort: "low",
+				effort,
 				format: {
 					type: "json_schema",
 					schema
@@ -56453,13 +56818,14 @@ function claudeAsk(apiKey, model) {
 	};
 }
 /** The screenshot reader: one picture in, the screen's contents out. */
-function claudeVision(apiKey, model) {
+function claudeVision(apiKey, model, effort) {
 	const ask = claudeAsk(apiKey, model);
 	return (image, ctx) => ask({
 		system: SYSTEM_PROMPT,
 		user: userPrompt(ctx),
 		images: [image],
-		schema: VISION_SCHEMA
+		schema: VISION_SCHEMA,
+		effort
 	});
 }
 // src/vision/demo.ts
@@ -97534,15 +97900,29 @@ function caller(request) {
 		demoScreen: (request.headers.get("x-demo-screen") ?? "").trim().toLowerCase()
 	};
 }
-function pickVision(request, roomId, stream) {
+/**
+* Screens that decide who is in the match. Naming ten heroes — on the draft screen from bare
+* portraits — is where a fast model comes back empty-handed (every draft read in the first real
+* match did), and getting the roster wrong spoils everything after it. They get the strong model.
+*/
+var ROSTER_SCREENS = /* @__PURE__ */ new Set(["draft", "loading"]);
+/** A roster re-read is only started this early in the request, and given this long. */
+var ROSTER_LATEST_START_MS = 2e4;
+var ROSTER_DEADLINE_MS = 28e3;
+/**
+* The reader for this frame. Frames in a loop get the fast model — except during hero selection
+* and loading, when the room is expecting a roster screen. A model named in the request wins.
+*/
+function pickVision(request, roomId, stream, roster = false) {
 	const { key, provider, readerModel } = caller(request);
 	if (provider === "demo") return {
 		vision: demoFor(roomId),
 		asked: "demo"
 	};
-	const usual = stream ? STREAM_READER : DEFAULT_MODEL;
+	const usual = stream && !roster ? STREAM_READER : DEFAULT_MODEL;
+	const effort = roster && !readerModel ? "medium" : void 0;
 	if (provider === "claude") return {
-		vision: claudeVision(key, readerModel || usual.claude),
+		vision: claudeVision(key, readerModel || usual.claude, effort),
 		asked: readerModel || usual.claude
 	};
 	if (provider === "gemini") return {
@@ -97551,6 +97931,25 @@ function pickVision(request, roomId, stream) {
 	};
 	throw new VisionError("Add your API key to the shortcut as the x-vision-key header.", "config");
 }
+/** The strong reader for a roster screen: the coach's model, thinking a little harder. Undefined for the demo. */
+function rosterReader(request) {
+	const { key, provider, coachModel } = caller(request);
+	if (provider === "claude") {
+		const model = coachModel || DEFAULT_MODEL.claude;
+		return {
+			vision: claudeVision(key, model, "medium"),
+			asked: model
+		};
+	}
+	if (provider === "gemini") {
+		const model = coachModel || DEFAULT_MODEL.gemini;
+		return {
+			vision: geminiVision(key, model),
+			asked: model
+		};
+	}
+}
+var heroesSeen = (obs) => obs.allies.length + obs.enemies.length + (obs.banned?.length ?? 0);
 /** The model the specialists use. Defaults to the strongest model for the caller's key. */
 function pickCoach(request, session) {
 	const { key, provider, readerModel, coachModel, coachOff } = caller(request);
@@ -97988,7 +98387,8 @@ async function handle(request) {
 	});
 	let reader;
 	try {
-		reader = pickVision(request, roomId, stream);
+		const expecting = stageOf(await roomSession());
+		reader = pickVision(request, roomId, stream, expecting === "draft" || expecting === "loading");
 	} catch (err) {
 		return failRead(400, err instanceof Error ? err.message : "Missing API key.");
 	}
@@ -98087,15 +98487,34 @@ async function handle(request) {
 	try {
 		const before = latest;
 		const { demoScreen } = caller(request);
-		const reply = await within(reader.vision(image, {
+		const context = {
 			stage: stageOf(before),
 			myHeroId: before.myHeroId,
 			allies: before.allies,
 			enemies: before.enemies,
 			step: before.calls,
 			force: demoScreen || void 0
-		}), READER_DEADLINE_MS, "The model took too long to read the screenshot. Try again.");
-		const obs = normalizeObservation(reply.raw);
+		};
+		let reply = await within(reader.vision(image, context), READER_DEADLINE_MS, "The model took too long to read the screenshot. Try again.");
+		let obs = normalizeObservation(reply.raw);
+		let asked = reader.asked;
+		const strong = ROSTER_SCREENS.has(obs.screen) ? rosterReader(request) : void 0;
+		if (strong && strong.asked !== reader.asked && Date.now() - started < ROSTER_LATEST_START_MS) try {
+			const better = await within(strong.vision(image, context), ROSTER_DEADLINE_MS, "The roster re-read took too long.");
+			const betterObs = normalizeObservation(better.raw);
+			if (ROSTER_SCREENS.has(betterObs.screen) && heroesSeen(betterObs) >= heroesSeen(obs)) {
+				reply = better;
+				obs = betterObs;
+			}
+			asked = `${reader.asked}+${strong.asked}`;
+		} catch (err) {
+			record({
+				t: "roster-fail",
+				room: roomId,
+				asked: strong.asked,
+				error: err instanceof Error ? err.message : String(err)
+			});
+		}
 		if (stageOf(await roomSession()) === "done") return json(200, {
 			title: "Paused",
 			body: "",
@@ -98152,7 +98571,7 @@ async function handle(request) {
 			bytes: bytes.length,
 			upMs,
 			ms: readAt - now,
-			asked: reader.asked,
+			asked,
 			model: reply.model,
 			scene: obs.scene
 		});
@@ -98166,11 +98585,18 @@ async function handle(request) {
 			bytes: bytes.length,
 			upMs,
 			ms: readAt - now,
-			asked: reader.asked,
+			asked,
 			model: reply.model,
 			me: obs.meHeroId ? heroName(obs.meHeroId) : void 0,
 			allies: rowsFor(obs.allies),
 			enemies: rowsFor(obs.enemies),
+			banned: obs.banned?.map(heroName),
+			roster: {
+				me: latest.myHeroId ? heroName(latest.myHeroId) : void 0,
+				lane: latest.lane,
+				allies: latest.allies.map(heroName),
+				enemies: latest.enemies.map(heroName)
+			},
 			myItems: obs.myItems,
 			shop: obs.shop,
 			scene: obs.scene,

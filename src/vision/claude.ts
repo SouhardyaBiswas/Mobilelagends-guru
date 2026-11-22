@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { SYSTEM_PROMPT, userPrompt } from "./prompt";
 import { extractJson, VISION_SCHEMA } from "./schema";
-import { VisionError, type AskJson, type VisionCall, type VisionReply } from "./types";
+import { VisionError, type AskInput, type AskJson, type VisionCall, type VisionReply } from "./types";
 
 /** Models that accept the server-side refusal fallback (`fallbacks: "default"`). */
 const FALLBACK_MODELS = new Set(["claude-fable-5-2", "claude-fable-5-1", "claude-opus-5-5", "claude-opus-5", "claude-sonnet-5-5"]);
@@ -26,14 +26,14 @@ export function claudeAsk(apiKey: string, model: string): AskJson {
   // dangerouslyAllowBrowser acknowledges that — fine for a personal tool, not for a shared deployment.
   const client = new Anthropic({ apiKey, dangerouslyAllowBrowser: true, maxRetries: 1, timeout: 45_000 });
 
-  return async ({ system, user, images = [], schema }): Promise<VisionReply> => {
+  return async ({ system, user, images = [], schema, effort = "low" }): Promise<VisionReply> => {
     const common = {
       model,
       max_tokens: 16000,
       // The stable prefix (instructions and name lists) is cached; only the pictures and the match state vary.
       system: [{ type: "text" as const, text: system, cache_control: { type: "ephemeral" as const } }],
-      // Low effort: the player is mid-match and waiting on the answer.
-      output_config: { effort: "low" as const, format: { type: "json_schema" as const, schema } },
+      // Low effort by default: the player is mid-match and waiting on the answer.
+      output_config: { effort, format: { type: "json_schema" as const, schema } },
       messages: [
         {
           role: "user" as const,
@@ -74,7 +74,7 @@ export function claudeAsk(apiKey: string, model: string): AskJson {
 }
 
 /** The screenshot reader: one picture in, the screen's contents out. */
-export function claudeVision(apiKey: string, model: string): VisionCall {
+export function claudeVision(apiKey: string, model: string, effort?: AskInput["effort"]): VisionCall {
   const ask = claudeAsk(apiKey, model);
-  return (image, ctx) => ask({ system: SYSTEM_PROMPT, user: userPrompt(ctx), images: [image], schema: VISION_SCHEMA });
+  return (image, ctx) => ask({ system: SYSTEM_PROMPT, user: userPrompt(ctx), images: [image], schema: VISION_SCHEMA, effort });
 }

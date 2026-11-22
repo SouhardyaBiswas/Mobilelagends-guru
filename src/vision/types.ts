@@ -38,6 +38,8 @@ export interface AskInput {
   user: string;
   images?: VisionImage[];
   schema: Record<string, unknown>;
+  /** How hard the model should think, where the provider supports it. Defaults to low: the player is waiting. */
+  effort?: "low" | "medium" | "high";
 }
 
 export type AskJson = (input: AskInput) => Promise<VisionReply>;

@@ -207,6 +207,8 @@ export interface Observation {
   enemies: PlayerState[];
   /** Hero the model believes is the user (highlighted row). */
   meHeroId?: number;
+  /** Draft only: heroes shown as banned. */
+  banned?: number[];
   /** Items the player owns, read from the shop's inventory row or their scoreboard row. */
   myItems?: string[];
   /** The shop's recommended list (the player's chosen in-game build) and spare items. */

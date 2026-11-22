@@ -5,7 +5,7 @@ import { formatClock, upcoming } from "../data/timeline";
 import { STAGE_LABEL, stageOf, useStore, type Stage } from "../state/store";
 import { LANE_LABEL, type AiAdvice, type BuildPlan, type Hero, type PositionAdvice, type StoryBeat, type ThreatProfile } from "../types";
 import { BuildList, SpellEmblem } from "./BuildList";
-import { CounterList, LaneChips, useCounterPicks } from "./DraftTab";
+import { CounterList, LaneChips, MyHeroButton, useCounterPicks } from "./DraftTab";
 import { Guide } from "./Guide";
 import { HeroIcon, TeamRow, TeamStrip } from "./HeroBits";
 import { NowCard, ReadsPanel, StoryPanel, ThreatPanel } from "./LiveTab";
@@ -251,12 +251,16 @@ function WaitingBoard({ stage, room, voice, needHero = false }: { stage?: Stage;
         <ReadNote room={room} />
         <span className="eyebrow">On your phone</span>
         {needHero ? (
-          <ol className="plan">
-            <li>
-              Open the scoreboard — your own row is highlighted there — and say <strong>"coach now"</strong>.
-            </li>
-            <li>Your hero, build, the enemy team and the plan then appear here and are spoken aloud.</li>
-          </ol>
+          <>
+            <ol className="plan">
+              <li>
+                Open the scoreboard — your own row is highlighted there — and say <strong>"coach now"</strong>.
+              </li>
+              <li>Your hero, build, the enemy team and the plan then appear here and are spoken aloud.</li>
+            </ol>
+            <span className="eyebrow">Or tell me yourself</span>
+            <MyHeroButton size={48} />
+          </>
         ) : (
           <ol className="plan">
             <li>
@@ -293,16 +297,7 @@ function DraftBoard({ hero, plan, laneOpponentId, room }: BoardProps) {
   return (
     <div className="dash-grid">
       <Column title="Best picks" aside={s.enemies.length ? `${s.enemies.length} of 5 enemies known` : "no enemy picks yet"}>
-        {hero && (
-          <div className="dash-me">
-            <HeroIcon hero={hero} size={64} />
-            <span>
-              <span className="eyebrow">Your hero</span>
-              <strong>{hero.name}</strong>
-              <small>{hero.roles.join(" / ")}</small>
-            </span>
-          </div>
-        )}
+        <MyHeroButton size={56} />
         <Cell size="grow">
           <section className="panel">
             <CounterList picks={picks} />
@@ -315,6 +310,7 @@ function DraftBoard({ hero, plan, laneOpponentId, room }: BoardProps) {
             <TeamRow label="Enemy team" tone="enemy" max={5} ids={s.enemies} exclude={taken} onChange={(ids) => dispatch({ type: "setTeam", side: "enemies", ids })} />
             <TeamRow label="Your teammates" tone="ally" max={4} ids={s.allies} exclude={taken} onChange={(ids) => dispatch({ type: "setTeam", side: "allies", ids })} />
             <LaneChips />
+            <TeamRow label="Banned" tone="ban" max={10} ids={s.banned} exclude={taken} onChange={(ids) => dispatch({ type: "setTeam", side: "banned", ids })} />
             {!s.enemies.length && <p className="hint">Enemy picks appear here as your phone's screenshots show them. Until then the list shows the strongest heroes this patch — comfort beats counters, so take the one you play best.</p>}
             {!s.enemies.length && <ReadNote room={room} />}
           </section>

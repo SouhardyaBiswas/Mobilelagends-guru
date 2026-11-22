@@ -7,6 +7,7 @@
  * build order, the calls for the next two minutes and one storyboard line.
  * Everything it names is checked against the catalog before it is used.
  */
+import { suitableItems, templateFor } from "../data/builds";
 import { findHero, heroById, heroName } from "../data/heroes";
 import { findItem, itemById, ITEMS, SHOP_TAB } from "../data/items";
 import { planBuild } from "../engine/build";
@@ -21,6 +22,7 @@ How to decide
 - Judge who is dangerous from kills, deaths and gold in THIS match, not from a hero's reputation. An enemy well ahead on gold or kills is fed: build and play around that one.
 - Purchase order matters more than the final build. Put first what helps most in the next few minutes: the player's main damage item, or a defensive answer when they keep dying to one fed enemy.
 - Counters. Anti-heal (Sea Halberd, Glowing Wand or Dominance Ice) only when enemy healing or shields are a real part of their team. Physical defense against a fed physical hero, magic defense against a fed magic hero. Penetration when they stack armor or magic resistance. A carry (marksman, mage, assassin) takes at most two defensive items.
+- Build only from the items listed under ITEMS THAT SUIT the player. The rest of the catalog is for other roles: a marksman never takes a tank's or a support's item, and roam or jungle boots blessings are only for those lanes. Do not name off-role items anywhere in your answer.
 - One pair of boots. Never repeat an item. Never drop an item the player already owns: owned items stay at the front of the build in the same order, followed by the item they are part-way through buying.
 - When two items are about equally good, prefer the one from the player's in-game list: that is one tap for them to buy.
 - Item lists seen on other heroes come from tiny icons and are often wrong. Do not rely on them.
@@ -108,6 +110,7 @@ export function coachBrief(s: Session, now: number): string | undefined {
   const started = plan.slots.find((x) => !x.owned && x.paid);
   lines.push(`OWNS (from the inventory when it could be read, otherwise estimated from gold spent): ${owned.join(", ") || "nothing yet"}.` + (started ? ` Part-way through ${started.item.name} (${started.paid} of ${started.price} paid).` : ""));
   if (s.plannedBuild?.length) lines.push(`IN-GAME LIST (one tap to buy): ${s.plannedBuild.map((id) => itemById(id)?.name ?? id).join(", ")}.`);
+  lines.push(`ITEMS THAT SUIT ${hero.name} (${templateFor(hero, s.lane).label}${s.lane ? `, ${s.lane} lane` : ""}): ${[...allowedItems(s, hero)].map((id) => itemById(id)?.name ?? id).join(", ")}.`);
   lines.push(`CURRENT PLAN: ${plan.slots.map((x, i) => `${i + 1}. ${x.item.name}${x.owned ? " (owned)" : ""}`).join("  ")}. Next step by the rules: ${plan.next.say}`);
 
   lines.push("TEAMMATES");
@@ -137,20 +140,40 @@ export function coachBrief(s: Session, now: number): string | undefined {
 
 const text = (v: unknown, max: number): string => (typeof v === "string" ? v.replace(/\s+/g, " ").trim().slice(0, max) : "");
 
+/** Items the coach may put in this player's build: what suits the hero, plus whatever they already own or their own in-game list holds. */
+export function allowedItems(s: Session, hero: Hero): Set<string> {
+  const out = suitableItems(hero, s.lane);
+  for (const id of [...s.owned, ...(s.seenItems ?? []), ...(s.plannedBuild ?? [])]) if (!id.startsWith("comp:")) out.add(id);
+  return out;
+}
+
+/** Catalog items a line of text names, by name or alias. */
+function itemsNamedIn(line: string): string[] {
+  const lower = line.toLowerCase();
+  return ITEMS.filter((i) => [i.name, ...(i.aliases ?? [])].some((n) => lower.includes(n.toLowerCase()))).map((i) => i.id);
+}
+
 /**
  * Check the coach's answer against what the app knows before any of it is shown:
- * unknown items and heroes are dropped, and what the player already owns stays
- * at the front of the build whatever the model said.
+ * unknown items and heroes are dropped, items that do not suit the player's hero
+ * are dropped, and what the player already owns stays at the front of the build
+ * whatever the model said.
  */
 export function normalizeCoach(raw: unknown, s: Session, model: string, now: number): { advice: AiAdvice; beat?: StoryBeat; build?: AiBuild } | undefined {
   const r = (raw ?? {}) as Record<string, unknown>;
-  const headline = text(r.headline, 140);
-  if (!headline) return undefined;
   const hero = s.myHeroId ? heroById(s.myHeroId) : undefined;
+  const allowed = hero ? allowedItems(s, hero) : undefined;
+  // A line telling the player to buy an item that does not suit their hero is worse than no line.
+  const onRole = (line: string) => !allowed || itemsNamedIn(line).every((id) => allowed.has(id));
+  let headline = text(r.headline, 140);
+  if (!headline) return undefined;
   const sec = gameSeconds(s, now);
   const situation = r.situation === "ahead" || r.situation === "behind" ? r.situation : "even";
-  const doNow = (Array.isArray(r.do_now) ? r.do_now : []).map((x) => text(x, 160)).filter(Boolean).slice(0, 3);
-  const advice: AiAdvice = { at: now, clock: sec, model, situation, headline, doNow, avoid: text(r.avoid, 160) || undefined };
+  const doNow = (Array.isArray(r.do_now) ? r.do_now : []).map((x) => text(x, 160)).filter((line) => line && onRole(line)).slice(0, 3);
+  const avoid = text(r.avoid, 160);
+  if (!onRole(headline)) headline = doNow[0] ?? "";
+  if (!headline) return undefined;
+  const advice: AiAdvice = { at: now, clock: sec, model, situation, headline, doNow, avoid: (onRole(avoid) && avoid) || undefined };
 
   const focus = findHero(text(r.focus_hero, 40));
   if (focus && s.enemies.includes(focus.id)) advice.focus = { heroId: focus.id, why: text(r.focus_why, 160) };
@@ -162,6 +185,7 @@ export function normalizeCoach(raw: unknown, s: Session, model: string, now: num
     const found = findItem(text(entry?.item, 60));
     const item = found && !found.id.startsWith("comp:") ? itemById(found.id) : undefined;
     if (!item || ids.includes(item.id)) continue;
+    if (allowed && !allowed.has(item.id)) continue;
     if (item.category === "boots" && ids.some((id) => itemById(id)?.category === "boots")) continue;
     ids.push(item.id);
     why[item.id] = text(entry?.why, 160);

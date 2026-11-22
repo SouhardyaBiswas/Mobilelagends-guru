@@ -122,6 +122,10 @@ export interface Session {
   idleFrames?: number;
   /** Frames in a row read as the results screen. One alone could be the in-match scoreboard misfiled. */
   resultFrames?: number;
+  /** Wall-clock ms of the last screenshot that showed the match itself (scoreboard, shop, battlefield, map). */
+  liveAt?: number;
+  /** Wall-clock ms when the current stage began. */
+  stageAt?: number;
 }
 
 /** List value of a set of item / component ids. */
@@ -263,12 +267,34 @@ function tidyOwned(owned: string[]): string[] {
   return uniq(owned).filter((id) => !(id.startsWith("comp:") && builtFrom.has(id)));
 }
 
-/** Merge a roster reading. Screens that print hero names replace what we had; portrait-only reads just fill gaps. */
-function mergeRoster(current: number[], seen: number[], authoritative: boolean, exclude: number[]): number[] {
-  const clean = seen.filter((id) => !exclude.includes(id));
-  if (authoritative && clean.length >= 3) return uniq(clean).slice(0, 5);
-  return uniq([...current, ...clean]).slice(0, 5);
+/**
+ * Merge a roster reading. Screens that print hero names replace what we had. A draft read names
+ * heroes from portraits: picks only ever grow during a draft, so a read that names at least as many
+ * as we hold is the newer, fuller picture and replaces it; a thinner one only fills gaps.
+ */
+function mergeRoster(current: number[], seen: number[], authoritative: boolean, exclude: number[], max = 5): number[] {
+  const clean = uniq(seen.filter((id) => !exclude.includes(id)));
+  const kept = current.filter((id) => !exclude.includes(id));
+  if (authoritative && clean.length >= 3) return clean.slice(0, max);
+  if (!authoritative && clean.length && clean.length >= kept.length) return clean.slice(0, max);
+  return uniq([...clean, ...kept]).slice(0, max);
 }
+
+/** The lane a hero is played in: the one already chosen if this hero plays it, otherwise the hero's main lane. */
+export function laneFor(heroId: number | undefined, lane: Lane | undefined): Lane | undefined {
+  const hero = heroId !== undefined ? heroById(heroId) : undefined;
+  if (!hero?.lanes.length) return lane;
+  return lane && hero.lanes.includes(lane) ? lane : hero.lanes[0];
+}
+
+/** A match screen this long after the last one, followed by hero selection or loading, means the match is over. */
+const MATCH_GAP_MS = 90_000;
+/** Saying "draft mode" again within this long of the first time is the same hero selection, not a new one. */
+const DRAFT_REPEAT_MS = 5 * 60_000;
+/** Typical gold carried between shop visits, for when a scoreboard's pocket-gold figure could not be read. */
+const TYPICAL_POCKET = 400;
+/** Pocket gold read this recently still describes the pocket. */
+const POCKET_FRESH_MS = 60_000;
 
 const overlap = (a: number[], b: number[]) => a.filter((id) => b.includes(id)).length;
 
@@ -319,23 +345,33 @@ export function orientObservation(obs: Observation, s: Pick<Session, "myHeroId" 
  * hero names, so two are enough; a scoreboard only shows portraits, so it needs
  * most of the lobby to disagree before we believe it.
  */
-function isNewMatch(s: Session, obs: Observation): boolean {
+function isNewMatch(s: Session, obs: Observation, now: number): boolean {
   const textScreen = obs.screen === "loading" || obs.screen === "draft";
   if (!textScreen && obs.screen !== "scoreboard") return false;
-  if (s.phase !== "live" && s.owned.length === 0) return false;
   const seen = [...obs.allies, ...obs.enemies].map((p) => p.heroId);
   const known = [...s.allies, ...s.enemies, ...(s.myHeroId ? [s.myHeroId] : [])];
+  // Hero selection well after the last screenshot of a match: that match is over. (In the first real
+  // test, a draft read seven minutes after the last scoreboard was coached as the old match.) Not the
+  // loading screen: a reconnect mid-match shows that too. A read showing this match's heroes is a misfile.
+  if (obs.screen === "draft" && s.liveAt !== undefined && now - s.liveAt > MATCH_GAP_MS) return overlap(seen, known) < 3;
+  if (s.phase !== "live" && s.owned.length === 0) return false;
   return seen.length >= (textScreen ? 2 : 6) && known.length >= 4 && overlap(seen, known) * 3 <= seen.length;
 }
 
 function applyObservation(s0: Session, obs0: Observation, now: number, costUsd = 0): Session {
   let s = s0;
   let obs = obs0;
-  if (isNewMatch(s, obs)) {
+  if (isNewMatch(s, obs, now)) {
     // Start clean: last game's items, clock and hero must not leak into this one.
-    s = { ...EMPTY_SESSION, lane: s.lane, log: s.log, matchId: s.matchId + 1, stage: "draft" };
+    s = { ...EMPTY_SESSION, lane: s.lane, log: s.log, matchId: s.matchId + 1, stage: "draft", stageAt: now };
   } else {
     obs = orientObservation(obs, s);
+  }
+  const matchSeen = s.liveAt !== undefined || s.history.length > 0 || s.owned.length > 0 || Object.keys(s.enemyLive).length > 0;
+  if ((obs.screen === "draft" || obs.screen === "loading") && s.phase === "live" && !matchSeen) {
+    // "In match" was tapped, but no screenshot has shown the match yet and this one shows hero
+    // selection or loading: the tap was early. Keep the picks, go back to before the match.
+    s = { ...s, phase: "draft", clockStart: undefined, clockSure: undefined, pendingClock: undefined };
   }
   const next: Session = { ...s, calls: s.calls + 1, costUsd: s.costUsd + costUsd, tip: obs.tip };
   // The scoreboard and loading screen print every hero's name. Draft slots are bare portraits (and a
@@ -346,12 +382,20 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
   if (rosterScreen) {
     const seenAllies = obs.allies.map((p) => p.heroId);
     const seenEnemies = obs.enemies.map((p) => p.heroId);
-    // The highlighted row on a printed screen is the truth about who the player is.
-    if (obs.meHeroId && (printed || !next.myHeroId)) next.myHeroId = obs.meHeroId;
+    // The highlighted row on a printed screen is the truth about who the player is. During hero
+    // selection the player may look at several heroes before locking one: the latest draft read wins.
+    const drafting = obs.screen === "draft" && s.phase !== "live";
+    if (obs.meHeroId && (printed || drafting || !next.myHeroId)) {
+      if (obs.meHeroId !== s.myHeroId) next.owned = s.phase === "live" ? s.owned : [];
+      next.myHeroId = obs.meHeroId;
+    }
     const me = next.myHeroId;
     next.enemies = mergeRoster(s.enemies, seenEnemies, printed, me ? [me] : []);
-    next.allies = mergeRoster(s.allies, seenAllies.filter((id) => id !== me), printed, [...next.enemies, ...(me ? [me] : [])]);
-    if (!next.lane && me) next.lane = heroById(me)?.lanes[0];
+    next.allies = mergeRoster(s.allies, seenAllies.filter((id) => id !== me), printed, [...next.enemies, ...(me ? [me] : [])], 4);
+    if (obs.banned?.length) next.banned = uniq([...s.banned, ...obs.banned]).filter((id) => id !== me && !next.allies.includes(id) && !next.enemies.includes(id)).slice(0, 10);
+    // The lane follows the hero: a lane left over from the last match (roam, say) must not coach a
+    // marksman. A lane the player chose that this hero does play is kept.
+    if (me) next.lane = laneFor(me, next.lane);
   }
 
   if (obs.screen === "scoreboard") {
@@ -370,6 +414,14 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
     if (mine?.gold !== undefined && obs.myGold !== undefined && mine.gold >= obs.myGold && !doubt[mine.heroId]) {
       next.spent = mine.gold - obs.myGold + (next.goldOffset ?? 0);
       next.spentAt = now;
+    } else if (mine?.gold !== undefined && obs.myGold === undefined && !doubt[mine.heroId]) {
+      // The pocket figure could not be read. Keeping the old "spent" would coach a five-minute-old
+      // build ("finish Swift Boots" at 5:09 in the first real match), so estimate it as a floor from
+      // the total, and stop quoting a pocket figure that no longer describes the pocket.
+      const recent = s.gold !== undefined && s.goldAt !== undefined && now - s.goldAt <= POCKET_FRESH_MS;
+      const estimate = mine.gold - (recent ? s.gold! : TYPICAL_POCKET) + (next.goldOffset ?? 0);
+      if (estimate > (next.spent ?? 0)) next.spent = estimate;
+      if (!recent) next.gold = undefined;
     }
   }
   // Pocket gold from a single battlefield frame can be a misread, and with frames arriving every few
@@ -466,6 +518,7 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
       next.pendingClock = candidate;
     }
   }
+  if (inMatch) next.liveAt = now;
   // Seeing the match is the cue to leave draft mode.
   if (inMatch && next.myHeroId) {
     next.phase = "live";
@@ -515,7 +568,18 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
     next.idleFrames = 0;
     next.resultFrames = 0;
   }
+  if (next.stage !== s0.stage || next.matchId !== s0.matchId) next.stageAt = now;
   return next;
+}
+
+/** Is there a match in this session that a new hero selection must clear away? */
+function holdsMatch(s: Session, now: number): boolean {
+  if (s.phase === "live" || s.history.length > 0 || s.owned.length > 0 || s.liveAt !== undefined) return true;
+  // Already in hero selection, and recently: saying "draft mode" again is the same draft. Clearing
+  // it would throw away the picks read or tapped in so far.
+  if (stageOf(s) === "draft") return s.stageAt !== undefined && now - s.stageAt > DRAFT_REPEAT_MS;
+  // Loading or "match over": the next hero selection is a new match.
+  return s.stage === "loading" || s.stage === "done" || s.stage === "live";
 }
 
 /** Add a line to the storyboard; a line for the same moment replaces the one already there. */
@@ -531,16 +595,16 @@ export function sessionReducer(s: Session, a: SessionAction): Session {
   switch (a.type) {
     case "setTeam":
       return { ...s, [a.side]: uniq(a.ids).slice(0, a.side === "banned" ? 10 : a.side === "allies" ? 4 : 5) };
-    case "setMyHero": {
-      const hero = a.id ? heroById(a.id) : undefined;
+    case "setMyHero":
       return {
         ...s,
         myHeroId: a.id,
-        lane: hero && (!s.lane || !hero.lanes.includes(s.lane)) ? hero.lanes[0] : s.lane,
+        lane: laneFor(a.id, s.lane),
         allies: s.allies.filter((id) => id !== a.id),
+        enemies: s.enemies.filter((id) => id !== a.id),
+        banned: s.banned.filter((id) => id !== a.id),
         owned: a.id === s.myHeroId ? s.owned : [],
       };
-    }
     case "setLane":
       return { ...s, lane: a.lane };
     case "setLaneOpponent":
@@ -549,7 +613,8 @@ export function sessionReducer(s: Session, a: SessionAction): Session {
       return {
         ...s, phase: "live", clockStart: a.now, owned: [], gold: undefined, enemyLive: {}, allyLive: {}, history: [], manualFed: {}, tip: undefined, calls: 0, costUsd: 0, matchId: s.matchId + 1,
         spent: undefined, spentAt: undefined, seenItems: undefined, seenPartial: undefined, pendingSeen: undefined, goldOffset: undefined, doubt: undefined, story: undefined, ai: undefined, aiBuild: undefined, position: undefined,
-        intel: undefined, scenes: undefined, goldAt: undefined, pendingGold: undefined, idleFrames: undefined, resultFrames: undefined,
+        intel: undefined, scenes: undefined, goldAt: undefined, pendingGold: undefined, idleFrames: undefined, resultFrames: undefined, liveAt: undefined,
+        stage: "live", stageAt: a.now,
       };
     case "newMatch":
       return { ...EMPTY_SESSION, lane: s.lane, matchId: s.matchId + 1 };
@@ -605,19 +670,23 @@ export function sessionReducer(s: Session, a: SessionAction): Session {
       return { ...s, clockStart: a.now - a.gameSec * 1000, clockSure: true, pendingClock: undefined };
     case "observe":
       return applyObservation(s, a.obs, a.now, a.costUsd);
-    case "setStage":
+    case "setStage": {
+      const at = a.stage === stageOf(s) ? (s.stageAt ?? a.now) : a.now;
       switch (a.stage) {
         case "draft":
-          // A new hero selection is a new match: nothing from the last one may leak in.
-          return { ...EMPTY_SESSION, lane: s.lane, log: s.log, matchId: s.matchId + 1, stage: "draft" };
+          // A new hero selection is a new match: nothing from the last one may leak in. Saying it
+          // again during the same hero selection changes nothing.
+          if (!holdsMatch(s, a.now)) return { ...s, phase: "draft", stage: "draft", stageAt: at };
+          return { ...EMPTY_SESSION, lane: s.lane, log: s.log, matchId: s.matchId + 1, stage: "draft", stageAt: a.now };
         case "loading":
-          return { ...s, phase: "draft", stage: "loading" };
+          return { ...s, phase: "draft", stage: "loading", stageAt: at };
         case "live":
-          return s.phase === "live" ? { ...s, stage: "live" } : { ...s, phase: "live", stage: "live", clockStart: s.clockStart ?? a.now };
+          return s.phase === "live" ? { ...s, stage: "live", stageAt: at } : { ...s, phase: "live", stage: "live", stageAt: at, clockStart: s.clockStart ?? a.now };
         case "done":
-          return { ...s, phase: "draft", stage: "done" };
+          return { ...s, phase: "draft", stage: "done", stageAt: at };
       }
       return s;
+    }
     case "ai":
       return { ...s, ai: a.advice, aiBuild: a.build ?? s.aiBuild, story: a.beat ? addBeat(s.story, a.beat) : s.story };
     case "position":

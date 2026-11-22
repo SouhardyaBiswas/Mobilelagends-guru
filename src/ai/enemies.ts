@@ -23,7 +23,8 @@ Judging threat
 - From this match's kills, deaths and gold, not from the hero's reputation. "high" for whoever is clearly ahead (well above their team's average gold, or many more kills than deaths); "low" for whoever is behind; "medium" otherwise.
 
 Notes
-- One line per enemy, under 16 words, written to the player: what this hero will try to do to them and the simplest answer (keep distance, stay near the turret, wait for their dash, buy a named kind of defense).
+- One line per enemy, under 16 words, written to the player: what this hero will try to do to them and the simplest way to play against it (keep distance, stay near the turret, wait for their dash, fight beside a named teammate).
+- Never tell the player what to buy or build. The coach's build panel chooses items for the player's hero; advice to buy defense meant for another role only confuses a new player.
 - summary: one line under 18 words: who to respect, and who is weak enough to fight.
 
 Use only hero names from the match state.
@@ -85,6 +86,16 @@ export function enemyBrief(s: Session, now: number, hasPicture: boolean): string
 
 const text = (v: unknown, max: number): string => (typeof v === "string" ? v.replace(/\s+/g, " ").trim().slice(0, max) : "");
 
+/** Drop any clause that tells the player what to buy: items come from the build panel, which knows the player's role. */
+export function withoutShopping(note: string): string {
+  const clauses = note.split(/(?<=[;,.])\s+/);
+  const shopping = (c: string) =>
+    /\b(buy|buying|build|building|purchase|grab)\b/i.test(c) || /-style items?\b/i.test(c) || /\b(magic|physical) (defen[cs]e|resist)/i.test(c) || /\barmou?r\b/i.test(c);
+  const kept = clauses.filter((c) => !shopping(c));
+  if (kept.length === clauses.length) return note;
+  return kept.join(" ").replace(/[;,]\s*$/, ".").trim();
+}
+
 /**
  * Check the tracker's answer: only enemies in this match, only catalog items, and
  * an item counts as known only if the previous read named it for that hero too.
@@ -107,7 +118,7 @@ export function normalizeEnemies(raw: unknown, s: Session, previous: EnemyIntel 
     enemies.push({
       heroId: hero.id,
       threat: row.threat === "high" || row.threat === "low" ? row.threat : "medium",
-      note: text(row.note, 160),
+      note: withoutShopping(text(row.note, 160)),
       // Items never leave an inventory mid-match, so what was already believed stays believed.
       items: [...new Set([...(before?.items ?? []), ...named.filter((id) => seenBefore.has(id))])].slice(0, 6),
       maybe: named.filter((id) => !seenBefore.has(id)),

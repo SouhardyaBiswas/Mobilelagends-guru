@@ -45,7 +45,7 @@ function Shell() {
         : undefined,
     // The plan depends on these session fields only; the ticking clock must not rebuild it every second.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [hero, session.lane, session.enemies, session.enemyLive, session.manualFed, session.owned, session.gold, session.phase, late, session.plannedBuild, session.shopListed, session.priceFactor, session.spent, session.seenItems, session.shopPrices],
+    [hero, session.lane, session.enemies, session.enemyLive, session.manualFed, session.owned, session.gold, session.phase, late, session.plannedBuild, session.shopListed, session.priceFactor, session.spent, session.seenItems, session.shopPrices, session.seenPartial, session.aiBuild],
   );
   // Lane opponent: what the player told us, else the enemy whose lane matches theirs.
   const laneOpponentId = useMemo(() => {

@@ -27,10 +27,11 @@ export function coachReply(session: Session, obs: Observation, called: Set<numbe
   const hero = session.myHeroId ? heroById(session.myHeroId) : undefined;
   const picture = (path: string | undefined) => (path ? `${origin}/${path}` : undefined);
 
+  const preMatch = screen === "draft" || screen === "loading";
   // Draft: the player hasn't locked a hero yet — suggest picks against what is visible.
-  if (!hero && (screen === "draft" || screen === "loading") && session.enemies.length) {
+  if (!hero && preMatch && session.enemies.length) {
     const laneOpponent = guessLaneOpponent(session.lane, session.enemies);
-    const picks = rankCounters({ enemies: session.enemies, allies: session.allies, lane: session.lane, laneOpponent, limit: 3 });
+    const picks = rankCounters({ enemies: session.enemies, allies: session.allies, banned: session.banned, lane: session.lane, laneOpponent, limit: 3 });
     const names = picks.map((p) => p.hero.name);
     const top = picks[0];
     return {
@@ -42,10 +43,18 @@ export function coachReply(session: Session, obs: Observation, called: Set<numbe
     };
   }
   if (!hero) {
-    const say = screen === "draft" ? "Pick the hero you play best. I'll suggest counters once the enemy picks show." : "I can't see which hero is yours yet. Open the scoreboard and tap again.";
+    if (screen === "draft") {
+      const say = "No enemy picks yet. Take the hero you play best; I'll suggest counters once the enemy picks show.";
+      return { title: "Hero selection", body: say, say, screen };
+    }
+    const say = "I can't see which hero is yours yet. Open the scoreboard and tap again.";
     return { title: "Can't see your hero yet", body: say, say, screen };
   }
   if (!session.enemies.length) {
+    if (preMatch) {
+      const say = `You're on ${hero.name}. I'll give you the lane plan as soon as the enemy picks show.`;
+      return { title: `You: ${hero.name}`, body: say, say, icon: hero.icon || undefined, screen };
+    }
     const say = "Open the scoreboard once so I can see the enemy team, then tap again.";
     return { title: "Open the scoreboard", body: say, say, screen };
   }
@@ -96,7 +105,7 @@ export function answerQuestion(session: Session, topic: AskTopic): { title: stri
   if (topic === "picks") {
     if (!session.enemies.length) return { title: "Hero pick", say: "I can't see any enemy picks yet. Take the hero you play best." };
     const laneOpponent = guessLaneOpponent(session.lane, session.enemies);
-    const picks = rankCounters({ enemies: session.enemies, allies: session.allies, lane: session.lane, laneOpponent, limit: 3 });
+    const picks = rankCounters({ enemies: session.enemies, allies: session.allies, banned: session.banned, lane: session.lane, laneOpponent, limit: 3 });
     const top = picks[0];
     return { title: "Hero pick", say: `Best picks here: ${picks.map((p) => p.hero.name).join(", ")}.${top ? ` ${top.hero.name}: ${top.reasons[0] ?? ""}` : ""}` };
   }
