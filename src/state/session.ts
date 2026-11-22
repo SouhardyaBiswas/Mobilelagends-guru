@@ -93,6 +93,8 @@ export interface Session {
    * starting gold; a believed inventory that costs about that much more than "spent" shows it.
    */
   goldOffset?: number;
+  /** Wall-clock ms of the scoreboard that "spent" was last measured from. Later than that it is only a floor. */
+  spentAt?: number;
   /** Scoreboard rows that went backwards (a misread); held until the next read says which was right. */
   doubt?: Record<number, PlayerState>;
   /** The storyboard: one line per scoreboard, oldest first. */
@@ -126,6 +128,18 @@ const keepBelievable = (p: PlayerState): PlayerState => (believableItems(p.items
 
 /** Starting gold, which some scoreboards leave out of a player's total. */
 const START_GOLD = 300;
+/** How long after a scoreboard its "gold spent" still describes the present. */
+const SPENT_FRESH_MS = 45_000;
+/** Nobody earns faster than this, even far ahead late in a match. */
+const MAX_GOLD_PER_SEC = 25;
+
+const priceOf = (id: string, factor = 1): number => Math.floor((id.startsWith("comp:") ? (COMPONENTS.get(id)?.cost ?? 0) : (itemById(id)?.cost ?? 0)) * factor);
+const inventoryValue = (ids: string[], factor = 1): number => ids.reduce((sum, id) => sum + priceOf(id, factor), 0);
+/** An inventory never holds the same finished item twice, or two pairs of boots. */
+function possibleInventory(ids: string[]): boolean {
+  const finished = ids.filter((id) => !id.startsWith("comp:"));
+  return new Set(finished).size === finished.length && finished.filter((id) => itemById(id)?.category === "boots").length <= 1 && ids.length <= 6;
+}
 
 /**
  * Fit an icon read of the player's own items to what they have spent. Returns the
@@ -133,13 +147,11 @@ const START_GOLD = 300;
  * pieces were read as the finished item), and how far the list exceeds the spending.
  */
 export function fitOwnItems(ids: string[] | undefined, spent: number | undefined, factor = 1): { items: string[]; partial?: string; over: number } | undefined {
-  if (!ids?.length) return undefined;
+  if (!ids?.length || !possibleInventory(ids)) return undefined;
   const finished = ids.filter((id) => !id.startsWith("comp:"));
-  if (new Set(finished).size !== finished.length) return undefined;
-  if (finished.filter((id) => itemById(id)?.category === "boots").length > 1) return undefined;
   if (spent === undefined) return { items: ids, over: 0 };
-  const cost = (id: string) => Math.floor((id.startsWith("comp:") ? (COMPONENTS.get(id)?.cost ?? 0) : (itemById(id)?.cost ?? 0)) * factor);
-  const value = ids.reduce((sum, id) => sum + cost(id), 0);
+  const cost = (id: string) => priceOf(id, factor);
+  const value = inventoryValue(ids, factor);
   if (value <= spent + START_GOLD + 50) return { items: ids, over: Math.max(0, value - spent) };
   // One item too many for the gold: the newest one is probably still in pieces.
   for (const id of [...finished].reverse()) {
@@ -339,6 +351,7 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
     const mine = obs.allies.find((p) => p.heroId === next.myHeroId);
     if (mine?.gold !== undefined && obs.myGold !== undefined && mine.gold >= obs.myGold && !doubt[mine.heroId]) {
       next.spent = mine.gold - obs.myGold + (next.goldOffset ?? 0);
+      next.spentAt = now;
     }
   } else if (obs.myGold !== undefined && s.gold !== undefined && s.spent !== undefined && obs.myGold < s.gold - 150) {
     // Between scoreboards, a drop in pocket gold is a purchase.
@@ -349,7 +362,23 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
   if (obs.shop) next.priceFactor = learnPriceFactor([...obs.shop.recommended, ...obs.shop.spare]) ?? next.priceFactor;
   // The player's own items as icons (their scoreboard row, or the shop's inventory row):
   // believed only when they fit what has been spent.
-  if (obs.screen === "shop" || obs.screen === "scoreboard") {
+  // "Spent" is exact only at the moment of a scoreboard. Minutes later, with purchases in between
+  // that no screenshot showed, it is merely the least the player can have spent.
+  const spentIsCurrent = next.spentAt !== undefined && now - next.spentAt <= SPENT_FRESH_MS;
+  if (obs.screen === "shop" && obs.myItems?.length && !spentIsCurrent) {
+    // So an inventory read in the shop cannot be checked against it. Believe it if it is a possible
+    // inventory at all and not more than could have been earned since, and raise the floor to its cost.
+    const ids = uniq(obs.myItems);
+    const value = inventoryValue(ids, next.priceFactor);
+    const earned = next.myHeroId !== undefined ? s.allyLive[next.myHeroId]?.gold : undefined;
+    const ceiling = earned !== undefined && next.spentAt !== undefined ? earned + START_GOLD + 150 + ((now - next.spentAt) / 1000) * MAX_GOLD_PER_SEC : undefined;
+    if (possibleInventory(ids) && (ceiling === undefined || value <= ceiling)) {
+      next.seenItems = ids;
+      next.seenPartial = undefined;
+      next.pendingSeen = undefined;
+      next.spent = Math.max(next.spent ?? 0, value);
+    }
+  } else if (obs.screen === "shop" || obs.screen === "scoreboard") {
     const mineRow = obs.screen === "scoreboard" ? obs.allies.find((p) => p.heroId === next.myHeroId) : undefined;
     const read = obs.myItems?.length ? obs.myItems : mineRow?.items;
     const fit = fitOwnItems(read, next.spent ?? mineRow?.gold, next.priceFactor);
@@ -465,7 +494,7 @@ export function sessionReducer(s: Session, a: SessionAction): Session {
     case "startMatch":
       return {
         ...s, phase: "live", clockStart: a.now, owned: [], gold: undefined, enemyLive: {}, allyLive: {}, history: [], manualFed: {}, tip: undefined, calls: 0, costUsd: 0, matchId: s.matchId + 1,
-        spent: undefined, seenItems: undefined, seenPartial: undefined, pendingSeen: undefined, goldOffset: undefined, doubt: undefined, story: undefined, ai: undefined, aiBuild: undefined, position: undefined,
+        spent: undefined, spentAt: undefined, seenItems: undefined, seenPartial: undefined, pendingSeen: undefined, goldOffset: undefined, doubt: undefined, story: undefined, ai: undefined, aiBuild: undefined, position: undefined,
       };
     case "newMatch":
       return { ...EMPTY_SESSION, lane: s.lane, matchId: s.matchId + 1 };

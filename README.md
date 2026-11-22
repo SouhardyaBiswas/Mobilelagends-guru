@@ -59,7 +59,7 @@ Open **Settings → Phone plays, iPad shows the coach** on the site. It shows yo
 | "Entering the match" | Loading screen | Screenshot block → `…&stage=loading` |
 | "Coach on" | Match started | One action: `…&stage=live` |
 | "Coach now" | Scoreboard or shop open | Screenshot block → the plain address |
-| "Help me position" | Any time in the match | Screenshot → `…&ask=position&shot=1` → *Speak Text* "Open the map" → *Wait* 3 s → screenshot → `…&ask=position&shot=2` |
+| "Help me position" | Any time in the match | Screenshot block → `…&ask=position&shot=1` → *Speak Text* "Open the map" → *Wait* 3 s → screenshot block again → `…&ask=position&shot=2` |
 | "Coach off" | Match over | One action: `…&stage=done` |
 | "What do I buy?" and five more | Any time | One action: `…&ask=buy` (`status`, `threat`, `lane`, `plan`, `picks`) |
 

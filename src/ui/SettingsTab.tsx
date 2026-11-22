@@ -242,8 +242,8 @@ function IpadSetup() {
           <tr>
             <td className="who">“Help me position”</td>
             <td>
-              Take Screenshot → Convert Image → Get Contents of URL <Address query="&ask=position&shot=1" /> → <strong>Speak Text</strong> “Open the map” → <strong>Wait</strong> 3 seconds → Take Screenshot → Convert Image → Get Contents of URL <Address query="&ask=position&shot=2" />
-              <span className="fine">Both requests are POST with the key header and the image as the file. Open the map when you hear the prompt; the answer is spoken on the iPad.</span>
+              The screenshot block, sent to <Address query="&ask=position&shot=1" /> → <strong>Speak Text</strong> “Open the map” → <strong>Wait</strong> 3 seconds → the screenshot block again, sent to <Address query="&ask=position&shot=2" />
+              <span className="fine">That is the four-action block twice (resize included), each with its own address. Open the map when you hear the prompt; the answer is spoken on the iPad.</span>
             </td>
           </tr>
           <tr>

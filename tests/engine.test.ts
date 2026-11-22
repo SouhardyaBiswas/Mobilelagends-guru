@@ -920,6 +920,36 @@ describe("a second real match, from the server's logs", () => {
     expect(later.spent).toBe(8900 - 300 + 300);
   });
 
+  it("believes a shop read taken minutes after the last scoreboard, when gold spent is only a floor", () => {
+    // Scoreboard at 8:08: 4,465 spent. Then two purchases that no screenshot showed, and the shop at 11:00.
+    const at = (i: number) => 1_000_000 + i * 60_000;
+    let s = sessionReducer(sessionReducer(EMPTY_SESSION, { type: "observe", obs: READS[0]!, now: at(0) }), { type: "observe", obs: READS[1]!, now: at(1) });
+    expect(s.spent).toBe(4465);
+    const shopLater = normalizeObservation({
+      screen: "shop", gameTime: "11:00", myGold: 95, allies: [], enemies: [],
+      myItems: ["Arcane Boots", "Glowing Wand", "Lightning Truncheon", "Divine Glaive"],
+      recommended: [{ name: "Arcane Boots", price: 684 }, { name: "Glowing Wand", price: 1947 }, { name: "Lightning Truncheon", price: 2137 }, { name: "Divine Glaive", price: 1871 }, { name: "Wishing Lantern", price: 2137 }, { name: "Holy Crystal", price: 2850 }],
+      spare: [], tip: "",
+    });
+    s = sessionReducer(s, { type: "observe", obs: shopLater, now: at(1) + 172_000 });
+    // 6,639 of items against a three-minute-old 4,465: not "over budget", just newer than the scoreboard.
+    expect(s.seenItems).toEqual(["arcane_boots", "glowing_wand", "lightning_truncheon", "divine_glaive"]);
+    expect(s.seenPartial).toBeUndefined(); // no finished item is demoted to "in pieces" on stale arithmetic
+    expect(s.goldOffset).toBeUndefined(); // and nothing is concluded about starting gold from a stale figure
+    expect(s.spent).toBe(684 + 1947 + 2137 + 1871);
+    expect(owned(s)).toEqual(["arcane_boots", "glowing_wand", "lightning_truncheon", "divine_glaive"]);
+    // Next comes the coach's urgent answer to Freya (9/3), then the rest of their own list.
+    expect(plan(s).next.item?.id).toBe("winter_crown");
+    expect(slotIds(plan(s))).toContain("wishing_lantern");
+    // Still not gullible: an inventory nobody could have afforded since that scoreboard is ignored.
+    const wild = normalizeObservation({ screen: "shop", gameTime: "08:20", myGold: 95, allies: [], enemies: [], myItems: ["Arcane Boots", "Holy Crystal", "Blood Wings", "Lightning Truncheon", "Divine Glaive", "Wishing Lantern"], recommended: [], spare: [], tip: "" });
+    const before = sessionReducer(sessionReducer(EMPTY_SESSION, { type: "observe", obs: READS[0]!, now: at(0) }), { type: "observe", obs: READS[1]!, now: at(1) });
+    expect(sessionReducer(before, { type: "observe", obs: wild, now: at(1) + 50_000 }).seenItems).toBeUndefined();
+    // The next scoreboard measures gold spent exactly again.
+    const next = sessionReducer(s, { type: "observe", obs: READS[4]!, now: at(1) + 216_000 });
+    expect(next.spent).toBe(7627 - 141);
+  });
+
   it("assumes the player buys from their own in-game list, never a counter the coach only suggested", () => {
     // The shop was opened early, so the in-game list is known. Freya is 9/3: the coach wants a defensive answer.
     const early: Session = { ...play(READS.slice(0, 2)), plannedBuild: IN_GAME, shopListed: IN_GAME, priceFactor: 0.95, goldOffset: 300, spent: 4465 + 300 };

@@ -31,6 +31,24 @@ const DEFAULT_MODEL = { gemini: "gemini-3.8-flash", claude: "claude-opus-5-5" } 
 const COACH_GAP_SEC = 20;
 /** How long the first positioning picture waits for the second. */
 const POSITION_WAIT_MS = 120_000;
+/**
+ * The function may run for 60 seconds, and the shortcut needs a proper answer either way.
+ * The reader gets most of that; the coach is optional, so it gets a short deadline and is
+ * skipped altogether when the read already took long.
+ */
+const READER_DEADLINE_MS = 38_000;
+const COACH_DEADLINE_MS = 18_000;
+const COACH_LATEST_START_MS = 30_000;
+/** The first positioning picture is parked in the shared store, which takes entries up to 2 MB. */
+const PARK_MAX_BASE64 = 1_800_000;
+
+function within<T>(job: Promise<T>, ms: number, message: string): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const deadline = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new VisionError(message, "network")), ms);
+  });
+  return Promise.race([job, deadline]).finally(() => clearTimeout(timer));
+}
 
 interface Room {
   session: Session;
@@ -349,7 +367,12 @@ async function handle(request: Request): Promise<Response> {
     const waiting = (await store.get(`pos:${roomId}`)) as (VisionImage & { at: number }) | undefined;
     const first = waiting && now - waiting.at < POSITION_WAIT_MS ? waiting : undefined;
     if (shot === "1" || (!shot && !first)) {
-      await store.set(`pos:${roomId}`, { ...image, at: now }, Math.ceil(POSITION_WAIT_MS / 1000));
+      // If the picture cannot be parked (too big, or the store refuses), the second one is answered on its own.
+      let parked = false;
+      if (image.base64.length <= PARK_MAX_BASE64) {
+        parked = await store.set(`pos:${roomId}`, { ...image, at: now }, Math.ceil(POSITION_WAIT_MS / 1000)).then(() => true, () => false);
+      }
+      if (!parked) record({ t: "position-unparked", room: roomId, bytes: bytes.length });
       const say = "Open the map.";
       await update(store, roomId, (room) => announce(room, say));
       record({ t: "position", room: roomId, shot: 1, bytes: bytes.length, upMs });
@@ -358,7 +381,7 @@ async function handle(request: Request): Promise<Response> {
     if (!coach) return failRead(400, "Positioning needs your API key in the x-vision-key header.");
     try {
       const pictures = first ? [{ base64: first.base64, mediaType: first.mediaType }, image] : [image];
-      const reply = await coach.ask({ system: POSITION_SYSTEM, user: positionBrief(latest, now, pictures.length), images: pictures, schema: POSITION_SCHEMA as unknown as Record<string, unknown> });
+      const reply = await within(coach.ask({ system: POSITION_SYSTEM, user: positionBrief(latest, now, pictures.length), images: pictures, schema: POSITION_SCHEMA as unknown as Record<string, unknown> }), READER_DEADLINE_MS, "The model took too long to answer. Try again.");
       await store.delete(`pos:${roomId}`);
       const advice = normalizePosition(reply.raw, reply.model ?? coach.asked, Date.now());
       if (!advice) return failRead(502, "I couldn't work out your position from those pictures.");
@@ -373,7 +396,7 @@ async function handle(request: Request): Promise<Response> {
 
   try {
     const before = latest;
-    const reply = await reader.vision(image, { stage: stageOf(before), myHeroId: before.myHeroId, allies: before.allies, enemies: before.enemies });
+    const reply = await within(reader.vision(image, { stage: stageOf(before), myHeroId: before.myHeroId, allies: before.allies, enemies: before.enemies }), READER_DEADLINE_MS, "The model took too long to read the screenshot. Try again.");
     const obs = normalizeObservation(reply.raw);
     // The read took seconds. Whatever the dashboard did meanwhile (bought an item, ended the match)
     // must survive, so apply the observation to the room as it is now, not as it was.
@@ -409,11 +432,12 @@ async function handle(request: Request): Promise<Response> {
     // unless the shop just taught us the player's list or inventory.
     const learned = JSON.stringify([before.plannedBuild, before.seenItems]) !== JSON.stringify([latest.plannedBuild, latest.seenItems]);
     const answered = !!last && !learned && (obs.screen === "loading" ? last.clock === undefined : last.clock !== undefined && sec !== undefined && Math.abs(sec - last.clock) < COACH_GAP_SEC);
-    const brief = coach && worthCoaching && !answered ? coachBrief(latest, readAt) : undefined;
+    const inTime = Date.now() - started <= COACH_LATEST_START_MS;
+    const brief = coach && worthCoaching && !answered && inTime ? coachBrief(latest, readAt) : undefined;
     if (coach && brief) {
       const askedAt = Date.now();
       try {
-        const answered = await coach.ask({ system: COACH_SYSTEM, user: brief, schema: COACH_SCHEMA as unknown as Record<string, unknown> });
+        const answered = await within(coach.ask({ system: COACH_SYSTEM, user: brief, schema: COACH_SCHEMA as unknown as Record<string, unknown> }), COACH_DEADLINE_MS, "The coach took too long.");
         const result = normalizeCoach(answered.raw, await sessionNow(), answered.model ?? coach.asked, Date.now());
         if (result && !(await pausedNow())) {
           const afterCoach = await update(store, roomId, (room) => ({ session: sessionReducer(room.session, { type: "ai", ...result }) }));

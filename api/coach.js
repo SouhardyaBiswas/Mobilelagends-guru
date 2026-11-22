@@ -6712,22 +6712,31 @@ var keepBelievable = (p) => believableItems(p.items, p.gold) ? p : {
 };
 /** Starting gold, which some scoreboards leave out of a player's total. */
 var START_GOLD = 300;
+/** How long after a scoreboard its "gold spent" still describes the present. */
+var SPENT_FRESH_MS = 45e3;
+/** Nobody earns faster than this, even far ahead late in a match. */
+var MAX_GOLD_PER_SEC = 25;
+var priceOf = (id, factor = 1) => Math.floor((id.startsWith("comp:") ? COMPONENTS.get(id)?.cost ?? 0 : itemById(id)?.cost ?? 0) * factor);
+var inventoryValue = (ids, factor = 1) => ids.reduce((sum, id) => sum + priceOf(id, factor), 0);
+/** An inventory never holds the same finished item twice, or two pairs of boots. */
+function possibleInventory(ids) {
+	const finished = ids.filter((id) => !id.startsWith("comp:"));
+	return new Set(finished).size === finished.length && finished.filter((id) => itemById(id)?.category === "boots").length <= 1 && ids.length <= 6;
+}
 /**
 * Fit an icon read of the player's own items to what they have spent. Returns the
 * finished items, the one still being built when the list only fits that way (its
 * pieces were read as the finished item), and how far the list exceeds the spending.
 */
 function fitOwnItems(ids, spent, factor = 1) {
-	if (!ids?.length) return void 0;
+	if (!ids?.length || !possibleInventory(ids)) return void 0;
 	const finished = ids.filter((id) => !id.startsWith("comp:"));
-	if (new Set(finished).size !== finished.length) return void 0;
-	if (finished.filter((id) => itemById(id)?.category === "boots").length > 1) return void 0;
 	if (spent === void 0) return {
 		items: ids,
 		over: 0
 	};
-	const cost = (id) => Math.floor((id.startsWith("comp:") ? COMPONENTS.get(id)?.cost ?? 0 : itemById(id)?.cost ?? 0) * factor);
-	const value = ids.reduce((sum, id) => sum + cost(id), 0);
+	const cost = (id) => priceOf(id, factor);
+	const value = inventoryValue(ids, factor);
 	if (value <= spent + START_GOLD + 50) return {
 		items: ids,
 		over: Math.max(0, value - spent)
@@ -6898,10 +6907,25 @@ function applyObservation(s0, obs0, now, costUsd = 0) {
 		next.allyLive = mineLive;
 		next.doubt = doubt;
 		const mine = obs.allies.find((p) => p.heroId === next.myHeroId);
-		if (mine?.gold !== void 0 && obs.myGold !== void 0 && mine.gold >= obs.myGold && !doubt[mine.heroId]) next.spent = mine.gold - obs.myGold + (next.goldOffset ?? 0);
+		if (mine?.gold !== void 0 && obs.myGold !== void 0 && mine.gold >= obs.myGold && !doubt[mine.heroId]) {
+			next.spent = mine.gold - obs.myGold + (next.goldOffset ?? 0);
+			next.spentAt = now;
+		}
 	} else if (obs.myGold !== void 0 && s.gold !== void 0 && s.spent !== void 0 && obs.myGold < s.gold - 150) next.spent = s.spent + (s.gold - obs.myGold);
 	if (obs.shop) next.priceFactor = learnPriceFactor([...obs.shop.recommended, ...obs.shop.spare]) ?? next.priceFactor;
-	if (obs.screen === "shop" || obs.screen === "scoreboard") {
+	const spentIsCurrent = next.spentAt !== void 0 && now - next.spentAt <= SPENT_FRESH_MS;
+	if (obs.screen === "shop" && obs.myItems?.length && !spentIsCurrent) {
+		const ids = uniq(obs.myItems);
+		const value = inventoryValue(ids, next.priceFactor);
+		const earned = next.myHeroId !== void 0 ? s.allyLive[next.myHeroId]?.gold : void 0;
+		const ceiling = earned !== void 0 && next.spentAt !== void 0 ? earned + START_GOLD + 150 + (now - next.spentAt) / 1e3 * MAX_GOLD_PER_SEC : void 0;
+		if (possibleInventory(ids) && (ceiling === void 0 || value <= ceiling)) {
+			next.seenItems = ids;
+			next.seenPartial = void 0;
+			next.pendingSeen = void 0;
+			next.spent = Math.max(next.spent ?? 0, value);
+		}
+	} else if (obs.screen === "shop" || obs.screen === "scoreboard") {
 		const mineRow = obs.screen === "scoreboard" ? obs.allies.find((p) => p.heroId === next.myHeroId) : void 0;
 		const fit = fitOwnItems(obs.myItems?.length ? obs.myItems : mineRow?.items, next.spent ?? mineRow?.gold, next.priceFactor);
 		if (fit) {
@@ -7023,6 +7047,7 @@ function sessionReducer(s, a) {
 			costUsd: 0,
 			matchId: s.matchId + 1,
 			spent: void 0,
+			spentAt: void 0,
 			seenItems: void 0,
 			seenPartial: void 0,
 			pendingSeen: void 0,
@@ -97030,6 +97055,23 @@ var COACH_GAP_SEC = 20;
 /** How long the first positioning picture waits for the second. */
 var POSITION_WAIT_MS = 12e4;
 /**
+* The function may run for 60 seconds, and the shortcut needs a proper answer either way.
+* The reader gets most of that; the coach is optional, so it gets a short deadline and is
+* skipped altogether when the read already took long.
+*/
+var READER_DEADLINE_MS = 38e3;
+var COACH_DEADLINE_MS = 18e3;
+var COACH_LATEST_START_MS = 3e4;
+/** The first positioning picture is parked in the shared store, which takes entries up to 2 MB. */
+var PARK_MAX_BASE64 = 18e5;
+function within(job, ms, message) {
+	let timer;
+	const deadline = new Promise((_, reject) => {
+		timer = setTimeout(() => reject(new VisionError(message, "network")), ms);
+	});
+	return Promise.race([job, deadline]).finally(() => clearTimeout(timer));
+}
+/**
 * One line per event in the host's own logs (kept about an hour on the free
 * plan), so a match can be examined afterwards. No key and no picture is ever
 * written — only what was understood.
@@ -97450,10 +97492,16 @@ async function handle(request) {
 		const waiting = await store.get(`pos:${roomId}`);
 		const first = waiting && now - waiting.at < POSITION_WAIT_MS ? waiting : void 0;
 		if (shot === "1" || !shot && !first) {
-			await store.set(`pos:${roomId}`, {
+			let parked = false;
+			if (image.base64.length <= PARK_MAX_BASE64) parked = await store.set(`pos:${roomId}`, {
 				...image,
 				at: now
-			}, Math.ceil(POSITION_WAIT_MS / 1e3));
+			}, Math.ceil(POSITION_WAIT_MS / 1e3)).then(() => true, () => false);
+			if (!parked) record({
+				t: "position-unparked",
+				room: roomId,
+				bytes: bytes.length
+			});
 			const say = "Open the map.";
 			await update(store, roomId, (room) => announce(room, say));
 			record({
@@ -97476,12 +97524,12 @@ async function handle(request) {
 				base64: first.base64,
 				mediaType: first.mediaType
 			}, image] : [image];
-			const reply = await coach.ask({
+			const reply = await within(coach.ask({
 				system: POSITION_SYSTEM,
 				user: positionBrief(latest, now, pictures.length),
 				images: pictures,
 				schema: POSITION_SCHEMA
-			});
+			}), READER_DEADLINE_MS, "The model took too long to answer. Try again.");
 			await store.delete(`pos:${roomId}`);
 			const advice = normalizePosition(reply.raw, reply.model ?? coach.asked, Date.now());
 			if (!advice) return failRead(502, "I couldn't work out your position from those pictures.");
@@ -97520,12 +97568,12 @@ async function handle(request) {
 	}
 	try {
 		const before = latest;
-		const reply = await reader.vision(image, {
+		const reply = await within(reader.vision(image, {
 			stage: stageOf(before),
 			myHeroId: before.myHeroId,
 			allies: before.allies,
 			enemies: before.enemies
-		});
+		}), READER_DEADLINE_MS, "The model took too long to read the screenshot. Try again.");
 		const obs = normalizeObservation(reply.raw);
 		if (await pausedNow()) return json(200, {
 			title: "Paused",
@@ -97601,15 +97649,16 @@ async function handle(request) {
 		const last = latest.ai;
 		const learned = JSON.stringify([before.plannedBuild, before.seenItems]) !== JSON.stringify([latest.plannedBuild, latest.seenItems]);
 		const answered = !!last && !learned && (obs.screen === "loading" ? last.clock === void 0 : last.clock !== void 0 && sec !== void 0 && Math.abs(sec - last.clock) < COACH_GAP_SEC);
-		const brief = coach && worthCoaching && !answered ? coachBrief(latest, readAt) : void 0;
+		const inTime = Date.now() - started <= COACH_LATEST_START_MS;
+		const brief = coach && worthCoaching && !answered && inTime ? coachBrief(latest, readAt) : void 0;
 		if (coach && brief) {
 			const askedAt = Date.now();
 			try {
-				const answered = await coach.ask({
+				const answered = await within(coach.ask({
 					system: COACH_SYSTEM,
 					user: brief,
 					schema: COACH_SCHEMA
-				});
+				}), COACH_DEADLINE_MS, "The coach took too long.");
 				const result = normalizeCoach(answered.raw, await sessionNow(), answered.model ?? coach.asked, Date.now());
 				if (result && !await pausedNow()) {
 					latest = (await update(store, roomId, (room) => ({ session: sessionReducer(room.session, {
