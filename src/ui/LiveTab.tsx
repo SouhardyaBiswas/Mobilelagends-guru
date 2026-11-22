@@ -9,6 +9,7 @@ import { useStore } from "../state/store";
 import type { BuildPlan, Hero, ThreatProfile } from "../types";
 import { BuildList, SpellEmblem } from "./BuildList";
 import { useCapture } from "./CaptureContext";
+import { SCREEN_LABEL } from "./useRoomSync";
 import { Guide, ItemIcon } from "./Guide";
 import { HeroIcon } from "./HeroBits";
 
@@ -241,7 +242,7 @@ function CapturePanel() {
   );
 }
 
-export function LiveTab({ plan, hero, gameSec, laneOpponentId, onRepeat, onDraft }: { plan?: Plan; hero?: Hero; gameSec?: number; laneOpponentId?: number; onRepeat: () => void; onDraft: () => void }) {
+export function LiveTab({ plan, hero, gameSec, laneOpponentId, lastRead, onRepeat, onDraft }: { plan?: Plan; hero?: Hero; gameSec?: number; laneOpponentId?: number; lastRead?: { screen: string; title: string; body: string }; onRepeat: () => void; onDraft: () => void }) {
   const { state, dispatch } = useStore();
   const s = state.session;
 
@@ -250,6 +251,11 @@ export function LiveTab({ plan, hero, gameSec, laneOpponentId, onRepeat, onDraft
       <div className="grid two">
         <section className="panel">
           <h2>Waiting for your iPad</h2>
+          {lastRead && (
+            <p className="error">
+              The last screenshot arrived, but it showed <strong>{SCREEN_LABEL[lastRead.screen] ?? lastRead.screen}</strong>, which I can't coach from. {lastRead.body}
+            </p>
+          )}
           <p className="hint">This device is following room <strong>{state.settings.sync.room}</strong>. On the iPad, open the scoreboard in a match and run the coach shortcut. As soon as a screenshot is read, your build, the enemy team and the plan appear here and are spoken aloud.</p>
           <button className="btn primary" onClick={() => { speaker.unlock(); speaker.say("Voice is on. Waiting for your first screenshot.", 2); }}>🔊 Turn on voice for this device</button>
           <p className="fine">Phones only speak after you tap once, and only while this page stays open on screen.</p>

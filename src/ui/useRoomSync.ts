@@ -12,7 +12,20 @@ export interface RoomStatus {
   error?: string;
   /** Why the iPad's most recent screenshot could not be read (bad key, quota, wrong upload…). */
   readError?: string;
+  /** What the most recent screenshot turned out to be. */
+  lastRead?: { screen: string; title: string; body: string };
 }
+
+/** Plain names for what a screenshot showed. */
+export const SCREEN_LABEL: Record<string, string> = {
+  draft: "hero selection",
+  loading: "the loading screen",
+  scoreboard: "the scoreboard",
+  shop: "the shop",
+  gameplay: "gameplay",
+  post_game: "the results screen",
+  other: "not a game screen",
+};
 
 interface RoomAnswer {
   ok?: boolean;
@@ -21,6 +34,7 @@ interface RoomAnswer {
   session?: Session;
   at?: number;
   error?: string;
+  read?: { screen: string; title: string; body: string };
 }
 
 /**
@@ -64,7 +78,7 @@ export function useRoomSync(): RoomStatus | undefined {
           version.current = remote;
           dispatch({ type: "adopt", session: body.session });
         }
-        setStatus({ version: remote, lastReadAt: body.at, readError: body.error });
+        setStatus({ version: remote, lastReadAt: body.at, readError: body.error, lastRead: body.read });
       } catch {
         if (!stopped) setStatus((s) => ({ ...s, error: "Can't reach the coach server. This works on the deployed site only." }));
       }

@@ -31,6 +31,8 @@ interface Room {
   version: number;
   /** Why the most recent screenshot could not be read — shown on the following device. */
   error?: { message: string; at: number };
+  /** What the most recent screenshot turned out to be, so the follower gets feedback even when it was no use. */
+  read?: { screen: string; title: string; body: string };
 }
 
 const blankRoom = (now: number): Room => ({ session: EMPTY_SESSION, called: new Set<number>(), matchId: 0, at: now, version: 0 });
@@ -97,7 +99,7 @@ async function handle(request: Request): Promise<Response> {
   if (request.method === "GET" && roomParam) {
     const room = rooms.get(roomParam);
     if (!room) return json(200, { ok: true, version: 0 });
-    const info = { ok: true, version: room.version, at: room.at, error: room.error?.message, errorAt: room.error?.at };
+    const info = { ok: true, version: room.version, at: room.at, error: room.error?.message, errorAt: room.error?.at, read: room.read };
     if (url.searchParams.get("v") === String(room.version)) return json(200, { ...info, unchanged: true });
     return json(200, { ...info, session: room.session });
   }
@@ -185,7 +187,8 @@ async function handle(request: Request): Promise<Response> {
       // A new match forgets which fed enemies were already called out.
       const called = session.matchId === room.matchId ? room.called : new Set<number>();
       answer = coachReply(session, obs, called, url.origin);
-      return { session, called, matchId: session.matchId, at: readAt, version: room.version + 1, error: undefined };
+      const read = { screen: obs.screen, title: answer.title, body: answer.body };
+      return { session, called, matchId: session.matchId, at: readAt, version: room.version + 1, error: undefined, read };
     });
     return json(200, { ...answer, stop: false, model: reply.model, unknown: obs.unknown });
   } catch (err) {

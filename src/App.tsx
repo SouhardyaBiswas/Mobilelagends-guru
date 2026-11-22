@@ -10,7 +10,7 @@ import { DraftTab } from "./ui/DraftTab";
 import { LiveTab } from "./ui/LiveTab";
 import { SettingsTab } from "./ui/SettingsTab";
 import { useCoach } from "./ui/useCoach";
-import { useRoomSync } from "./ui/useRoomSync";
+import { SCREEN_LABEL, useRoomSync } from "./ui/useRoomSync";
 
 type Tab = "draft" | "live" | "settings";
 
@@ -115,7 +115,7 @@ function Shell() {
             (room.readError
               ? `the last screenshot could not be read: ${room.readError}`
               : room.lastReadAt
-                ? `last screenshot read ${agoText(now, room.lastReadAt)}`
+                ? `last screenshot read ${agoText(now, room.lastReadAt)}${room.lastRead ? ` · it showed ${SCREEN_LABEL[room.lastRead.screen] ?? room.lastRead.screen}` : ""}`
                 : "waiting for the first screenshot from your iPad")}
           {!settings.speech.enabled && " · voice is muted"}
           <div className="stages" role="group" aria-label="Match stage">
@@ -137,7 +137,7 @@ function Shell() {
       )}
       <main>
         {tab === "draft" && <DraftTab plan={plan} hero={hero} laneOpponentId={laneOpponentId} onStart={() => setTab("live")} />}
-        {tab === "live" && <LiveTab plan={plan} hero={hero} gameSec={gameSec} laneOpponentId={laneOpponentId} onRepeat={repeat} onDraft={() => setTab("draft")} />}
+        {tab === "live" && <LiveTab plan={plan} hero={hero} gameSec={gameSec} laneOpponentId={laneOpponentId} lastRead={room?.lastRead} onRepeat={repeat} onDraft={() => setTab("draft")} />}
         {tab === "settings" && <SettingsTab />}
       </main>
     </div>

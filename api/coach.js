@@ -82888,7 +82888,8 @@ async function handle(request) {
 			version: room.version,
 			at: room.at,
 			error: room.error?.message,
-			errorAt: room.error?.at
+			errorAt: room.error?.at,
+			read: room.read
 		};
 		if (url.searchParams.get("v") === String(room.version)) return json(200, {
 			...info,
@@ -83025,13 +83026,19 @@ async function handle(request) {
 			});
 			const called = session.matchId === room.matchId ? room.called : /* @__PURE__ */ new Set();
 			answer = coachReply(session, obs, called, url.origin);
+			const read = {
+				screen: obs.screen,
+				title: answer.title,
+				body: answer.body
+			};
 			return {
 				session,
 				called,
 				matchId: session.matchId,
 				at: readAt,
 				version: room.version + 1,
-				error: void 0
+				error: void 0,
+				read
 			};
 		});
 		return json(200, {

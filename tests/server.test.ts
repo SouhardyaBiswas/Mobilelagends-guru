@@ -68,7 +68,10 @@ describe("screenshot endpoint", () => {
     expect(notAnImage.status).toBe(400);
     expect(String((await state(room)).error)).toMatch(/Request Body to File/);
     await ipad(room);
-    expect((await state(room)).error).toBeUndefined();
+    const ok = await state(room);
+    expect(ok.error).toBeUndefined();
+    // The follower is also told what the screenshot showed, even when it leads to no advice.
+    expect(ok.read).toMatchObject({ screen: expect.any(String), title: expect.any(String), body: expect.any(String) });
   });
 
   it("rejects actions it does not know and keeps rooms apart", async () => {
