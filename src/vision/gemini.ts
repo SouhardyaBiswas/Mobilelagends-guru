@@ -6,9 +6,9 @@ import { VisionError, type VisionCall, type VisionReply } from "./types";
 function toVisionError(err: unknown): VisionError {
   if (err instanceof VisionError) return err;
   if (err instanceof ApiError) {
-    if (err.status === 400 && /api key/i.test(err.message)) return new VisionError("Gemini rejected the API key. Check it in Settings.", "auth");
-    if (err.status === 401 || err.status === 403) return new VisionError("Gemini rejected the API key. Check it in Settings.", "auth");
-    if (err.status === 404) return new VisionError("Gemini model not found. Check the model name in Settings.", "config");
+    if (err.status === 400 && /api key/i.test(err.message)) return new VisionError("Gemini rejected the API key. Check that the whole key was pasted, with no spaces.", "auth");
+    if (err.status === 401 || err.status === 403) return new VisionError("Gemini rejected the API key. Check that the whole key was pasted, with no spaces.", "auth");
+    if (err.status === 404) return new VisionError("Gemini model not found for this key.", "config");
     if (err.status === 429) return new VisionError("Gemini rate limit or quota hit — slowing down.", "rate");
     return new VisionError(`Gemini API error ${err.status}: ${err.message.slice(0, 160)}`, "api");
   }

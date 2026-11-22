@@ -14,13 +14,11 @@ Every enemy gets a card with the skills to recognise (real names and description
 
 The iPad runs the game and sends screenshots by itself. This site reads them and works out the advice. Your phone, beside you, is the dashboard and the voice — and the controller, with stage buttons for *Hero selection → Match starting → In match → Match over*.
 
-### 1. Put it online — free
+### 1. It is online
 
-1. Open **vercel.com/new** in Safari and sign in.
-2. Tap **Continue with GitHub** and approve it (Vercel must be connected to GitHub before it can see the repository), then choose this repository and press **Deploy**. Leave every setting alone.
-3. Open the address it gives you.
+**https://mlbb-guru.vercel.app** — on Vercel's free plan.
 
-Every later update to this repository redeploys by itself. The free Hobby plan is enough.
+It was deployed without linking Vercel to GitHub: Vercel's build fetches this public repository and builds the latest commit. That means an update only goes live when the project is redeployed (Vercel dashboard → the project → Deployments → ⋯ → Redeploy). To get automatic redeploys instead, connect GitHub under Vercel's account settings and import the repository at vercel.com/new.
 
 ### 2. Get a free key
 
@@ -91,6 +89,11 @@ The stage moves on by itself as the screenshots change; the buttons are there fo
 
 ## What is and isn't verified
 
+**Verified on the live site**
+- The site and item pictures load, and the server answers with real advice.
+- The two-device sequence run with curl: a scripted read, the phone's poll, a purchase and a stage change sent from the phone, pausing, and a failed read reported to the phone.
+- A realistic-size screenshot upload reaches Google's API from the server (tested with an invalid key, which was rejected as expected).
+
 **Verified here**
 - 53 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, catalog and picture coverage, and session handling.
 - Tests transcribed by hand from real match screenshots: one scoreboard yields the hero, both teams, gold and inventory; the shop yields the in-game build; all eight shop prices match the catalog at the emblem's 95%.
@@ -99,7 +102,6 @@ The stage moves on by itself as the screenshots change; the buttons are there fo
 
 **Not verified**
 - **A real vision model reading a real screenshot.** No API key was available while building.
-- **The endpoint running on Vercel.** It is one self-contained file to keep that simple; *Settings → Test endpoint* confirms it once deployed.
 - **The Shortcut on a real iPad**, in particular whether a repeating shortcut keeps running behind the game.
 - **Voice on iPhone and iPad Safari.**
 

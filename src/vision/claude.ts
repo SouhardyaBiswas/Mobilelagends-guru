@@ -10,7 +10,7 @@ const FALLBACK_BETA = "server-side-fallback-2026-07-01";
 function toVisionError(err: unknown): VisionError {
   if (err instanceof VisionError) return err;
   if (err instanceof Anthropic.AuthenticationError || err instanceof Anthropic.PermissionDeniedError) {
-    return new VisionError("Claude rejected the API key. Check it in Settings.", "auth");
+    return new VisionError("Claude rejected the API key. Check that the whole key was pasted, with no spaces.", "auth");
   }
   if (err instanceof Anthropic.RateLimitError) return new VisionError("Claude rate limit hit — slowing down.", "rate");
   if (err instanceof Anthropic.NotFoundError) return new VisionError("Claude model not found. Check the model name in Settings.", "config");
