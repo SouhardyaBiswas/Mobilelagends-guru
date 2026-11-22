@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useReducer, type Dispatch, type ReactNode } from "react";
 import type { SpeechSettings } from "../audio/speech";
 import { heroById } from "../data/heroes";
-import { componentId, itemById } from "../data/items";
+import { COMPONENTS, componentId, itemById, SELL_REFUND } from "../data/items";
 import type { Lane, Observation, PlayerState } from "../types";
 import { DEFAULT_VISION, type VisionSettings } from "../vision";
 
@@ -47,6 +47,8 @@ export interface Session {
   calls: number;
   costUsd: number;
   tip?: string;
+  /** Bumped whenever a new match begins, so per-match memory (what was said) resets. */
+  matchId: number;
 }
 
 export interface State {
@@ -71,6 +73,7 @@ const EMPTY_SESSION: Session = {
   log: [],
   calls: 0,
   costUsd: 0,
+  matchId: 0,
 };
 
 export type Action =
@@ -84,6 +87,7 @@ export type Action =
   | { type: "toggleOwned"; id: string }
   | { type: "bought"; id: string }
   | { type: "sold"; id: string }
+  | { type: "swap"; sell: string; buy: string }
   | { type: "setGold"; gold?: number }
   | { type: "cycleFed"; heroId: number }
   | { type: "syncClock"; now: number; gameSec: number }
@@ -109,7 +113,54 @@ function mergeRoster(current: number[], seen: number[], authoritative: boolean, 
   return uniq([...current, ...clean]).slice(0, 5);
 }
 
-function applyObservation(s: Session, obs: Observation, now: number, costUsd = 0): Session {
+const overlap = (a: number[], b: number[]) => a.filter((id) => b.includes(id)).length;
+
+/**
+ * Make sure "allies" really is the user's team. The model can only go by screen
+ * position and colour, which is not reliable; what the app already knows is.
+ * A flipped read would make the coach itemise against the user's own team.
+ */
+export function orientObservation(obs: Observation, s: Pick<Session, "myHeroId" | "allies" | "enemies">): Observation {
+  const seenAllies = obs.allies.map((p) => p.heroId);
+  const seenEnemies = obs.enemies.map((p) => p.heroId);
+  const me = s.myHeroId;
+  let flipped: boolean;
+  if (me !== undefined && (seenAllies.includes(me) || seenEnemies.includes(me))) {
+    flipped = seenEnemies.includes(me);
+  } else {
+    const mine = me !== undefined ? [me, ...s.allies] : s.allies;
+    const asRead = overlap(seenAllies, mine) + overlap(seenEnemies, s.enemies);
+    const swapped = overlap(seenEnemies, mine) + overlap(seenAllies, s.enemies);
+    flipped = swapped > asRead;
+  }
+  if (!flipped) return obs;
+  // After the flip, "me" is only believable if that hero ended up on the user's side.
+  const meHeroId = obs.enemies.some((p) => p.heroId === obs.meHeroId) ? obs.meHeroId : undefined;
+  return { ...obs, allies: obs.enemies, enemies: obs.allies, meHeroId };
+}
+
+/**
+ * A loading or draft screen showing mostly different heroes means the next game
+ * has started. The roster check matters: a mid-match screen misread as "loading"
+ * still shows the same heroes and must not wipe the match.
+ */
+function isNewMatch(s: Session, obs: Observation): boolean {
+  if (obs.screen !== "loading" && obs.screen !== "draft") return false;
+  if (s.phase !== "live" && s.owned.length === 0) return false;
+  const seen = [...obs.allies, ...obs.enemies].map((p) => p.heroId);
+  const known = [...s.allies, ...s.enemies, ...(s.myHeroId ? [s.myHeroId] : [])];
+  return seen.length >= 2 && known.length >= 4 && overlap(seen, known) * 3 <= seen.length;
+}
+
+function applyObservation(s0: Session, obs0: Observation, now: number, costUsd = 0): Session {
+  let s = s0;
+  let obs = obs0;
+  if (isNewMatch(s, obs)) {
+    // Start clean: last game's items, clock and hero must not leak into this one.
+    s = { ...EMPTY_SESSION, lane: s.lane, log: s.log, matchId: s.matchId + 1 };
+  } else {
+    obs = orientObservation(obs, s);
+  }
   const next: Session = { ...s, calls: s.calls + 1, costUsd: s.costUsd + costUsd, tip: obs.tip };
   const textScreen = obs.screen === "loading" || obs.screen === "draft";
   const rosterScreen = textScreen || obs.screen === "scoreboard" || obs.screen === "post_game";
@@ -160,16 +211,19 @@ function sessionReducer(s: Session, a: Action): Session {
     case "setLane":
       return { ...s, lane: a.lane };
     case "startMatch":
-      return { ...s, phase: "live", clockStart: a.now, owned: [], gold: undefined, enemyLive: {}, manualFed: {}, tip: undefined, calls: 0, costUsd: 0 };
+      return { ...s, phase: "live", clockStart: a.now, owned: [], gold: undefined, enemyLive: {}, manualFed: {}, tip: undefined, calls: 0, costUsd: 0, matchId: s.matchId + 1 };
     case "newMatch":
-      return { ...EMPTY_SESSION, lane: s.lane };
+      return { ...EMPTY_SESSION, lane: s.lane, matchId: s.matchId + 1 };
     case "backToDraft":
       return { ...s, phase: "draft" };
     case "toggleOwned":
       return { ...s, owned: s.owned.includes(a.id) ? s.owned.filter((id) => id !== a.id) : tidyOwned([...s.owned, a.id]) };
     case "bought": {
-      const item = itemById(a.id);
-      const cost = a.id.startsWith("comp:") ? undefined : item?.cost;
+      const full = itemById(a.id);
+      // Finishing an item only costs the difference when its component is already owned.
+      const comp = full?.component;
+      const haveComp = !!comp && s.owned.includes(componentId(comp.name));
+      const cost = a.id.startsWith("comp:") ? COMPONENTS.get(a.id)?.cost : full ? full.cost - (haveComp && comp ? comp.cost : 0) : undefined;
       return {
         ...s,
         owned: tidyOwned([...s.owned, a.id]),
@@ -178,6 +232,16 @@ function sessionReducer(s: Session, a: Action): Session {
     }
     case "sold":
       return { ...s, owned: s.owned.filter((id) => id !== a.id) };
+    case "swap": {
+      // Sell one item and buy another in a single step (a sell-swap recommendation).
+      const refund = Math.round((itemById(a.sell)?.cost ?? 0) * SELL_REFUND);
+      const cost = itemById(a.buy)?.cost ?? 0;
+      return {
+        ...s,
+        owned: tidyOwned([...s.owned.filter((id) => id !== a.sell), a.buy]),
+        gold: s.gold !== undefined ? Math.max(0, s.gold + refund - cost) : s.gold,
+      };
+    }
     case "setGold":
       return { ...s, gold: a.gold };
     case "cycleFed": {

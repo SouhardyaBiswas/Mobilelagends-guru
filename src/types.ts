@@ -90,6 +90,8 @@ export type ItemTag =
 export interface ItemComponent {
   name: string;
   cost: number;
+  /** Set when the piece already carries part of the finished item's effect. */
+  effect?: string;
 }
 
 export interface Item {

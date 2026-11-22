@@ -72,11 +72,19 @@ export class Speaker {
     if (voice) u.voice = voice;
     u.lang = voice?.lang ?? "en-US";
     const done = () => {
-      if (this.speaking === next) this.speaking = undefined;
+      clearTimeout(watchdog);
+      if (this.speaking !== next) return;
+      this.speaking = undefined;
       this.pump();
     };
     u.onend = done;
     u.onerror = done;
+    // Some browsers and voices never fire "end"; without this one lost event would mute the coach for good.
+    const watchdog = setTimeout(() => {
+      if (this.speaking !== next) return;
+      window.speechSynthesis.cancel();
+      done();
+    }, 2500 + next.text.length * 110);
     this.speaking = next;
     window.speechSynthesis.speak(u);
   }

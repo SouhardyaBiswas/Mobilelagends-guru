@@ -1,6 +1,6 @@
 import { bootsNote, templateFor, type BuildTemplate } from "../data/builds";
 import { heroById, heroName } from "../data/heroes";
-import { componentId, itemById } from "../data/items";
+import { componentId, itemById, SELL_REFUND } from "../data/items";
 import type { BuildPlan, BuildSlot, Hero, Item, Lane, NextStep, PlayerState, ThreatProfile } from "../types";
 import { analyzeThreat } from "./threat";
 
@@ -48,13 +48,13 @@ function mainThreat(threat: ThreatProfile): { hero: Hero; fed: boolean } | undef
 
 function chooseBoots(tpl: BuildTemplate, threat: ThreatProfile, squishy: boolean): { id: string; reason: string } {
   // Carries keep their damage boots; only frontliners adapt boots to the lineup.
-  if (squishy) return { id: tpl.boots, reason: "Your standard boots." };
+  if (squishy) return { id: tpl.boots, reason: "" };
   if (threat.cc >= 2.2 || threat.magicShare >= 0.55) {
     const why = threat.cc >= 2.2 ? `shorter crowd control from ${list(threat.who.cc) || "their lineup"}` : "most of their damage is magic";
     return { id: "tough_boots", reason: `Tough Boots — ${why}.` };
   }
   if (threat.physShare >= 0.6) return { id: "warrior_boots", reason: "Warrior Boots — most of their damage is physical." };
-  return { id: tpl.boots, reason: "Your standard boots." };
+  return { id: tpl.boots, reason: "" };
 }
 
 function situationalPicks(hero: Hero, tpl: BuildTemplate, threat: ThreatProfile, enemies: PlayerState[]): Pick[] {
@@ -84,16 +84,17 @@ function situationalPicks(hero: Hero, tpl: BuildTemplate, threat: ThreatProfile,
 
   // 2. Defense against whoever is actually dangerous.
   const magicFirst = (ids: string[]) => {
-    // Athena's Shield soaks burst; Radiant Armor is better against repeated hits.
+    // Valkyrie's Shield answers burst; Radiant Armor is better against repeated hits.
     const topMagic = heroById(threat.who.magic?.[0] ?? -1);
     const sustainedMage = topMagic && topMagic.traits.burst < 0.55;
     return sustainedMage ? [...ids].sort((a, b) => Number(b === "radiant_armor") - Number(a === "radiant_armor")) : ids;
   };
   const physFirst = (ids: string[]) => {
-    // Against basic attackers, Dominance Ice / Blade Armor beat Antique Cuirass.
+    // Against basic attackers, Blade Armor (crit) or Chastise Pauldron (attack speed) beat Antique Cuirass.
     if (threat.basicAttack < 1.2) return ids;
-    const preferred = threat.crit >= 1 ? ["blade_armor", "dominance_ice"] : ["dominance_ice", "blade_armor"];
-    return [...ids].sort((a, b) => (preferred.includes(b) ? 1 : 0) - (preferred.includes(a) ? 1 : 0));
+    const preferred = threat.crit >= 1 ? ["blade_armor", "chastise_pauldron"] : ["chastise_pauldron", "blade_armor"];
+    const rank = (id: string) => (preferred.includes(id) ? preferred.indexOf(id) : preferred.length);
+    return [...ids].sort((a, b) => rank(a) - rank(b));
   };
   const physList = physFirst(tpl.defense.physical);
   const magicList = magicFirst(tpl.defense.magic);
@@ -172,7 +173,7 @@ function nextStep(
           item: want.item,
           sell,
           say: `Sell ${sell.name} and buy ${want.item.name}.`,
-          detail: `${want.reason}${sell.category === "boots" ? " This late, a sixth item is worth more than boots." : ""}`,
+          detail: `${want.reason}${sell.category === "boots" ? " This late, a sixth item is worth more than boots." : ""} Selling refunds ${Math.round(SELL_REFUND * 100)}% of the price.`,
         };
       }
     }
@@ -194,14 +195,45 @@ function nextStep(
     return { action: "buy", item, say: `Buy ${item.name} now.`, detail: why };
   }
   if (comp && !haveComp && gold >= comp.cost) {
+    // Only claim the cheap piece helps when it really carries the effect.
+    const antiHealPick = item.tags.includes("antiheal") && /^Anti-heal/.test(why);
+    const note = comp.effect
+      ? `${comp.name} ${comp.effect}${antiHealPick ? " — the anti-heal itself only comes with the finished item" : ""}.`
+      : `${comp.name} is just the first piece${antiHealPick ? " — anti-heal only works once the item is finished" : ""}.`;
     return {
       action: "buy-component",
       item,
       component: comp,
-      say: `Buy ${comp.name} now. It builds into ${item.name}.`,
-      detail: `${why} You can't afford the full item yet, but the cheap piece already helps.`,
+      say: comp.effect ? `Buy ${comp.name} now. It ${comp.effect}, and builds into ${item.name}.` : `Buy ${comp.name} now, the first piece of ${item.name}.`,
+      detail: `${why} ${note}`,
     };
   }
+  // Improvise: rather than sit on gold for an expensive item, take a counter you can afford right now —
+  // the finished item if possible, otherwise a cheap piece that already carries part of its effect.
+  for (const later of slots) {
+    if (later.owned || later === target || later.kind !== "situational") continue;
+    const lc = later.item.component;
+    const haveLc = !!lc && owned.includes(componentId(lc.name));
+    const laterRemaining = later.item.cost - (haveLc && lc ? lc.cost : 0);
+    if (gold >= laterRemaining) {
+      return {
+        action: "buy",
+        item: later.item,
+        say: `Buy ${later.item.name} now.`,
+        detail: `${later.reason} You can't afford ${item.name} yet, so take the counter first.`,
+      };
+    }
+    if (lc?.effect && !haveLc && gold >= lc.cost) {
+      return {
+        action: "buy-component",
+        item: later.item,
+        component: lc,
+        say: `Buy ${lc.name} now. It ${lc.effect}, and builds into ${later.item.name}.`,
+        detail: `${later.reason} You can't afford ${item.name} yet — a cheap counter now beats gold sitting in your pocket.`,
+      };
+    }
+  }
+
   const goal = comp && !haveComp ? comp : undefined;
   const goldNeeded = (goal ? goal.cost : remaining) - gold;
   return {

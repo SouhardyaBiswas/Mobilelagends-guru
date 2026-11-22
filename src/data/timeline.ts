@@ -1,6 +1,8 @@
 /**
  * Match-clock reminders. Times are in seconds on the in-game clock.
- * Objective timings shift between patches — edit here if a patch moves them.
+ * Checked against patch 2.2.23: Turtle first spawns at 2:00 (none after 8:00),
+ * Lord at 8:00, and the Lord evolves at 18:00. Objective timings shift between
+ * patches — edit here if one moves them.
  */
 export interface TimelineEvent {
   atSec: number;
@@ -21,6 +23,7 @@ export const TIMELINE: TimelineEvent[] = [
   { id: "lord", atSec: m(8), label: "Lord spawns", say: "Lord is up." },
   { id: "late-check", atSec: m(10), label: "Item check", say: "Ten minutes. Open the scoreboard and I'll re-check who is fed." },
   { id: "late", atSec: m(15), label: "Late game", say: "Late game. One death can lose it — stay with your team and consider a defensive sixth item." },
+  { id: "lord-evolve", atSec: m(17, 30), label: "Evolved Lord soon", say: "The Lord evolves at eighteen minutes. Set up vision and be ready to contest." },
 ];
 
 /** Events whose time falls in (prevSec, nowSec]. */

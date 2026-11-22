@@ -33,7 +33,7 @@ export function fedAdvice(threat: ThreatProfile, alreadyCalled: ReadonlySet<numb
       const style = hero.traits.burst >= 0.7 ? "burst" : hero.traits.basicAttacker >= 0.55 ? "basic-attack" : "";
       return {
         key: `fed:${s.heroId}`,
-        say: `${hero.name} is fed. ${dmg} ${style} damage — I'm adjusting your build.`.replace(/\s+/g, " "),
+        say: `${hero.name} is fed. ${dmg[0]!.toUpperCase()}${dmg.slice(1)} ${style} damage — I'm adjusting your build.`.replace(/\s+/g, " "),
         detail: `${hero.name} now carries about ${Math.round(s.weight * 100)}% of the enemy team's kill pressure.`,
         kind: "threat" as const,
         priority: 2 as const,

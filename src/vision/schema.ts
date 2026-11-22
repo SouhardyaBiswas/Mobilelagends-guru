@@ -89,12 +89,12 @@ export function extractJson(text: string): unknown {
 export function normalizeObservation(raw: unknown): Observation {
   const r = (raw ?? {}) as Record<string, unknown>;
   const unknown: string[] = [];
-  let meHeroId: number | undefined;
 
-  const players = (list: unknown, isAllyTeam: boolean): PlayerState[] => {
-    if (!Array.isArray(list)) return [];
-    const out: PlayerState[] = [];
+  const players = (list: unknown): { rows: PlayerState[]; me?: number } => {
+    if (!Array.isArray(list)) return { rows: [] };
+    const rows: PlayerState[] = [];
     const seen = new Set<number>();
+    let me: number | undefined;
     for (const entry of list.slice(0, 5) as RawPlayer[]) {
       const name = typeof entry?.hero === "string" ? entry.hero.trim() : "";
       if (!name) continue;
@@ -112,8 +112,8 @@ export function normalizeObservation(raw: unknown): Observation {
         if (item) items.push(item.id);
         else unknown.push(itemName.trim());
       }
-      if (isAllyTeam && entry.isMe === true && meHeroId === undefined) meHeroId = hero.id;
-      out.push({
+      if (entry.isMe === true && me === undefined) me = hero.id;
+      rows.push({
         heroId: hero.id,
         kills: num(entry.kills),
         deaths: num(entry.deaths),
@@ -123,11 +123,17 @@ export function normalizeObservation(raw: unknown): Observation {
         items,
       });
     }
-    return out;
+    return { rows, me };
   };
 
-  const allies = players(r.allies, true);
-  const enemies = players(r.enemies, false).filter((e) => !allies.some((a) => a.heroId === e.heroId));
+  let mine = players(r.allies);
+  let theirs = players(r.enemies);
+  // The highlighted row is the user's by definition. If the model filed it under
+  // "enemies", it has the two teams the wrong way round — flip them.
+  if (mine.me === undefined && theirs.me !== undefined) [mine, theirs] = [theirs, mine];
+  const meHeroId = mine.me;
+  const allies = mine.rows;
+  const enemies = theirs.rows.filter((e) => !allies.some((a) => a.heroId === e.heroId));
   const screen = SCREENS.includes(r.screen as ScreenKind) ? (r.screen as ScreenKind) : "other";
   const tip = typeof r.tip === "string" ? r.tip.trim().slice(0, 200) : "";
 

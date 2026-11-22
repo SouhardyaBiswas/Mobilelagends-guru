@@ -26,10 +26,10 @@ export interface BuildTemplate {
 }
 
 const CARRY_DEF_PHYS = ["wind_of_nature", "immortality"];
-const CARRY_DEF_MAGIC = ["rose_gold_meteor", "athenas_shield"];
+const CARRY_DEF_MAGIC = ["rose_gold_meteor", "valkyries_shield"];
 const MAGE_DEF = ["winter_crown", "immortality"];
-const FRONT_PHYS = ["antique_cuirass", "dominance_ice", "blade_armor", "twilight_armor", "brute_force_breastplate"];
-const FRONT_MAGIC = ["athenas_shield", "radiant_armor", "oracle"];
+const FRONT_PHYS = ["antique_cuirass", "blade_armor", "chastise_pauldron", "brute_force_breastplate"];
+const FRONT_MAGIC = ["valkyries_shield", "radiant_armor", "oracle"];
 
 const FLICKER = { name: "Flicker", reason: "A blink to escape a dive or reposition for the kill." };
 
@@ -46,7 +46,7 @@ export const TEMPLATES: Record<Archetype, BuildTemplate> = {
     defense: { physical: CARRY_DEF_PHYS, magic: CARRY_DEF_MAGIC },
     maxDefense: 2,
     spell: FLICKER,
-    emblem: { name: "Marksman", talents: ["Fatal", "Weapons Master", "Weakness Finder"], reason: "Crit and item stats, with a slow on your basic attacks." },
+    emblem: { name: "Marksman", talents: ["Fatal", "Weapon Master", "Weakness Finder"], reason: "Crit, more stats from your items, and a slow on your basic attacks." },
   },
   mm_onhit: {
     label: "On-hit marksman",
@@ -60,7 +60,7 @@ export const TEMPLATES: Record<Archetype, BuildTemplate> = {
     defense: { physical: CARRY_DEF_PHYS, magic: CARRY_DEF_MAGIC },
     maxDefense: 2,
     spell: { name: "Inspire", reason: "A burst of attack speed for your on-hit damage. Take Flicker instead if they have divers." },
-    emblem: { name: "Marksman", talents: ["Swift", "Weapons Master", "Weakness Finder"], reason: "Attack speed and item stats, with a slow on your basic attacks." },
+    emblem: { name: "Marksman", talents: ["Swift", "Weapon Master", "Weakness Finder"], reason: "Attack speed, more stats from your items, and a slow on your basic attacks." },
   },
   mm_burst: {
     label: "Burst marksman",
@@ -74,7 +74,7 @@ export const TEMPLATES: Record<Archetype, BuildTemplate> = {
     defense: { physical: CARRY_DEF_PHYS, magic: CARRY_DEF_MAGIC },
     maxDefense: 2,
     spell: FLICKER,
-    emblem: { name: "Assassin", talents: ["Rupture", "Weapons Master", "Quantum Charge"], reason: "Penetration for skill burst, with speed and healing on basic attacks." },
+    emblem: { name: "Assassin", talents: ["Rupture", "Weapon Master", "Quantum Charge"], reason: "Penetration, more stats from your items, and speed plus healing on basic attacks." },
   },
   mm_magic: {
     label: "Magic marksman",
@@ -82,13 +82,13 @@ export const TEMPLATES: Record<Archetype, BuildTemplate> = {
     core: ["feather_of_heaven", "genius_wand"],
     coreWhy: "Attack speed with magic on-hit, then penetration.",
     filler: ["holy_crystal", "divine_glaive", "blood_wings"],
-    antiheal: "dominance_ice",
+    antiheal: "glowing_wand",
     pen: "divine_glaive",
     tankShred: "glowing_wand",
-    defense: { physical: MAGE_DEF, magic: ["winter_crown", "athenas_shield"] },
+    defense: { physical: MAGE_DEF, magic: ["winter_crown", "valkyries_shield"] },
     maxDefense: 2,
     spell: FLICKER,
-    emblem: { name: "Mage", talents: ["Swift", "Weapons Master", "Impure Rage"], reason: "Attack speed plus bonus magic damage on repeated hits." },
+    emblem: { name: "Mage", talents: ["Swift", "Weapon Master", "Impure Rage"], reason: "Attack speed, more stats from your items, and max-HP damage on skills." },
   },
   mage: {
     label: "Mage",
@@ -96,13 +96,13 @@ export const TEMPLATES: Record<Archetype, BuildTemplate> = {
     core: ["clock_of_destiny", "lightning_truncheon"],
     coreWhy: "Clock first so it stacks, then Lightning Truncheon for burst.",
     filler: ["genius_wand", "holy_crystal", "divine_glaive", "blood_wings"],
-    antiheal: "dominance_ice",
+    antiheal: "glowing_wand",
     pen: "divine_glaive",
     tankShred: "glowing_wand",
-    defense: { physical: MAGE_DEF, magic: ["winter_crown", "athenas_shield"] },
+    defense: { physical: MAGE_DEF, magic: ["winter_crown", "valkyries_shield"] },
     maxDefense: 2,
     spell: FLICKER,
-    emblem: { name: "Mage", talents: ["Rupture", "Bargain Hunter", "Lethal Ignition"], reason: "Penetration, cheaper items, and a burn when you burst someone." },
+    emblem: { name: "Mage", talents: ["Rupture", "Bargain Hunter", "Lethal Ignition"], reason: "Penetration, cheaper items, and bonus damage when you land a burst." },
   },
   mage_tank: {
     label: "Sustain mage",
@@ -116,7 +116,7 @@ export const TEMPLATES: Record<Archetype, BuildTemplate> = {
     defense: { physical: FRONT_PHYS, magic: FRONT_MAGIC },
     maxDefense: 4,
     spell: FLICKER,
-    emblem: { name: "Mage", talents: ["Agility", "Festival of Blood", "Impure Rage"], reason: "Spell vamp and steady magic damage for long fights." },
+    emblem: { name: "Mage", talents: ["Agility", "Festival of Blood", "Impure Rage"], reason: "Movement speed, spell vamp, and max-HP damage on skills." },
   },
   assassin_phys: {
     label: "Physical assassin",
@@ -126,10 +126,10 @@ export const TEMPLATES: Record<Archetype, BuildTemplate> = {
     filler: ["blade_of_despair", "malefic_roar", "sky_piercer"],
     antiheal: "sea_halberd",
     pen: "malefic_roar",
-    defense: { physical: ["immortality", "brute_force_breastplate"], magic: ["rose_gold_meteor", "athenas_shield"] },
+    defense: { physical: ["immortality", "brute_force_breastplate"], magic: ["rose_gold_meteor", "valkyries_shield"] },
     maxDefense: 2,
     spell: { name: "Execute", reason: "Finishes low-health targets through shields and escapes." },
-    emblem: { name: "Assassin", talents: ["Rupture", "Seasoned Hunter", "Killing Spree"], reason: "Penetration, faster jungle clear, and a heal on every kill." },
+    emblem: { name: "Assassin", talents: ["Rupture", "Master Assassin", "Killing Spree"], reason: "Penetration, more damage to isolated targets, and a heal when you hit low-health heroes." },
   },
   assassin_magic: {
     label: "Magic assassin",
@@ -137,25 +137,25 @@ export const TEMPLATES: Record<Archetype, BuildTemplate> = {
     core: ["genius_wand", "holy_crystal"],
     coreWhy: "Penetration then raw magic power to one-shot carries.",
     filler: ["divine_glaive", "blood_wings", "starlium_scythe"],
-    antiheal: "dominance_ice",
+    antiheal: "glowing_wand",
     pen: "divine_glaive",
-    defense: { physical: MAGE_DEF, magic: ["winter_crown", "athenas_shield"] },
+    defense: { physical: MAGE_DEF, magic: ["winter_crown", "valkyries_shield"] },
     maxDefense: 2,
     spell: { name: "Execute", reason: "Finishes low-health targets through shields and escapes." },
-    emblem: { name: "Assassin", talents: ["Rupture", "Seasoned Hunter", "Lethal Ignition"], reason: "Penetration, faster jungle clear, and a burn on burst." },
+    emblem: { name: "Assassin", talents: ["Rupture", "Master Assassin", "Lethal Ignition"], reason: "Penetration, more damage to isolated targets, and bonus damage when you land a burst." },
   },
   fighter_phys: {
     label: "Fighter",
     boots: "warrior_boots",
     core: ["war_axe", "hunter_strike"],
     coreWhy: "War Axe for sustained fights, then cooldown and penetration.",
-    filler: ["bloodlust_axe", "thunder_belt", "malefic_roar", "immortality"],
+    filler: ["thunder_belt", "queens_wings", "malefic_roar", "immortality"],
     antiheal: "sea_halberd",
     pen: "malefic_roar",
     defense: { physical: FRONT_PHYS, magic: FRONT_MAGIC },
     maxDefense: 3,
     spell: FLICKER,
-    emblem: { name: "Fighter", talents: ["Firmness", "Festival of Blood", "Brave Smite"], reason: "Defense, spell vamp, and healing whenever you land a skill." },
+    emblem: { name: "Fighter", talents: ["Firmness", "Festival of Blood", "Brave Smite"], reason: "Defense, spell vamp, and healing when your skills hit." },
   },
   fighter_magic: {
     label: "Magic fighter",
@@ -163,12 +163,12 @@ export const TEMPLATES: Record<Archetype, BuildTemplate> = {
     core: ["genius_wand", "concentrated_energy"],
     coreWhy: "Penetration, then spell vamp to stay in the fight.",
     filler: ["holy_crystal", "starlium_scythe", "divine_glaive"],
-    antiheal: "dominance_ice",
+    antiheal: "glowing_wand",
     pen: "divine_glaive",
-    defense: { physical: ["winter_crown", "antique_cuirass", "immortality"], magic: ["winter_crown", "athenas_shield"] },
+    defense: { physical: ["winter_crown", "antique_cuirass", "immortality"], magic: ["winter_crown", "valkyries_shield"] },
     maxDefense: 2,
     spell: FLICKER,
-    emblem: { name: "Fighter", talents: ["Rupture", "Festival of Blood", "Brave Smite"], reason: "Penetration, spell vamp, and healing whenever you land a skill." },
+    emblem: { name: "Fighter", talents: ["Rupture", "Festival of Blood", "Brave Smite"], reason: "Penetration, spell vamp, and healing when your skills hit." },
   },
   tank: {
     label: "Tank",
@@ -180,7 +180,7 @@ export const TEMPLATES: Record<Archetype, BuildTemplate> = {
     defense: { physical: FRONT_PHYS, magic: FRONT_MAGIC },
     maxDefense: 5,
     spell: FLICKER,
-    emblem: { name: "Tank", talents: ["Vitality", "Tenacity", "Concussive Blast"], reason: "HP, extra defense when low, and area damage that scales with your HP." },
+    emblem: { name: "Tank", talents: ["Vitality", "Tenacity", "Concussive Blast"], reason: "HP, damage reduction when low, and area damage that scales with your HP." },
   },
   support_heal: {
     label: "Healer",
@@ -189,10 +189,10 @@ export const TEMPLATES: Record<Archetype, BuildTemplate> = {
     coreWhy: "Stronger heals and the cooldown and mana to keep casting them.",
     filler: ["fleeting_time", "oracle", "immortality"],
     antiheal: "dominance_ice",
-    defense: { physical: ["dominance_ice", "antique_cuirass"], magic: ["athenas_shield", "radiant_armor"] },
+    defense: { physical: ["antique_cuirass", "chastise_pauldron"], magic: ["valkyries_shield", "radiant_armor"] },
     maxDefense: 3,
     spell: FLICKER,
-    emblem: { name: "Support", talents: ["Agility", "Pull Yourself Together", "Focusing Mark"], reason: "Movement speed, shorter spell and revive timers, and a damage mark for your team." },
+    emblem: { name: "Support", talents: ["Agility", "Pull Yourself Together", "Focusing Mark"], reason: "Movement speed, shorter battle-spell cooldown, and a mark that makes allies hit your target harder." },
   },
   support: {
     label: "Support",
@@ -201,15 +201,15 @@ export const TEMPLATES: Record<Archetype, BuildTemplate> = {
     coreWhy: "Cooldown and mana so your utility is always up.",
     filler: ["fleeting_time", "thunder_belt", "immortality", "oracle"],
     antiheal: "dominance_ice",
-    defense: { physical: ["dominance_ice", "antique_cuirass", "blade_armor"], magic: ["athenas_shield", "radiant_armor"] },
+    defense: { physical: ["antique_cuirass", "chastise_pauldron", "blade_armor"], magic: ["valkyries_shield", "radiant_armor"] },
     maxDefense: 4,
     spell: FLICKER,
-    emblem: { name: "Support", talents: ["Agility", "Pull Yourself Together", "Focusing Mark"], reason: "Movement speed, shorter spell and revive timers, and a damage mark for your team." },
+    emblem: { name: "Support", talents: ["Agility", "Pull Yourself Together", "Focusing Mark"], reason: "Movement speed, shorter battle-spell cooldown, and a mark that makes allies hit your target harder." },
   },
 };
 
 /** Heroes whose signature build differs from their archetype's default core. */
-const HERO_CORE: Record<string, Partial<Pick<BuildTemplate, "core" | "coreWhy" | "boots" | "filler">>> = {
+export const HERO_CORE: Record<string, Partial<Pick<BuildTemplate, "core" | "coreWhy" | "boots" | "filler">>> = {
   Esmeralda: { boots: "tough_boots", core: ["clock_of_destiny", "oracle"], filler: ["dominance_ice", "thunder_belt", "immortality", "glowing_wand"] },
   Aldous: { boots: "tough_boots", core: ["thunder_belt", "endless_battle"], coreWhy: "Your stacks are the damage — build to survive long enough to land the punch." },
   Sun: { boots: "swift_boots", core: ["corrosion_scythe", "demon_hunter_sword"], coreWhy: "Your clones copy on-hit effects, so attack speed scales three times over." },
@@ -224,16 +224,19 @@ export function templateFor(hero: Hero, lane: Lane | undefined): BuildTemplate {
   const base = hero.archetype === "support" && hero.ability.durability >= 60 ? TEMPLATES.tank : TEMPLATES[hero.archetype];
   const tpl: BuildTemplate = { ...base, ...override, coreWhy: override?.coreWhy ?? base.coreWhy };
   if (lane === "jungle") {
+    // Junglers trade the second talent for objective damage.
+    const talents = tpl.emblem.talents.map((t, i) => (i === 1 ? "Seasoned Hunter" : t));
     return {
       ...tpl,
       spell: { name: "Retribution", reason: "Required to jungle, and it unlocks the jungle blessing on your boots." },
+      emblem: { ...tpl.emblem, talents, reason: "Your usual emblem, with Seasoned Hunter for extra damage to Turtle and Lord." },
     };
   }
   return tpl;
 }
 
 export function bootsNote(lane: Lane | undefined): string | undefined {
-  if (lane === "jungle") return "Add a jungle blessing to your boots: Ice Retribution to steal movement speed, Flame for damage, Bloody for healing.";
-  if (lane === "roam") return "Add a roam blessing to your boots: Conceal to set up ganks, Encourage for your marksman, Favor for healers, Dire Hit for burst.";
+  if (lane === "jungle") return "Add a free jungle blessing to your boots: Ice steals movement speed, Flame steals attack, Bloody steals HP.";
+  if (lane === "roam") return "Add a free roam blessing to your boots: Conceal for team stealth, Encourage for ally defense, Favor if you heal or shield, Dire Hit for a bonus hit.";
   return undefined;
 }
