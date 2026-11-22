@@ -25,8 +25,12 @@ interface Room {
   session: Session;
   called: Set<number>;
   matchId: number;
-  /** When the last screenshot was read. */
+  /** When the last screenshot was successfully read (0 = none since this server started). */
   at: number;
+  /** Last time anything touched the room; idle rooms are dropped. */
+  seen: number;
+  /** The most recent screenshots and what each one turned out to be: the room's log. */
+  reads: ReadLog[];
   /** Bumped on every change so a follower knows there is something new. */
   version: number;
   /** Why the most recent screenshot could not be read — shown on the following device. */
@@ -37,12 +41,31 @@ interface Room {
   announce?: { id: number; text: string };
 }
 
-const blankRoom = (now: number): Room => ({ session: EMPTY_SESSION, called: new Set<number>(), matchId: 0, at: now, version: 0 });
+/** One line of the room's log. No picture is kept — only what was understood from it. */
+export interface ReadLog {
+  at: number;
+  screen?: string;
+  /** Match clock read from the screenshot, in seconds. */
+  clock?: number;
+  /** Pocket gold read from the screenshot. */
+  gold?: number;
+  allies?: number;
+  enemies?: number;
+  /** Names the reader produced that matched no hero or item. */
+  unknown?: string[];
+  /** How long the read took, in milliseconds. */
+  ms?: number;
+  model?: string;
+  error?: string;
+}
+const READS_MAX = 30;
+
+const blankRoom = (now: number): Room => ({ session: EMPTY_SESSION, called: new Set<number>(), matchId: 0, at: 0, seen: now, version: 0, reads: [] });
 
 /** Apply a change to the room as it is *now*. Reads take seconds; never write back a stale copy. */
 function update(roomId: string, now: number, change: (room: Room) => Partial<Room>): Room {
   const current = rooms.get(roomId) ?? blankRoom(now);
-  const next = { ...current, ...change(current) };
+  const next = { ...current, ...change(current), seen: Date.now() };
   rooms.set(roomId, next);
   return next;
 }
@@ -111,9 +134,10 @@ async function handle(request: Request): Promise<Response> {
   if (request.method === "GET" && roomParam) {
     const room = rooms.get(roomParam);
     if (!room) return json(200, { ok: true, version: 0 });
-    const info = { ok: true, version: room.version, at: room.at, error: room.error?.message, errorAt: room.error?.at, read: room.read, announce: room.announce };
-    if (url.searchParams.get("v") === String(room.version)) return json(200, { ...info, unchanged: true });
-    return json(200, { ...info, session: room.session });
+    const info = { ok: true, version: room.version, at: room.at || undefined, error: room.error?.message, errorAt: room.error?.at, read: room.read, announce: room.announce };
+    const wantLog = url.searchParams.has("log");
+    if (url.searchParams.get("v") === String(room.version)) return json(200, { ...info, unchanged: true, ...(wantLog ? { reads: room.reads } : {}) });
+    return json(200, { ...info, session: room.session, reads: room.reads });
   }
   if (request.method === "GET") {
     // Health check that exercises the real engine, so "it's deployed" also means "it can think".
@@ -125,11 +149,11 @@ async function handle(request: Request): Promise<Response> {
   if (request.method !== "POST") return fail(405, "Send the screenshot with a POST request.");
 
   const now = Date.now();
-  for (const [id, room] of rooms) if (now - room.at > ROOM_TTL_MS) rooms.delete(id);
+  for (const [id, room] of rooms) if (now - room.seen > ROOM_TTL_MS) rooms.delete(id);
   const roomId = roomParam || "DEFAULT";
   /** A failed read is remembered on the room so the phone can say why nothing is arriving. */
   const failRead = (status: number, message: string) => {
-    update(roomId, now, () => ({ error: { message, at: Date.now() } }));
+    update(roomId, now, (room) => ({ error: { message, at: Date.now() }, reads: [...room.reads, { at: Date.now(), error: message }].slice(-READS_MAX) }));
     return fail(status, message);
   };
   if (url.searchParams.has("reset")) {
@@ -195,12 +219,15 @@ async function handle(request: Request): Promise<Response> {
     const readAt = Date.now();
     let answer: ReturnType<typeof coachReply> | undefined;
     update(roomId, readAt, (room) => {
-      const session = sessionReducer(room.session, { type: "observe", obs, now: readAt });
+      // Time the observation by when the screenshot arrived, not when the read finished:
+      // the clock on it was already a few seconds old by then.
+      const session = sessionReducer(room.session, { type: "observe", obs, now });
       // A new match forgets which fed enemies were already called out.
       const called = session.matchId === room.matchId ? room.called : new Set<number>();
       answer = coachReply(session, obs, called, url.origin);
       const read = { screen: obs.screen, title: answer.title, body: answer.body };
-      return { session, called, matchId: session.matchId, at: readAt, version: room.version + 1, error: undefined, read };
+      const entry: ReadLog = { at: readAt, screen: obs.screen, clock: obs.gameTimeSec, gold: obs.myGold, allies: obs.allies.length, enemies: obs.enemies.length, unknown: obs.unknown.slice(0, 6), ms: readAt - now, model: reply.model };
+      return { session, called, matchId: session.matchId, at: readAt, version: room.version + 1, error: undefined, read, reads: [...room.reads, entry].slice(-READS_MAX) };
     });
     return json(200, { ...answer, stop: false, model: reply.model, unknown: obs.unknown });
   } catch (err) {

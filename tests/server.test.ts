@@ -70,6 +70,11 @@ describe("screenshot endpoint", () => {
     await ipad(room);
     const ok = await state(room);
     expect(ok.error).toBeUndefined();
+    // The room keeps a log of every screenshot: the two failures, then the success.
+    const reads = ok.reads as Array<{ error?: string; screen?: string; ms?: number }>;
+    expect(reads).toHaveLength(3);
+    expect(reads[0]!.error).toMatch(/x-vision-key/);
+    expect(reads[2]).toMatchObject({ screen: expect.any(String), ms: expect.any(Number) });
     // The follower is also told what the screenshot showed, even when it leads to no advice.
     expect(ok.read).toMatchObject({ screen: expect.any(String), title: expect.any(String), body: expect.any(String) });
   });

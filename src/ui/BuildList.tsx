@@ -25,6 +25,12 @@ export function BuildList({ plan, onToggle }: Props) {
                 {slot.kind === "situational" && <span className="tag situational">counter</span>}
                 {isNext && <span className="tag nexttag">next</span>}
               </span>
+              {slot.paid !== undefined && !slot.owned && (
+                <span className="paid" title="Gold you have already put into this item's pieces">
+                  <i style={{ width: `${Math.min(100, Math.round((slot.paid / slot.price) * 100))}%` }} />
+                  <em>{slot.paid} of {slot.price} gold paid</em>
+                </span>
+              )}
               {slot.reason && <span className="build-why">{slot.reason}</span>}
             </span>
           </>

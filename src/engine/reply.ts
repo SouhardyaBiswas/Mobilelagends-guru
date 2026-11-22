@@ -1,6 +1,6 @@
 import { heroById } from "../data/heroes";
 import { componentId, itemIcon } from "../data/items";
-import { enemyStates, type Session } from "../state/session";
+import { buildInputs, type Session } from "../state/session";
 import type { Observation } from "../types";
 import { planBuild } from "./build";
 import { buyAdvice, fedAdvice } from "./coach";
@@ -50,16 +50,7 @@ export function coachReply(session: Session, obs: Observation, called: Set<numbe
     return { title: "Open the scoreboard", body: say, say, screen };
   }
 
-  const plan = planBuild({
-    hero,
-    lane: session.lane,
-    enemies: enemyStates(session),
-    owned: session.owned,
-    gold: session.gold,
-    plannedBuild: session.plannedBuild,
-    shopListed: session.shopListed,
-    priceFactor: session.priceFactor,
-  });
+  const plan = planBuild({ hero, gold: session.gold, ...buildInputs(session) });
   const n = plan.next;
   const spoken: string[] = [];
   for (const alert of fedAdvice(plan.threat, called)) {
@@ -112,16 +103,7 @@ export function answerQuestion(session: Session, topic: AskTopic): { title: stri
   if (!hero) return { title: "No match yet", say: needBoard };
   if (!session.enemies.length) return { title: "No enemies yet", say: needBoard };
 
-  const plan = planBuild({
-    hero,
-    lane: session.lane,
-    enemies: enemyStates(session),
-    owned: session.owned,
-    gold: session.gold,
-    plannedBuild: session.plannedBuild,
-    shopListed: session.shopListed,
-    priceFactor: session.priceFactor,
-  });
+  const plan = planBuild({ hero, gold: session.gold, ...buildInputs(session) });
   const laneId = session.laneOpponentId ?? guessLaneOpponent(session.lane, session.enemies);
 
   switch (topic) {

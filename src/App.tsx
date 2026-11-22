@@ -4,7 +4,7 @@ import { Ticker } from "./capture/ticker";
 import { heroById } from "./data/heroes";
 import { planBuild } from "./engine/build";
 import { guessLaneOpponent } from "./engine/tips";
-import { enemyStates, gameSeconds, STAGE_LABEL, stageOf, StoreProvider, useStore } from "./state/store";
+import { buildInputs, gameSeconds, STAGE_LABEL, stageOf, StoreProvider, useStore } from "./state/store";
 import { CaptureProvider } from "./ui/CaptureContext";
 import { DraftTab } from "./ui/DraftTab";
 import { LiveTab } from "./ui/LiveTab";
@@ -42,19 +42,14 @@ function Shell() {
       hero
         ? planBuild({
             hero,
-            lane: session.lane,
-            enemies: enemyStates(session),
-            owned: session.owned,
             gold: session.phase === "live" ? session.gold : undefined,
             gameTimeSec: late ? LATE_GAME_SEC : 0,
-            plannedBuild: session.plannedBuild,
-            shopListed: session.shopListed,
-            priceFactor: session.priceFactor,
+            ...buildInputs(session),
           })
         : undefined,
     // The plan depends on these session fields only; the ticking clock must not rebuild it every second.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [hero, session.lane, session.enemies, session.enemyLive, session.manualFed, session.owned, session.gold, session.phase, late, session.plannedBuild, session.shopListed, session.priceFactor],
+    [hero, session.lane, session.enemies, session.enemyLive, session.manualFed, session.owned, session.gold, session.phase, late, session.plannedBuild, session.shopListed, session.priceFactor, session.spent, session.seenItems, session.shopPrices],
   );
   // Lane opponent: what the player told us, else the enemy whose lane matches theirs.
   const laneOpponentId = useMemo(() => {
@@ -116,7 +111,9 @@ function Shell() {
               ? `the last screenshot could not be read: ${room.readError}`
               : room.lastReadAt
                 ? `last screenshot read ${agoText(now, room.lastReadAt)}${room.lastRead ? ` · it showed ${SCREEN_LABEL[room.lastRead.screen] ?? room.lastRead.screen}` : ""}`
-                : "waiting for the first screenshot from your iPad")}
+                : room.version
+                  ? "connected — send a screenshot to continue"
+                  : "waiting for the first screenshot from your iPad")}
           {!settings.speech.enabled && " · voice is muted"}
           <div className="stages" role="group" aria-label="Match stage">
             {(["draft", "loading", "live", "done"] as const).map((st) => (
@@ -137,7 +134,7 @@ function Shell() {
       )}
       <main>
         {tab === "draft" && <DraftTab plan={plan} hero={hero} laneOpponentId={laneOpponentId} onStart={() => setTab("live")} />}
-        {tab === "live" && <LiveTab plan={plan} hero={hero} gameSec={gameSec} laneOpponentId={laneOpponentId} lastRead={room?.lastRead} onRepeat={repeat} onDraft={() => setTab("draft")} />}
+        {tab === "live" && <LiveTab plan={plan} hero={hero} gameSec={gameSec} laneOpponentId={laneOpponentId} lastRead={room?.lastRead} reads={room?.reads} onRepeat={repeat} onDraft={() => setTab("draft")} />}
         {tab === "settings" && <SettingsTab />}
       </main>
     </div>

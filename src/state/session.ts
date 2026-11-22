@@ -67,7 +67,42 @@ export interface Session {
   priceFactor?: number;
   /** Enemy the player is laning against, when they have told us. */
   laneOpponentId?: number;
+  /**
+   * Gold the player has spent so far: total earned (their scoreboard row) minus what is in
+   * their pocket (top-right corner). Both are printed numbers, so this is the trustworthy
+   * measure of how far along the build they are — unlike item icons, which get misread.
+   */
+  spent?: number;
+  /** The player's items as last read from icons, kept only when it fits what they have spent. */
+  seenItems?: string[];
+  /** Remaining prices printed in the shop, and the spend level they were read at. */
+  shopPrices?: Record<string, number>;
+  shopPricesSpent?: number;
+  /** A clock reading that disagreed with ours; adopted only if the next reading agrees with it. */
+  pendingClock?: number;
+  /** True once the clock came from a screenshot. A clock started by a tap or a guess yields to the first real reading. */
+  clockSure?: boolean;
 }
+
+/** List value of a set of item / component ids. */
+const valueOf = (ids: string[]): number =>
+  ids.reduce((sum, id) => sum + (id.startsWith("comp:") ? (COMPONENTS.get(id)?.cost ?? 0) : (itemById(id)?.cost ?? 0)), 0);
+
+/**
+ * Is an icon reading believable? Small item icons are the one thing vision models
+ * misread, usually by naming an expensive finished item where a cheap piece sits.
+ * Gold is printed text and reliable, so: nobody owns more than they have earned,
+ * two pairs of boots, or the same item twice.
+ */
+export function believableItems(ids: string[] | undefined, budget: number | undefined, slack = 300): boolean {
+  if (!ids?.length) return true;
+  const finished = ids.filter((id) => !id.startsWith("comp:"));
+  if (new Set(finished).size !== finished.length) return false;
+  if (finished.filter((id) => itemById(id)?.category === "boots").length > 1) return false;
+  return budget === undefined || valueOf(ids) <= budget + slack;
+}
+
+const keepBelievable = (p: PlayerState): PlayerState => (believableItems(p.items, p.gold) ? p : { ...p, items: undefined });
 
 export const EMPTY_SESSION: Session = {
   phase: "draft",
@@ -209,29 +244,56 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
   }
 
   if (obs.screen === "scoreboard") {
+    // Item lists that cost more than the player has earned are icon misreads: keep the numbers, drop the items.
     const live = { ...s.enemyLive };
-    for (const p of obs.enemies) if (next.enemies.includes(p.heroId)) live[p.heroId] = p;
+    for (const p of obs.enemies) if (next.enemies.includes(p.heroId)) live[p.heroId] = keepBelievable(p);
     next.enemyLive = live;
     const mineLive = { ...s.allyLive };
-    for (const p of obs.allies) mineLive[p.heroId] = p;
+    for (const p of obs.allies) mineLive[p.heroId] = keepBelievable(p);
     next.allyLive = mineLive;
+    // How much the player has spent: total earned minus what is in their pocket. Both are printed numbers.
     const mine = obs.allies.find((p) => p.heroId === next.myHeroId);
-    // Union, not replace: an icon the model could not identify must not look like a sold item.
-    if (mine?.items?.length) next.owned = tidyOwned([...s.owned, ...mine.items]);
+    if (mine?.gold !== undefined && obs.myGold !== undefined && mine.gold >= obs.myGold) next.spent = mine.gold - obs.myGold;
+  } else if (obs.myGold !== undefined && s.gold !== undefined && s.spent !== undefined && obs.myGold < s.gold - 150) {
+    // Between scoreboards, a drop in pocket gold is a purchase.
+    next.spent = s.spent + (s.gold - obs.myGold);
   }
 
-  // Inventory read straight from the shop's bottom row or the player's own scoreboard row.
-  if (obs.myItems?.length && (obs.screen === "shop" || obs.screen === "scoreboard")) {
-    next.owned = tidyOwned([...next.owned, ...obs.myItems]);
+  // The player's own items as icons (their scoreboard row, or the shop's inventory row):
+  // believed only when they fit what has been spent.
+  if (obs.screen === "shop" || obs.screen === "scoreboard") {
+    const mineRow = obs.screen === "scoreboard" ? obs.allies.find((p) => p.heroId === next.myHeroId) : undefined;
+    const seen = obs.myItems?.length ? obs.myItems : mineRow?.items;
+    if (seen?.length && believableItems(seen, next.spent ?? mineRow?.gold, 150)) next.seenItems = uniq(seen);
   }
   if (obs.shop) {
     const rec = obs.shop.recommended.map((e) => e.id);
     if (rec.length >= 3) next.plannedBuild = uniq(rec);
-    next.shopListed = uniq([...obs.shop.recommended, ...obs.shop.spare].map((e) => e.id));
-    next.priceFactor = learnPriceFactor([...obs.shop.recommended, ...obs.shop.spare]) ?? next.priceFactor;
+    const listed = [...obs.shop.recommended, ...obs.shop.spare];
+    next.shopListed = uniq(listed.map((e) => e.id));
+    next.priceFactor = learnPriceFactor(listed) ?? next.priceFactor;
+    // Prices printed in the shop already account for the pieces the player owns.
+    next.shopPrices = Object.fromEntries(listed.filter((e) => e.price !== undefined && e.price > 0).map((e) => [e.id, e.price!]));
+    next.shopPricesSpent = next.spent;
   }
   if (obs.myGold !== undefined) next.gold = obs.myGold;
-  if (obs.gameTimeSec !== undefined) next.clockStart = now - obs.gameTimeSec * 1000;
+  // The match clock only appears on in-match screens; a draft countdown or anything else is not it.
+  const inMatch = obs.screen === "scoreboard" || obs.screen === "gameplay" || obs.screen === "shop";
+  if (obs.gameTimeSec !== undefined && inMatch) {
+    const candidate = now - obs.gameTimeSec * 1000;
+    if (next.clockStart === undefined || !next.clockSure || Math.abs(candidate - next.clockStart) <= 120_000) {
+      next.clockStart = candidate;
+      next.clockSure = true;
+      next.pendingClock = undefined;
+    } else if (next.pendingClock !== undefined && Math.abs(candidate - next.pendingClock) <= 30_000) {
+      // Two readings in a row agree with each other and not with us: we were the ones who were wrong.
+      next.clockStart = candidate;
+      next.pendingClock = undefined;
+    } else {
+      // One reading far from our clock is more likely a misread timer than a real jump.
+      next.pendingClock = candidate;
+    }
+  }
   // Seeing the match is the cue to leave draft mode.
   if ((obs.screen === "scoreboard" || obs.screen === "gameplay" || obs.screen === "shop") && next.myHeroId) {
     next.phase = "live";
@@ -239,7 +301,8 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
   }
   // Remember this scoreboard so later ones can be compared against it.
   if (obs.screen === "scoreboard") {
-    const at = next.clockStart !== undefined ? Math.max(0, Math.round((now - next.clockStart) / 1000)) : 0;
+    // The clock printed on this very scoreboard is the best timestamp for it.
+    const at = obs.gameTimeSec ?? (next.clockStart !== undefined ? Math.max(0, Math.round((now - next.clockStart) / 1000)) : 0);
     const players: Snapshot["players"] = {};
     for (const p of [...obs.allies, ...obs.enemies]) {
       if (p.gold !== undefined || p.kills !== undefined) players[p.heroId] = { gold: p.gold, kills: p.kills, deaths: p.deaths, assists: p.assists };
@@ -288,19 +351,23 @@ export function sessionReducer(s: Session, a: SessionAction): Session {
       return { ...s, owned: s.owned.includes(a.id) ? s.owned.filter((id) => id !== a.id) : tidyOwned([...s.owned, a.id]) };
     case "bought": {
       const full = itemById(a.id);
-      // Finishing an item only costs the difference when its component is already owned.
-      const comp = full?.component;
-      const haveComp = !!comp && s.owned.includes(componentId(comp.name));
       const pay = (n: number) => Math.floor(n * (s.priceFactor ?? 1));
+      // What it costs right now: the shop's own printed price if still current, else list price
+      // less a piece the player already holds.
+      const comp = full?.component;
+      const haveComp = !!comp && [...s.owned, ...(s.seenItems ?? [])].includes(componentId(comp.name));
+      const quoted = buildInputs(s).shopPrices?.[a.id];
       const cost = a.id.startsWith("comp:")
         ? pay(COMPONENTS.get(a.id)?.cost ?? 0)
         : full
-          ? pay(haveComp && comp ? full.cost - comp.cost : full.cost)
+          ? (quoted ?? pay(haveComp && comp ? full.cost - comp.cost : full.cost))
           : undefined;
       return {
         ...s,
         owned: tidyOwned([...s.owned, a.id]),
         gold: s.gold !== undefined && cost !== undefined ? Math.max(0, s.gold - cost) : s.gold,
+        // Keep the spend tally in step so the same purchase is not counted twice.
+        spent: s.spent !== undefined && cost !== undefined ? s.spent + cost : s.spent,
       };
     }
     case "sold":
@@ -326,7 +393,8 @@ export function sessionReducer(s: Session, a: SessionAction): Session {
       return { ...s, manualFed };
     }
     case "syncClock":
-      return { ...s, clockStart: a.now - a.gameSec * 1000 };
+      // The player set the clock by hand: trust it like a reading.
+      return { ...s, clockStart: a.now - a.gameSec * 1000, clockSure: true, pendingClock: undefined };
     case "observe":
       return applyObservation(s, a.obs, a.now, a.costUsd);
     case "setStage":
@@ -384,3 +452,20 @@ export const CONTROLLER_ACTIONS: ReadonlySet<SessionAction["type"]> = new Set([
   "setStage", "setTeam", "setMyHero", "setLane", "setLaneOpponent", "startMatch", "newMatch", "backToDraft",
   "toggleOwned", "bought", "sold", "swap", "setGold", "cycleFed", "syncClock",
 ]);
+
+/** Everything the build planner needs from a session, in one place so every caller agrees. */
+export function buildInputs(s: Session) {
+  // Shop prices stay valid until the player has spent more.
+  const fresh = s.shopPrices && Math.abs((s.spent ?? 0) - (s.shopPricesSpent ?? 0)) <= 100;
+  return {
+    lane: s.lane,
+    enemies: enemyStates(s),
+    owned: s.owned,
+    seenItems: s.seenItems,
+    spent: s.spent,
+    shopPrices: fresh ? s.shopPrices : undefined,
+    plannedBuild: s.plannedBuild,
+    shopListed: s.shopListed,
+    priceFactor: s.priceFactor,
+  };
+}

@@ -18,6 +18,12 @@ export interface BuildInput {
   shopListed?: string[];
   /** What the shop charges relative to list price (0.95 with the Bargain Hunter emblem talent). */
   priceFactor?: number;
+  /** Gold spent so far (total earned minus pocket gold). When known, it decides how far along the build is. */
+  spent?: number;
+  /** Items read from the player's icons that fit what they have spent. */
+  seenItems?: string[];
+  /** Remaining prices printed in the shop, still current. */
+  shopPrices?: Record<string, number>;
 }
 
 const FROM_YOUR_BUILD = "From the build you chose in game.";
@@ -215,17 +221,29 @@ function nextStep(slots: BuildSlot[], overflow: Pick[], input: BuildInput, squis
 
   const { item } = target;
   const comp = item.component;
-  const haveComp = !!comp && owned.includes(componentId(comp.name));
-  // The shop discounts the difference, then rounds down (Warrior Boots with Boots owned: 446, not 447).
-  const remaining = haveComp && comp ? price(item.cost - comp.cost) : price(item.cost);
+  const paid = target.paid ?? 0;
+  // Once the player has paid toward an item they already hold pieces of it.
+  const haveComp = paid >= 200 || (!!comp && owned.includes(componentId(comp.name)));
+  // Best source first: the price the shop itself printed; then what is left after gold already paid;
+  // then list price less an owned piece (the shop discounts the difference and rounds down).
+  const shopPrice = input.shopPrices?.[item.id];
+  const remaining =
+    shopPrice !== undefined
+      ? shopPrice
+      : paid > 0
+        ? Math.max(0, price(item.cost) - paid)
+        : haveComp && comp
+          ? price(item.cost - comp.cost)
+          : price(item.cost);
   const why = target.reason;
+  const verb = haveComp ? "Finish" : "Buy";
 
   if (gold === undefined) {
     const start = comp && !haveComp ? ` Start with ${comp.name}.` : "";
     return { action: "buy", item, component: comp && !haveComp ? comp : undefined, where: where(item) || undefined, say: `Next item: ${item.name}.${start}`, detail: why };
   }
   if (gold >= remaining) {
-    return { action: "buy", item, where: where(item) || undefined, say: `Buy ${item.name} now.`, detail: why };
+    return { action: "buy", item, where: where(item) || undefined, say: `${verb} ${item.name} now.`, detail: why };
   }
   if (comp && !haveComp && gold >= price(comp.cost)) {
     // Only claim the cheap piece helps when it really carries the effect.
@@ -279,7 +297,7 @@ function nextStep(slots: BuildSlot[], overflow: Pick[], input: BuildInput, squis
     component: goal,
     goldNeeded,
     where: goal ? where(item, goal) : where(item) || undefined,
-    say: `Save ${goldNeeded} more gold for ${goal ? goal.name : item.name}.`,
+    say: goal ? `Save ${goldNeeded} more gold for ${goal.name}.` : `Save ${goldNeeded} more gold to ${haveComp ? "finish" : "buy"} ${item.name}.`,
     detail: goal ? `${why} ${goal.name} is the first piece of ${item.name}.` : why,
   };
 }
@@ -328,8 +346,11 @@ export function planBuild(input: BuildInput): BuildPlan & { threat: ThreatProfil
   for (const p of picks.filter((p) => p.score < URGENT)) push(p.item, p.reason, "situational", p.score);
   for (const id of tpl.filler) push(itemById(id), squishy ? "More damage." : "Rounds out your build.", "damage");
 
-  // Reconcile with what the player actually owns.
-  const ownedFull = input.owned.filter((id) => !id.startsWith("comp:"));
+  // Reconcile with what the player actually owns: items they confirmed, plus icon reads that fit their spending.
+  const confirmed = input.owned.filter((id) => !id.startsWith("comp:"));
+  const seenFinished = (input.seenItems ?? []).filter((id) => !id.startsWith("comp:") && itemById(id));
+  const seenFits = input.spent === undefined || [...new Set([...confirmed, ...seenFinished])].reduce((sum, id) => sum + price(itemById(id)?.cost ?? 0), 0) <= input.spent + 150;
+  let ownedFull = seenFits ? [...new Set([...confirmed, ...seenFinished])] : confirmed;
   const ownedBoots = ownedFull.map(itemById).find((i) => i?.category === "boots");
   const planned = ordered.map((o) =>
     // Never tell someone to buy a second pair of boots.
@@ -343,17 +364,38 @@ export function planBuild(input: BuildInput): BuildPlan & { threat: ThreatProfil
 
   const have = [...planned.filter((o) => ownedFull.includes(o.item.id)), ...offPlan];
   const want = planned.filter((o) => !ownedFull.includes(o.item.id));
-  const fitted = [...have, ...want].slice(0, SLOTS);
+
+  // Spending tells us how far along the build is, even when the icons could not be read:
+  // gold left after the known items pays for the next items in order, and any remainder
+  // is progress toward the one after.
+  const paidToward = new Map<string, number>();
+  if (input.spent !== undefined) {
+    let budget = input.spent - have.reduce((sum, o) => sum + price(o.item.cost), 0);
+    for (const o of want) {
+      const cost = price(o.item.cost);
+      if (budget + 60 >= cost) {
+        ownedFull = [...ownedFull, o.item.id];
+        budget -= cost;
+      } else {
+        if (budget >= 100) paidToward.set(o.item.id, Math.round(budget));
+        break;
+      }
+    }
+  }
+  const settled = [...have, ...want.filter((o) => ownedFull.includes(o.item.id))];
+  const pending = want.filter((o) => !ownedFull.includes(o.item.id));
+  const fitted = [...settled, ...pending].slice(0, SLOTS);
   const slots: BuildSlot[] = fitted.map((o) => ({
     item: o.item,
     reason: o.reason,
     kind: o.kind,
     owned: ownedFull.includes(o.item.id),
     price: price(o.item.cost),
+    paid: paidToward.get(o.item.id),
     urgent: o.kind === "situational" && o.score >= URGENT,
   }));
   const fittedIds = new Set(fitted.map((o) => o.item.id));
-  const overflow: Pick[] = want.filter((o) => !fittedIds.has(o.item.id) && o.kind === "situational");
+  const overflow: Pick[] = pending.filter((o) => !fittedIds.has(o.item.id) && o.kind === "situational");
 
   // Spell: template default, overridden when the lineup demands it.
   let spell = tpl.spell;

@@ -12,7 +12,7 @@ import { coachReply } from "../src/engine/reply";
 import { matchStory } from "../src/engine/story";
 import { analyzeThreat } from "../src/engine/threat";
 import { briefOn, gamePlan, guessLaneOpponent, skillsOf } from "../src/engine/tips";
-import { EMPTY_SESSION, freshSession, orientObservation, sessionReducer, stageOf, type Session } from "../src/state/session";
+import { believableItems, buildInputs, EMPTY_SESSION, freshSession, orientObservation, sessionReducer, stageOf, type Session } from "../src/state/session";
 import type { Observation, PlayerState } from "../src/types";
 import { normalizeObservation, parseGameTime } from "../src/vision/schema";
 
@@ -162,7 +162,7 @@ describe("build planner", () => {
     const remaining = target.cost - target.component!.cost;
     expect(planBuild({ ...base, owned: withPiece, gold: remaining - 1 }).next.action).toBe("save");
     const finish = planBuild({ ...base, owned: withPiece, gold: remaining });
-    expect(finish.next).toMatchObject({ action: "buy", say: "Buy Antique Cuirass now." });
+    expect(finish.next).toMatchObject({ action: "buy", say: "Finish Antique Cuirass now." });
   });
 
   it("does not claim a plain component counters anything", () => {
@@ -336,8 +336,9 @@ describe("session state", () => {
     const s = sessionReducer({ ...base, owned: ["swift_boots", "sea_halberd"] }, { type: "observe", obs, now: 1_000_000 });
     expect(s.phase).toBe("live");
     expect(s.enemyLive[H("Gusion").id]).toMatchObject({ kills: 7 });
-    // Union: an item the model missed must not disappear from the inventory.
-    expect(s.owned.sort()).toEqual(["sea_halberd", "swift_boots", "windtalker"]);
+    // Icons are never written into the confirmed inventory; they are kept apart as "seen".
+    expect(s.owned.sort()).toEqual(["sea_halberd", "swift_boots"]);
+    expect(s.seenItems).toEqual(["swift_boots", "windtalker"]);
     expect(s.gold).toBe(800);
     expect(s.clockStart).toBe(1_000_000 - 300_000);
     expect(s.calls).toBe(1);
@@ -378,7 +379,8 @@ describe("session state", () => {
     expect(s.matchId).toBe(8);
     expect(s.myHeroId).toBe(H("Miya").id);
     expect(s.enemies).toEqual(ids("Zilong", "Nana", "Hanabi"));
-    expect(s.owned).toEqual(["swift_boots"]); // this game's inventory, not the old one
+    expect(s.owned).toEqual([]); // last game's inventory is gone
+    expect(s.seenItems).toEqual(["swift_boots"]); // this game's items, as seen
     expect(s.phase).toBe("live");
     // A scoreboard that merely misreads a couple of portraits is not a new match.
     const noisy = obsOf("scoreboard", team("Layla", "Tigreal", "Eudora"), team("Gusion", "Karrie", "Nana"));
@@ -477,8 +479,7 @@ describe("a real match, from the player's screenshots", () => {
     tip: "",
   };
   const observe = (s: Session, raw: unknown, now = 1_000_000) => sessionReducer(s, { type: "observe", obs: normalizeObservation(raw), now });
-  const plan = (s: Session) =>
-    planBuild({ hero: HEROES.find((h) => h.id === s.myHeroId)!, lane: s.lane, enemies: s.enemies.map((id) => s.enemyLive[id] ?? { heroId: id }), owned: s.owned, gold: s.gold, plannedBuild: s.plannedBuild, shopListed: s.shopListed, priceFactor: s.priceFactor });
+  const plan = (s: Session) => planBuild({ hero: HEROES.find((h) => h.id === s.myHeroId)!, gold: s.gold, ...buildInputs(s) });
 
   it("reads both teams, the player's hero and spendable gold from one scoreboard", () => {
     const s = observe(EMPTY_SESSION, scoreboard("00:03", 300, row("Obsidia", 0, 0, 0, 300, [], true), [300, 300, 300, 300, 300]));
@@ -494,7 +495,9 @@ describe("a real match, from the player's screenshots", () => {
 
   it("adopts the build from the player's shop, at the shop's real prices", () => {
     let s = observe(EMPTY_SESSION, scoreboard("01:49", 1143, row("Obsidia", 3, 0, 0, 1380, ["Boots"], true), [753, 751, 765, 795, 615]));
-    expect(s.owned).toEqual([componentId("Boots")]);
+    // Spending comes from two printed numbers: 1380 earned, 1143 in pocket.
+    expect(s.spent).toBe(237);
+    expect(s.seenItems).toEqual([componentId("Boots")]); // the icon read fits the spending, so it is believed
     s = observe(s, SHOP);
     expect(s.plannedBuild).toEqual(["warrior_boots", "windtalker", "haas_claws", "sky_piercer", "berserkers_fury", "malefic_gun"]);
     expect(s.priceFactor).toBe(0.95); // Bargain Hunter: every listed price is 95% of list
@@ -507,7 +510,8 @@ describe("a real match, from the player's screenshots", () => {
     expect(slotIds(p)).not.toContain("corrosion_scythe"); // not the generic template
     // Prices match the shop: Warrior Boots 446 with Boots owned, Windtalker 1786.
     expect(p.slots.find((x) => x.item.id === "windtalker")!.price).toBe(1786);
-    expect(p.next).toMatchObject({ action: "buy", item: { id: "warrior_boots" }, say: "Buy Warrior Boots now." });
+    expect(p.next).toMatchObject({ action: "buy", item: { id: "warrior_boots" }, say: "Finish Warrior Boots now." });
+    expect(p.slots[0]).toMatchObject({ owned: false, paid: 237 }); // the Boots already bought count toward it
     expect(p.next.where).toBeUndefined(); // it is in their own Recommended list
     // After boots, 1209 - 446 = 763 gold: not enough for Windtalker (1786).
     s = sessionReducer(s, { type: "bought", id: "warrior_boots" });
@@ -539,16 +543,16 @@ describe("a real match, from the player's screenshots", () => {
     let s = sessionReducer(EMPTY_SESSION, { type: "observe", obs: board, now: 1 });
     const first = coachReply(s, board, new Set(), origin);
     // Scoreboard alone is enough: hero, enemies, gold and inventory all come from it.
-    expect(first.title).toBe("Buy Swift Boots now.");
+    expect(first.title).toBe("Finish Swift Boots now.");
     expect(first.icon).toBe(`${origin}/items/swift_boots.webp`);
     expect(first.body).toMatch(/You have 1143 gold/);
     // After the shop read, it follows the player's own build instead.
     const shop = normalizeObservation(SHOP);
     s = sessionReducer(s, { type: "observe", obs: shop, now: 2 });
     const second = coachReply(s, shop, new Set(), origin);
-    expect(second.title).toBe("Buy Warrior Boots now.");
+    expect(second.title).toBe("Finish Warrior Boots now.");
     expect(second.icon).toBe(`${origin}/items/warrior_boots.webp`);
-    expect(second.say).toBe("Buy Warrior Boots now. From the build you chose in game.");
+    expect(second.say).toBe("Finish Warrior Boots now. From the build you chose in game.");
   });
 
   it("asks for the scoreboard when it cannot tell who the player is", () => {
@@ -573,6 +577,97 @@ describe("a real match, from the player's screenshots", () => {
     expect(next.item?.id).toBe("sea_halberd");
     expect(next.where).toBe("It's under the Attack tab.");
     expect(buyAdvice(plan(s)).say).toMatch(/^Buy Sea Halberd now\. Anti-heal.*It's under the Attack tab\.$/);
+  });
+});
+
+/**
+ * From a real match the player ran through the coach: hero names, scores and
+ * gold were read correctly, but the item icons were not — a hero with 3,619 gold
+ * was credited with roughly 10,000 gold of items. These pin down the defences.
+ */
+describe("misread item icons", () => {
+  it("rejects item lists nobody could afford, doubles and second boots", () => {
+    // Read for an enemy with 3,619 gold: about 10,000 gold of items, including Arcane Boots twice.
+    expect(believableItems(["warrior_boots", "blade_of_despair", "arcane_boots", "arcane_boots", "haas_claws", "glowing_wand"], 3619)).toBe(false);
+    expect(believableItems(["blade_of_despair", "demon_hunter_sword", "haas_claws", "haas_claws"], 3242)).toBe(false);
+    expect(believableItems(["warrior_boots", "demon_hunter_sword"], 2300)).toBe(false); // 2,900 gold of items on 2,300
+    expect(believableItems(["warrior_boots", "demon_hunter_sword"], 2718)).toBe(true); // close enough: discounts and timing allow a little slack
+    expect(believableItems(["rapid_boots", "warrior_boots"], 9000)).toBe(false);
+    // Plausible lists pass, and with no gold figure there is nothing to judge by.
+    expect(believableItems(["warrior_boots", componentId("Legion Sword")], 2000)).toBe(true);
+    expect(believableItems(["warrior_boots", "windtalker"], undefined)).toBe(true);
+    expect(believableItems(undefined, 100)).toBe(true);
+  });
+
+  it("keeps the numbers but drops unbelievable items from the live stats", () => {
+    const obs = normalizeObservation({
+      screen: "scoreboard", gameTime: "05:23", myGold: 32,
+      allies: [{ hero: "Clint", isMe: true, kills: 0, deaths: 0, assists: 1, gold: 2109, level: -1, items: ["Warrior Boots", "Blade of Despair", "Windtalker", "Haas' Claws"] }],
+      enemies: [{ hero: "Freya", isMe: false, kills: 5, deaths: 0, assists: 2, gold: 3619, level: -1, items: ["Warrior Boots", "Blade of Despair", "Arcane Boots", "Arcane Boots", "Haas' Claws", "Glowing Wand"] }],
+      myItems: [], recommended: [], spare: [], tip: "",
+    });
+    const s = sessionReducer(EMPTY_SESSION, { type: "observe", obs, now: 1_000_000 });
+    expect(s.enemyLive[H("Freya").id]).toMatchObject({ kills: 5, gold: 3619, items: undefined });
+    expect(s.spent).toBe(2109 - 32);
+    expect(s.owned).toEqual([]); // 7,630 gold of "items" on 2,077 spent: not believed
+    expect(s.seenItems).toBeUndefined();
+  });
+
+  it("works out build progress from gold spent when the icons cannot be trusted", () => {
+    // Clint, 2,077 gold spent, following the build read from his shop.
+    const p = planBuild({ hero: H("Clint"), enemies: team("Brody", "Gatotkaca", "Alucard", "Freya", "Dyrroth"), owned: [], gold: 32, spent: 2077, plannedBuild: ["rapid_boots", "endless_battle", "malefic_gun", "blade_of_despair", "berserkers_fury", "great_dragon_spear"] });
+    expect(p.slots[0]).toMatchObject({ item: { id: "rapid_boots" }, owned: true });
+    expect(p.slots[1]).toMatchObject({ item: { id: "endless_battle" }, owned: false, paid: 2077 - 720 });
+    expect(p.next).toMatchObject({ action: "save", item: { id: "endless_battle" }, goldNeeded: 2330 - 1357 - 32 });
+    expect(p.next.say).toBe("Save 941 more gold to finish Endless Battle.");
+    // The shop's own printed price beats the estimate when it is current.
+    const quoted = planBuild({ hero: H("Clint"), enemies: [], owned: [], gold: 900, spent: 2077, plannedBuild: ["rapid_boots", "endless_battle", "malefic_gun"], shopPrices: { endless_battle: 880 } });
+    expect(quoted.next).toMatchObject({ action: "buy", say: "Finish Endless Battle now." });
+  });
+
+  it("counts a drop in pocket gold between scoreboards as a purchase", () => {
+    const base: Session = { ...EMPTY_SESSION, phase: "live", myHeroId: H("Clint").id, enemies: ids("Freya"), gold: 1500, spent: 800, clockStart: 0 };
+    const play = (gold: number) => normalizeObservation({ screen: "gameplay", gameTime: "", myGold: gold, allies: [], enemies: [], myItems: [], recommended: [], spare: [], tip: "" });
+    expect(sessionReducer(base, { type: "observe", obs: play(1620), now: 1 }).spent).toBe(800); // earned more, bought nothing
+    expect(sessionReducer(base, { type: "observe", obs: play(300), now: 1 }).spent).toBe(800 + 1200); // spent 1,200
+  });
+});
+
+describe("match clock", () => {
+  const frame = (screen: string, time: string) => normalizeObservation({ screen, gameTime: time, myGold: 100, allies: [], enemies: [], myItems: [], recommended: [], spare: [], tip: "" });
+  const live: Session = { ...EMPTY_SESSION, phase: "live", myHeroId: H("Clint").id, enemies: ids("Freya") };
+  const clockAt = (s: Session, now: number) => Math.round((now - s.clockStart!) / 1000);
+
+  it("takes the clock only from in-match screens", () => {
+    // A hero-selection countdown ("00:38") is not the match clock.
+    expect(sessionReducer(EMPTY_SESSION, { type: "observe", obs: frame("draft", "00:38"), now: 1000 }).clockStart).toBeUndefined();
+    expect(sessionReducer(EMPTY_SESSION, { type: "observe", obs: frame("other", "12:00"), now: 1000 }).clockStart).toBeUndefined();
+    const s = sessionReducer(live, { type: "observe", obs: frame("gameplay", "03:10"), now: 500_000 });
+    expect(clockAt(s, 500_000)).toBe(190);
+  });
+
+  it("lets the first real reading replace a clock that was only a guess", () => {
+    // "In match" tapped (or the clock guessed) three minutes late: the clock says 0:00.
+    const guessed = sessionReducer({ ...live, phase: "draft" }, { type: "setStage", stage: "live", now: 400_000 });
+    expect(clockAt(guessed, 400_000)).toBe(0);
+    const s = sessionReducer(guessed, { type: "observe", obs: frame("scoreboard", "03:10"), now: 410_000 });
+    expect(clockAt(s, 410_000)).toBe(190);
+    expect(s.clockSure).toBe(true);
+  });
+
+  it("ignores one wild reading but follows two that agree", () => {
+    let s = sessionReducer(live, { type: "observe", obs: frame("gameplay", "03:10"), now: 500_000 });
+    // A minute later the read says 14:30 — a misread timer, not a real jump.
+    s = sessionReducer(s, { type: "observe", obs: frame("gameplay", "14:30"), now: 560_000 });
+    expect(clockAt(s, 560_000)).toBe(250);
+    // Small corrections are always taken.
+    s = sessionReducer(s, { type: "observe", obs: frame("scoreboard", "04:25"), now: 570_000 });
+    expect(clockAt(s, 570_000)).toBe(265);
+    // If our clock really was wrong, two consistent readings fix it.
+    s = sessionReducer(s, { type: "observe", obs: frame("gameplay", "09:00"), now: 600_000 });
+    expect(clockAt(s, 600_000)).toBe(295);
+    s = sessionReducer(s, { type: "observe", obs: frame("gameplay", "09:20"), now: 620_000 });
+    expect(clockAt(s, 620_000)).toBe(560);
   });
 });
 

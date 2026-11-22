@@ -8,7 +8,7 @@ A coach for Mobile Legends: Bang Bang, built for a new player. It tells you, in 
 
 Every enemy gets a card with the skills to recognise (real names and descriptions from the game's own data) and how to play against them.
 
-> **Status:** the advice engine, guide, pictures, voice and the screenshot endpoint are tested (57 unit tests, 35 scripted browser checks). Reading *real* screenshots with a live vision model has **not** been run yet — see [What is and isn't verified](#what-is-and-isnt-verified).
+> **Status:** the advice engine, guide, pictures, voice and the screenshot endpoint are tested (64 unit tests, 36 scripted browser checks). Reading *real* screenshots with a live vision model has **not** been run yet — see [What is and isn't verified](#what-is-and-isnt-verified).
 
 ## iPad plays, phone coaches (no laptop)
 
@@ -81,6 +81,7 @@ The stage moves on by itself as the screenshots change; the buttons are there fo
 - **Build** — your in-game build if a shop screenshot was read, otherwise a short core for your hero type; then counters for this enemy team. Carries get at most two defensive items.
 - **Next step** — buy if you can afford it; otherwise an urgent counter you *can* afford, or a cheap piece that already carries part of its effect; otherwise save. Every step says where the item is: your Recommended list, a shop tab, or inside another item's build path.
 - **Guide** — skill names, cooldowns and descriptions come from synced game data, so new heroes are covered. The advice lines follow from what a kit does (crowd control, burst, healing, dashes), not from memory of the hero.
+- **Build progress** — measured by gold spent (total earned on your scoreboard row minus the gold in your pocket), both printed numbers. Item icons are the one thing vision models misread, so an item list that costs more than its owner has earned is thrown away, and your own progress never depends on icons.
 - **Match memory** — every scoreboard read is kept for the match. Comparing them gives the "Match so far" panel: team gold and how the lead is moving, your strongest and struggling teammates, the enemy to watch and who is growing fastest, and where you stand.
 - **Voice** — speaks when the advice changes, never on a loop.
 
@@ -102,13 +103,16 @@ The stage moves on by itself as the screenshots change; the buttons are there fo
 - A realistic-size screenshot upload reaches Google's API from the server (tested with an invalid key, which was rejected as expected).
 
 **Verified here**
-- 57 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, catalog and picture coverage, and session handling.
+- 64 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, catalog and picture coverage, and session handling.
 - Tests transcribed by hand from real match screenshots: one scoreboard yields the hero, both teams, gold and inventory; the shop yields the in-game build; all eight shop prices match the catalog at the emblem's 95%.
-- 35 scripted browser checks in demo mode: the single-device flow, and the two-device flow with a simulated iPad posting screenshots while a phone-sized page follows, speaks, sends purchases back and switches stages.
+- 36 scripted browser checks in demo mode: the single-device flow, and the two-device flow with a simulated iPad posting screenshots while a phone-sized page follows, speaks, sends purchases back and switches stages.
 - The screenshot endpoint, run locally: health check, error answers, a scripted match, and the cases that matter with two devices — a tap on the phone landing while a screenshot is still being read, ending the match mid-read, and failed reads being reported to the phone.
 
+**Learned from the first real matches**
+- Claude Haiku read hero names, kills/deaths/assists and gold correctly from real scoreboards.
+- It misread item icons badly (one hero with 3,619 gold was credited with about 10,000 gold of items). The coach no longer relies on icons for your build, and discards item lists that are impossible for the gold earned.
+
 **Not verified**
-- **A real vision model reading a real screenshot.** No API key was available while building.
 - **The Shortcut on a real iPad**, in particular whether a repeating shortcut keeps running behind the game.
 - **Voice on iPhone and iPad Safari.**
 

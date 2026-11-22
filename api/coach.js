@@ -1653,9 +1653,12 @@ function nextStep(slots, overflow, input, squishy) {
 	}
 	const { item } = target;
 	const comp = item.component;
-	const haveComp = !!comp && owned.includes(componentId(comp.name));
-	const remaining = haveComp && comp ? price(item.cost - comp.cost) : price(item.cost);
+	const paid = target.paid ?? 0;
+	const haveComp = paid >= 200 || !!comp && owned.includes(componentId(comp.name));
+	const shopPrice = input.shopPrices?.[item.id];
+	const remaining = shopPrice !== void 0 ? shopPrice : paid > 0 ? Math.max(0, price(item.cost) - paid) : haveComp && comp ? price(item.cost - comp.cost) : price(item.cost);
 	const why = target.reason;
+	const verb = haveComp ? "Finish" : "Buy";
 	if (gold === void 0) {
 		const start = comp && !haveComp ? ` Start with ${comp.name}.` : "";
 		return {
@@ -1671,7 +1674,7 @@ function nextStep(slots, overflow, input, squishy) {
 		action: "buy",
 		item,
 		where: where(item) || void 0,
-		say: `Buy ${item.name} now.`,
+		say: `${verb} ${item.name} now.`,
 		detail: why
 	};
 	if (comp && !haveComp && gold >= price(comp.cost)) {
@@ -1714,7 +1717,7 @@ function nextStep(slots, overflow, input, squishy) {
 		component: goal,
 		goldNeeded,
 		where: goal ? where(item, goal) : where(item) || void 0,
-		say: `Save ${goldNeeded} more gold for ${goal ? goal.name : item.name}.`,
+		say: goal ? `Save ${goldNeeded} more gold for ${goal.name}.` : `Save ${goldNeeded} more gold to ${haveComp ? "finish" : "buy"} ${item.name}.`,
 		detail: goal ? `${why} ${goal.name} is the first piece of ${item.name}.` : why
 	};
 }
@@ -1761,7 +1764,9 @@ function planBuild(input) {
 	for (const id of restCore) push(itemById(id), tpl.coreWhy, "core");
 	for (const p of picks.filter((p) => p.score < URGENT)) push(p.item, p.reason, "situational", p.score);
 	for (const id of tpl.filler) push(itemById(id), squishy ? "More damage." : "Rounds out your build.", "damage");
-	const ownedFull = input.owned.filter((id) => !id.startsWith("comp:"));
+	const confirmed = input.owned.filter((id) => !id.startsWith("comp:"));
+	const seenFinished = (input.seenItems ?? []).filter((id) => !id.startsWith("comp:") && itemById(id));
+	let ownedFull = input.spent === void 0 || [.../* @__PURE__ */ new Set([...confirmed, ...seenFinished])].reduce((sum, id) => sum + price(itemById(id)?.cost ?? 0), 0) <= input.spent + 150 ? [.../* @__PURE__ */ new Set([...confirmed, ...seenFinished])] : confirmed;
 	const ownedBoots = ownedFull.map(itemById).find((i) => i?.category === "boots");
 	const planned = ordered.map((o) => o.kind === "boots" && ownedBoots ? {
 		...o,
@@ -1778,17 +1783,34 @@ function planBuild(input) {
 	}));
 	const have = [...planned.filter((o) => ownedFull.includes(o.item.id)), ...offPlan];
 	const want = planned.filter((o) => !ownedFull.includes(o.item.id));
-	const fitted = [...have, ...want].slice(0, SLOTS);
+	const paidToward = /* @__PURE__ */ new Map();
+	if (input.spent !== void 0) {
+		let budget = input.spent - have.reduce((sum, o) => sum + price(o.item.cost), 0);
+		for (const o of want) {
+			const cost = price(o.item.cost);
+			if (budget + 60 >= cost) {
+				ownedFull = [...ownedFull, o.item.id];
+				budget -= cost;
+			} else {
+				if (budget >= 100) paidToward.set(o.item.id, Math.round(budget));
+				break;
+			}
+		}
+	}
+	const settled = [...have, ...want.filter((o) => ownedFull.includes(o.item.id))];
+	const pending = want.filter((o) => !ownedFull.includes(o.item.id));
+	const fitted = [...settled, ...pending].slice(0, SLOTS);
 	const slots = fitted.map((o) => ({
 		item: o.item,
 		reason: o.reason,
 		kind: o.kind,
 		owned: ownedFull.includes(o.item.id),
 		price: price(o.item.cost),
+		paid: paidToward.get(o.item.id),
 		urgent: o.kind === "situational" && o.score >= URGENT
 	}));
 	const fittedIds = new Set(fitted.map((o) => o.item.id));
-	const overflow = want.filter((o) => !fittedIds.has(o.item.id) && o.kind === "situational");
+	const overflow = pending.filter((o) => !fittedIds.has(o.item.id) && o.kind === "situational");
 	let spell = tpl.spell;
 	if (lane !== "jungle") {
 		if (squishy && threat.cc >= 2.4) spell = {
@@ -1814,6 +1836,25 @@ function planBuild(input) {
 * Match state and how it changes. Pure and framework-free, so the same logic
 * runs in the browser app and in the screenshot endpoint.
 */
+/** List value of a set of item / component ids. */
+var valueOf = (ids) => ids.reduce((sum, id) => sum + (id.startsWith("comp:") ? COMPONENTS.get(id)?.cost ?? 0 : itemById(id)?.cost ?? 0), 0);
+/**
+* Is an icon reading believable? Small item icons are the one thing vision models
+* misread, usually by naming an expensive finished item where a cheap piece sits.
+* Gold is printed text and reliable, so: nobody owns more than they have earned,
+* two pairs of boots, or the same item twice.
+*/
+function believableItems(ids, budget, slack = 300) {
+	if (!ids?.length) return true;
+	const finished = ids.filter((id) => !id.startsWith("comp:"));
+	if (new Set(finished).size !== finished.length) return false;
+	if (finished.filter((id) => itemById(id)?.category === "boots").length > 1) return false;
+	return budget === void 0 || valueOf(ids) <= budget + slack;
+}
+var keepBelievable = (p) => believableItems(p.items, p.gold) ? p : {
+	...p,
+	items: void 0
+};
 var EMPTY_SESSION = {
 	phase: "draft",
 	allies: [],
@@ -1927,29 +1968,47 @@ function applyObservation(s0, obs0, now, costUsd = 0) {
 	}
 	if (obs.screen === "scoreboard") {
 		const live = { ...s.enemyLive };
-		for (const p of obs.enemies) if (next.enemies.includes(p.heroId)) live[p.heroId] = p;
+		for (const p of obs.enemies) if (next.enemies.includes(p.heroId)) live[p.heroId] = keepBelievable(p);
 		next.enemyLive = live;
 		const mineLive = { ...s.allyLive };
-		for (const p of obs.allies) mineLive[p.heroId] = p;
+		for (const p of obs.allies) mineLive[p.heroId] = keepBelievable(p);
 		next.allyLive = mineLive;
 		const mine = obs.allies.find((p) => p.heroId === next.myHeroId);
-		if (mine?.items?.length) next.owned = tidyOwned([...s.owned, ...mine.items]);
+		if (mine?.gold !== void 0 && obs.myGold !== void 0 && mine.gold >= obs.myGold) next.spent = mine.gold - obs.myGold;
+	} else if (obs.myGold !== void 0 && s.gold !== void 0 && s.spent !== void 0 && obs.myGold < s.gold - 150) next.spent = s.spent + (s.gold - obs.myGold);
+	if (obs.screen === "shop" || obs.screen === "scoreboard") {
+		const mineRow = obs.screen === "scoreboard" ? obs.allies.find((p) => p.heroId === next.myHeroId) : void 0;
+		const seen = obs.myItems?.length ? obs.myItems : mineRow?.items;
+		if (seen?.length && believableItems(seen, next.spent ?? mineRow?.gold, 150)) next.seenItems = uniq(seen);
 	}
-	if (obs.myItems?.length && (obs.screen === "shop" || obs.screen === "scoreboard")) next.owned = tidyOwned([...next.owned, ...obs.myItems]);
 	if (obs.shop) {
 		const rec = obs.shop.recommended.map((e) => e.id);
 		if (rec.length >= 3) next.plannedBuild = uniq(rec);
-		next.shopListed = uniq([...obs.shop.recommended, ...obs.shop.spare].map((e) => e.id));
-		next.priceFactor = learnPriceFactor([...obs.shop.recommended, ...obs.shop.spare]) ?? next.priceFactor;
+		const listed = [...obs.shop.recommended, ...obs.shop.spare];
+		next.shopListed = uniq(listed.map((e) => e.id));
+		next.priceFactor = learnPriceFactor(listed) ?? next.priceFactor;
+		next.shopPrices = Object.fromEntries(listed.filter((e) => e.price !== void 0 && e.price > 0).map((e) => [e.id, e.price]));
+		next.shopPricesSpent = next.spent;
 	}
 	if (obs.myGold !== void 0) next.gold = obs.myGold;
-	if (obs.gameTimeSec !== void 0) next.clockStart = now - obs.gameTimeSec * 1e3;
+	const inMatch = obs.screen === "scoreboard" || obs.screen === "gameplay" || obs.screen === "shop";
+	if (obs.gameTimeSec !== void 0 && inMatch) {
+		const candidate = now - obs.gameTimeSec * 1e3;
+		if (next.clockStart === void 0 || !next.clockSure || Math.abs(candidate - next.clockStart) <= 12e4) {
+			next.clockStart = candidate;
+			next.clockSure = true;
+			next.pendingClock = void 0;
+		} else if (next.pendingClock !== void 0 && Math.abs(candidate - next.pendingClock) <= 3e4) {
+			next.clockStart = candidate;
+			next.pendingClock = void 0;
+		} else next.pendingClock = candidate;
+	}
 	if ((obs.screen === "scoreboard" || obs.screen === "gameplay" || obs.screen === "shop") && next.myHeroId) {
 		next.phase = "live";
 		next.clockStart ??= now;
 	}
 	if (obs.screen === "scoreboard") {
-		const at = next.clockStart !== void 0 ? Math.max(0, Math.round((now - next.clockStart) / 1e3)) : 0;
+		const at = obs.gameTimeSec ?? (next.clockStart !== void 0 ? Math.max(0, Math.round((now - next.clockStart) / 1e3)) : 0);
 		const players = {};
 		for (const p of [...obs.allies, ...obs.enemies]) if (p.gold !== void 0 || p.kills !== void 0) players[p.heroId] = {
 			gold: p.gold,
@@ -2030,14 +2089,16 @@ function sessionReducer(s, a) {
 		};
 		case "bought": {
 			const full = itemById(a.id);
-			const comp = full?.component;
-			const haveComp = !!comp && s.owned.includes(componentId(comp.name));
 			const pay = (n) => Math.floor(n * (s.priceFactor ?? 1));
-			const cost = a.id.startsWith("comp:") ? pay(COMPONENTS.get(a.id)?.cost ?? 0) : full ? pay(haveComp && comp ? full.cost - comp.cost : full.cost) : void 0;
+			const comp = full?.component;
+			const haveComp = !!comp && [...s.owned, ...s.seenItems ?? []].includes(componentId(comp.name));
+			const quoted = buildInputs(s).shopPrices?.[a.id];
+			const cost = a.id.startsWith("comp:") ? pay(COMPONENTS.get(a.id)?.cost ?? 0) : full ? quoted ?? pay(haveComp && comp ? full.cost - comp.cost : full.cost) : void 0;
 			return {
 				...s,
 				owned: tidyOwned([...s.owned, a.id]),
-				gold: s.gold !== void 0 && cost !== void 0 ? Math.max(0, s.gold - cost) : s.gold
+				gold: s.gold !== void 0 && cost !== void 0 ? Math.max(0, s.gold - cost) : s.gold,
+				spent: s.spent !== void 0 && cost !== void 0 ? s.spent + cost : s.spent
 			};
 		}
 		case "sold": return {
@@ -2070,7 +2131,9 @@ function sessionReducer(s, a) {
 		}
 		case "syncClock": return {
 			...s,
-			clockStart: a.now - a.gameSec * 1e3
+			clockStart: a.now - a.gameSec * 1e3,
+			clockSure: true,
+			pendingClock: void 0
 		};
 		case "observe": return applyObservation(s, a.obs, a.now, a.costUsd);
 		case "setStage":
@@ -2153,6 +2216,21 @@ var CONTROLLER_ACTIONS = /* @__PURE__ */ new Set([
 	"cycleFed",
 	"syncClock"
 ]);
+/** Everything the build planner needs from a session, in one place so every caller agrees. */
+function buildInputs(s) {
+	const fresh = s.shopPrices && Math.abs((s.spent ?? 0) - (s.shopPricesSpent ?? 0)) <= 100;
+	return {
+		lane: s.lane,
+		enemies: enemyStates(s),
+		owned: s.owned,
+		seenItems: s.seenItems,
+		spent: s.spent,
+		shopPrices: fresh ? s.shopPrices : void 0,
+		plannedBuild: s.plannedBuild,
+		shopListed: s.shopListed,
+		priceFactor: s.priceFactor
+	};
+}
 // src/engine/coach.ts
 /** First sentence only — spoken lines must be short enough to hear mid-fight. */
 var firstSentence = (text) => {
@@ -7040,13 +7118,8 @@ function coachReply(session, obs, called, origin) {
 	}
 	const plan = planBuild({
 		hero,
-		lane: session.lane,
-		enemies: enemyStates(session),
-		owned: session.owned,
 		gold: session.gold,
-		plannedBuild: session.plannedBuild,
-		shopListed: session.shopListed,
-		priceFactor: session.priceFactor
+		...buildInputs(session)
 	});
 	const n = plan.next;
 	const spoken = [];
@@ -7131,13 +7204,8 @@ function answerQuestion(session, topic) {
 	};
 	const plan = planBuild({
 		hero,
-		lane: session.lane,
-		enemies: enemyStates(session),
-		owned: session.owned,
 		gold: session.gold,
-		plannedBuild: session.plannedBuild,
-		shopListed: session.shopListed,
-		priceFactor: session.priceFactor
+		...buildInputs(session)
 	});
 	const laneId = session.laneOpponentId ?? guessLaneOpponent(session.lane, session.enemies);
 	switch (topic) {
@@ -83049,15 +83117,18 @@ var blankRoom = (now) => ({
 	session: EMPTY_SESSION,
 	called: /* @__PURE__ */ new Set(),
 	matchId: 0,
-	at: now,
-	version: 0
+	at: 0,
+	seen: now,
+	version: 0,
+	reads: []
 });
 /** Apply a change to the room as it is *now*. Reads take seconds; never write back a stale copy. */
 function update(roomId, now, change) {
 	const current = rooms.get(roomId) ?? blankRoom(now);
 	const next = {
 		...current,
-		...change(current)
+		...change(current),
+		seen: Date.now()
 	};
 	rooms.set(roomId, next);
 	return next;
@@ -83142,19 +83213,22 @@ async function handle(request) {
 		const info = {
 			ok: true,
 			version: room.version,
-			at: room.at,
+			at: room.at || void 0,
 			error: room.error?.message,
 			errorAt: room.error?.at,
 			read: room.read,
 			announce: room.announce
 		};
+		const wantLog = url.searchParams.has("log");
 		if (url.searchParams.get("v") === String(room.version)) return json(200, {
 			...info,
-			unchanged: true
+			unchanged: true,
+			...wantLog ? { reads: room.reads } : {}
 		});
 		return json(200, {
 			...info,
-			session: room.session
+			session: room.session,
+			reads: room.reads
 		});
 	}
 	if (request.method === "GET") {
@@ -83173,14 +83247,20 @@ async function handle(request) {
 	}
 	if (request.method !== "POST") return fail(405, "Send the screenshot with a POST request.");
 	const now = Date.now();
-	for (const [id, room] of rooms) if (now - room.at > ROOM_TTL_MS) rooms.delete(id);
+	for (const [id, room] of rooms) if (now - room.seen > ROOM_TTL_MS) rooms.delete(id);
 	const roomId = roomParam || "DEFAULT";
 	/** A failed read is remembered on the room so the phone can say why nothing is arriving. */
 	const failRead = (status, message) => {
-		update(roomId, now, () => ({ error: {
-			message,
-			at: Date.now()
-		} }));
+		update(roomId, now, (room) => ({
+			error: {
+				message,
+				at: Date.now()
+			},
+			reads: [...room.reads, {
+				at: Date.now(),
+				error: message
+			}].slice(-30)
+		}));
 		return fail(status, message);
 	};
 	if (url.searchParams.has("reset")) {
@@ -83279,7 +83359,7 @@ async function handle(request) {
 			const session = sessionReducer(room.session, {
 				type: "observe",
 				obs,
-				now: readAt
+				now
 			});
 			const called = session.matchId === room.matchId ? room.called : /* @__PURE__ */ new Set();
 			answer = coachReply(session, obs, called, url.origin);
@@ -83288,6 +83368,17 @@ async function handle(request) {
 				title: answer.title,
 				body: answer.body
 			};
+			const entry = {
+				at: readAt,
+				screen: obs.screen,
+				clock: obs.gameTimeSec,
+				gold: obs.myGold,
+				allies: obs.allies.length,
+				enemies: obs.enemies.length,
+				unknown: obs.unknown.slice(0, 6),
+				ms: readAt - now,
+				model: reply.model
+			};
 			return {
 				session,
 				called,
@@ -83295,7 +83386,8 @@ async function handle(request) {
 				at: readAt,
 				version: room.version + 1,
 				error: void 0,
-				read
+				read,
+				reads: [...room.reads, entry].slice(-30)
 			};
 		});
 		return json(200, {

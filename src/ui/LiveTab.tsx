@@ -9,7 +9,7 @@ import { useStore } from "../state/store";
 import type { BuildPlan, Hero, ThreatProfile } from "../types";
 import { BuildList, SpellEmblem } from "./BuildList";
 import { useCapture } from "./CaptureContext";
-import { SCREEN_LABEL } from "./useRoomSync";
+import { SCREEN_LABEL, type RoomRead } from "./useRoomSync";
 import { Guide, ItemIcon } from "./Guide";
 import { HeroIcon } from "./HeroBits";
 
@@ -242,7 +242,38 @@ function CapturePanel() {
   );
 }
 
-export function LiveTab({ plan, hero, gameSec, laneOpponentId, lastRead, onRepeat, onDraft }: { plan?: Plan; hero?: Hero; gameSec?: number; laneOpponentId?: number; lastRead?: { screen: string; title: string; body: string }; onRepeat: () => void; onDraft: () => void }) {
+/** What the coach understood from each recent screenshot — the place to look when something seems off. */
+function ReadsPanel({ reads }: { reads?: RoomRead[] }) {
+  const list = [...(reads ?? [])].reverse().slice(0, 12);
+  return (
+    <section className="panel">
+      <h2>Recent screenshots</h2>
+      {!list.length && <p className="hint">Each screenshot the iPad sends is listed here with what it was understood to be.</p>}
+      <ul className="log">
+        {list.map((r, i) => (
+          <li key={`${r.at}-${i}`} className={r.error ? "log-error" : "log-vision"}>
+            <time>{new Date(r.at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</time>
+            <span>
+              {r.error ??
+                [
+                  SCREEN_LABEL[r.screen ?? ""] ?? r.screen,
+                  r.clock !== undefined ? `clock ${formatClock(r.clock)}` : "no clock",
+                  r.gold !== undefined ? `${r.gold} gold` : "no gold",
+                  r.allies || r.enemies ? `${r.allies}+${r.enemies} heroes` : "",
+                  r.unknown?.length ? `could not place: ${r.unknown.join(", ")}` : "",
+                  r.ms ? `${(r.ms / 1000).toFixed(1)}s` : "",
+                ]
+                  .filter(Boolean)
+                  .join(" · ")}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+export function LiveTab({ plan, hero, gameSec, laneOpponentId, lastRead, reads, onRepeat, onDraft }: { plan?: Plan; hero?: Hero; gameSec?: number; laneOpponentId?: number; lastRead?: { screen: string; title: string; body: string }; reads?: RoomRead[]; onRepeat: () => void; onDraft: () => void }) {
   const { state, dispatch } = useStore();
   const s = state.session;
 
@@ -334,7 +365,8 @@ export function LiveTab({ plan, hero, gameSec, laneOpponentId, lastRead, onRepea
           <Guide me={hero} enemies={s.enemies} threat={plan.threat} laneOpponentId={laneOpponentId} onPickLane={(id) => dispatch({ type: "setLaneOpponent", id })} />
         </section>
         <ThreatPanel plan={plan} />
-        <CapturePanel />
+        {/* A following device does no capturing of its own: show what the iPad's screenshots were understood to be instead. */}
+        {state.settings.sync.follow ? <ReadsPanel reads={reads} /> : <CapturePanel />}
         <section className="panel">
           <h2>Coach log</h2>
           {!s.log.length && <p className="hint">Everything the coach says or reads shows up here.</p>}

@@ -15,6 +15,21 @@ export interface RoomStatus {
   readError?: string;
   /** What the most recent screenshot turned out to be. */
   lastRead?: { screen: string; title: string; body: string };
+  /** The room's log: recent screenshots and what each was understood to be. */
+  reads?: RoomRead[];
+}
+
+export interface RoomRead {
+  at: number;
+  screen?: string;
+  clock?: number;
+  gold?: number;
+  allies?: number;
+  enemies?: number;
+  unknown?: string[];
+  ms?: number;
+  model?: string;
+  error?: string;
 }
 
 /** Plain names for what a screenshot showed. */
@@ -37,6 +52,7 @@ interface RoomAnswer {
   error?: string;
   read?: { screen: string; title: string; body: string };
   announce?: { id: number; text: string };
+  reads?: RoomRead[];
 }
 
 /**
@@ -89,7 +105,7 @@ export function useRoomSync(): RoomStatus | undefined {
           dispatch({ type: "log", entry: { at: Date.now(), kind: "say", text: note.text } });
         }
         announced.current = note?.id ?? 0;
-        setStatus({ version: remote, lastReadAt: body.at, readError: body.error, lastRead: body.read });
+        setStatus((prev) => ({ version: remote, lastReadAt: body.at, readError: body.error, lastRead: body.read, reads: body.reads ?? prev.reads }));
       } catch {
         if (!stopped) setStatus((s) => ({ ...s, error: "Can't reach the coach server. This works on the deployed site only." }));
       }

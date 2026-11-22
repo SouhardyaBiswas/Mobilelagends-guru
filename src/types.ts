@@ -154,6 +154,8 @@ export interface BuildSlot {
   owned: boolean;
   /** What the shop actually charges, after any emblem discount. */
   price: number;
+  /** Gold already paid toward this item (its pieces), when known from what the player has spent. */
+  paid?: number;
   /** A counter that matters right now (fed enemy, heavy healing) rather than a nice-to-have. */
   urgent?: boolean;
 }
