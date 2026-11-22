@@ -83113,6 +83113,23 @@ var DEFAULT_MODEL = {
 	gemini: "gemini-3.8-flash",
 	claude: "claude-opus-5-5"
 };
+/**
+* One line per event in the host's own logs. The room's memory is wiped whenever
+* this server sleeps or is redeployed; these lines outlive that (about an hour on
+* the free plan), so a match can still be examined afterwards. No key and no
+* picture is ever written — only what was understood.
+*/
+function record(event) {
+	try {
+		console.log(`COACH ${JSON.stringify(event)}`);
+	} catch {}
+}
+var rowsFor = (players) => players.map((p) => ({
+	hero: heroName(p.heroId),
+	kda: `${p.kills ?? "?"}/${p.deaths ?? "?"}/${p.assists ?? "?"}`,
+	gold: p.gold,
+	items: p.items
+}));
 var blankRoom = (now) => ({
 	session: EMPTY_SESSION,
 	called: /* @__PURE__ */ new Set(),
@@ -83199,6 +83216,12 @@ async function handle(request) {
 			id: (room.announce?.id ?? 0) + 1,
 			text: answer.say
 		} }));
+		record({
+			t: "ask",
+			room: roomParam,
+			topic: ask,
+			said: answer.say
+		});
 		return json(200, {
 			...answer,
 			body: answer.say
@@ -83261,6 +83284,11 @@ async function handle(request) {
 				error: message
 			}].slice(-30)
 		}));
+		record({
+			t: "fail",
+			room: roomId,
+			error: message
+		});
 		return fail(status, message);
 	};
 	if (url.searchParams.has("reset")) {
@@ -83277,17 +83305,23 @@ async function handle(request) {
 			ok: false,
 			error: "Unknown action."
 		});
+		const after = update(roomId, now, (room) => {
+			const session = sessionReducer(room.session, action);
+			return {
+				session,
+				matchId: session.matchId,
+				called: session.matchId === room.matchId ? room.called : /* @__PURE__ */ new Set(),
+				version: room.version + 1
+			};
+		});
+		record({
+			t: "action",
+			room: roomId,
+			action
+		});
 		return json(200, {
 			ok: true,
-			version: update(roomId, now, (room) => {
-				const session = sessionReducer(room.session, action);
-				return {
-					session,
-					matchId: session.matchId,
-					called: session.matchId === room.matchId ? room.called : /* @__PURE__ */ new Set(),
-					version: room.version + 1
-				};
-			}).version
+			version: after.version
 		});
 	}
 	if (url.searchParams.has("restore")) {
@@ -83389,6 +83423,26 @@ async function handle(request) {
 				read,
 				reads: [...room.reads, entry].slice(-30)
 			};
+		});
+		const after = rooms.get(roomId)?.session;
+		record({
+			t: "read",
+			room: roomId,
+			screen: obs.screen,
+			clock: obs.gameTimeSec,
+			gold: obs.myGold,
+			ms: readAt - now,
+			model: reply.model,
+			me: obs.meHeroId ? heroName(obs.meHeroId) : void 0,
+			allies: rowsFor(obs.allies),
+			enemies: rowsFor(obs.enemies),
+			myItems: obs.myItems,
+			shop: obs.shop,
+			unknown: obs.unknown,
+			spent: after?.spent,
+			owned: after?.owned,
+			seen: after?.seenItems,
+			said: answer?.title
 		});
 		return json(200, {
 			...answer,

@@ -7,7 +7,8 @@
  * self-contained (both teams, items, gold, clock), so losing memory just means
  * the next shop read asks for the scoreboard once.
  */
-import { HEROES } from "../data/heroes";
+import { HEROES, heroName } from "../data/heroes";
+import type { Observation } from "../types";
 import { planBuild } from "../engine/build";
 import { answerQuestion, ASK_TOPICS, coachReply, type AskTopic } from "../engine/reply";
 import { CONTROLLER_ACTIONS, EMPTY_SESSION, sessionReducer, stageOf, type Session, type SessionAction } from "../state/session";
@@ -59,6 +60,23 @@ export interface ReadLog {
   error?: string;
 }
 const READS_MAX = 30;
+
+/**
+ * One line per event in the host's own logs. The room's memory is wiped whenever
+ * this server sleeps or is redeployed; these lines outlive that (about an hour on
+ * the free plan), so a match can still be examined afterwards. No key and no
+ * picture is ever written — only what was understood.
+ */
+function record(event: Record<string, unknown>): void {
+  try {
+    console.log(`COACH ${JSON.stringify(event)}`);
+  } catch {
+    /* logging must never break a read */
+  }
+}
+
+const rowsFor = (players: Observation["allies"]) =>
+  players.map((p) => ({ hero: heroName(p.heroId), kda: `${p.kills ?? "?"}/${p.deaths ?? "?"}/${p.assists ?? "?"}`, gold: p.gold, items: p.items }));
 
 const blankRoom = (now: number): Room => ({ session: EMPTY_SESSION, called: new Set<number>(), matchId: 0, at: 0, seen: now, version: 0, reads: [] });
 
@@ -127,6 +145,7 @@ async function handle(request: Request): Promise<Response> {
     const answer = answerQuestion(rooms.get(roomParam)?.session ?? EMPTY_SESSION, ask as AskTopic);
     // Hand the answer to the following device so the phone says it too.
     update(roomParam, Date.now(), (room) => ({ announce: { id: (room.announce?.id ?? 0) + 1, text: answer.say } }));
+    record({ t: "ask", room: roomParam, topic: ask, said: answer.say });
     return json(200, { ...answer, body: answer.say });
   }
 
@@ -154,6 +173,7 @@ async function handle(request: Request): Promise<Response> {
   /** A failed read is remembered on the room so the phone can say why nothing is arriving. */
   const failRead = (status: number, message: string) => {
     update(roomId, now, (room) => ({ error: { message, at: Date.now() }, reads: [...room.reads, { at: Date.now(), error: message }].slice(-READS_MAX) }));
+    record({ t: "fail", room: roomId, error: message });
     return fail(status, message);
   };
   if (url.searchParams.has("reset")) {
@@ -169,6 +189,7 @@ async function handle(request: Request): Promise<Response> {
       const session = sessionReducer(room.session, action);
       return { session, matchId: session.matchId, called: session.matchId === room.matchId ? room.called : new Set<number>(), version: room.version + 1 };
     });
+    record({ t: "action", room: roomId, action });
     return json(200, { ok: true, version: after.version });
   }
   if (url.searchParams.has("restore")) {
@@ -228,6 +249,14 @@ async function handle(request: Request): Promise<Response> {
       const read = { screen: obs.screen, title: answer.title, body: answer.body };
       const entry: ReadLog = { at: readAt, screen: obs.screen, clock: obs.gameTimeSec, gold: obs.myGold, allies: obs.allies.length, enemies: obs.enemies.length, unknown: obs.unknown.slice(0, 6), ms: readAt - now, model: reply.model };
       return { session, called, matchId: session.matchId, at: readAt, version: room.version + 1, error: undefined, read, reads: [...room.reads, entry].slice(-READS_MAX) };
+    });
+    const after = rooms.get(roomId)?.session;
+    record({
+      t: "read", room: roomId, screen: obs.screen, clock: obs.gameTimeSec, gold: obs.myGold, ms: readAt - now, model: reply.model,
+      me: obs.meHeroId ? heroName(obs.meHeroId) : undefined, allies: rowsFor(obs.allies), enemies: rowsFor(obs.enemies),
+      myItems: obs.myItems, shop: obs.shop, unknown: obs.unknown,
+      // What the coach concluded from it.
+      spent: after?.spent, owned: after?.owned, seen: after?.seenItems, said: answer?.title,
     });
     return json(200, { ...answer, stop: false, model: reply.model, unknown: obs.unknown });
   } catch (err) {
