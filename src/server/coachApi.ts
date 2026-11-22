@@ -27,8 +27,20 @@ interface Room {
   matchId: number;
   /** When the last screenshot was read. */
   at: number;
-  /** Bumped on every read so a follower knows there is something new. */
+  /** Bumped on every change so a follower knows there is something new. */
   version: number;
+  /** Why the most recent screenshot could not be read — shown on the following device. */
+  error?: { message: string; at: number };
+}
+
+const blankRoom = (now: number): Room => ({ session: EMPTY_SESSION, called: new Set<number>(), matchId: 0, at: now, version: 0 });
+
+/** Apply a change to the room as it is *now*. Reads take seconds; never write back a stale copy. */
+function update(roomId: string, now: number, change: (room: Room) => Partial<Room>): Room {
+  const current = rooms.get(roomId) ?? blankRoom(now);
+  const next = { ...current, ...change(current) };
+  rooms.set(roomId, next);
+  return next;
 }
 const rooms = new Map<string, Room>();
 const demo = demoVision();
@@ -85,8 +97,9 @@ async function handle(request: Request): Promise<Response> {
   if (request.method === "GET" && roomParam) {
     const room = rooms.get(roomParam);
     if (!room) return json(200, { ok: true, version: 0 });
-    if (url.searchParams.get("v") === String(room.version)) return json(200, { ok: true, version: room.version, unchanged: true, at: room.at });
-    return json(200, { ok: true, version: room.version, at: room.at, session: room.session });
+    const info = { ok: true, version: room.version, at: room.at, error: room.error?.message, errorAt: room.error?.at };
+    if (url.searchParams.get("v") === String(room.version)) return json(200, { ...info, unchanged: true });
+    return json(200, { ...info, session: room.session });
   }
   if (request.method === "GET") {
     // Health check that exercises the real engine, so "it's deployed" also means "it can think".
@@ -100,7 +113,11 @@ async function handle(request: Request): Promise<Response> {
   const now = Date.now();
   for (const [id, room] of rooms) if (now - room.at > ROOM_TTL_MS) rooms.delete(id);
   const roomId = roomParam || "DEFAULT";
-  const room: Room = rooms.get(roomId) ?? { session: EMPTY_SESSION, called: new Set<number>(), matchId: 0, at: now, version: 0 };
+  /** A failed read is remembered on the room so the phone can say why nothing is arriving. */
+  const failRead = (status: number, message: string) => {
+    update(roomId, now, () => ({ error: { message, at: Date.now() } }));
+    return fail(status, message);
+  };
   if (url.searchParams.has("reset")) {
     rooms.delete(roomId);
     return json(200, { title: "New match", body: "Cleared.", say: "Ready for a new match." });
@@ -110,24 +127,24 @@ async function handle(request: Request): Promise<Response> {
     const body = (await request.json().catch(() => ({}))) as { action?: SessionAction };
     const action = body.action;
     if (!action || !CONTROLLER_ACTIONS.has(action.type)) return json(400, { ok: false, error: "Unknown action." });
-    const session = sessionReducer(room.session, action);
-    const called = session.matchId === room.matchId ? room.called : new Set<number>();
-    rooms.set(roomId, { session, called, matchId: session.matchId, at: room.at, version: room.version + 1 });
-    return json(200, { ok: true, version: room.version + 1 });
+    const after = update(roomId, now, (room) => {
+      const session = sessionReducer(room.session, action);
+      return { session, matchId: session.matchId, called: session.matchId === room.matchId ? room.called : new Set<number>(), version: room.version + 1 };
+    });
+    return json(200, { ok: true, version: after.version });
   }
   if (url.searchParams.has("restore")) {
     // This instance has no memory of the room (it restarted); a follower hands back its copy.
-    if (!rooms.has(roomId)) {
-      const body = (await request.json().catch(() => ({}))) as { session?: Session };
-      if (body.session && typeof body.session === "object") {
-        const session = { ...EMPTY_SESSION, ...body.session, log: [] };
-        rooms.set(roomId, { session, called: new Set(), matchId: session.matchId, at: now, version: 1 });
-      }
+    const body = (await request.json().catch(() => ({}))) as { session?: Session };
+    if (!rooms.get(roomId)?.version && body.session && typeof body.session === "object") {
+      const session = { ...EMPTY_SESSION, ...body.session, log: [] };
+      update(roomId, now, () => ({ session, matchId: session.matchId, version: 1 }));
     }
     return json(200, { ok: true, version: rooms.get(roomId)?.version ?? 0 });
   }
 
-  if (stageOf(room.session) === "done") {
+  const paused = () => stageOf(rooms.get(roomId)?.session ?? EMPTY_SESSION) === "done";
+  if (paused()) {
     // "Match over" on the phone pauses reading, so an auto-repeating shortcut stops spending the key.
     const say = "Paused. Tap Hero selection on your phone when the next match starts.";
     return json(200, { title: "Paused", body: say, say: "", stop: true, screen: "other" });
@@ -137,37 +154,44 @@ async function handle(request: Request): Promise<Response> {
   try {
     bytes = await readImage(request);
   } catch {
-    return fail(400, "I couldn't read that upload.");
+    return failRead(400, "I couldn't read that upload.");
   }
   let vision: VisionCall;
   try {
     vision = pickVision(request);
   } catch (err) {
-    return fail(400, err instanceof Error ? err.message : "Missing API key.");
+    return failRead(400, err instanceof Error ? err.message : "Missing API key.");
   }
   const mediaType = sniff(bytes);
   if (vision !== demo) {
-    if (!mediaType) return fail(400, "That doesn't look like a screenshot. Send a JPEG or PNG image.");
-    if (bytes.length > MAX_BYTES) return fail(413, "The screenshot is too large. Add Resize Image and Convert to JPEG steps to the shortcut.");
+    if (!mediaType) return failRead(400, "That doesn't look like a screenshot. In the shortcut, set Request Body to File and choose the converted image.");
+    if (bytes.length > MAX_BYTES) return failRead(413, "The screenshot is too large. Add Resize Image and Convert to JPEG steps to the shortcut.");
   }
 
   try {
-    const s = room.session;
+    const before = rooms.get(roomId)?.session ?? EMPTY_SESSION;
     const reply = await vision(
       { base64: Buffer.from(bytes).toString("base64"), mediaType: mediaType ?? "image/jpeg" },
-      { stage: stageOf(s), myHeroId: s.myHeroId, allies: s.allies, enemies: s.enemies },
+      { stage: stageOf(before), myHeroId: before.myHeroId, allies: before.allies, enemies: before.enemies },
     );
     const obs = normalizeObservation(reply.raw);
-    const session = sessionReducer(s, { type: "observe", obs, now });
-    // A new match forgets which fed enemies were already called out.
-    const called = session.matchId === room.matchId ? room.called : new Set<number>();
-    const answer = coachReply(session, obs, called, url.origin);
-    rooms.set(roomId, { session, called, matchId: session.matchId, at: now, version: room.version + 1 });
+    // The read took seconds. Whatever the phone did meanwhile (bought an item, ended the match)
+    // must survive, so apply the observation to the room as it is now, not as it was.
+    if (paused()) return json(200, { title: "Paused", body: "", say: "", stop: true, screen: obs.screen });
+    const readAt = Date.now();
+    let answer: ReturnType<typeof coachReply> | undefined;
+    update(roomId, readAt, (room) => {
+      const session = sessionReducer(room.session, { type: "observe", obs, now: readAt });
+      // A new match forgets which fed enemies were already called out.
+      const called = session.matchId === room.matchId ? room.called : new Set<number>();
+      answer = coachReply(session, obs, called, url.origin);
+      return { session, called, matchId: session.matchId, at: readAt, version: room.version + 1, error: undefined };
+    });
     return json(200, { ...answer, stop: false, model: reply.model, unknown: obs.unknown });
   } catch (err) {
     const message = err instanceof VisionError ? err.message : "Something went wrong reading the screen.";
     const status = err instanceof VisionError && (err.kind === "auth" || err.kind === "config") ? 401 : 502;
-    return fail(status, message);
+    return failRead(status, message);
   }
 }
 

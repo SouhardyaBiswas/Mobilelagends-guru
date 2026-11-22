@@ -8,7 +8,7 @@ A coach for Mobile Legends: Bang Bang, built for a new player. It tells you, in 
 
 Every enemy gets a card with the skills to recognise (real names and descriptions from the game's own data) and how to play against them.
 
-> **Status:** the advice engine, guide, pictures, voice and the screenshot endpoint are tested (47 unit tests, 34 scripted browser checks). Reading *real* screenshots with a live vision model has **not** been run yet — see [What is and isn't verified](#what-is-and-isnt-verified).
+> **Status:** the advice engine, guide, pictures, voice and the screenshot endpoint are tested (53 unit tests, 34 scripted browser checks). Reading *real* screenshots with a live vision model has **not** been run yet — see [What is and isn't verified](#what-is-and-isnt-verified).
 
 ## iPad plays, phone coaches (no laptop)
 
@@ -50,6 +50,10 @@ On the site open **Settings → iPad plays, phone coaches**. It shows your room 
 
 The stage moves on by itself as the screenshots change; the buttons are there for when it guesses wrong.
 
+**First run:** build the shortcut without *Repeat* and *Wait*, open the scoreboard in a match and run it once with the phone watching. That proves the key, the server and the read in one step. If nothing arrives, the bar at the top of the phone says why (wrong key, quota, wrong upload). Then add *Repeat* and *Wait*.
+
+**Hero selection:** the coach can only suggest picks once enemy heroes are actually shown. In modes where the enemy side stays hidden ("Player 1–5") until the loading screen, advice starts at the loading screen.
+
 **If the repeating shortcut stops by itself:** iPadOS decides how long a shortcut may keep running behind a game, and that has only been reasoned about, not tried. If it stops, remove *Repeat* and *Wait*, assign the four-action shortcut to an AssistiveTouch double-tap (Settings → Accessibility → Touch → AssistiveTouch → Custom Actions), and double-tap when you open the scoreboard. One double-tap takes and sends the screenshot; nothing is shared by hand.
 
 ### What an iPad cannot do
@@ -88,10 +92,10 @@ The stage moves on by itself as the screenshots change; the buttons are there fo
 ## What is and isn't verified
 
 **Verified here**
-- 47 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, catalog and picture coverage, and session handling.
+- 53 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, catalog and picture coverage, and session handling.
 - Tests transcribed by hand from real match screenshots: one scoreboard yields the hero, both teams, gold and inventory; the shop yields the in-game build; all eight shop prices match the catalog at the emblem's 95%.
 - 34 scripted browser checks in demo mode: the single-device flow, and the two-device flow with a simulated iPad posting screenshots while a phone-sized page follows, speaks, sends purchases back and switches stages.
-- The screenshot endpoint, run locally: health check, error answers, and a scripted match.
+- The screenshot endpoint, run locally: health check, error answers, a scripted match, and the cases that matter with two devices — a tap on the phone landing while a screenshot is still being read, ending the match mid-read, and failed reads being reported to the phone.
 
 **Not verified**
 - **A real vision model reading a real screenshot.** No API key was available while building.

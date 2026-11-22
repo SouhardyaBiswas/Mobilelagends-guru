@@ -514,6 +514,24 @@ describe("a real match, from the player's screenshots", () => {
     expect(plan(s).next).toMatchObject({ action: "save", item: { id: "windtalker" }, goldNeeded: 1786 - 763 });
   });
 
+  it("lets the scoreboard's printed names overrule guesses made during hero selection", () => {
+    // Draft slots are bare portraits: suppose the read got the player's hero and two enemies wrong.
+    const draft = { screen: "draft", gameTime: "", myGold: -1, allies: [row("Angela", -1, -1, -1, -1, [], true), row("Layla", -1, -1, -1, -1)], enemies: [row("Gusion", -1, -1, -1, -1), row("Karrie", -1, -1, -1, -1), row("Estes", -1, -1, -1, -1)], myItems: [], recommended: [], spare: [], tip: "" };
+    let s = observe(EMPTY_SESSION, draft);
+    expect(s.myHeroId).toBe(H("Angela").id); // wrong, and Angela is really an enemy
+    s = observe(s, scoreboard("01:49", 1143, row("Obsidia", 3, 0, 0, 1380, ["Boots"], true), [753, 751, 765, 795, 615]));
+    expect(s.myHeroId).toBe(H("Obsidia").id);
+    expect(s.enemies).toEqual(ids("Angela", "Minotaur", "Rafaela", "Akai", "Bane"));
+    expect(s.allies).toEqual(ids("Freya", "Xavier", "Uranus", "Franco"));
+    expect(s.gold).toBe(1143);
+    // A mid-match frame mistaken for the draft screen (same heroes) changes nothing.
+    const again = observe(s, { ...draft, allies: [row("Obsidia", -1, -1, -1, -1, [], true)], enemies: [row("Angela", -1, -1, -1, -1), row("Minotaur", -1, -1, -1, -1)] });
+    expect(again.enemies).toEqual(s.enemies);
+    expect(again.myHeroId).toBe(H("Obsidia").id);
+    expect(again.owned).toEqual(s.owned);
+    expect(again.matchId).toBe(s.matchId);
+  });
+
   it("answers the iPad shortcut with a banner, a spoken line and a picture", () => {
     const origin = "https://coach.example";
     const board = normalizeObservation(scoreboard("01:49", 1143, row("Obsidia", 3, 0, 0, 1380, ["Boots"], true), [753, 751, 765, 795, 615]));

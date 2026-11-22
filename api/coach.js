@@ -1835,7 +1835,7 @@ function tidyOwned(owned) {
 	const builtFrom = new Set([...full].map((id) => itemById(id)?.component).filter((c) => !!c).map((c) => componentId(c.name)));
 	return uniq(owned).filter((id) => !(id.startsWith("comp:") && builtFrom.has(id)));
 }
-/** Merge a roster reading. Loading/draft screens print hero names, so they replace; portraits only fill gaps. */
+/** Merge a roster reading. Screens that print hero names replace what we had; portrait-only reads just fill gaps. */
 function mergeRoster(current, seen, authoritative, exclude) {
 	const clean = seen.filter((id) => !exclude.includes(id));
 	if (authoritative && clean.length >= 3) return uniq(clean).slice(0, 5);
@@ -1857,6 +1857,7 @@ function learnPriceFactor(entries) {
 * A flipped read would make the coach itemise against the user's own team.
 */
 function orientObservation(obs, s) {
+	if (obs.meHeroId !== void 0 && (obs.screen === "scoreboard" || obs.screen === "loading")) return obs;
 	const seenAllies = obs.allies.map((p) => p.heroId);
 	const seenEnemies = obs.enemies.map((p) => p.heroId);
 	const me = s.myHeroId;
@@ -1912,14 +1913,14 @@ function applyObservation(s0, obs0, now, costUsd = 0) {
 		costUsd: s.costUsd + costUsd,
 		tip: obs.tip
 	};
-	const textScreen = obs.screen === "loading" || obs.screen === "draft";
-	if (textScreen || obs.screen === "scoreboard" || obs.screen === "post_game") {
+	const printed = obs.screen === "scoreboard" || obs.screen === "loading" || obs.screen === "post_game";
+	if (printed || obs.screen === "draft") {
 		const seenAllies = obs.allies.map((p) => p.heroId);
 		const seenEnemies = obs.enemies.map((p) => p.heroId);
-		if (!next.myHeroId && obs.meHeroId) next.myHeroId = obs.meHeroId;
+		if (obs.meHeroId && (printed || !next.myHeroId)) next.myHeroId = obs.meHeroId;
 		const me = next.myHeroId;
-		next.enemies = mergeRoster(s.enemies, seenEnemies, textScreen, me ? [me] : []);
-		next.allies = mergeRoster(s.allies, seenAllies.filter((id) => id !== me), textScreen, [...next.enemies, ...me ? [me] : []]);
+		next.enemies = mergeRoster(s.enemies, seenEnemies, printed, me ? [me] : []);
+		next.allies = mergeRoster(s.allies, seenAllies.filter((id) => id !== me), printed, [...next.enemies, ...me ? [me] : []]);
 		if (!next.lane && me) next.lane = heroById(me)?.lanes[0];
 	}
 	if (obs.screen === "scoreboard") {
@@ -82774,6 +82775,23 @@ var DEFAULT_MODEL = {
 	gemini: "gemini-3.8-flash",
 	claude: "claude-opus-5-5"
 };
+var blankRoom = (now) => ({
+	session: EMPTY_SESSION,
+	called: /* @__PURE__ */ new Set(),
+	matchId: 0,
+	at: now,
+	version: 0
+});
+/** Apply a change to the room as it is *now*. Reads take seconds; never write back a stale copy. */
+function update(roomId, now, change) {
+	const current = rooms.get(roomId) ?? blankRoom(now);
+	const next = {
+		...current,
+		...change(current)
+	};
+	rooms.set(roomId, next);
+	return next;
+}
 var rooms = /* @__PURE__ */ new Map();
 var demo = demoVision();
 var json = (status, body) => new Response(JSON.stringify(body), {
@@ -82835,16 +82853,19 @@ async function handle(request) {
 			ok: true,
 			version: 0
 		});
-		if (url.searchParams.get("v") === String(room.version)) return json(200, {
-			ok: true,
-			version: room.version,
-			unchanged: true,
-			at: room.at
-		});
-		return json(200, {
+		const info = {
 			ok: true,
 			version: room.version,
 			at: room.at,
+			error: room.error?.message,
+			errorAt: room.error?.at
+		};
+		if (url.searchParams.get("v") === String(room.version)) return json(200, {
+			...info,
+			unchanged: true
+		});
+		return json(200, {
+			...info,
 			session: room.session
 		});
 	}
@@ -82866,12 +82887,13 @@ async function handle(request) {
 	const now = Date.now();
 	for (const [id, room] of rooms) if (now - room.at > ROOM_TTL_MS) rooms.delete(id);
 	const roomId = roomParam || "DEFAULT";
-	const room = rooms.get(roomId) ?? {
-		session: EMPTY_SESSION,
-		called: /* @__PURE__ */ new Set(),
-		matchId: 0,
-		at: now,
-		version: 0
+	/** A failed read is remembered on the room so the phone can say why nothing is arriving. */
+	const failRead = (status, message) => {
+		update(roomId, now, () => ({ error: {
+			message,
+			at: Date.now()
+		} }));
+		return fail(status, message);
 	};
 	if (url.searchParams.has("reset")) {
 		rooms.delete(roomId);
@@ -82887,44 +82909,40 @@ async function handle(request) {
 			ok: false,
 			error: "Unknown action."
 		});
-		const session = sessionReducer(room.session, action);
-		const called = session.matchId === room.matchId ? room.called : /* @__PURE__ */ new Set();
-		rooms.set(roomId, {
-			session,
-			called,
-			matchId: session.matchId,
-			at: room.at,
-			version: room.version + 1
-		});
 		return json(200, {
 			ok: true,
-			version: room.version + 1
+			version: update(roomId, now, (room) => {
+				const session = sessionReducer(room.session, action);
+				return {
+					session,
+					matchId: session.matchId,
+					called: session.matchId === room.matchId ? room.called : /* @__PURE__ */ new Set(),
+					version: room.version + 1
+				};
+			}).version
 		});
 	}
 	if (url.searchParams.has("restore")) {
-		if (!rooms.has(roomId)) {
-			const body = await request.json().catch(() => ({}));
-			if (body.session && typeof body.session === "object") {
-				const session = {
-					...EMPTY_SESSION,
-					...body.session,
-					log: []
-				};
-				rooms.set(roomId, {
-					session,
-					called: /* @__PURE__ */ new Set(),
-					matchId: session.matchId,
-					at: now,
-					version: 1
-				});
-			}
+		const body = await request.json().catch(() => ({}));
+		if (!rooms.get(roomId)?.version && body.session && typeof body.session === "object") {
+			const session = {
+				...EMPTY_SESSION,
+				...body.session,
+				log: []
+			};
+			update(roomId, now, () => ({
+				session,
+				matchId: session.matchId,
+				version: 1
+			}));
 		}
 		return json(200, {
 			ok: true,
 			version: rooms.get(roomId)?.version ?? 0
 		});
 	}
-	if (stageOf(room.session) === "done") return json(200, {
+	const paused = () => stageOf(rooms.get(roomId)?.session ?? EMPTY_SESSION) === "done";
+	if (paused()) return json(200, {
 		title: "Paused",
 		body: "Paused. Tap Hero selection on your phone when the next match starts.",
 		say: "",
@@ -82935,44 +82953,56 @@ async function handle(request) {
 	try {
 		bytes = await readImage(request);
 	} catch {
-		return fail(400, "I couldn't read that upload.");
+		return failRead(400, "I couldn't read that upload.");
 	}
 	let vision;
 	try {
 		vision = pickVision(request);
 	} catch (err) {
-		return fail(400, err instanceof Error ? err.message : "Missing API key.");
+		return failRead(400, err instanceof Error ? err.message : "Missing API key.");
 	}
 	const mediaType = sniff(bytes);
 	if (vision !== demo) {
-		if (!mediaType) return fail(400, "That doesn't look like a screenshot. Send a JPEG or PNG image.");
-		if (bytes.length > MAX_BYTES) return fail(413, "The screenshot is too large. Add Resize Image and Convert to JPEG steps to the shortcut.");
+		if (!mediaType) return failRead(400, "That doesn't look like a screenshot. In the shortcut, set Request Body to File and choose the converted image.");
+		if (bytes.length > MAX_BYTES) return failRead(413, "The screenshot is too large. Add Resize Image and Convert to JPEG steps to the shortcut.");
 	}
 	try {
-		const s = room.session;
+		const before = rooms.get(roomId)?.session ?? EMPTY_SESSION;
 		const reply = await vision({
 			base64: Buffer.from(bytes).toString("base64"),
 			mediaType: mediaType ?? "image/jpeg"
 		}, {
-			stage: stageOf(s),
-			myHeroId: s.myHeroId,
-			allies: s.allies,
-			enemies: s.enemies
+			stage: stageOf(before),
+			myHeroId: before.myHeroId,
+			allies: before.allies,
+			enemies: before.enemies
 		});
 		const obs = normalizeObservation(reply.raw);
-		const session = sessionReducer(s, {
-			type: "observe",
-			obs,
-			now
+		if (paused()) return json(200, {
+			title: "Paused",
+			body: "",
+			say: "",
+			stop: true,
+			screen: obs.screen
 		});
-		const called = session.matchId === room.matchId ? room.called : /* @__PURE__ */ new Set();
-		const answer = coachReply(session, obs, called, url.origin);
-		rooms.set(roomId, {
-			session,
-			called,
-			matchId: session.matchId,
-			at: now,
-			version: room.version + 1
+		const readAt = Date.now();
+		let answer;
+		update(roomId, readAt, (room) => {
+			const session = sessionReducer(room.session, {
+				type: "observe",
+				obs,
+				now: readAt
+			});
+			const called = session.matchId === room.matchId ? room.called : /* @__PURE__ */ new Set();
+			answer = coachReply(session, obs, called, url.origin);
+			return {
+				session,
+				called,
+				matchId: session.matchId,
+				at: readAt,
+				version: room.version + 1,
+				error: void 0
+			};
 		});
 		return json(200, {
 			...answer,
@@ -82982,7 +83012,7 @@ async function handle(request) {
 		});
 	} catch (err) {
 		const message = err instanceof VisionError ? err.message : "Something went wrong reading the screen.";
-		return fail(err instanceof VisionError && (err.kind === "auth" || err.kind === "config") ? 401 : 502, message);
+		return failRead(err instanceof VisionError && (err.kind === "auth" || err.kind === "config") ? 401 : 502, message);
 	}
 }
 var coachApi_default = { fetch: handle };

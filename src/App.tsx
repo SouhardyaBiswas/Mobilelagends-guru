@@ -109,9 +109,14 @@ function Shell() {
       </header>
 
       {room && (
-        <div className={`roombar ${room.error ? "bad" : room.version ? "ok" : ""}`}>
+        <div className={`roombar ${room.error || room.readError ? "bad" : room.version ? "ok" : ""}`}>
           📡 Following room <strong>{settings.sync.room}</strong> —{" "}
-          {room.error ?? (room.version ? `last screenshot read ${agoText(now, room.lastReadAt)}` : "waiting for the first screenshot from your iPad")}
+          {room.error ??
+            (room.readError
+              ? `the last screenshot could not be read: ${room.readError}`
+              : room.lastReadAt
+                ? `last screenshot read ${agoText(now, room.lastReadAt)}`
+                : "waiting for the first screenshot from your iPad")}
           {!settings.speech.enabled && " · voice is muted"}
           <div className="stages" role="group" aria-label="Match stage">
             {(["draft", "loading", "live", "done"] as const).map((st) => (

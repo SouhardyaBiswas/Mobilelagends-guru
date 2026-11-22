@@ -102,7 +102,7 @@ function tidyOwned(owned: string[]): string[] {
   return uniq(owned).filter((id) => !(id.startsWith("comp:") && builtFrom.has(id)));
 }
 
-/** Merge a roster reading. Loading/draft screens print hero names, so they replace; portraits only fill gaps. */
+/** Merge a roster reading. Screens that print hero names replace what we had; portrait-only reads just fill gaps. */
 function mergeRoster(current: number[], seen: number[], authoritative: boolean, exclude: number[]): number[] {
   const clean = seen.filter((id) => !exclude.includes(id));
   if (authoritative && clean.length >= 3) return uniq(clean).slice(0, 5);
@@ -130,6 +130,9 @@ export function learnPriceFactor(entries: ShopEntry[]): number | undefined {
  * A flipped read would make the coach itemise against the user's own team.
  */
 export function orientObservation(obs: Observation, s: Pick<Session, "myHeroId" | "allies" | "enemies">): Observation {
+  // A highlighted row on a screen that prints names already tells us which side is the player's;
+  // a hero we stored earlier (possibly a draft misread) must not overrule it.
+  if (obs.meHeroId !== undefined && (obs.screen === "scoreboard" || obs.screen === "loading")) return obs;
   const seenAllies = obs.allies.map((p) => p.heroId);
   const seenEnemies = obs.enemies.map((p) => p.heroId);
   const me = s.myHeroId;
@@ -174,16 +177,19 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
     obs = orientObservation(obs, s);
   }
   const next: Session = { ...s, calls: s.calls + 1, costUsd: s.costUsd + costUsd, tip: obs.tip };
-  const textScreen = obs.screen === "loading" || obs.screen === "draft";
-  const rosterScreen = textScreen || obs.screen === "scoreboard" || obs.screen === "post_game";
+  // The scoreboard and loading screen print every hero's name. Draft slots are bare portraits (and a
+  // hero can be previewed before it is locked), so a draft read never overrules a printed one.
+  const printed = obs.screen === "scoreboard" || obs.screen === "loading" || obs.screen === "post_game";
+  const rosterScreen = printed || obs.screen === "draft";
 
   if (rosterScreen) {
     const seenAllies = obs.allies.map((p) => p.heroId);
     const seenEnemies = obs.enemies.map((p) => p.heroId);
-    if (!next.myHeroId && obs.meHeroId) next.myHeroId = obs.meHeroId;
+    // The highlighted row on a printed screen is the truth about who the player is.
+    if (obs.meHeroId && (printed || !next.myHeroId)) next.myHeroId = obs.meHeroId;
     const me = next.myHeroId;
-    next.enemies = mergeRoster(s.enemies, seenEnemies, textScreen, me ? [me] : []);
-    next.allies = mergeRoster(s.allies, seenAllies.filter((id) => id !== me), textScreen, [...next.enemies, ...(me ? [me] : [])]);
+    next.enemies = mergeRoster(s.enemies, seenEnemies, printed, me ? [me] : []);
+    next.allies = mergeRoster(s.allies, seenAllies.filter((id) => id !== me), printed, [...next.enemies, ...(me ? [me] : [])]);
     if (!next.lane && me) next.lane = heroById(me)?.lanes[0];
   }
 
