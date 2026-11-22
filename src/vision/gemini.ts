@@ -16,42 +16,60 @@ function toVisionError(err: unknown): VisionError {
   return new VisionError(err instanceof Error ? err.message : String(err), "api");
 }
 
+/** Tried in order when the chosen model does not exist for this key. */
+const FALLBACK_MODELS = ["gemini-flash-latest", "gemini-2.5-flash"];
+
 export function geminiVision(apiKey: string, model: string): VisionCall {
   if (!apiKey) throw new VisionError("Add your Gemini API key in Settings.", "config");
   // The key stays in this browser; requests go straight to Google.
   const ai = new GoogleGenAI({ apiKey });
+  const candidates = [...new Set([model, ...FALLBACK_MODELS].filter(Boolean))];
+  // Once a model answers, keep using it.
+  let working = 0;
+
+  const ask = async (name: string, image: Parameters<VisionCall>[0], ctx: Parameters<VisionCall>[1]): Promise<VisionReply> => {
+    const response = await ai.models.generateContent({
+      model: name,
+      contents: [
+        {
+          role: "user",
+          parts: [{ inlineData: { mimeType: image.mediaType, data: image.base64 } }, { text: userPrompt(ctx) }],
+        },
+      ],
+      config: {
+        systemInstruction: SYSTEM_PROMPT,
+        responseMimeType: "application/json",
+        responseJsonSchema: VISION_SCHEMA,
+      },
+    });
+    const text = response.text;
+    if (!text) throw new VisionError("Gemini returned no text (the request may have been blocked).", "bad-output");
+    const usage = response.usageMetadata;
+    return {
+      raw: extractJson(text),
+      model: response.modelVersion ?? name,
+      usage: usage
+        ? {
+            inputTokens: usage.promptTokenCount ?? 0,
+            outputTokens: (usage.candidatesTokenCount ?? 0) + (usage.thoughtsTokenCount ?? 0),
+          }
+        : undefined,
+    };
+  };
 
   return async (image, ctx): Promise<VisionReply> => {
-    try {
-      const response = await ai.models.generateContent({
-        model,
-        contents: [
-          {
-            role: "user",
-            parts: [{ inlineData: { mimeType: image.mediaType, data: image.base64 } }, { text: userPrompt(ctx) }],
-          },
-        ],
-        config: {
-          systemInstruction: SYSTEM_PROMPT,
-          responseMimeType: "application/json",
-          responseJsonSchema: VISION_SCHEMA,
-        },
-      });
-      const text = response.text;
-      if (!text) throw new VisionError("Gemini returned no text (the request may have been blocked).", "bad-output");
-      const usage = response.usageMetadata;
-      return {
-        raw: extractJson(text),
-        model: response.modelVersion ?? model,
-        usage: usage
-          ? {
-              inputTokens: usage.promptTokenCount ?? 0,
-              outputTokens: (usage.candidatesTokenCount ?? 0) + (usage.thoughtsTokenCount ?? 0),
-            }
-          : undefined,
-      };
-    } catch (err) {
-      throw toVisionError(err);
+    let lastError: VisionError | undefined;
+    for (let i = working; i < candidates.length; i++) {
+      try {
+        const reply = await ask(candidates[i]!, image, ctx);
+        working = i;
+        return reply;
+      } catch (err) {
+        lastError = toVisionError(err);
+        // Only "that model does not exist" is worth retrying with another name.
+        if (lastError.kind !== "config") throw lastError;
+      }
     }
+    throw lastError ?? new VisionError("No Gemini model answered.", "api");
   };
 }

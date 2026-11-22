@@ -38324,7 +38324,7 @@ var VisionError = class extends Error {
 // src/vision/claude.ts
 init_sdk();
 /** Models that accept the server-side refusal fallback (`fallbacks: "default"`). */
-var FALLBACK_MODELS = /* @__PURE__ */ new Set([
+var FALLBACK_MODELS$1 = /* @__PURE__ */ new Set([
 	"claude-fable-5-2",
 	"claude-fable-5-1",
 	"claude-opus-5-5",
@@ -38381,7 +38381,7 @@ function claudeVision(apiKey, model) {
 			}]
 		};
 		try {
-			const response = FALLBACK_MODELS.has(model) ? await client.beta.messages.create({
+			const response = FALLBACK_MODELS$1.has(model) ? await client.beta.messages.create({
 				...common,
 				betas: [FALLBACK_BETA],
 				fallbacks: "default"
@@ -82710,40 +82710,52 @@ function toVisionError(err) {
 	if (err instanceof TypeError) return new VisionError("Could not reach Gemini. Check your connection.", "network");
 	return new VisionError(err instanceof Error ? err.message : String(err), "api");
 }
+/** Tried in order when the chosen model does not exist for this key. */
+var FALLBACK_MODELS = ["gemini-flash-latest", "gemini-2.5-flash"];
 function geminiVision(apiKey, model) {
 	if (!apiKey) throw new VisionError("Add your Gemini API key in Settings.", "config");
 	const ai = new GoogleGenAI({ apiKey });
+	const candidates = [...new Set([model, ...FALLBACK_MODELS].filter(Boolean))];
+	let working = 0;
+	const ask = async (name, image, ctx) => {
+		const response = await ai.models.generateContent({
+			model: name,
+			contents: [{
+				role: "user",
+				parts: [{ inlineData: {
+					mimeType: image.mediaType,
+					data: image.base64
+				} }, { text: userPrompt(ctx) }]
+			}],
+			config: {
+				systemInstruction: SYSTEM_PROMPT,
+				responseMimeType: "application/json",
+				responseJsonSchema: VISION_SCHEMA
+			}
+		});
+		const text = response.text;
+		if (!text) throw new VisionError("Gemini returned no text (the request may have been blocked).", "bad-output");
+		const usage = response.usageMetadata;
+		return {
+			raw: extractJson(text),
+			model: response.modelVersion ?? name,
+			usage: usage ? {
+				inputTokens: usage.promptTokenCount ?? 0,
+				outputTokens: (usage.candidatesTokenCount ?? 0) + (usage.thoughtsTokenCount ?? 0)
+			} : void 0
+		};
+	};
 	return async (image, ctx) => {
-		try {
-			const response = await ai.models.generateContent({
-				model,
-				contents: [{
-					role: "user",
-					parts: [{ inlineData: {
-						mimeType: image.mediaType,
-						data: image.base64
-					} }, { text: userPrompt(ctx) }]
-				}],
-				config: {
-					systemInstruction: SYSTEM_PROMPT,
-					responseMimeType: "application/json",
-					responseJsonSchema: VISION_SCHEMA
-				}
-			});
-			const text = response.text;
-			if (!text) throw new VisionError("Gemini returned no text (the request may have been blocked).", "bad-output");
-			const usage = response.usageMetadata;
-			return {
-				raw: extractJson(text),
-				model: response.modelVersion ?? model,
-				usage: usage ? {
-					inputTokens: usage.promptTokenCount ?? 0,
-					outputTokens: (usage.candidatesTokenCount ?? 0) + (usage.thoughtsTokenCount ?? 0)
-				} : void 0
-			};
+		let lastError;
+		for (let i = working; i < candidates.length; i++) try {
+			const reply = await ask(candidates[i], image, ctx);
+			working = i;
+			return reply;
 		} catch (err) {
-			throw toVisionError(err);
+			lastError = toVisionError(err);
+			if (lastError.kind !== "config") throw lastError;
 		}
+		throw lastError ?? new VisionError("No Gemini model answered.", "api");
 	};
 }
 // src/server/coachApi.ts
