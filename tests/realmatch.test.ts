@@ -117,6 +117,18 @@ describe("hero selection, as the real draft screen shows it", () => {
     expect(answer.title).not.toMatch(/Beatrix|Bruno/);
   });
 
+  it("does not send the player to the scoreboard during hero selection", () => {
+    // Logged at 11:48:51 in room SOUH77: a non-game screenshot in hero selection answered
+    // "I can't see which hero is yours yet. Open the scoreboard and tap again."
+    const other = normalizeObservation(raw("other"));
+    const inDraft = reply({ ...EMPTY_SESSION, stage: "draft" }, other);
+    expect(inDraft.title).toBe("Not the hero selection screen");
+    expect(inDraft.say).not.toMatch(/scoreboard/);
+    expect(reply({ ...EMPTY_SESSION, stage: "loading" }, other).say).not.toMatch(/scoreboard/);
+    // In the match itself the scoreboard is still the right answer.
+    expect(reply({ ...EMPTY_SESSION, stage: "live", phase: "live" }, normalizeObservation(raw("gameplay"))).say).toMatch(/scoreboard/);
+  });
+
   it("says something useful in the draft before the enemy has picked", () => {
     const empty = reply({ ...EMPTY_SESSION, stage: "draft" }, normalizeObservation(raw("draft")));
     expect(empty.title).toBe("Hero selection");
@@ -240,6 +252,8 @@ describe("the SOUH77 match, from the server's logs", () => {
     expect(notes[1]).toBe("Two kills, will ambush from bushes; stay near turret.");
     expect(notes[2]).toBe("Dives with his ultimate; save your escape spell until he jumps in.");
     expect(withoutShopping("Long-range beams poke you; dodge sideways, stay near turret, consider magic defense.")).toBe("Long-range beams poke you; dodge sideways, stay near turret.");
+    // From the next match (Bruno), told to a marksman: a tank's item.
+    expect(withoutShopping("Snipes you from range with crits; stay behind cover, buy armor like Antique Cuirass.")).toBe("Snipes you from range with crits; stay behind cover.");
   });
 });
 

@@ -47,6 +47,17 @@ export function coachReply(session: Session, obs: Observation, called: Set<numbe
       const say = "No enemy picks yet. Take the hero you play best; I'll suggest counters once the enemy picks show.";
       return { title: "Hero selection", body: say, say, screen };
     }
+    // Only when the player said where they are, and the screenshot is not from inside a match (a shop or
+    // scoreboard means the match is on, and the scoreboard is then the right thing to ask for).
+    const stage = session.stage;
+    if ((stage === "draft" || stage === "loading") && (screen === "other" || screen === "post_game")) {
+      // Asking for the scoreboard here sent the player looking for a screen that does not exist yet.
+      const say =
+        stage === "draft"
+          ? "That screenshot didn't show hero selection. Take the next one while the picks are on screen, or tap your hero on the iPad."
+          : "That screenshot didn't show the loading screen. Take the next one while all ten heroes are showing.";
+      return { title: stage === "draft" ? "Not the hero selection screen" : "Not the loading screen", body: say, say, screen };
+    }
     const say = "I can't see which hero is yours yet. Open the scoreboard and tap again.";
     return { title: "Can't see your hero yet", body: say, say, screen };
   }

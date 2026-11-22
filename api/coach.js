@@ -25099,6 +25099,16 @@ function coachReply(session, obs, called, origin) {
 				screen
 			};
 		}
+		const stage = session.stage;
+		if ((stage === "draft" || stage === "loading") && (screen === "other" || screen === "post_game")) {
+			const say = stage === "draft" ? "That screenshot didn't show hero selection. Take the next one while the picks are on screen, or tap your hero on the iPad." : "That screenshot didn't show the loading screen. Take the next one while all ten heroes are showing.";
+			return {
+				title: stage === "draft" ? "Not the hero selection screen" : "Not the loading screen",
+				body: say,
+				say,
+				screen
+			};
+		}
 		const say = "I can't see which hero is yours yet. Open the scoreboard and tap again.";
 		return {
 			title: "Can't see your hero yet",
