@@ -15,7 +15,7 @@ const names = (ids: number[], fallback: string[]) =>
 
 export function demoVision(): VisionCall {
   let step = 0;
-  return async (_jpeg, ctx): Promise<VisionReply> => {
+  return async (_image, ctx): Promise<VisionReply> => {
     await new Promise((r) => setTimeout(r, 500));
     const allyNames = names(ctx.allies.length ? [...new Set([ctx.myHeroId ?? ctx.allies[0]!, ...ctx.allies])] : [], DEFAULT_ALLIES);
     const enemyNames = names(ctx.enemies, DEFAULT_ENEMIES);

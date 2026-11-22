@@ -1,152 +1,133 @@
 # MLBB Guru
 
-A voice coach for Mobile Legends: Bang Bang. It runs next to the game and tells you, out loud:
+A coach for Mobile Legends: Bang Bang, built for a new player. It tells you, in plain words and out loud:
 
-- **In draft** — which heroes counter the enemy picks for your lane, and why.
-- **Before the match** — battle spell, emblem and a six-item plan built against *this* enemy team.
-- **During the match** — the one thing to do with your gold right now: buy this, buy the cheap piece first, save, or sell-and-swap. It re-plans when an enemy gets fed.
+- **In draft** — which heroes are best into the enemy picks for your lane (your lane opponent counts double), and what to take if you pick first.
+- **Before the match** — battle spell, emblem, and a game plan: who is in your lane, how to play against them, who to kill first, what to watch out for.
+- **During the match** — the one thing to do with your gold right now, with the item's picture and where to find it in the shop. It re-plans when an enemy gets fed.
 
-The item logic follows how strong players itemise: a short fixed core, then answers to whoever is actually hurting you — and a cheap counter piece now rather than gold sitting in your pocket.
+Every enemy gets a card with the skills to recognise (real names and descriptions from the game's own data) and how to play against them.
 
-> **Status:** the recommendation engine, UI, voice and capture loop are tested (33 unit tests plus a scripted browser run). Reading *real* game screenshots with a live API key has **not** been tested yet — see [What is and isn't verified](#what-is-and-isnt-verified).
+> **Status:** the advice engine, guide, pictures, voice and the screenshot endpoint are tested (44 unit tests, 21 scripted browser checks). Reading *real* screenshots with a live vision model has **not** been run yet — see [What is and isn't verified](#what-is-and-isnt-verified).
 
-## Quick start
+## Use it with only an iPad (no laptop)
 
-```bash
-npm install
-npm run dev          # http://localhost:5173
-```
+### 1. Put it online — free, about a minute
 
-Open it, go to **Draft → Load a sample draft**, choose your hero, press **Start match**, then on the **Live coach** tab press **Run demo step** three times. That plays a scripted match (loading screen → early scoreboard → an enemy gets fed) with no API key, so you can hear how it behaves.
+1. Open **vercel.com/new** in Safari and sign in.
+2. Under *Import Git Repository* choose this repository and press **Deploy**. Leave every setting alone.
+3. Open the address it gives you. Add it to your Home Screen from the share menu if you like.
 
-```bash
-npm test             # unit tests
-npm run build        # static site in dist/
-npm run sync-data    # refresh heroes + matchup stats after a patch
-```
+Every later update to this repository redeploys by itself. The free Hobby plan is enough.
 
-Requires Node 20+.
+### 2. What works straight away
 
-## Using it for real
+Open the site on your **iPhone next to the iPad** (or on the iPad between matches):
 
-### On a laptop (recommended)
+- **Draft** tab → tap in the enemy heroes as they lock in → best picks, your build with pictures, and the *How to play this game* guide.
+- **Start match** → the Live coach speaks the plan and each purchase. Tap **Done** when you buy, tap an enemy **Even → Fed** when they pull ahead.
+- First check: **Settings → Test voice**. Phones only speak after you tap something, and only while the page is on screen.
 
-1. Run the game in its emulator / Google Play Games window, and open MLBB Guru in Chrome or Edge.
-2. **Settings** → pick Gemini or Claude and paste your API key.
-3. **Live coach → Share game screen** and choose the game window.
-4. Play. When you open the **scoreboard** (or the shop, draft, or loading screen), the picture holds still; the app notices, reads it, and speaks. Live gameplay never holds still, so it is ignored.
+### 3. Let it read your screenshots
 
-The app only looks at pixels you share with the browser. It does not touch the game's memory, network traffic or inputs.
+1. Get a free key: Google AI Studio → *Get API key*.
+2. **Settings → Screen reading → Gemini** → paste the key.
+3. **Live coach → Upload screenshot** and pick a scoreboard or shop screenshot from Photos.
 
-### On a tablet
+The scoreboard alone is enough: it prints every hero's name, your items, everyone's score and your gold. The shop screenshot adds the build you chose in game, which the coach then follows, at the shop's real prices.
 
-A web page cannot capture another app's screen on Android or iPadOS, so the tablet cannot watch itself. Options, best first:
+If it says the model was not found, change the model name in Settings — the default (`gemini-3.8-flash`) is the one the Google SDK documents, but it has not been called from here.
 
-| Option | How | Trade-off |
-|---|---|---|
-| Second device as camera | Open the app on a phone, **Point camera at screen**, prop it facing the tablet | Works anywhere; needs a stand and decent light |
-| Mirror to the laptop | Mirror the tablet (e.g. scrcpy for Android) and share that window | Most accurate; needs the laptop nearby |
-| Manual | Run the app in split view; tap enemies as fed, tap items as bought, type gold | No screen reading, no API cost |
-| Screenshots | Take a screenshot in game, **Upload screenshot** | Too slow mid-fight; fine between games |
+### 4. Read the game without leaving it (Shortcut)
 
-A native Android overlay (screen capture inside the tablet itself) is the real fix and is not built yet.
+Safari cannot look at another app on an iPad, and no web page can draw on top of a game. What an iPad does allow is a **Shortcut** that takes a screenshot, sends it to this site, speaks the answer and shows it as a banner at the top of the screen.
 
-### Without screen reading
+**First, a two-minute test** — it tells us whether this route works on your iPad at all. In the Shortcuts app make a shortcut with three actions:
 
-Everything except the automatic reading works with no key: counters, spell, emblem, build plan, timers and voice. Mark enemies **Fed / Behind** by tapping, tap **Done** when you buy, and type your gold for exact "buy now / save" calls.
+1. *Take Screenshot*
+2. *Show Notification* — text "Coach test", and attach the screenshot if the action offers it
+3. *Speak Text* — "Coach test, can you hear me?"
 
-## Screen reading: keys, models, cost
+Then Settings → Accessibility → Touch → AssistiveTouch → on; *Custom Actions → Double-Tap* → your shortcut. Open Mobile Legends, start any match, and double-tap the floating button. Note three things: did a banner appear at the top, did you hear the voice over the game, and does the screenshot show the game (not the Shortcuts app).
 
-Keys live in this browser's local storage and are sent only to the provider you pick. There is no server.
+**If that works**, build the real one. The exact steps and your endpoint address are in the app under **Settings → Reading the game on an iPad**, with a *Test endpoint* button:
 
-| Provider | Default model | Key from |
-|---|---|---|
-| Gemini | `gemini-3.8-flash` | Google AI Studio |
-| Claude | `claude-opus-5-5` | Anthropic Console |
+1. *Take Screenshot*
+2. *Resize Image* — width 1600
+3. *Convert Image* — JPEG
+4. *Get Contents of URL* — `https://<your-site>/api/coach`, method POST, header `x-vision-key` = your key, request body = File → the converted image
+5. *Get Dictionary Value* `say` → *Speak Text*
+6. *Get Dictionary Value* `title` and `body` → *Show Notification*
 
-Rough cost per read with Claude, from list prices (about 3k input tokens for the image and prompt, well under 1k output) — an estimate, not a measurement:
+In a match: open the scoreboard, double-tap. The reply also carries `icon`, the address of the item's picture, if you want it in the banner.
 
-| Model | Per read | Per match (~25 reads) |
-|---|---|---|
-| `claude-opus-5-5` | ~$0.03 | ~$0.70 |
-| `claude-sonnet-5-5` | ~$0.015 | ~$0.35 |
-| `claude-haiku-5-5` | under $0.001 | ~$0.02 |
+Your key travels in the request and is not stored on the site. The endpoint remembers the current match only while it stays warm; if it forgets, it asks you to open the scoreboard once.
 
-Opus is the default because item icons are small; try Haiku and keep it if it reads your screen correctly. For Gemini, check current AI Studio pricing. **Settings → Maximum reads per match** is a hard cap, and the Live tab shows a running count and cost.
+### What an iPad cannot do
 
-With Claude Opus/Sonnet, requests opt into the API's server-side fallback, so a declined request is retried on another model within the same call.
+| Wanted | Reality |
+|---|---|
+| A pop-up drawn over the game by the app | Not possible from a web page. The banner comes from the Shortcut's notification. A true floating overlay needs a native app built with a Mac. |
+| The coach watching the screen continuously | Not possible from a web page. Each read is one double-tap. |
+| iPad reads showing up live on the iPhone | Not built yet — it needs storage on the server. For now the phone is used by tapping picks in. |
 
 ## How it decides
 
-- **Counters** — for each candidate, the sum of its measured win-rate edge against every enemy pick (Moonton's ranked stats), half-weight synergy with your teammates, a small patch-strength nudge, and a bonus when the game's own hero notes name the matchup. Filtered to your lane.
-- **Threat** — each enemy's share of their team's kill pressure, from role and offense rating, multiplied by how fed they are (gold and K/D from the scoreboard, or your manual marks). That re-weights the physical/magic split and flags healing, burst, crowd control, tankiness and basic-attack reliance.
-- **Build** — boots, first core item, urgent counters, the rest of the core, other counters, then damage. Carries get at most two defensive items; tanks split resistances by the enemy's damage mix.
-- **Next step** — buy if you can afford it; otherwise a counter you *can* afford, or a cheap piece that already carries part of the effect (Dreadnaught Armor, Fury Hammer, Magic Blade…); otherwise save. With six items, it suggests a sell-swap only for a real problem.
-- **Voice** — speaks when the recommendation changes, never on a loop. Fed-enemy alerts interrupt; "save" lines never do.
+- **Counters** — each candidate's measured win-rate edge against every enemy pick (Moonton's ranked stats), lane opponent doubled, half-weight synergy with teammates, a small patch-strength nudge, plus the game's own hero notes.
+- **Threat** — each enemy's share of their team's kill pressure, raised for whoever is really ahead (at least 700 gold or 3 kills clear). That re-weights the physical/magic split and flags healing, burst, crowd control and tankiness.
+- **Build** — your in-game build if a shop screenshot was read, otherwise a short core for your hero type; then counters for this enemy team. Carries get at most two defensive items.
+- **Next step** — buy if you can afford it; otherwise an urgent counter you *can* afford, or a cheap piece that already carries part of its effect; otherwise save. Every step says where the item is: your Recommended list, a shop tab, or inside another item's build path.
+- **Guide** — skill names, cooldowns and descriptions come from synced game data, so new heroes are covered. The advice lines follow from what a kit does (crowd control, burst, healing, dashes), not from memory of the hero.
+- **Voice** — speaks when the advice changes, never on a loop.
 
 ## Data
 
 | What | Source | Refresh |
 |---|---|---|
-| 133 heroes: roles, lanes, skills, portraits | Moonton's public stats API (the one behind the official hero pages) | `npm run sync-data` |
-| ~2,900 hero-vs-hero win-rate records | Same API, all ranks, five trailing-day windows | `npm run sync-data` |
-| Items, costs, build paths | `src/data/items.ts`, hand-maintained, checked against patch 2.2.23 (Nov 2026) | Edit after big patches |
+| 133 heroes: roles, lanes, skills, portraits | Moonton's public stats API | `npm run sync-data` |
+| ~2,900 hero-vs-hero win-rate records | Same API, all ranks | `npm run sync-data` |
+| Item pictures | Mobile Legends Fandom wiki | `npm run sync-icons` |
+| Items, costs, build paths | `src/data/items.ts`, checked against patch 2.2.23 and against real shop prices | Edit after big patches |
 | Build templates, spells, emblems | `src/data/builds.ts` | Edit to taste |
-| Objective timers | `src/data/timeline.ts` | Edit if a patch moves them |
-
-Behind a proxy, run the sync as `NODE_USE_ENV_PROXY=1 npm run sync-data`.
 
 ## What is and isn't verified
 
 **Verified here**
-- Engine behaviour: 33 unit tests covering counters, threat weighting, build planning, the buy/component/save/sell flow, catalog integrity and session handling.
-- The whole app in headless Chromium: draft → plan → live coaching → demo reads → fed-enemy re-plan → spoken lines, plus a fake camera stream through the capture loop, both missing-key error paths, reload persistence and phone-width layout.
-- Hero and matchup data pulled live from Moonton's API.
+- 44 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, catalog and picture coverage, and session handling.
+- Tests transcribed by hand from real match screenshots: one scoreboard yields the hero, both teams, gold and inventory; the shop yields the in-game build; all eight shop prices match the catalog at the emblem's 95%.
+- 21 scripted browser checks in demo mode, including pictures loading and spoken lines.
+- The screenshot endpoint, run locally: health check, error answers, and a scripted match.
 
 **Not verified**
-- **Reading real screenshots.** No API key was available while building, so neither provider has been called and accuracy on a real scoreboard is unknown. Expect the loading and draft screens (hero names are printed) to read well, and small item icons on the scoreboard to be the weak spot. The app drops names it cannot match rather than guessing, and corrects flipped teams from what it already knows.
-- **Stillness thresholds** against a real game window. If the scoreboard never triggers a read, raise *Stillness sensitivity* in Settings or switch to *On a timer*.
-- **Voice in a background tab.** Desktop Chrome and Edge normally keep speaking when the tab is not focused; Android pauses pages that leave the screen.
+- **A real vision model reading a real screenshot.** No API key was available while building.
+- **The endpoint running on Vercel.** It is one self-contained file to keep that simple; *Settings → Test endpoint* confirms it once deployed.
+- **The Shortcut route on a real iPad** — hence the two-minute test above.
+- **Voice on iPhone and iPad Safari.**
 
 ## Fair-play note
 
-Moonton's terms prohibit third-party tools that give an unfair advantage, and they decide what counts. This app is a second-screen advisor: it reads what you can already see and never automates or modifies anything. That is the same category as having a build guide open, but using it in ranked is your call and your risk.
+Moonton's terms prohibit third-party tools that give an unfair advantage, and they decide what counts. This reads what you can already see and never automates or modifies anything — the same category as a build guide on a second screen — but using it in ranked is your call and your risk.
 
-## Deploy
-
-It is a static site. Screen capture and camera need HTTPS (localhost is exempt), so deploy it to use it from a tablet or phone.
+## For development
 
 ```bash
-npm run build
-npx vercel deploy --prod dist          # Vercel
-# or
-npx firebase-tools deploy --only hosting   # Firebase Hosting, with "public": "dist"
+npm install
+npm run dev        # http://localhost:5173
+npm test           # unit tests
+npm run build      # site in dist/ and the endpoint in api/coach.js
 ```
 
-## Troubleshooting
-
-| Symptom | Fix |
-|---|---|
-| No voice | Press **Voice on**, then **Settings → Test voice**. Browsers only allow speech after a click. |
-| "Share game screen" is disabled | Phones and tablets can't capture other apps. Use camera, mirroring or manual mode. |
-| Shared window is black | Share the whole screen instead of the window, or run the game windowed. |
-| Scoreboard never triggers a read | Raise *Stillness sensitivity*, or use **Read now** / *On a timer*. |
-| Wrong hero or item read | Tap to correct it. A known roster (from draft or the loading screen) makes later reads much more reliable. |
-| Coach recommends an item that no longer exists | Update `src/data/items.ts`; `npm test` checks that every build references real items. |
-| Counters look stale after a patch | `npm run sync-data` |
-
-## Layout
+Node 20+. Screen sharing (**Share game screen**) works on a laptop browser, where the app can watch a game window continuously.
 
 ```
-scripts/sync-data.mjs     pull heroes + matchups from Moonton's API
-src/data/                 generated hero data, item catalog, build templates, timers
-src/engine/               threat analysis, counter ranking, build planner, coach lines
-src/vision/               prompt, answer schema, Claude / Gemini / demo providers
-src/capture/              screen + camera frames, still-screen detector, background ticker
-src/audio/                speech queue
-src/state/                session store (persists across reloads)
-src/ui/                   Draft, Live coach, Settings
-tests/                    unit tests
+scripts/           data and picture sync
+src/data/          generated hero data, item catalog, build templates, timers
+src/engine/        threat, counters, build planner, guide, coach lines, endpoint replies
+src/vision/        prompt, answer schema, Gemini / Claude / demo readers
+src/state/         match state (shared by the app and the endpoint)
+src/server/        the screenshot endpoint, bundled to api/coach.js
+src/ui/            Draft, Live coach, Settings
+tests/             unit tests
 ```
 
-Not affiliated with or endorsed by Moonton. Hero names, portraits and statistics belong to Moonton.
+Not affiliated with or endorsed by Moonton. Hero and item names, pictures and statistics belong to Moonton.

@@ -23,7 +23,12 @@ export interface VisionReply {
   model?: string;
 }
 
-export type VisionCall = (jpegBase64: string, ctx: VisionContext) => Promise<VisionReply>;
+export interface VisionImage {
+  base64: string;
+  mediaType: "image/jpeg" | "image/png" | "image/webp";
+}
+
+export type VisionCall = (image: VisionImage, ctx: VisionContext) => Promise<VisionReply>;
 
 /** Error with a message that is safe and useful to show the player. */
 export class VisionError extends Error {

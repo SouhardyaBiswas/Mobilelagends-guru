@@ -134,6 +134,53 @@ export function SettingsTab() {
         </p>
         <button className="btn" onClick={() => dispatch({ type: "newMatch" })}>Reset current match</button>
       </section>
+      <IpadSetup />
     </div>
+  );
+}
+
+/** How to read the game from inside it on an iPad, where a web page cannot see other apps. */
+function IpadSetup() {
+  const endpoint = `${window.location.origin}/api/coach`;
+  const [check, setCheck] = useState<string>();
+  const test = async () => {
+    setCheck("Checking…");
+    try {
+      const res = await fetch(endpoint);
+      const body = (await res.json()) as { ok?: boolean; heroes?: number; sample?: string };
+      setCheck(body.ok ? `Working — ${body.heroes} heroes loaded. Sample advice: "${body.sample}"` : `Unexpected answer (HTTP ${res.status}).`);
+    } catch {
+      setCheck("Not reachable. This only works on the deployed site, not on a local preview.");
+    }
+  };
+  return (
+    <section className="panel span">
+      <h2>Reading the game on an iPad</h2>
+      <p className="hint">
+        Safari can't look at another app, so on an iPad the screenshot comes from a Shortcut instead: one tap on the floating AssistiveTouch button sends the screen here and speaks the answer. Build it once in the Shortcuts app.
+      </p>
+      <div className="field">
+        <span>Your endpoint</span>
+        <code className="endpoint">{endpoint}</code>
+      </div>
+      <div className="row wrap">
+        <button className="btn" onClick={() => void navigator.clipboard?.writeText(endpoint)}>Copy endpoint</button>
+        <button className="btn" onClick={() => void test()}>Test endpoint</button>
+      </div>
+      {check && <p className="fine">{check}</p>}
+      <ol className="steps">
+        <li><strong>Take Screenshot</strong></li>
+        <li><strong>Resize Image</strong> — width 1600, height auto</li>
+        <li><strong>Convert Image</strong> — to JPEG</li>
+        <li>
+          <strong>Get Contents of URL</strong> — the endpoint above. Method <em>POST</em>. Headers: <code>x-vision-key</code> = your Gemini (or Claude) API key. Request Body: <em>File</em> → the converted image.
+        </li>
+        <li><strong>Get Dictionary Value</strong> — key <code>say</code> → <strong>Speak Text</strong></li>
+        <li><strong>Get Dictionary Value</strong> — keys <code>title</code> and <code>body</code> → <strong>Show Notification</strong></li>
+      </ol>
+      <p className="fine">
+        Then Settings → Accessibility → Touch → AssistiveTouch → Custom Actions → Double-Tap → choose the shortcut. In a match, open the scoreboard and double-tap the floating button. To start a fresh match, add <code>?reset=1</code> to the endpoint in a second shortcut, or just open the new match's scoreboard.
+      </p>
+    </section>
   );
 }

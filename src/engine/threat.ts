@@ -74,8 +74,11 @@ export function analyzeThreat(enemies: PlayerState[]): ThreatProfile {
   const sum = (f: (h: Hero) => number) => weighted.reduce((a, e) => a + f(e.hero) * Math.min(1.6, e.fed), 0);
   const ids = (f: (h: Hero) => number, min: number) => top(weighted.map((e) => [e.hero.id, f(e.hero)]), min);
 
+  // "Fed" needs a real lead, not just a ratio: two early kills are not worth changing a build over.
+  const realLead = (p: PlayerState) =>
+    (p.gold !== undefined && avgGold !== undefined && p.gold - avgGold >= 700) || (p.kills ?? 0) - (p.deaths ?? 0) >= 3;
   const sources: ThreatSource[] = weighted
-    .map((e) => ({ heroId: e.hero.id, weight: e.w / total, fed: e.fed >= 1.35 }))
+    .map((e) => ({ heroId: e.hero.id, weight: e.w / total, fed: e.fed >= 1.35 && realLead(e.p) }))
     .sort((a, b) => b.weight - a.weight);
 
   return {

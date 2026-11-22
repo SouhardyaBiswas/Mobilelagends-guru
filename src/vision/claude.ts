@@ -25,7 +25,7 @@ export function claudeVision(apiKey: string, model: string): VisionCall {
   // dangerouslyAllowBrowser acknowledges that — fine for a personal tool, not for a shared deployment.
   const client = new Anthropic({ apiKey, dangerouslyAllowBrowser: true, maxRetries: 1, timeout: 45_000 });
 
-  return async (jpegBase64, ctx): Promise<VisionReply> => {
+  return async (image, ctx): Promise<VisionReply> => {
     const common = {
       model,
       max_tokens: 16000,
@@ -37,7 +37,7 @@ export function claudeVision(apiKey: string, model: string): VisionCall {
         {
           role: "user" as const,
           content: [
-            { type: "image" as const, source: { type: "base64" as const, media_type: "image/jpeg" as const, data: jpegBase64 } },
+            { type: "image" as const, source: { type: "base64" as const, media_type: image.mediaType, data: image.base64 } },
             { type: "text" as const, text: userPrompt(ctx) },
           ],
         },

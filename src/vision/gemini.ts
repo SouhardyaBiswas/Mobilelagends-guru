@@ -21,14 +21,14 @@ export function geminiVision(apiKey: string, model: string): VisionCall {
   // The key stays in this browser; requests go straight to Google.
   const ai = new GoogleGenAI({ apiKey });
 
-  return async (jpegBase64, ctx): Promise<VisionReply> => {
+  return async (image, ctx): Promise<VisionReply> => {
     try {
       const response = await ai.models.generateContent({
         model,
         contents: [
           {
             role: "user",
-            parts: [{ inlineData: { mimeType: "image/jpeg", data: jpegBase64 } }, { text: userPrompt(ctx) }],
+            parts: [{ inlineData: { mimeType: image.mediaType, data: image.base64 } }, { text: userPrompt(ctx) }],
           },
         ],
         config: {

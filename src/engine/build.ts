@@ -239,7 +239,7 @@ function nextStep(slots: BuildSlot[], overflow: Pick[], input: BuildInput, squis
       component: comp,
       where: where(item, comp),
       say: comp.effect ? `Buy ${comp.name} now. It ${comp.effect}, and builds into ${item.name}.` : `Buy ${comp.name} now, the first piece of ${item.name}.`,
-      detail: `${why} ${note}`,
+      detail: `${why} ${note}`.trim(),
     };
   }
   // Improvise: rather than sit on gold for an expensive item, take a counter you can afford right now —

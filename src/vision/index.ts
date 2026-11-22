@@ -2,7 +2,7 @@ import type { Observation } from "../types";
 import { demoVision } from "./demo";
 import type { VisionContext } from "./prompt";
 import { normalizeObservation } from "./schema";
-import { VisionError, type VisionCall, type VisionSettings, type VisionUsage } from "./types";
+import { VisionError, type VisionCall, type VisionImage, type VisionSettings, type VisionUsage } from "./types";
 
 export * from "./types";
 export type { VisionContext } from "./prompt";
@@ -56,10 +56,15 @@ export interface Analysis {
   ms: number;
 }
 
-export async function analyzeFrame(settings: VisionSettings, jpegBase64: string, ctx: VisionContext): Promise<Analysis> {
+export async function analyzeFrame(
+  settings: VisionSettings,
+  base64: string,
+  ctx: VisionContext,
+  mediaType: VisionImage["mediaType"] = "image/jpeg",
+): Promise<Analysis> {
   const started = performance.now();
   const call = await provider(settings);
-  const reply = await call(jpegBase64, ctx);
+  const reply = await call({ base64, mediaType }, ctx);
   let observation: Observation;
   try {
     observation = normalizeObservation(reply.raw);

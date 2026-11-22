@@ -8,6 +8,7 @@ import { eventsBetween } from "../src/data/timeline";
 import { planBuild } from "../src/engine/build";
 import { buyAdvice, fedAdvice, SpokenLog } from "../src/engine/coach";
 import { rankCounters } from "../src/engine/draft";
+import { coachReply } from "../src/engine/reply";
 import { analyzeThreat } from "../src/engine/threat";
 import { briefOn, gamePlan, guessLaneOpponent, skillsOf } from "../src/engine/tips";
 import { EMPTY_SESSION, freshSession, orientObservation, sessionReducer, type Session } from "../src/state/store";
@@ -483,6 +484,38 @@ describe("a real match, from the player's screenshots", () => {
     s = sessionReducer(s, { type: "bought", id: "warrior_boots" });
     expect(s.gold).toBe(1209 - 446);
     expect(plan(s).next).toMatchObject({ action: "save", item: { id: "windtalker" }, goldNeeded: 1786 - 763 });
+  });
+
+  it("answers the iPad shortcut with a banner, a spoken line and a picture", () => {
+    const origin = "https://coach.example";
+    const board = normalizeObservation(scoreboard("01:49", 1143, row("Obsidia", 3, 0, 0, 1380, ["Boots"], true), [753, 751, 765, 795, 615]));
+    let s = sessionReducer(EMPTY_SESSION, { type: "observe", obs: board, now: 1 });
+    const first = coachReply(s, board, new Set(), origin);
+    // Scoreboard alone is enough: hero, enemies, gold and inventory all come from it.
+    expect(first.title).toBe("Buy Swift Boots now.");
+    expect(first.icon).toBe(`${origin}/items/swift_boots.webp`);
+    expect(first.body).toMatch(/You have 1143 gold/);
+    // After the shop read, it follows the player's own build instead.
+    const shop = normalizeObservation(SHOP);
+    s = sessionReducer(s, { type: "observe", obs: shop, now: 2 });
+    const second = coachReply(s, shop, new Set(), origin);
+    expect(second.title).toBe("Buy Warrior Boots now.");
+    expect(second.icon).toBe(`${origin}/items/warrior_boots.webp`);
+    expect(second.say).toBe("Buy Warrior Boots now. From the build you chose in game.");
+  });
+
+  it("asks for the scoreboard when it cannot tell who the player is", () => {
+    const shop = normalizeObservation(SHOP);
+    const s = sessionReducer(EMPTY_SESSION, { type: "observe", obs: shop, now: 1 });
+    const reply = coachReply(s, shop, new Set(), "https://coach.example");
+    expect(reply.title).toBe("Can't see your hero yet");
+    expect(reply.say).toMatch(/Open the scoreboard/);
+    expect(reply.icon).toBeUndefined();
+  });
+
+  it("does not call a two-kill lead at three minutes 'fed'", () => {
+    const early = team("Gusion", "Karrie", "Estes").map((p, i) => (i === 0 ? { ...p, kills: 2, deaths: 0, gold: 1900 } : { ...p, kills: 0, deaths: 0, gold: 1450 }));
+    expect(analyzeThreat(early).sources.some((x) => x.fed)).toBe(false);
   });
 
   it("says which shop tab holds an item that is not in the player's list", () => {
