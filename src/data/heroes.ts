@@ -35,6 +35,7 @@ const OVERRIDES: Record<string, { damage?: DamageType; sustain?: number; archety
   Hanabi: { archetype: "mm_crit" },
   Moskov: { archetype: "mm_crit" },
   Irithel: { archetype: "mm_crit" },
+  Obsidia: { archetype: "mm_crit" },
   Alucard: { sustain: 0.9 },
   Thamuz: { sustain: 0.7 },
   Dyrroth: { sustain: 0.6 },

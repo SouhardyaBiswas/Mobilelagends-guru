@@ -1,6 +1,6 @@
 import { findHero } from "../data/heroes";
 import { findItem } from "../data/items";
-import type { Observation, PlayerState, ScreenKind } from "../types";
+import type { Observation, PlayerState, ScreenKind, ShopEntry } from "../types";
 
 /**
  * JSON Schema for the model's answer. Kept to the subset both Claude structured
@@ -151,6 +151,32 @@ export function normalizeObservation(raw: unknown): Observation {
   const meHeroId = mine.me;
   const allies = mine.rows;
   const enemies = theirs.rows.filter((e) => !allies.some((a) => a.heroId === e.heroId));
+  const itemIds = (list: unknown): string[] => {
+    const out: string[] = [];
+    for (const name of Array.isArray(list) ? list.slice(0, 6) : []) {
+      if (typeof name !== "string" || !name.trim()) continue;
+      const item = findItem(name);
+      if (item) out.push(item.id);
+      else unknown.push(name.trim());
+    }
+    return out;
+  };
+  const shopEntries = (list: unknown): ShopEntry[] => {
+    const out: ShopEntry[] = [];
+    for (const entry of Array.isArray(list) ? (list.slice(0, 12) as Array<{ name?: unknown; price?: unknown }>) : []) {
+      const name = typeof entry?.name === "string" ? entry.name.trim() : "";
+      if (!name) continue;
+      const item = findItem(name);
+      // Only finished items belong in a build list.
+      if (item && !item.id.startsWith("comp:")) out.push({ id: item.id, price: num(entry.price) });
+      else if (!item) unknown.push(name);
+    }
+    return out;
+  };
+  const recommended = shopEntries(r.recommended);
+  const spare = shopEntries(r.spare);
+  const myItems = itemIds(r.myItems);
+
   const screen = SCREENS.includes(r.screen as ScreenKind) ? (r.screen as ScreenKind) : "other";
   const tip = typeof r.tip === "string" ? r.tip.trim().slice(0, 200) : "";
 
@@ -161,6 +187,8 @@ export function normalizeObservation(raw: unknown): Observation {
     allies,
     enemies,
     meHeroId,
+    myItems: myItems.length ? myItems : undefined,
+    shop: recommended.length || spare.length ? { recommended, spare } : undefined,
     tip: tip || undefined,
     unknown: [...new Set(unknown)],
   };

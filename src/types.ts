@@ -152,6 +152,8 @@ export interface BuildSlot {
   reason: string;
   kind: "boots" | "core" | "situational" | "damage";
   owned: boolean;
+  /** What the shop actually charges, after any emblem discount. */
+  price: number;
   /** A counter that matters right now (fed enemy, heavy healing) rather than a nice-to-have. */
   urgent?: boolean;
 }
@@ -162,6 +164,8 @@ export interface NextStep {
   component?: ItemComponent;
   sell?: Item;
   goldNeeded?: number;
+  /** Where to find it in the shop, when it isn't in the player's own recommended list. */
+  where?: string;
   /** Short line for text-to-speech. */
   say: string;
   /** Longer explanation for the screen. */
@@ -185,6 +189,11 @@ export interface CounterPick {
 
 export type ScreenKind = "draft" | "loading" | "scoreboard" | "shop" | "gameplay" | "post_game" | "other";
 
+export interface ShopEntry {
+  id: string;
+  price?: number;
+}
+
 /** Normalised result of one screenshot analysis. */
 export interface Observation {
   screen: ScreenKind;
@@ -194,6 +203,10 @@ export interface Observation {
   enemies: PlayerState[];
   /** Hero the model believes is the user (highlighted row). */
   meHeroId?: number;
+  /** Items the player owns, read from the shop's inventory row or their scoreboard row. */
+  myItems?: string[];
+  /** The shop's recommended list (the player's chosen in-game build) and spare items. */
+  shop?: { recommended: ShopEntry[]; spare: ShopEntry[] };
   tip?: string;
   /** Names the model returned that matched nothing we know. */
   unknown: string[];

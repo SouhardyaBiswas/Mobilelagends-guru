@@ -7,6 +7,7 @@ import { useStore } from "../state/store";
 import type { BuildPlan, Hero, ThreatProfile } from "../types";
 import { BuildList, SpellEmblem } from "./BuildList";
 import { useCapture } from "./CaptureContext";
+import { Guide, ItemIcon } from "./Guide";
 import { HeroIcon } from "./HeroBits";
 
 type Plan = BuildPlan & { threat: ThreatProfile };
@@ -31,8 +32,12 @@ function NowCard({ plan, onRepeat }: { plan: Plan; onRepeat: () => void }) {
   return (
     <section className={`now action-${n.action}`} aria-live="polite">
       <span className="eyebrow">{ACTION_LABEL[n.action]}</span>
-      <h1>{n.say}</h1>
+      <div className="now-main">
+        {target && <ItemIcon id={n.component && target === n.component ? componentId(n.component.name) : (n.item?.id ?? "")} name={target.name} size={84} />}
+        <h1>{n.say}</h1>
+      </div>
       <p>{n.detail}</p>
+      {n.where && <p className="where">🛒 {n.where}</p>}
       <div className="row">
         {n.action !== "done" && n.action !== "save" && (
           <button className="btn primary" onClick={confirm}>
@@ -181,7 +186,7 @@ function CapturePanel() {
   );
 }
 
-export function LiveTab({ plan, hero, gameSec, onRepeat, onDraft }: { plan?: Plan; hero?: Hero; gameSec?: number; onRepeat: () => void; onDraft: () => void }) {
+export function LiveTab({ plan, hero, gameSec, laneOpponentId, onRepeat, onDraft }: { plan?: Plan; hero?: Hero; gameSec?: number; laneOpponentId?: number; onRepeat: () => void; onDraft: () => void }) {
   const { state, dispatch } = useStore();
   const s = state.session;
 
@@ -249,6 +254,10 @@ export function LiveTab({ plan, hero, gameSec, onRepeat, onDraft }: { plan?: Pla
       </div>
 
       <div className="col">
+        <section className="panel">
+          <h2>How to play this game</h2>
+          <Guide me={hero} enemies={s.enemies} threat={plan.threat} laneOpponentId={laneOpponentId} onPickLane={(id) => dispatch({ type: "setLaneOpponent", id })} />
+        </section>
         <ThreatPanel plan={plan} />
         <CapturePanel />
         <section className="panel">

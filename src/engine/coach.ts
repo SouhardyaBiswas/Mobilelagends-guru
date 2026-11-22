@@ -14,7 +14,9 @@ export function buyAdvice(plan: BuildPlan): Advice {
   // "Save N gold" changes every time gold does; the key ignores the amount so it is said once.
   const withReason = n.action === "buy" || n.action === "sell-swap" || n.action === "buy-component";
   const reason = withReason && n.detail ? ` ${firstSentence(n.detail)}` : "";
-  return { key, say: `${n.say}${n.action === "buy-component" ? "" : reason}`, detail: n.detail, kind: "buy", priority: n.action === "save" ? 0 : 1 };
+  // Say where to find it when the player is about to go looking for it.
+  const where = n.where && n.action !== "save" ? ` ${n.where}` : "";
+  return { key, say: `${n.say}${n.action === "buy-component" ? "" : reason}${where}`, detail: n.detail, kind: "buy", priority: n.action === "save" ? 0 : 1 };
 }
 
 /** Spoken once when the match starts. */

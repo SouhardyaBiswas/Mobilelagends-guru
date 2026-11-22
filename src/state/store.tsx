@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useReducer, type Dispatc
 import type { SpeechSettings } from "../audio/speech";
 import { heroById } from "../data/heroes";
 import { COMPONENTS, componentId, itemById, SELL_REFUND } from "../data/items";
-import type { Lane, Observation, PlayerState } from "../types";
+import type { Lane, Observation, PlayerState, ShopEntry } from "../types";
 import { DEFAULT_VISION, type VisionSettings } from "../vision";
 
 export interface CaptureSettings {
@@ -49,6 +49,14 @@ export interface Session {
   tip?: string;
   /** Bumped whenever a new match begins, so per-match memory (what was said) resets. */
   matchId: number;
+  /** The build the player chose in game, read from the shop's Recommended list. */
+  plannedBuild?: string[];
+  /** Everything their shop lists (recommended + spare) — items they can find without hunting. */
+  shopListed?: string[];
+  /** Shop price relative to list price, learned from the shop screen (emblem discounts). */
+  priceFactor?: number;
+  /** Enemy the player is laning against, when they have told us. */
+  laneOpponentId?: number;
 }
 
 export interface State {
@@ -81,6 +89,7 @@ export type Action =
   | { type: "setTeam"; side: "allies" | "enemies" | "banned"; ids: number[] }
   | { type: "setMyHero"; id?: number }
   | { type: "setLane"; lane?: Lane }
+  | { type: "setLaneOpponent"; id?: number }
   | { type: "startMatch"; now: number }
   | { type: "newMatch" }
   | { type: "backToDraft" }
@@ -114,6 +123,19 @@ function mergeRoster(current: number[], seen: number[], authoritative: boolean, 
 }
 
 const overlap = (a: number[], b: number[]) => a.filter((id) => b.includes(id)).length;
+
+/**
+ * Work out the shop's discount from printed prices. An item the player already
+ * holds a piece of shows a much lower price, so only near-list ratios count.
+ */
+export function learnPriceFactor(entries: ShopEntry[]): number | undefined {
+  const ratios = entries
+    .map((e) => (e.price && itemById(e.id) ? e.price / itemById(e.id)!.cost : 0))
+    .filter((r) => r >= 0.85 && r <= 1.001)
+    .sort((a, b) => a - b);
+  if (!ratios.length) return undefined;
+  return Math.round(ratios[Math.floor(ratios.length / 2)]! * 100) / 100;
+}
 
 /**
  * Make sure "allies" really is the user's team. The model can only go by screen
@@ -187,6 +209,16 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
     if (mine?.items?.length) next.owned = tidyOwned([...s.owned, ...mine.items]);
   }
 
+  // Inventory read straight from the shop's bottom row or the player's own scoreboard row.
+  if (obs.myItems?.length && (obs.screen === "shop" || obs.screen === "scoreboard")) {
+    next.owned = tidyOwned([...next.owned, ...obs.myItems]);
+  }
+  if (obs.shop) {
+    const rec = obs.shop.recommended.map((e) => e.id);
+    if (rec.length >= 3) next.plannedBuild = uniq(rec);
+    next.shopListed = uniq([...obs.shop.recommended, ...obs.shop.spare].map((e) => e.id));
+    next.priceFactor = learnPriceFactor([...obs.shop.recommended, ...obs.shop.spare]) ?? next.priceFactor;
+  }
   if (obs.myGold !== undefined) next.gold = obs.myGold;
   if (obs.gameTimeSec !== undefined) next.clockStart = now - obs.gameTimeSec * 1000;
   // Seeing the match is the cue to leave draft mode.
@@ -213,6 +245,8 @@ function sessionReducer(s: Session, a: Action): Session {
     }
     case "setLane":
       return { ...s, lane: a.lane };
+    case "setLaneOpponent":
+      return { ...s, laneOpponentId: a.id };
     case "startMatch":
       return { ...s, phase: "live", clockStart: a.now, owned: [], gold: undefined, enemyLive: {}, manualFed: {}, tip: undefined, calls: 0, costUsd: 0, matchId: s.matchId + 1 };
     case "newMatch":
@@ -226,7 +260,12 @@ function sessionReducer(s: Session, a: Action): Session {
       // Finishing an item only costs the difference when its component is already owned.
       const comp = full?.component;
       const haveComp = !!comp && s.owned.includes(componentId(comp.name));
-      const cost = a.id.startsWith("comp:") ? COMPONENTS.get(a.id)?.cost : full ? full.cost - (haveComp && comp ? comp.cost : 0) : undefined;
+      const pay = (n: number) => Math.floor(n * (s.priceFactor ?? 1));
+      const cost = a.id.startsWith("comp:")
+        ? pay(COMPONENTS.get(a.id)?.cost ?? 0)
+        : full
+          ? pay(haveComp && comp ? full.cost - comp.cost : full.cost)
+          : undefined;
       return {
         ...s,
         owned: tidyOwned([...s.owned, a.id]),

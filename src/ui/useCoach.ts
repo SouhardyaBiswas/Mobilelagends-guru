@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { speaker } from "../audio/speech";
 import { eventsBetween } from "../data/timeline";
 import { buyAdvice, fedAdvice, setupAdvice, SpokenLog } from "../engine/coach";
+import { gamePlan } from "../engine/tips";
 import { useStore } from "../state/store";
 import type { Advice, BuildPlan, Hero, ThreatProfile } from "../types";
 
@@ -13,7 +14,7 @@ const REPEAT_MS = 45_000;
  * a line is said when the recommendation changes, never on a timer, so the
  * coach stays quiet while nothing new is worth saying.
  */
-export function useCoach(plan: (BuildPlan & { threat: ThreatProfile }) | undefined, hero: Hero | undefined, gameSec: number | undefined) {
+export function useCoach(plan: (BuildPlan & { threat: ThreatProfile }) | undefined, hero: Hero | undefined, gameSec: number | undefined, laneOpponentId?: number) {
   const { state, dispatch } = useStore();
   const { session, settings } = state;
   const spoken = useRef(new SpokenLog());
@@ -45,7 +46,11 @@ export function useCoach(plan: (BuildPlan & { threat: ThreatProfile }) | undefin
   // Match start: spell and emblem, once.
   const setupKey = live && hero && plan ? `${session.matchId}:${hero.id}` : undefined;
   useEffect(() => {
-    if (setupKey && hero && plan) say(setupAdvice(hero, plan), Infinity);
+    if (!setupKey || !hero || !plan) return;
+    say(setupAdvice(hero, plan), Infinity);
+    // Then the two things most worth knowing before minions spawn: the lane, and who to kill.
+    const lines = gamePlan(hero, session.enemies, plan.threat, laneOpponentId).slice(0, 2);
+    if (session.enemies.length && lines.length) say({ key: `plan:${setupKey}`, say: lines.join(" "), kind: "info", priority: 1 }, Infinity);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setupKey]);
 

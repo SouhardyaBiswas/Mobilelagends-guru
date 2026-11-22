@@ -3,6 +3,7 @@ import { speaker } from "./audio/speech";
 import { Ticker } from "./capture/ticker";
 import { heroById } from "./data/heroes";
 import { planBuild } from "./engine/build";
+import { guessLaneOpponent } from "./engine/tips";
 import { enemyStates, gameSeconds, StoreProvider, useStore } from "./state/store";
 import { CaptureProvider } from "./ui/CaptureContext";
 import { DraftTab } from "./ui/DraftTab";
@@ -39,13 +40,21 @@ function Shell() {
             owned: session.owned,
             gold: session.phase === "live" ? session.gold : undefined,
             gameTimeSec: late ? LATE_GAME_SEC : 0,
+            plannedBuild: session.plannedBuild,
+            shopListed: session.shopListed,
+            priceFactor: session.priceFactor,
           })
         : undefined,
     // The plan depends on these session fields only; the ticking clock must not rebuild it every second.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [hero, session.lane, session.enemies, session.enemyLive, session.manualFed, session.owned, session.gold, session.phase, late],
+    [hero, session.lane, session.enemies, session.enemyLive, session.manualFed, session.owned, session.gold, session.phase, late, session.plannedBuild, session.shopListed, session.priceFactor],
   );
-  const repeat = useCoach(plan, hero, gameSec);
+  // Lane opponent: what the player told us, else the enemy whose lane matches theirs.
+  const laneOpponentId = useMemo(() => {
+    if (session.laneOpponentId && session.enemies.includes(session.laneOpponentId)) return session.laneOpponentId;
+    return guessLaneOpponent(session.lane, session.enemies);
+  }, [session.laneOpponentId, session.enemies, session.lane]);
+  const repeat = useCoach(plan, hero, gameSec, laneOpponentId);
 
   // When a screen read moves the match into (or out of) play, follow it.
   const lastPhase = useRef(session.phase);
@@ -86,8 +95,8 @@ function Shell() {
       </header>
 
       <main>
-        {tab === "draft" && <DraftTab plan={plan} hero={hero} onStart={() => setTab("live")} />}
-        {tab === "live" && <LiveTab plan={plan} hero={hero} gameSec={gameSec} onRepeat={repeat} onDraft={() => setTab("draft")} />}
+        {tab === "draft" && <DraftTab plan={plan} hero={hero} laneOpponentId={laneOpponentId} onStart={() => setTab("live")} />}
+        {tab === "live" && <LiveTab plan={plan} hero={hero} gameSec={gameSec} laneOpponentId={laneOpponentId} onRepeat={repeat} onDraft={() => setTab("draft")} />}
         {tab === "settings" && <SettingsTab />}
       </main>
     </div>

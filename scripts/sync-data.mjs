@@ -95,6 +95,28 @@ function skillSignals(hero) {
   };
 }
 
+/** Compact skill list: enough to name what to watch for and quote what it does. */
+function skillList(hero) {
+  const skills = (hero.heroskilllist ?? []).flatMap((g) => g.skilllist ?? []);
+  return skills
+    .map((sk, i) => {
+      const text = stripTags(sk.skilldesc).replace(/\s+/g, " ").trim();
+      // First sentence only, as Moonton wrote it; long sentences are cut at a word boundary.
+      let first = text.split(/(?<=[.!?])\s/)[0] ?? "";
+      if (first.length > 190) first = `${first.slice(0, 187).replace(/\s+\S*$/, "")}…`;
+      const cd = /CD:\s*([\d.]+)/.exec(sk["skillcd&cost"] ?? "");
+      const passive = !(sk["skillcd&cost"] ?? "").trim();
+      return {
+        name: String(sk.skillname ?? "").trim(),
+        slot: passive && i === 0 ? "Passive" : i === skills.length - 1 ? "Ultimate" : `Skill ${i}`,
+        cd: cd ? Number(cd[1]) : undefined,
+        tags: [...new Set((sk.skilltag ?? []).map((t) => t.tagname))],
+        text: first,
+      };
+    })
+    .filter((sk) => sk.name);
+}
+
 function relation(rel) {
   const pick = (r) =>
     r && clean([r.desc]).length
@@ -106,6 +128,8 @@ function relation(rel) {
 async function main() {
   console.log("Fetching heroes…");
   const heroRecords = await fetchAll(SRC_HEROES, []);
+  const skills = {};
+  for (const r of heroRecords) skills[Number(r.data.hero_id)] = skillList(r.data.hero.data);
   const heroes = heroRecords
     .map((r) => {
       const h = r.data.hero.data;
@@ -203,6 +227,7 @@ async function main() {
   await mkdir(OUT_DIR, { recursive: true });
   await writeFile(path.join(OUT_DIR, "heroes.json"), JSON.stringify(heroes));
   await writeFile(path.join(OUT_DIR, "matchups.json"), JSON.stringify({ versus: versusOut, ally: allyOut }));
+  await writeFile(path.join(OUT_DIR, "skills.json"), JSON.stringify(skills));
   await writeFile(
     path.join(OUT_DIR, "meta.json"),
     JSON.stringify(

@@ -3,12 +3,13 @@ import { describe, expect, it } from "vitest";
 import { StillnessDetector } from "../src/capture/stillness";
 import { HERO_CORE, TEMPLATES, templateFor } from "../src/data/builds";
 import { findHero, HEROES } from "../src/data/heroes";
-import { componentId, findItem, itemById, ITEMS } from "../src/data/items";
+import { componentId, findItem, itemById, itemIcon, ITEMS } from "../src/data/items";
 import { eventsBetween } from "../src/data/timeline";
 import { planBuild } from "../src/engine/build";
 import { buyAdvice, fedAdvice, SpokenLog } from "../src/engine/coach";
 import { rankCounters } from "../src/engine/draft";
 import { analyzeThreat } from "../src/engine/threat";
+import { briefOn, gamePlan, guessLaneOpponent, skillsOf } from "../src/engine/tips";
 import { EMPTY_SESSION, freshSession, orientObservation, sessionReducer, type Session } from "../src/state/store";
 import type { Observation, PlayerState } from "../src/types";
 import { normalizeObservation, parseGameTime } from "../src/vision/schema";
@@ -38,6 +39,13 @@ describe("catalog integrity", () => {
     for (const [name, o] of Object.entries(HERO_CORE)) {
       expect(HEROES.some((h) => h.name === name), name).toBe(true);
       for (const id of [...(o.core ?? []), ...(o.filler ?? [])]) expect(itemById(id), id).toBeDefined();
+    }
+  });
+
+  it("has a picture for every item and every component", () => {
+    for (const item of ITEMS) {
+      expect(itemIcon(item.id), item.name).toBeDefined();
+      if (item.component) expect(itemIcon(componentId(item.component.name)), item.component.name).toBeDefined();
     }
   });
 
@@ -396,6 +404,142 @@ describe("session state", () => {
     s = sessionReducer({ ...s, gold: 1000, owned: ["golden_staff"] }, { type: "swap", sell: "golden_staff", buy: "rose_gold_meteor" });
     expect(s.owned).toEqual(["rose_gold_meteor"]);
     expect(s.gold).toBe(1000 + 1200 - 2030);
+  });
+});
+
+/**
+ * Hand transcriptions of the player's own screenshots (a match as Obsidia vs
+ * five bots), written the way the vision model is asked to answer. They pin
+ * down how real screens flow through the app; they do not test the model itself.
+ */
+describe("a real match, from the player's screenshots", () => {
+  const row = (hero: string, k: number, d: number, a: number, gold: number, items: string[] = [], isMe = false) => ({ hero, isMe, kills: k, deaths: d, assists: a, gold, level: -1, items });
+  const scoreboard = (time: string, myGold: number, mine: ReturnType<typeof row>, enemyGold: number[]) => ({
+    screen: "scoreboard",
+    gameTime: time,
+    myGold,
+    allies: [mine, row("Freya", 0, 0, 1, 1092), row("Xavier", 0, 0, 0, 1329), row("Uranus", 1, 0, 0, 1111), row("Franco", 0, 0, 0, 695)],
+    enemies: ["Angela", "Minotaur", "Rafaela", "Akai", "Bane"].map((h, i) => row(h, 0, i ? 1 : 0, 0, enemyGold[i]!)),
+    myItems: mine.items,
+    recommended: [],
+    spare: [],
+    tip: "",
+  });
+  const SHOP = {
+    screen: "shop",
+    gameTime: "02:10",
+    myGold: 1209,
+    allies: [],
+    enemies: [],
+    myItems: ["Boots"],
+    recommended: [
+      { name: "Warrior Boots", price: 446 },
+      { name: "Windtalker", price: 1786 },
+      { name: "Haas' Claws", price: 1919 },
+      { name: "Sky Piercer", price: 1425 },
+      { name: "Berserker's Fury", price: 2270 },
+      { name: "Malefic Gun", price: 2014 },
+    ],
+    spare: [
+      { name: "Rose Gold Meteor", price: 1928 },
+      { name: "Wind of Nature", price: 1814 },
+    ],
+    tip: "",
+  };
+  const observe = (s: Session, raw: unknown, now = 1_000_000) => sessionReducer(s, { type: "observe", obs: normalizeObservation(raw), now });
+  const plan = (s: Session) =>
+    planBuild({ hero: HEROES.find((h) => h.id === s.myHeroId)!, lane: s.lane, enemies: s.enemies.map((id) => s.enemyLive[id] ?? { heroId: id }), owned: s.owned, gold: s.gold, plannedBuild: s.plannedBuild, shopListed: s.shopListed, priceFactor: s.priceFactor });
+
+  it("reads both teams, the player's hero and spendable gold from one scoreboard", () => {
+    const s = observe(EMPTY_SESSION, scoreboard("00:03", 300, row("Obsidia", 0, 0, 0, 300, [], true), [300, 300, 300, 300, 300]));
+    expect(s.myHeroId).toBe(H("Obsidia").id);
+    expect(s.enemies).toEqual(ids("Angela", "Minotaur", "Rafaela", "Akai", "Bane"));
+    expect(s.allies).toEqual(ids("Freya", "Xavier", "Uranus", "Franco"));
+    expect(s.gold).toBe(300); // top-right figure, not the row total
+    expect(s.phase).toBe("live");
+    // 300 gold at the fountain: plain Boots, not "save up".
+    const first = plan(s).next;
+    expect(first).toMatchObject({ action: "buy-component", component: { name: "Boots" } });
+  });
+
+  it("adopts the build from the player's shop, at the shop's real prices", () => {
+    let s = observe(EMPTY_SESSION, scoreboard("01:49", 1143, row("Obsidia", 3, 0, 0, 1380, ["Boots"], true), [753, 751, 765, 795, 615]));
+    expect(s.owned).toEqual([componentId("Boots")]);
+    s = observe(s, SHOP);
+    expect(s.plannedBuild).toEqual(["warrior_boots", "windtalker", "haas_claws", "sky_piercer", "berserkers_fury", "malefic_gun"]);
+    expect(s.priceFactor).toBe(0.95); // Bargain Hunter: every listed price is 95% of list
+    expect(s.gold).toBe(1209);
+    const p = plan(s);
+    // Their boots and their first two items lead; counters for this enemy team are layered in.
+    expect(slotIds(p).slice(0, 2)).toEqual(["warrior_boots", "windtalker"]);
+    expect(slotIds(p)).toContain("haas_claws");
+    expect(slotIds(p)).toContain("sea_halberd"); // Angela, Rafaela and Minotaur all heal
+    expect(slotIds(p)).not.toContain("corrosion_scythe"); // not the generic template
+    // Prices match the shop: Warrior Boots 446 with Boots owned, Windtalker 1786.
+    expect(p.slots.find((x) => x.item.id === "windtalker")!.price).toBe(1786);
+    expect(p.next).toMatchObject({ action: "buy", item: { id: "warrior_boots" }, say: "Buy Warrior Boots now." });
+    expect(p.next.where).toBeUndefined(); // it is in their own Recommended list
+    // After boots, 1209 - 446 = 763 gold: not enough for Windtalker (1786).
+    s = sessionReducer(s, { type: "bought", id: "warrior_boots" });
+    expect(s.gold).toBe(1209 - 446);
+    expect(plan(s).next).toMatchObject({ action: "save", item: { id: "windtalker" }, goldNeeded: 1786 - 763 });
+  });
+
+  it("says which shop tab holds an item that is not in the player's list", () => {
+    let s = observe(EMPTY_SESSION, scoreboard("01:49", 1143, row("Obsidia", 3, 0, 0, 1380, ["Boots"], true), [753, 751, 765, 795, 615]));
+    s = observe(s, SHOP);
+    s = { ...s, owned: ["warrior_boots", "windtalker"], gold: 2500 };
+    const next = plan(s).next;
+    expect(next.item?.id).toBe("sea_halberd");
+    expect(next.where).toBe("It's under the Attack tab.");
+    expect(buyAdvice(plan(s)).say).toMatch(/^Buy Sea Halberd now\. Anti-heal.*It's under the Attack tab\.$/);
+  });
+});
+
+describe("new-player guidance", () => {
+  it("names real skills and gives advice that follows from the kit", () => {
+    const franco = briefOn(H("Franco"), H("Layla"));
+    expect(franco.summary).toMatch(/tank/);
+    // Skill names come from the synced game data, not from memory.
+    expect(franco.watch.map((w) => w.name)).toEqual(expect.arrayContaining(["Iron Hook", "Bloody Hunt"]));
+    expect(franco.watch.every((w) => w.text.length > 10 && w.kind)).toBe(true);
+    expect(franco.how.join(" ")).toMatch(/Iron Hook/);
+    expect(franco.how.join(" ")).toMatch(/out-range/); // Layla is ranged, Franco is not
+    // A healer earns an anti-heal line naming the item this hero would buy.
+    expect(briefOn(H("Estes"), H("Layla")).how.join(" ")).toMatch(/Buy Sea Halberd/);
+    expect(briefOn(H("Estes"), H("Eudora")).how.join(" ")).toMatch(/Buy Glowing Wand/);
+  });
+
+  it("covers every hero, including ones newer than any guide", () => {
+    for (const h of HEROES) {
+      const b = briefOn(h, H("Layla"));
+      expect(skillsOf(h.id).length, h.name).toBeGreaterThanOrEqual(3);
+      expect(b.summary.length, h.name).toBeGreaterThan(10);
+      expect(b.watch.length, h.name).toBeGreaterThan(0);
+      expect(b.how.length, h.name).toBeGreaterThan(0);
+    }
+  });
+
+  it("guesses the lane opponent and builds a plan around them", () => {
+    const enemies = ids("Angela", "Minotaur", "Rafaela", "Akai", "Bane");
+    expect(guessLaneOpponent("exp", enemies)).toBe(H("Bane").id);
+    expect(guessLaneOpponent("gold", ids("Layla", "Tigreal", "Eudora"))).toBe(H("Layla").id);
+    expect(guessLaneOpponent(undefined, enemies)).toBeUndefined();
+    const threat = analyzeThreat(team("Angela", "Minotaur", "Rafaela", "Akai", "Bane"));
+    const plan = gamePlan(H("Obsidia"), enemies, threat, H("Bane").id);
+    expect(plan[0]).toMatch(/^In lane you face Bane/);
+    expect(plan.join(" ")).toMatch(/anti-heal/);
+    expect(plan.at(-1)).toMatch(/^Your job: farm safely/);
+    expect(plan.length).toBeLessThanOrEqual(5);
+  });
+
+  it("counts the lane matchup double when ranking picks", () => {
+    const enemies = ids("Esmeralda", "Estes", "Gusion");
+    const plain = rankCounters({ enemies, allies: [], lane: "exp", limit: 40 });
+    const laned = rankCounters({ enemies, allies: [], lane: "exp", laneOpponent: H("Esmeralda").id, limit: 40 });
+    const dyrroth = (list: typeof plain) => list.find((p) => p.hero.name === "Dyrroth")!;
+    expect(dyrroth(laned).score).toBeGreaterThan(dyrroth(plain).score);
+    expect(dyrroth(laned).reasons.join(" ")).toMatch(/your lane/);
   });
 });
 

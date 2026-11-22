@@ -7,6 +7,8 @@ export interface DraftInput {
   banned?: number[];
   /** Only suggest heroes that play this lane. */
   lane?: Lane;
+  /** The enemy you will face in lane — that matchup counts double. */
+  laneOpponent?: number;
   limit?: number;
 }
 
@@ -36,8 +38,11 @@ export function rankCounters(input: DraftInput): CounterPick[] {
     for (const enemy of enemies) {
       const stat = versus(hero.id, enemy.id);
       if (stat !== undefined) {
-        score += stat;
-        if (Math.abs(stat) >= 1) edges.push({ text: `${fmt(stat)} win rate vs ${enemy.name}`, value: stat });
+        // You spend the first minutes alone with your lane opponent, so that matchup weighs double.
+        const inLane = enemy.id === input.laneOpponent;
+        const value = inLane ? stat * 2 : stat;
+        score += value;
+        if (Math.abs(stat) >= 1) edges.push({ text: `${fmt(stat)} win rate vs ${enemy.name}${inLane ? " (your lane)" : ""}`, value });
       }
       // Moonton's editorial notes: "X is strong against …" / "Y is weak against …".
       if (hero.relation.strong?.ids.includes(enemy.id)) {

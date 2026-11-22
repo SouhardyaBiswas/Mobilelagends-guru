@@ -1,6 +1,6 @@
 import { bootsNote, templateFor, type BuildTemplate } from "../data/builds";
 import { heroById, heroName } from "../data/heroes";
-import { componentId, itemById, SELL_REFUND } from "../data/items";
+import { componentId, itemById, SELL_REFUND, SHOP_TAB } from "../data/items";
 import type { BuildPlan, BuildSlot, Hero, Item, Lane, NextStep, PlayerState, ThreatProfile } from "../types";
 import { analyzeThreat } from "./threat";
 
@@ -12,6 +12,34 @@ export interface BuildInput {
   owned: string[];
   gold?: number;
   gameTimeSec?: number;
+  /** The build the player chose in game (read from the shop's Recommended list). Used as the base when present. */
+  plannedBuild?: string[];
+  /** Item ids the player's shop lists under Recommended / Spare — easy for them to find. */
+  shopListed?: string[];
+  /** What the shop charges relative to list price (0.95 with the Bargain Hunter emblem talent). */
+  priceFactor?: number;
+}
+
+const FROM_YOUR_BUILD = "From the build you chose in game.";
+
+/** Use the player's own in-game build as the base, keeping the template's counters and defensive options. */
+function withPlannedBuild(tpl: BuildTemplate, plannedIds: string[] | undefined): BuildTemplate {
+  const planned = (plannedIds ?? []).map(itemById).filter((i): i is Item => !!i);
+  if (planned.length < 3) return tpl;
+  const boots = planned.find((i) => i.category === "boots");
+  const rest = planned.filter((i) => i.category !== "boots");
+  const having = (tag: Item["tags"][number]) => rest.find((i) => i.tags.includes(tag))?.id;
+  return {
+    ...tpl,
+    boots: boots?.id ?? tpl.boots,
+    core: rest.slice(0, 2).map((i) => i.id),
+    coreWhy: FROM_YOUR_BUILD,
+    filler: [...rest.slice(2).map((i) => i.id), ...tpl.filler],
+    // If their build already has an item that does the job, move that one up rather than adding another.
+    pen: having("physPen") ?? having("magicPen") ?? tpl.pen,
+    tankShred: having("tankShred") ?? tpl.tankShred,
+    antiheal: having("antiheal") ?? tpl.antiheal,
+  };
 }
 
 interface Pick {
@@ -46,8 +74,9 @@ function mainThreat(threat: ThreatProfile): { hero: Hero; fed: boolean } | undef
   return top.fed || top.weight >= 0.34 ? { hero, fed: top.fed } : undefined;
 }
 
-function chooseBoots(tpl: BuildTemplate, threat: ThreatProfile, squishy: boolean): { id: string; reason: string } {
-  // Carries keep their damage boots; only frontliners adapt boots to the lineup.
+function chooseBoots(tpl: BuildTemplate, threat: ThreatProfile, squishy: boolean, fromPlayer: boolean): { id: string; reason: string } {
+  // The player's own choice wins; otherwise carries keep damage boots and frontliners adapt to the lineup.
+  if (fromPlayer) return { id: tpl.boots, reason: FROM_YOUR_BUILD };
   if (squishy) return { id: tpl.boots, reason: "" };
   if (threat.cc >= 2.2 || threat.magicShare >= 0.55) {
     const why = threat.cc >= 2.2 ? `shorter crowd control from ${list(threat.who.cc) || "their lineup"}` : "most of their damage is magic";
@@ -149,15 +178,18 @@ function situationalPicks(hero: Hero, tpl: BuildTemplate, threat: ThreatProfile,
   return picks.sort((a, b) => b.score - a.score);
 }
 
-function nextStep(
-  slots: BuildSlot[],
-  overflow: Pick[],
-  input: BuildInput,
-  ownedFull: string[],
-  squishy: boolean,
-): NextStep {
+function nextStep(slots: BuildSlot[], overflow: Pick[], input: BuildInput, squishy: boolean): NextStep {
   const { gold, owned } = input;
+  const price = pricer(input.priceFactor);
   const target = slots.find((s) => !s.owned);
+
+  /** Tell a new player where the thing actually is in the shop. */
+  const where = (it: Item, piece?: { name: string }): string => {
+    const listed = input.shopListed?.includes(it.id);
+    const tab = `${SHOP_TAB[it.category]} tab`;
+    if (piece) return `Open ${it.name}${listed ? "" : ` in the ${tab}`} and tap ${piece.name} in its build path.`;
+    return listed ? "" : `It's under the ${tab}.`;
+  };
 
   if (!target) {
     // Inventory is full. Swap only for something that answers a real problem.
@@ -172,6 +204,7 @@ function nextStep(
           action: "sell-swap",
           item: want.item,
           sell,
+          where: where(want.item) || undefined,
           say: `Sell ${sell.name} and buy ${want.item.name}.`,
           detail: `${want.reason}${sell.category === "boots" ? " This late, a sixth item is worth more than boots." : ""} Selling refunds ${Math.round(SELL_REFUND * 100)}% of the price.`,
         };
@@ -183,18 +216,18 @@ function nextStep(
   const { item } = target;
   const comp = item.component;
   const haveComp = !!comp && owned.includes(componentId(comp.name));
-  const remaining = item.cost - (haveComp && comp ? comp.cost : 0);
+  // The shop discounts the difference, then rounds down (Warrior Boots with Boots owned: 446, not 447).
+  const remaining = haveComp && comp ? price(item.cost - comp.cost) : price(item.cost);
   const why = target.reason;
-  void ownedFull;
 
   if (gold === undefined) {
     const start = comp && !haveComp ? ` Start with ${comp.name}.` : "";
-    return { action: "buy", item, component: comp && !haveComp ? comp : undefined, say: `Next item: ${item.name}.${start}`, detail: why };
+    return { action: "buy", item, component: comp && !haveComp ? comp : undefined, where: where(item) || undefined, say: `Next item: ${item.name}.${start}`, detail: why };
   }
   if (gold >= remaining) {
-    return { action: "buy", item, say: `Buy ${item.name} now.`, detail: why };
+    return { action: "buy", item, where: where(item) || undefined, say: `Buy ${item.name} now.`, detail: why };
   }
-  if (comp && !haveComp && gold >= comp.cost) {
+  if (comp && !haveComp && gold >= price(comp.cost)) {
     // Only claim the cheap piece helps when it really carries the effect.
     const antiHealPick = item.tags.includes("antiheal") && /^Anti-heal/.test(why);
     const note = comp.effect
@@ -204,6 +237,7 @@ function nextStep(
       action: "buy-component",
       item,
       component: comp,
+      where: where(item, comp),
       say: comp.effect ? `Buy ${comp.name} now. It ${comp.effect}, and builds into ${item.name}.` : `Buy ${comp.name} now, the first piece of ${item.name}.`,
       detail: `${why} ${note}`,
     };
@@ -215,20 +249,22 @@ function nextStep(
     if (later.owned || later === target || !later.urgent) continue;
     const lc = later.item.component;
     const haveLc = !!lc && owned.includes(componentId(lc.name));
-    const laterRemaining = later.item.cost - (haveLc && lc ? lc.cost : 0);
+    const laterRemaining = haveLc && lc ? price(later.item.cost - lc.cost) : price(later.item.cost);
     if (gold >= laterRemaining) {
       return {
         action: "buy",
         item: later.item,
+        where: where(later.item) || undefined,
         say: `Buy ${later.item.name} now.`,
         detail: `${later.reason} You can't afford ${item.name} yet, so take the counter first.`,
       };
     }
-    if (lc?.effect && !haveLc && gold >= lc.cost) {
+    if (lc?.effect && !haveLc && gold >= price(lc.cost)) {
       return {
         action: "buy-component",
         item: later.item,
         component: lc,
+        where: where(later.item, lc),
         say: `Buy ${lc.name} now. It ${lc.effect}, and builds into ${later.item.name}.`,
         detail: `${later.reason} You can't afford ${item.name} yet — a cheap counter now beats gold sitting in your pocket.`,
       };
@@ -236,18 +272,22 @@ function nextStep(
   }
 
   const goal = comp && !haveComp ? comp : undefined;
-  const goldNeeded = (goal ? goal.cost : remaining) - gold;
+  const goldNeeded = (goal ? price(goal.cost) : remaining) - gold;
   return {
     action: "save",
     item,
     component: goal,
     goldNeeded,
+    where: goal ? where(item, goal) : where(item) || undefined,
     say: `Save ${goldNeeded} more gold for ${goal ? goal.name : item.name}.`,
     detail: goal ? `${why} ${goal.name} is the first piece of ${item.name}.` : why,
   };
 }
 
 const OFF_PLAN = "Already in your inventory.";
+
+/** The shop rounds discounted prices down. */
+const pricer = (factor = 1) => (listPrice: number) => Math.floor(listPrice * factor);
 
 /**
  * Build the six-item plan for this hero against this enemy team, mark what is
@@ -256,7 +296,10 @@ const OFF_PLAN = "Already in your inventory.";
 export function planBuild(input: BuildInput): BuildPlan & { threat: ThreatProfile } {
   const { hero } = input;
   const lane = input.lane ?? hero.lanes[0];
-  const tpl = templateFor(hero, lane);
+  const base = templateFor(hero, lane);
+  const tpl = withPlannedBuild(base, input.plannedBuild);
+  const fromPlayer = tpl !== base;
+  const price = pricer(input.priceFactor);
   const threat = analyzeThreat(input.enemies);
   const squishy = tpl.maxDefense <= 2;
   const picks = situationalPicks(hero, tpl, threat, input.enemies);
@@ -275,7 +318,8 @@ export function planBuild(input: BuildInput): BuildPlan & { threat: ThreatProfil
     return true;
   };
 
-  const boots = chooseBoots(tpl, threat, squishy);
+  const playerPickedBoots = fromPlayer && (input.plannedBuild ?? []).some((id) => itemById(id)?.category === "boots");
+  const boots = chooseBoots(tpl, threat, squishy, playerPickedBoots);
   push(itemById(boots.id), boots.reason, "boots");
   const [firstCore, ...restCore] = tpl.core;
   if (firstCore) push(itemById(firstCore), tpl.coreWhy, "core");
@@ -305,6 +349,7 @@ export function planBuild(input: BuildInput): BuildPlan & { threat: ThreatProfil
     reason: o.reason,
     kind: o.kind,
     owned: ownedFull.includes(o.item.id),
+    price: price(o.item.cost),
     urgent: o.kind === "situational" && o.score >= URGENT,
   }));
   const fittedIds = new Set(fitted.map((o) => o.item.id));
@@ -322,7 +367,7 @@ export function planBuild(input: BuildInput): BuildPlan & { threat: ThreatProfil
 
   return {
     slots,
-    next: nextStep(slots, overflow, input, ownedFull, squishy),
+    next: nextStep(slots, overflow, input, squishy),
     spell,
     emblem: tpl.emblem,
     bootsNote: bootsNote(lane),

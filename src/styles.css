@@ -206,3 +206,34 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; transition: none !important; }
 }
+
+/* ── Item pictures ───────────────────────────────────── */
+.item-icon { border-radius: 50%; flex: none; background: var(--surface-2); object-fit: cover; box-shadow: 0 0 0 2px var(--border); }
+.item-icon.fallback { display: inline-grid; place-items: center; font-weight: 800; color: var(--muted); text-transform: uppercase; }
+.build-slot { align-items: center; }
+.build-slot.next .item-icon { box-shadow: 0 0 0 2px var(--gold); }
+.now-main { display: flex; align-items: center; gap: 16px; }
+.now-main .item-icon { box-shadow: 0 0 0 3px var(--gold); }
+.where { background: rgba(0, 0, 0, 0.28); border-radius: 10px; padding: 8px 12px; font-weight: 600; color: var(--text) !important; }
+
+/* ── New-player guide ────────────────────────────────── */
+.guide { display: grid; gap: 12px; }
+.plan { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
+.plan li::marker { color: var(--gold); font-weight: 700; }
+.brief { border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); }
+.brief.lane { border-color: rgba(232, 184, 74, 0.6); }
+.brief > summary { display: flex; gap: 10px; align-items: center; padding: 10px 12px; cursor: pointer; list-style: none; }
+.brief > summary::-webkit-details-marker { display: none; }
+.brief > summary::after { content: "▾"; color: var(--muted); margin-left: auto; }
+.brief[open] > summary::after { content: "▴"; }
+.brief-head { display: grid; gap: 2px; min-width: 0; }
+.brief-name { font-weight: 700; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.brief-sum { color: var(--muted); font-size: 13px; }
+.brief-block { padding: 0 12px 10px; display: grid; gap: 6px; }
+.brief .fine { padding: 0 12px 12px; }
+.skills, .how { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.skills li { display: grid; gap: 1px; border-left: 3px solid var(--enemy); padding-left: 10px; }
+.skill-meta { color: var(--gold); font-size: 12px; font-weight: 600; }
+.skill-text { color: var(--muted); font-size: 13px; }
+.how li { padding-left: 18px; position: relative; font-size: 14px; }
+.how li::before { content: "→"; position: absolute; left: 0; color: var(--ok); }

@@ -1,4 +1,5 @@
 import type { Item, ItemComponent } from "../types";
+import iconManifest from "./generated/item-icons.json";
 import { editDistance, normalizeName } from "./heroes";
 
 /**
@@ -16,19 +17,20 @@ import { editDistance, normalizeName } from "./heroes";
  */
 const c = (name: string, cost: number, effect?: string): ItemComponent => ({ name, cost, effect });
 
+const BOOTS = c("Boots", 250, "already gives movement speed");
 const LEGION_SWORD = c("Legion Sword", 910);
 const FURY_HAMMER = c("Fury Hammer", 830, "already gives physical penetration");
 const SILENCE_ROBE = c("Silence Robe", 1020, "already gives HP and magic defense");
 
 export const ITEMS: Item[] = [
   // ── Boots (720 each) ─────────────────────────────────────────────────────
-  { id: "warrior_boots", name: "Warrior Boots", cost: 720, category: "boots", tags: ["boots", "physDef"], blurb: "Physical defense." },
-  { id: "tough_boots", name: "Tough Boots", cost: 720, category: "boots", tags: ["boots", "magicDef", "ccReduce"], blurb: "Magic defense and shorter crowd control." },
-  { id: "swift_boots", name: "Swift Boots", cost: 720, category: "boots", tags: ["boots", "atkSpeed"], blurb: "Attack speed for basic-attack heroes." },
-  { id: "arcane_boots", name: "Arcane Boots", cost: 720, category: "boots", tags: ["boots", "magicPen"], blurb: "Magic penetration for early damage." },
-  { id: "magic_shoes", name: "Magic Shoes", cost: 720, category: "boots", tags: ["boots", "cdr"], blurb: "Cooldown reduction.", aliases: ["Magic Boots"] },
-  { id: "rapid_boots", name: "Rapid Boots", cost: 720, category: "boots", tags: ["boots"], blurb: "The most movement speed, for rotating." },
-  { id: "demon_shoes", name: "Demon Shoes", cost: 720, category: "boots", tags: ["boots"], blurb: "Mana regeneration.", aliases: ["Demon Boots"] },
+  { id: "warrior_boots", name: "Warrior Boots", cost: 720, category: "boots", tags: ["boots", "physDef"], component: BOOTS, blurb: "Physical defense." },
+  { id: "tough_boots", name: "Tough Boots", cost: 720, category: "boots", tags: ["boots", "magicDef", "ccReduce"], component: BOOTS, blurb: "Magic defense and shorter crowd control." },
+  { id: "swift_boots", name: "Swift Boots", cost: 720, category: "boots", tags: ["boots", "atkSpeed"], component: BOOTS, blurb: "Attack speed for basic-attack heroes." },
+  { id: "arcane_boots", name: "Arcane Boots", cost: 720, category: "boots", tags: ["boots", "magicPen"], component: BOOTS, blurb: "Magic penetration for early damage." },
+  { id: "magic_shoes", name: "Magic Shoes", cost: 720, category: "boots", tags: ["boots", "cdr"], component: BOOTS, blurb: "Cooldown reduction.", aliases: ["Magic Boots"] },
+  { id: "rapid_boots", name: "Rapid Boots", cost: 720, category: "boots", tags: ["boots"], component: BOOTS, blurb: "The most movement speed, for rotating." },
+  { id: "demon_shoes", name: "Demon Shoes", cost: 720, category: "boots", tags: ["boots"], component: BOOTS, blurb: "Mana regeneration.", aliases: ["Demon Boots"] },
 
   // ── Attack ───────────────────────────────────────────────────────────────
   { id: "blade_of_despair", name: "Blade of Despair", cost: 3010, category: "attack", tags: ["damage"], blurb: "The biggest raw physical attack; extra against targets under half health.", component: LEGION_SWORD },
@@ -86,6 +88,22 @@ export const ITEMS: Item[] = [
 
 /** Selling refunds this share of the price once the first few seconds have passed. */
 export const SELL_REFUND = 0.6;
+
+/** Which shop tab an item sits under — for players who can't find things by name yet. */
+export const SHOP_TAB: Record<Item["category"], string> = {
+  attack: "Attack",
+  magic: "Magic",
+  defense: "Defense",
+  boots: "Movement",
+};
+
+const icons = iconManifest as Record<string, string>;
+
+/** Relative URL of the picture for an item id or a "comp:" component id, if we have one. */
+export function itemIcon(id: string): string | undefined {
+  const file = icons[id.startsWith("comp:") ? `c-${id.slice(5)}` : id];
+  return file ? `items/${file}` : undefined;
+}
 
 const byId = new Map(ITEMS.map((i) => [i.id, i]));
 

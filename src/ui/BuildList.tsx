@@ -1,4 +1,5 @@
 import type { BuildPlan } from "../types";
+import { ItemIcon } from "./Guide";
 
 interface Props {
   plan: BuildPlan;
@@ -16,10 +17,11 @@ export function BuildList({ plan, onToggle }: Props) {
         const body = (
           <>
             <span className="build-n">{slot.owned ? "✓" : i + 1}</span>
+            <ItemIcon id={slot.item.id} name={slot.item.name} size={44} />
             <span className="build-main">
               <span className="build-name">
                 {slot.item.name}
-                <span className="build-cost">{slot.item.cost}g</span>
+                <span className="build-cost">{slot.price}g</span>
                 {slot.kind === "situational" && <span className="tag situational">counter</span>}
                 {isNext && <span className="tag nexttag">next</span>}
               </span>

@@ -4,12 +4,13 @@ import { heroById } from "../data/heroes";
 import { counterAdvice } from "../engine/coach";
 import { rankCounters } from "../engine/draft";
 import { useStore } from "../state/store";
-import { LANE_LABEL, LANES, type BuildPlan, type Hero } from "../types";
+import { LANE_LABEL, LANES, type BuildPlan, type Hero, type ThreatProfile } from "../types";
 import { demoRoster } from "../vision/demo";
 import { BuildList, SpellEmblem } from "./BuildList";
+import { Guide } from "./Guide";
 import { HeroIcon, HeroPicker, TeamRow } from "./HeroBits";
 
-export function DraftTab({ plan, hero, onStart }: { plan?: BuildPlan; hero?: Hero; onStart: () => void }) {
+export function DraftTab({ plan, hero, laneOpponentId, onStart }: { plan?: BuildPlan & { threat: ThreatProfile }; hero?: Hero; laneOpponentId?: number; onStart: () => void }) {
   const { state, dispatch } = useStore();
   const s = state.session;
   const [pickingMe, setPickingMe] = useState(false);
@@ -18,8 +19,8 @@ export function DraftTab({ plan, hero, onStart }: { plan?: BuildPlan; hero?: Her
     [s.enemies, s.allies, s.banned, s.myHeroId],
   );
   const picks = useMemo(
-    () => rankCounters({ enemies: s.enemies, allies: s.allies, banned: s.banned, lane: s.lane, limit: 8 }),
-    [s.enemies, s.allies, s.banned, s.lane],
+    () => rankCounters({ enemies: s.enemies, allies: s.allies, banned: s.banned, lane: s.lane, laneOpponent: laneOpponentId, limit: 8 }),
+    [s.enemies, s.allies, s.banned, s.lane, laneOpponentId],
   );
   const best = Math.max(1, ...picks.map((p) => p.score));
 
@@ -93,9 +94,17 @@ export function DraftTab({ plan, hero, onStart }: { plan?: BuildPlan; hero?: Her
           )}
         </button>
 
-        {s.enemies.length > 0 && (
+        {s.enemies.length === 0 && (
+          <p className="hint">
+            <strong>Picking before the enemy?</strong> Take the hero you play best — comfort beats counters. Below are the strongest heroes this patch{s.lane ? ` for ${LANE_LABEL[s.lane].toLowerCase()}` : ""}. Once enemies lock in, this list re-ranks against them, and you get a plan for how to play.
+          </p>
+        )}
+        {s.enemies.length > 0 && s.enemies.length < 5 && (
+          <p className="hint">{s.enemies.length} of 5 enemies known. The more that have picked, the better the suggestion — the last pick sees everything.</p>
+        )}
+        {(
           <>
-            <span className="eyebrow">Best into this enemy team{s.lane ? ` · ${LANE_LABEL[s.lane]}` : ""}</span>
+            <span className="eyebrow">{s.enemies.length ? `Best into this enemy team${s.lane ? ` · ${LANE_LABEL[s.lane]}` : ""}` : "Strong this patch"}</span>
             <ul className="counters">
               {picks.map((p) => (
                 <li key={p.hero.id}>
@@ -113,7 +122,7 @@ export function DraftTab({ plan, hero, onStart }: { plan?: BuildPlan; hero?: Her
                 </li>
               ))}
             </ul>
-            <p className="fine">Score = win-rate points gained versus these enemies in ranked play (Moonton stats), plus team synergy and patch strength.</p>
+            <p className="fine">Score = win-rate points gained versus these enemies in ranked play (Moonton stats), with your lane opponent counted double, plus team synergy and patch strength.</p>
           </>
         )}
 
@@ -148,6 +157,13 @@ export function DraftTab({ plan, hero, onStart }: { plan?: BuildPlan; hero?: Her
           <SpellEmblem plan={plan} />
           {plan.bootsNote && <p className="hint">{plan.bootsNote}</p>}
           <BuildList plan={plan} />
+        </section>
+      )}
+
+      {hero && plan && (
+        <section className="panel span">
+          <h2>4 · How to play this game</h2>
+          <Guide me={hero} enemies={s.enemies} threat={plan.threat} laneOpponentId={laneOpponentId} onPickLane={(id) => dispatch({ type: "setLaneOpponent", id })} />
         </section>
       )}
     </div>
