@@ -18,6 +18,7 @@ type Plan = BuildPlan & { threat: ThreatProfile };
 const ACTION_LABEL: Record<Plan["next"]["action"], string> = {
   buy: "Buy now",
   "buy-component": "Buy the first piece",
+  "buy-pieces": "Buy pieces now",
   save: "Save up",
   "sell-swap": "Sell and swap",
   done: "Build complete",

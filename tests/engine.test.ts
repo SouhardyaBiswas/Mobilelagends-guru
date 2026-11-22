@@ -12,9 +12,11 @@ import { coachReply } from "../src/engine/reply";
 import { matchStory } from "../src/engine/story";
 import { analyzeThreat } from "../src/engine/threat";
 import { briefOn, gamePlan, guessLaneOpponent, skillsOf } from "../src/engine/tips";
-import { believableItems, buildInputs, EMPTY_SESSION, freshSession, orientObservation, sessionReducer, stageOf, type Session } from "../src/state/session";
+import { coachBrief, COACH_SYSTEM, demoCoach, normalizeCoach } from "../src/ai/coach";
+import { normalizePosition, positionBrief } from "../src/ai/position";
+import { believableItems, buildInputs, EMPTY_SESSION, fitOwnItems, freshSession, orientObservation, sessionReducer, stageOf, type Session } from "../src/state/session";
 import type { Observation, PlayerState } from "../src/types";
-import { normalizeObservation, parseGameTime } from "../src/vision/schema";
+import { normalizeObservation, parseGameTime, unscramble } from "../src/vision/schema";
 
 const H = (name: string) => {
   const hero = HEROES.find((h) => h.name === name);
@@ -160,7 +162,9 @@ describe("build planner", () => {
 
     const withPiece = ["warrior_boots", componentId("Dreadnaught Armor")];
     const remaining = target.cost - target.component!.cost;
-    expect(planBuild({ ...base, owned: withPiece, gold: remaining - 1 }).next.action).toBe("save");
+    // One gold short of finishing, with gold in hand: buy more pieces rather than sit on it.
+    expect(planBuild({ ...base, owned: withPiece, gold: remaining - 1 }).next.action).toBe("buy-pieces");
+    expect(planBuild({ ...base, owned: withPiece, gold: 200 }).next.action).toBe("save");
     const finish = planBuild({ ...base, owned: withPiece, gold: remaining });
     expect(finish.next).toMatchObject({ action: "buy", say: "Finish Antique Cuirass now." });
   });
@@ -186,9 +190,9 @@ describe("build planner", () => {
     // so the plan still contains the defensive item but does not delay the first damage item for it.
     const unfed = planBuild({ hero: H("Layla"), enemies: team(...HEALERS), owned: ["swift_boots"], gold: 1450 });
     expect(slotIds(unfed)).toContain("rose_gold_meteor");
-    expect(unfed.next).toMatchObject({ action: "save", item: { id: "windtalker" } });
+    expect(unfed.next).toMatchObject({ action: "buy-pieces", item: { id: "windtalker" } });
     const calm = planBuild({ hero: H("Layla"), enemies: team("Tigreal", "Franco"), owned: ["swift_boots"], gold: 1450 });
-    expect(calm.next).toMatchObject({ action: "save", item: { id: "windtalker" } });
+    expect(calm.next).toMatchObject({ action: "buy-pieces", item: { id: "windtalker" } });
   });
 
   it("moves a defensive answer up when an enemy gets fed", () => {
@@ -516,7 +520,9 @@ describe("a real match, from the player's screenshots", () => {
     // After boots, 1209 - 446 = 763 gold: not enough for Windtalker (1786).
     s = sessionReducer(s, { type: "bought", id: "warrior_boots" });
     expect(s.gold).toBe(1209 - 446);
-    expect(plan(s).next).toMatchObject({ action: "save", item: { id: "windtalker" }, goldNeeded: 1786 - 763 });
+    // 763 gold in hand: buy pieces of it now rather than carry the gold.
+    expect(plan(s).next).toMatchObject({ action: "buy-pieces", item: { id: "windtalker" }, goldNeeded: 1786 - 763 });
+    expect(plan(s).next.say).toBe("Buy pieces of Windtalker now. 1023 more gold finishes it.");
   });
 
   it("lets the scoreboard's printed names overrule guesses made during hero selection", () => {
@@ -796,7 +802,7 @@ describe("coach", () => {
   it("keeps one key while only the gold amount changes", () => {
     const base = { hero: H("Layla"), enemies: team(...HEALERS), owned: ["swift_boots"] };
     const a = buyAdvice(planBuild({ ...base, gold: 100 }));
-    const b = buyAdvice(planBuild({ ...base, gold: 400 }));
+    const b = buyAdvice(planBuild({ ...base, gold: 300 }));
     expect(a.key).toBe(b.key);
     expect(a.say).not.toBe(b.say);
     const log = new SpokenLog();
@@ -818,5 +824,234 @@ describe("coach", () => {
     expect(eventsBetween(118, 121).map((e) => e.id)).toEqual(["turtle"]);
     expect(eventsBetween(121, 122)).toEqual([]);
     expect(eventsBetween(0, 600)).toEqual([]);
+  });
+});
+
+/**
+ * A ranked match played on the phone, as the reader (Claude Haiku) reported it in
+ * the server's logs: six scoreboards and one shop screen. Three of the scoreboards
+ * came back with the enemy columns shifted, and the scoreboard's gold totals left
+ * out the 300 starting gold.
+ */
+describe("a second real match, from the server's logs", () => {
+  type Row = [hero: string, k: number, d: number, a: number, gold: number];
+  const row = ([hero, kills, deaths, assists, gold]: Row, isMe = false) => ({ hero, isMe, kills, deaths, assists, gold, level: -1, items: [] });
+  const board = (gameTime: string, myGold: number, allies: Row[], enemies: Row[]): Observation =>
+    normalizeObservation({ screen: "scoreboard", gameTime, myGold, allies: allies.map((r) => row(r, r[0] === "Zetian")), enemies: enemies.map((r) => row(r)), myItems: [], recommended: [], spare: [], tip: "" });
+  const READS: Observation[] = [
+    board("07:21", 361, [["Argus", 4, 0, 1, 5667], ["Zetian", 2, 4, 7, 4401], ["Carmilla", 0, 5, 7, 3472], ["Thamuz", 5, 4, 4, 5268], ["Ixia", 3, 1, 3, 5392]],
+      [["Belerick", 2, 5, 10, 4152], ["Novaria", 0, 3, 10, 3684], ["Layla", 2, 1, 5, 4917], ["Badang", 1, 4, 0, 3313], ["Freya", 9, 3, 2, 4693]]),
+    board("08:08", 627, [["Argus", 5, 0, 2, 6487], ["Zetian", 3, 4, 9, 5092], ["Carmilla", 0, 5, 7, 3820], ["Thamuz", 5, 4, 5, 5864], ["Ixia", 4, 1, 3, 6066]],
+      [["Belerick", 2, 6, 10, 4472], ["Novaria", 0, 3, 10, 4111], ["Layla", 2, 2, 5, 5159], ["Badang", 1, 5, 0, 3465], ["Freya", 9, 3, 2, 5230]]),
+    // Shifted: gold in "kills", kills in "deaths", deaths in "assists", assists in "gold".
+    board("08:49", 1131, [["Argus", 6, 0, 2, 7349], ["Zetian", 3, 4, 9, 5596], ["Carmilla", 0, 5, 8, 4553], ["Thamuz", 5, 4, 5, 6521], ["Ixia", 4, 1, 3, 6687]],
+      [["Belerick", 4773, 2, 6, 10], ["Novaria", 4592, 0, 3, 10], ["Layla", 5606, 2, 2, 5], ["Badang", 3656, 1, 5, 0], ["Freya", 5390, 9, 4, 2]]),
+    board("10:32", 18, [["Argus", 6, 1, 4, 8619], ["Zetian", 5, 5, 11, 7010], ["Carmilla", 0, 5, 13, 5972], ["Thamuz", 6, 4, 7, 8058], ["Ixia", 6, 1, 5, 8516]],
+      [["Belerick", 6100, 2, 7, 11], ["Novaria", 5715, 0, 5, 11], ["Layla", 7686, 4, 2, 5], ["Badang", 4584, 1, 6, 0], ["Freya", 6590, 9, 5, 2]]),
+    board("11:44", 141, [["Argus", 6, 1, 4, 9101], ["Zetian", 5, 5, 14, 7627], ["Carmilla", 1, 7, 18, 6968], ["Thamuz", 8, 4, 11, 9426], ["Ixia", 9, 2, 6, 9519]],
+      [["Belerick", 2, 9, 13, 7091], ["Novaria", 0, 5, 12, 6308], ["Layla", 6, 2, 6, 9392], ["Badang", 2, 8, 1, 5679], ["Freya", 9, 7, 4, 7384]]),
+    // Shifted the other way: gold in "kills" and in "gold", assists lost.
+    board("13:18", 186, [["Argus", 6, 1, 4, 10309], ["Zetian", 5, 6, 18, 8664], ["Carmilla", 1, 7, 22, 8087], ["Thamuz", 8, 4, 11, 10718], ["Ixia", 13, 2, 6, 11153]],
+      [["Belerick", 8063, 2, 10, 8063], ["Novaria", 7180, 0, 6, 7180], ["Layla", 10645, 7, 2, 10645], ["Badang", 6449, 2, 9, 6449], ["Freya", 8030, 9, 8, 8030]]),
+  ];
+  const IN_GAME = ["arcane_boots", "glowing_wand", "lightning_truncheon", "divine_glaive", "wishing_lantern", "holy_crystal"];
+  const SHOP = normalizeObservation({
+    screen: "shop", gameTime: "13:32", myGold: 242, allies: [], enemies: [],
+    myItems: ["Arcane Boots", "Glowing Wand", "Lightning Truncheon", "Divine Glaive", "Wishing Lantern"],
+    recommended: [{ name: "Arcane Boots", price: 684 }, { name: "Glowing Wand", price: 1947 }, { name: "Lightning Truncheon", price: 2137 }, { name: "Divine Glaive", price: 1871 }, { name: "Wishing Lantern", price: 2137 }, { name: "Holy Crystal", price: 2850 }],
+    spare: [{ name: "Fleeting Time", price: 1947 }, { name: "Blood Wings", price: 1995 }], tip: "",
+  });
+  const play = (reads: Observation[], from: Session = EMPTY_SESSION) => reads.reduce((s, obs, i) => sessionReducer(s, { type: "observe", obs, now: 1_000_000 + i * 60_000 }), from);
+  const plan = (s: Session) => planBuild({ hero: H("Zetian"), gold: s.gold, ...buildInputs(s) });
+  const owned = (s: Session) => plan(s).slots.filter((x) => x.owned).map((x) => x.item.id);
+
+  it("shifts mis-columned enemy rows back, both ways it happened", () => {
+    const a = READS[2]!.enemies.find((p) => p.heroId === H("Belerick").id)!;
+    expect(a).toMatchObject({ kills: 2, deaths: 6, assists: 10, gold: 4773 });
+    const b = READS[5]!.enemies.find((p) => p.heroId === H("Belerick").id)!;
+    expect(b).toMatchObject({ kills: 2, deaths: 10, gold: 8063 });
+    expect(b.assists).toBeUndefined(); // that column was lost in the read; not invented
+    for (const obs of READS) for (const p of obs.enemies) expect(p.kills ?? 0).toBeLessThan(30);
+    // The player's own half was read correctly every time and is left alone.
+    expect(READS[2]!.allies.find((p) => p.heroId === H("Zetian").id)).toMatchObject({ kills: 3, deaths: 4, assists: 9, gold: 5596 });
+    // One impossible row among good ones is not "repaired" on a guess: it just loses its numbers.
+    const lone = unscramble([{ heroId: 1, kills: 4773, deaths: 2, assists: 6, gold: 10 }, { heroId: 2, kills: 1, deaths: 1, assists: 1, gold: 900 }, { heroId: 3, kills: 0, deaths: 2, assists: 3, gold: 800 }]);
+    expect(lone[0]).toMatchObject({ heroId: 1, kills: undefined, gold: undefined });
+    expect(lone[1]).toMatchObject({ kills: 1, gold: 900 });
+  });
+
+  it("tells the story of the match from the six scoreboards", () => {
+    const s = play(READS);
+    expect(s.history).toHaveLength(6);
+    expect(s.enemyLive[H("Freya").id]).toMatchObject({ kills: 9, deaths: 8, gold: 8030 });
+    // Assists were unreadable on the last board; the earlier figure is kept rather than dropped.
+    expect(s.enemyLive[H("Freya").id]!.assists).toBe(4);
+    const story = s.story!;
+    expect(story).toHaveLength(6);
+    expect(story[0]!.text).toMatch(/Freya leads their team \(9\/3\/2\)/);
+    expect(story[0]!.text).toMatch(/Your team is ahead by 3\.4k gold/);
+    expect(story.at(-1)!.text).toMatch(/You died once\./);
+    expect(story.at(-1)!.text).toMatch(/Ixia got 4 kills \(13\/2\/6\)/);
+    expect(story.map((b) => b.at)).toEqual([441, 488, 529, 632, 704, 798]);
+    // No "4,773 kills" ever reaches the fed check: the threat list is led by a real hero with real numbers.
+    const top = plan(s).threat.sources[0]!;
+    expect(s.enemyLive[top.heroId]!.kills).toBeLessThan(30);
+  });
+
+  it("believes the shop's inventory and learns that the scoreboard left out the starting gold", () => {
+    const before = play(READS);
+    expect(before.spent).toBe(8664 - 186);
+    const s = play([SHOP], before);
+    // Five finished items cost 8,776 at the shop's prices: 298 more than "spent". That is the starting gold.
+    expect(s.seenItems).toEqual(["arcane_boots", "glowing_wand", "lightning_truncheon", "divine_glaive", "wishing_lantern"]);
+    expect(s.seenPartial).toBeUndefined();
+    expect(s.goldOffset).toBe(300);
+    expect(s.spent).toBe(8478 + 300);
+    expect(s.priceFactor).toBe(0.95);
+    expect(owned(s)).toEqual(["arcane_boots", "glowing_wand", "lightning_truncheon", "divine_glaive", "wishing_lantern"]);
+    // With five slots truly filled, the sixth is the coach's call: a defensive answer to their fed marksman
+    // rather than the list's Holy Crystal — priced at the shop's discount, and with where to find it.
+    const next = plan(s).next;
+    expect(next).toMatchObject({ action: "save", item: { id: "winter_crown" }, goldNeeded: 1814 - 242 });
+    expect(next.where).toBe("It's under the Magic tab.");
+    expect(plan(s).slots).toHaveLength(6);
+    // The next scoreboard keeps the corrected figure.
+    const later = play([board("13:50", 300, [["Argus", 6, 1, 4, 10500], ["Zetian", 5, 6, 18, 8900], ["Carmilla", 1, 7, 22, 8200], ["Thamuz", 8, 4, 11, 10900], ["Ixia", 13, 2, 6, 11300]], [["Belerick", 2, 10, 13, 8200], ["Novaria", 0, 6, 12, 7300], ["Layla", 7, 2, 6, 10800], ["Badang", 2, 9, 1, 6600], ["Freya", 9, 8, 4, 8200]])], s);
+    expect(later.spent).toBe(8900 - 300 + 300);
+  });
+
+  it("assumes the player buys from their own in-game list, never a counter the coach only suggested", () => {
+    // The shop was opened early, so the in-game list is known. Freya is 9/3: the coach wants a defensive answer.
+    const early: Session = { ...play(READS.slice(0, 2)), plannedBuild: IN_GAME, shopListed: IN_GAME, priceFactor: 0.95, goldOffset: 300, spent: 4465 + 300 };
+    const p = plan(early);
+    // 4,765 spent pays for exactly the first three items of their list (684 + 1,947 + 2,137 = 4,768).
+    expect(p.slots.filter((x) => x.owned).map((x) => x.item.id)).toEqual(["arcane_boots", "glowing_wand", "lightning_truncheon"]);
+    // Whatever counters the plan contains, none is marked as bought on the strength of gold alone.
+    for (const slot of p.slots) if (!IN_GAME.includes(slot.item.id)) expect(slot.owned).toBe(false);
+    // A tap on the dashboard (or a read of the inventory) is what confirms an off-list purchase.
+    const tapped = sessionReducer(early, { type: "bought", id: "winter_crown" });
+    expect(owned(tapped)).toContain("winter_crown");
+  });
+
+  it("fits an inventory read to the gold spent", () => {
+    const five = ["arcane_boots", "glowing_wand", "lightning_truncheon", "divine_glaive", "wishing_lantern"];
+    // Exactly affordable, or over by no more than the starting gold: believed whole.
+    expect(fitOwnItems(five, 8776, 0.95)).toMatchObject({ items: five, over: 0 });
+    expect(fitOwnItems(five, 8478, 0.95)).toMatchObject({ items: five, over: 298 });
+    expect(fitOwnItems(five, 8478, 0.95)!.partial).toBeUndefined();
+    // Well short of the fifth item: its pieces were read as the finished thing.
+    expect(fitOwnItems(five, 7300, 0.95)).toMatchObject({ items: five.slice(0, 4), partial: "wishing_lantern" });
+    // Nowhere near: a misread, thrown away.
+    expect(fitOwnItems(five, 3000, 0.95)).toBeUndefined();
+    expect(fitOwnItems(["arcane_boots", "warrior_boots"], 9000)).toBeUndefined();
+    expect(fitOwnItems([], 9000)).toBeUndefined();
+    // A piece being built is finished before anything else, and the gold already in it counts.
+    const p = planBuild({ hero: H("Zetian"), enemies: team("Freya", "Layla", "Belerick"), owned: [], gold: 500, spent: 7300, priceFactor: 0.95, seenItems: five.slice(0, 4), partial: "wishing_lantern", plannedBuild: IN_GAME });
+    expect(p.slots.find((x) => !x.owned)).toMatchObject({ item: { id: "wishing_lantern" }, paid: 7300 - 6639 });
+    expect(p.next).toMatchObject({ action: "buy-pieces", item: { id: "wishing_lantern" }, goldNeeded: 2137 - 661 - 500 });
+  });
+
+  it("holds a scoreboard row whose numbers went down until the next read settles it", () => {
+    const base = play(READS.slice(0, 2));
+    const freya = H("Freya").id;
+    const bad = board("08:30", 700, [["Zetian", 3, 4, 9, 5200]], [["Freya", 4, 3, 2, 2230], ["Belerick", 2, 6, 10, 4500], ["Novaria", 0, 3, 10, 4200], ["Layla", 2, 2, 5, 5200], ["Badang", 1, 5, 0, 3500]]);
+    const held = play([bad], base);
+    expect(held.enemyLive[freya]).toMatchObject({ kills: 9, gold: 5230 }); // 9 kills do not become 4
+    expect(held.doubt?.[freya]).toMatchObject({ kills: 4 });
+    expect(held.history.at(-1)!.players[freya]).toMatchObject({ kills: 9, gold: 5230 });
+    // The same lower figure twice in a row: the earlier reading was the wrong one.
+    const again = board("08:55", 760, [["Zetian", 3, 4, 9, 5300]], [["Freya", 4, 3, 3, 2400], ["Belerick", 2, 6, 10, 4600], ["Novaria", 0, 3, 10, 4300], ["Layla", 2, 2, 5, 5300], ["Badang", 1, 5, 0, 3600]]);
+    const settled = play([again], held);
+    expect(settled.enemyLive[freya]).toMatchObject({ kills: 4, gold: 2400 });
+    expect(settled.doubt?.[freya]).toBeUndefined();
+  });
+});
+
+describe("AI coach", () => {
+  const live = (): Session => {
+    const obs = normalizeObservation({
+      screen: "scoreboard", gameTime: "08:08", myGold: 627,
+      allies: [["Argus", 5, 0, 2, 6487], ["Zetian", 3, 4, 9, 5092], ["Carmilla", 0, 5, 7, 3820], ["Thamuz", 5, 4, 5, 5864], ["Ixia", 4, 1, 3, 6066]].map(([hero, kills, deaths, assists, gold]) => ({ hero, isMe: hero === "Zetian", kills, deaths, assists, gold, level: -1, items: [] })),
+      enemies: [["Belerick", 2, 6, 10, 4472], ["Novaria", 0, 3, 10, 4111], ["Layla", 2, 2, 5, 5159], ["Badang", 1, 5, 0, 3465], ["Freya", 9, 3, 2, 5230]].map(([hero, kills, deaths, assists, gold]) => ({ hero, isMe: false, kills, deaths, assists, gold, level: -1, items: [] })),
+      myItems: [], recommended: [], spare: [], tip: "",
+    });
+    return sessionReducer(EMPTY_SESSION, { type: "observe", obs, now: 2_000_000 });
+  };
+
+  it("briefs the coach with the whole match in plain text", () => {
+    const s = live();
+    const brief = coachBrief(s, 2_000_000)!;
+    expect(brief).toMatch(/PLAYER: Zetian — Mage, magic damage/);
+    expect(brief).toMatch(/3\/4\/9, 5092 gold/);
+    expect(brief).toMatch(/Gold in pocket: 627\. Spent so far: about 4465\./);
+    expect(brief).toMatch(/- Freya — Fighter, physical damage.*9\/3\/2, 5230 gold\. FED\./);
+    expect(brief).toMatch(/TEAM GOLD: the player's team 27329, enemy 22437/);
+    expect(brief).toMatch(/STORY SO FAR\n- 8:08 /);
+    expect(brief).toMatch(/Match clock 8:08/);
+    // Nothing to coach on before the line-ups are known.
+    expect(coachBrief(EMPTY_SESSION, 0)).toBeUndefined();
+    // The catalog the coach chooses from is the app's own.
+    expect(COACH_SYSTEM).toContain("Winter Crown | 1910 | Magic |");
+    expect(COACH_SYSTEM.match(/\n[^|\n]+ \| \d+ \| /g)!.length).toBe(ITEMS.length);
+  });
+
+  it("checks the coach's answer against the catalog and what the player owns", () => {
+    // Gold spent is left out here so the test is about the coach's list, not the spending estimate.
+    const s: Session = { ...live(), owned: ["arcane_boots", "glowing_wand"], spent: undefined };
+    const out = normalizeCoach(
+      {
+        situation: "ahead", headline: "  Freya is fed — buy Winter Crown next.  ", do_now: ["Stay behind Argus.", "", "Take the turtle with your team.", "Push mid.", "A fifth line"], avoid: "Do not walk into the river alone.",
+        focus_hero: "freya", focus_why: "9/3 and she dives the back line.",
+        build: [{ item: "Winter Crown", why: "Freeze when Freya jumps on you." }, { item: "Sword of Infinite Lies", why: "made up" }, { item: "Glowing Wand", why: "x" }, { item: "Tough Boots", why: "second boots" }, { item: "Holy Crystal", why: "Big damage." }, { item: "winter crown", why: "repeat" }, { item: "Divine Glaive", why: "Cuts through magic defense." }],
+        story_beat: "Freya reached 9 kills; your team still leads on gold.", story_tone: "bad",
+      },
+      s, "claude-opus-5-5", 2_000_000,
+    )!;
+    expect(out.advice).toMatchObject({ situation: "ahead", headline: "Freya is fed — buy Winter Crown next.", doNow: ["Stay behind Argus.", "Take the turtle with your team.", "Push mid."], model: "claude-opus-5-5", clock: 488 });
+    expect(out.advice.focus).toEqual({ heroId: H("Freya").id, why: "9/3 and she dives the back line." });
+    // Owned items stay in front in the order held; invented items, repeats and second boots are gone.
+    expect(out.build!.ids).toEqual(["arcane_boots", "glowing_wand", "winter_crown", "holy_crystal", "divine_glaive"]);
+    expect(out.advice.item).toEqual({ id: "winter_crown", why: "Freeze when Freya jumps on you." });
+    expect(out.beat).toEqual({ at: 488, text: "Freya reached 9 kills; your team still leads on gold.", tone: "bad" });
+
+    // Applied to the match, the plan follows the coach's order and gives its reasons.
+    const coached = sessionReducer(s, { type: "ai", ...out });
+    const plan = planBuild({ hero: H("Zetian"), gold: coached.gold, ...buildInputs(coached) });
+    expect(slotIds(plan).slice(0, 5)).toEqual(["arcane_boots", "glowing_wand", "winter_crown", "holy_crystal", "divine_glaive"]);
+    expect(plan.slots).toHaveLength(6); // the rules fill the slot the coach left open
+    expect(plan.slots[2]).toMatchObject({ owned: false, reason: "Freeze when Freya jumps on you." });
+    expect(coached.story!.at(-1)).toMatchObject({ text: "Freya reached 9 kills; your team still leads on gold." }); // replaces the rule-made line for that moment
+    expect(coached.story).toHaveLength(1);
+
+    // Junk in, nothing out; an enemy name that is not in the match is dropped.
+    expect(normalizeCoach({}, s, "m", 1)).toBeUndefined();
+    expect(normalizeCoach("not json", s, "m", 1)).toBeUndefined();
+    const thin = normalizeCoach({ headline: "Open the scoreboard.", focus_hero: "Gusion", build: [{ item: "Winter Crown" }] }, s, "m", 2_000_000)!;
+    expect(thin.advice.focus).toBeUndefined();
+    expect(thin.build).toBeUndefined(); // fewer than three real items is not a build
+    expect(thin.advice.situation).toBe("even");
+  });
+
+  it("starts a new match with a clean slate", () => {
+    const s = sessionReducer({ ...live(), owned: ["arcane_boots"] }, { type: "ai", ...normalizeCoach(demoCoach(live()), live(), "demo", 2_000_000)! });
+    expect(s.ai).toBeDefined();
+    expect(s.aiBuild!.ids.length).toBeGreaterThanOrEqual(3);
+    const next = sessionReducer(s, { type: "setStage", stage: "draft", now: 3_000_000 });
+    for (const key of ["ai", "aiBuild", "story", "position", "goldOffset", "seenItems", "spent"] as const) expect(next[key]).toBeUndefined();
+  });
+
+  it("turns a positioning answer into advice, and says when the map was not open", () => {
+    const s = live();
+    expect(positionBrief(s, 2_000_000, 2)).toMatch(/The player is Zetian \(Mage\)/);
+    expect(positionBrief(s, 2_000_000, 2)).toMatch(/Freya \(9\/3\/2\)/);
+    expect(positionBrief(s, 2_000_000, 2)).toMatch(/Picture 2 was taken a few seconds later/);
+    expect(positionBrief(s, 2_000_000, 1)).toMatch(/One picture only/);
+    const a = normalizePosition({ map_open: true, where: "Mid lane, past the river.", enemies_seen: "Two top, three missing.", risk: "high", say: "Back to your turret.", moves: ["Walk back.", "Clear the wave.", "Wait for Argus.", "extra"] }, "claude-opus-5-5", 5)!;
+    expect(a).toMatchObject({ at: 5, summary: "Mid lane, past the river. Two top, three missing.", danger: "High risk where you are standing.", say: "Back to your turret.", model: "claude-opus-5-5" });
+    expect(a.moves).toHaveLength(3);
+    const b = normalizePosition({ map_open: false, where: "Bottom lane.", enemies_seen: "", risk: "low", say: "Stay where you are.", moves: [] }, "m", 6)!;
+    expect(b.danger).toBeUndefined();
+    expect(b.summary).toMatch(/map was not open/);
+    expect(normalizePosition({ say: "" }, "m", 7)).toBeUndefined();
   });
 });

@@ -1,5 +1,6 @@
 import { heroById, heroName } from "../data/heroes";
 import type { Session, Snapshot } from "../state/session";
+import type { StoryBeat } from "../types";
 
 export interface StoryPlayer {
   heroId: number;
@@ -143,4 +144,76 @@ export function matchStory(s: Session): MatchStory | undefined {
   const spoken = [lines.find((l) => /^Your team is|^The teams are/.test(l)), lines.find((l) => /^You (have|are)/.test(l))].filter(Boolean) as string[];
   if (spoken.length && (state || selfState)) story.headline = { key: `story:${state ?? "-"}:${selfState || "-"}`, say: spoken.join(" ") };
   return story;
+}
+
+/**
+ * One storyboard line for the latest scoreboard: what changed since the one before
+ * (who got kills, whether the player died, how the gold lead moved). Numbers only.
+ */
+export function storyBeat(s: Pick<Session, "history" | "myHeroId" | "allies" | "enemies">): StoryBeat | undefined {
+  const cur = s.history.at(-1);
+  const me = s.myHeroId;
+  if (!cur || !me) return undefined;
+  const prev = s.history.at(-2);
+  const mine = [me, ...s.allies.filter((id) => id !== me)];
+  const total = (snap: Snapshot, ids: number[]): number | undefined => {
+    const golds = ids.map((id) => snap.players[id]?.gold).filter((g): g is number => g !== undefined);
+    return golds.length >= 4 ? sum(golds) : undefined;
+  };
+  const leadOf = (snap: Snapshot) => {
+    const a = total(snap, mine);
+    const b = total(snap, s.enemies);
+    return a !== undefined && b !== undefined ? a - b : undefined;
+  };
+  const kda = (id: number) => {
+    const p = cur.players[id];
+    return p?.kills !== undefined ? ` (${p.kills}/${p.deaths ?? "?"}/${p.assists ?? "?"})` : "";
+  };
+  const gained = (id: number, key: "kills" | "deaths") => {
+    const now = cur.players[id]?.[key];
+    const was = prev?.players[id]?.[key];
+    return now !== undefined && was !== undefined ? now - was : 0;
+  };
+  const top = (ids: number[]) => ids.map((id) => ({ id, n: gained(id, "kills") })).sort((a, b) => b.n - a.n)[0];
+
+  const parts: string[] = [];
+  let score = 0;
+  if (prev) {
+    const died = gained(me, "deaths");
+    if (died > 0) {
+      parts.push(died === 1 ? "You died once." : `You died ${died} times.`);
+      score -= died;
+    }
+    const myKills = gained(me, "kills");
+    if (myKills > 0) {
+      parts.push(myKills === 1 ? "You got a kill." : `You got ${myKills} kills.`);
+      score += myKills;
+    }
+    const enemy = top(s.enemies);
+    if (enemy && enemy.n >= 2) {
+      parts.push(`${heroName(enemy.id)} got ${enemy.n} kills${kda(enemy.id)}.`);
+      score -= 1;
+    }
+    const ally = top(s.allies.filter((id) => id !== me));
+    if (ally && ally.n >= 2) {
+      parts.push(`${heroName(ally.id)} got ${ally.n} kills${kda(ally.id)}.`);
+      score += 1;
+    }
+  } else {
+    // First look: the enemy with the most kills is the one a new player needs named.
+    const by = (id: number, key: "kills" | "gold") => cur.players[id]?.[key] ?? -1;
+    const leader = [...s.enemies].sort((a, b) => by(b, "kills") - by(a, "kills") || by(b, "gold") - by(a, "gold"))[0];
+    if (leader && by(leader, "kills") >= 0) parts.push(`${heroName(leader)} leads their team${kda(leader)}.`);
+  }
+  const lead = leadOf(cur);
+  if (lead !== undefined) {
+    const was = prev ? leadOf(prev) : undefined;
+    const change = was !== undefined ? lead - was : 0;
+    const moved = Math.abs(change) >= 300 ? ` (${change > 0 ? "+" : "-"}${k(change)})` : "";
+    parts.push(Math.abs(lead) < 500 ? `Gold is even${moved}.` : `Your team is ${lead > 0 ? "ahead" : "behind"} by ${k(lead)} gold${moved}.`);
+    if (change >= 400) score += 1;
+    if (change <= -400) score -= 1;
+  }
+  if (!parts.length) return undefined;
+  return { at: cur.at, text: parts.join(" "), tone: score > 0 ? "good" : score < 0 ? "bad" : "neutral" };
 }

@@ -26,12 +26,12 @@ import * as fs from "fs/promises";
 import { writeFile } from "fs/promises";
 import { finished } from "node:stream/promises";
 // \0rolldown/runtime.js
-var __create = Object.create;
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getProtoOf = Object.getPrototypeOf;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __create$1 = Object.create;
+var __defProp$1 = Object.defineProperty;
+var __getOwnPropDesc$1 = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames$1 = Object.getOwnPropertyNames;
+var __getProtoOf$1 = Object.getPrototypeOf;
+var __hasOwnProp$1 = Object.prototype.hasOwnProperty;
 var __esmMin = (fn, res, err) => () => {
 	if (err) throw err[0];
 	try {
@@ -43,28 +43,28 @@ var __esmMin = (fn, res, err) => () => {
 var __commonJSMin = (cb, mod) => () => (mod || (cb((mod = { exports: {} }).exports, mod, mod.exports), cb = null), mod.exports);
 var __exportAll = (all, no_symbols) => {
 	let target = {};
-	for (var name in all) __defProp(target, name, {
+	for (var name in all) __defProp$1(target, name, {
 		get: all[name],
 		enumerable: true
 	});
-	if (!no_symbols) __defProp(target, Symbol.toStringTag, { value: "Module" });
+	if (!no_symbols) __defProp$1(target, Symbol.toStringTag, { value: "Module" });
 	return target;
 };
-var __copyProps = (to, from, except, desc) => {
-	if (from && typeof from === "object" || typeof from === "function") for (var keys = __getOwnPropNames(from), i = 0, n = keys.length, key; i < n; i++) {
+var __copyProps$1 = (to, from, except, desc) => {
+	if (from && typeof from === "object" || typeof from === "function") for (var keys = __getOwnPropNames$1(from), i = 0, n = keys.length, key; i < n; i++) {
 		key = keys[i];
-		if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+		if (!__hasOwnProp$1.call(to, key) && key !== except) __defProp$1(to, key, {
 			get: ((k) => from[k]).bind(null, key),
-			enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			enumerable: !(desc = __getOwnPropDesc$1(from, key)) || desc.enumerable
 		});
 	}
 	return to;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule || !__hasOwnProp.call(mod, "default") ? __defProp(target, "default", {
+var __toESM$1 = (mod, isNodeMode, target) => (target = mod != null ? __create$1(__getProtoOf$1(mod)) : {}, __copyProps$1(isNodeMode || !mod || !mod.__esModule || !__hasOwnProp$1.call(mod, "default") ? __defProp$1(target, "default", {
 	value: mod,
 	enumerable: true
 }) : target, mod));
-var __toCommonJS = (mod) => __hasOwnProp.call(mod, "module.exports") ? mod["module.exports"] : __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toCommonJS$1 = (mod) => __hasOwnProp$1.call(mod, "module.exports") ? mod["module.exports"] : __copyProps$1(__defProp$1({}, "__esModule", { value: true }), mod);
 var __require = /* #__PURE__ */ (() => createRequire(import.meta.url))();
 // src/data/generated/heroes.json
 var heroes_default = /*#__PURE__*/ JSON.parse("[{\"id\":1,\"name\":\"Miya\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Damage\"],\"ability\":{\"durability\":10,\"offense\":70,\"effects\":40,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_da894b37bfb5cadb32307f371f31918a.png\",\"tags\":{\"Buff\":2,\"AOE\":2,\"CC\":1,\"Conceal\":1,\"Remove CC\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":3,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":0,\"conceal\":2,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[3,15,27],\"desc\":\"Miya counters heroes who rely on targeted CC effects, such as Saber and Eudora, because she can easily escape their CC and respond with a strong counterattack. The split arrows from her 1st Skill are also very effective against heroes that summon units, such as Sun.\"},\"weak\":{\"ids\":[52,101],\"desc\":\"Miya is countered by heroes with a lot of AOE damage, such as Pharsa and Yve, because they can still hit her while she is concealed.\"},\"assist\":{\"ids\":[6,70],\"desc\":\"Miya works well with Tanks who have powerful CC abilities like Belerick and Tigreal since their CCs give her more opportunities to dish out damage.\"}},\"meta\":{\"win\":49.63,\"pick\":2.13,\"ban\":4.12}},{\"id\":2,\"name\":\"Balmond\",\"roles\":[\"Fighter\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Damage\",\"Regen\"],\"ability\":{\"durability\":80,\"offense\":30,\"effects\":20,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_df9a6990b1946d045e4d3a46c90725cf.png\",\"tags\":{\"Heal\":1,\"Mobility\":1,\"Slow\":1,\"AOE\":1,\"Buff\":1,\"Burst\":1},\"sig\":{\"phys\":2,\"magic\":0,\"trueDmg\":2,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":1,\"hardCc\":2,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[18,15],\"desc\":\"Balmond is strong against squishy heroes who lack the ability to escape once he closes the gap on them, such as Layla and Eudora.\"},\"weak\":{\"ids\":[53,43],\"desc\":\"Balmond is countered by ranged heroes who can deal damage to Balmond outside of his attack range, such as Lesley and Irithel.\"},\"assist\":{\"ids\":[55,14],\"desc\":\"Balmond is best with Support heroes that can boost his Mobility and Survivability. Examples include Angela and Rafaela.\"}},\"meta\":{\"win\":46.5,\"pick\":0.62,\"ban\":0.39}},{\"id\":3,\"name\":\"Saber\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\",\"roam\"],\"specialities\":[\"Charge\",\"Finisher\"],\"ability\":{\"durability\":20,\"offense\":60,\"effects\":60,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_6bbfac806f29d29f17fea9e98d2d2fee.png\",\"tags\":{\"Debuff\":1,\"AOE\":1,\"Buff\":1,\"Mobility\":1,\"Burst\":1,\"CC\":1},\"sig\":{\"phys\":6,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[18,15],\"desc\":\"Saber's deadly combo makes him strong against squishy heroes, such as Layla and Eudora.\"},\"weak\":{\"ids\":[34,76],\"desc\":\"Saber is countered by Support heroes with Survivability buffs, like Estes and Faramis.\"},\"assist\":{\"ids\":[75,33],\"desc\":\"Saber works well with high-damage heroes who can help him burst down enemy heroes in teamfights, such as Kadita and Cyclops.\"}},\"meta\":{\"win\":51.4,\"pick\":1.04,\"ban\":25.61}},{\"id\":4,\"name\":\"Alice\",\"roles\":[\"Tank\",\"Mage\"],\"lanes\":[\"exp\",\"jungle\"],\"specialities\":[\"Charge\",\"Regen\"],\"ability\":{\"durability\":50,\"offense\":50,\"effects\":70,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_18300163a5a912a84adb52b8d59b4618.png\",\"tags\":{\"AOE\":4,\"Heal\":1,\"Mobility\":1,\"Slow\":1,\"CC\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[91,61],\"desc\":\"With her great sustainability in combat plus her mobility and CC, Alice counters heroes that lack burst and can't escape from melee enemies, such as Cecilion and Chang'e.\"},\"weak\":{\"ids\":[87,58],\"desc\":\"Alice is countered by heroes with Execute or Healing Reduction who can impede her from healing herself during the Ultimate. Heroes like Baxia or Martis can reduce her healing or kill her before she can heal.\"},\"assist\":{\"ids\":[2,85],\"desc\":\"To compensate for Alice's weaknesses in the early game and form a balanced team, pair her with strong early game heroes, like Balmond or Dyrroth.\"}},\"meta\":{\"win\":50.35,\"pick\":0.88,\"ban\":13.54}},{\"id\":5,\"name\":\"Nana\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Poke\",\"Burst\"],\"ability\":{\"durability\":50,\"offense\":60,\"effects\":100,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_ee1e0d80d87bb614a0c552ef028f85ce.png\",\"tags\":{\"Death Immunity\":1,\"AOE\":1,\"CC\":2,\"Debuff\":1,\"Burst\":1},\"sig\":{\"phys\":0,\"magic\":3,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[15,75],\"desc\":\"Nana's Passive gives her great survivability, making her strong against heroes with deadly combos, like Eudora and Kadita.\"},\"weak\":{\"ids\":[16,24],\"desc\":\"Nana can be countered by heroes with strong chasing abilities, like Zilong, Natalia, because they can chase Nana through her Passive duration.\"},\"assist\":{\"ids\":[14,10],\"desc\":\"Nana works best with heroes with CC skills, that will help her get the kills, such as Rafaela and Franco.\"}},\"meta\":{\"win\":47.15,\"pick\":1.62,\"ban\":3.59}},{\"id\":6,\"name\":\"Tigreal\",\"roles\":[\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Crowd Control\"],\"ability\":{\"durability\":80,\"offense\":10,\"effects\":100,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_8b30576754be1a4f8bebd09df8d6bec7.png\",\"tags\":{\"Buff\":1,\"AOE\":2,\"Slow\":1,\"Charge\":1,\"CC\":2},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[16,22],\"desc\":\"Tigreal's Passive can negate enemy Basic Attacks, making him strong against heroes that deal damage with their Basic Attacks, such as Zilong and Freya.\"},\"weak\":{\"ids\":[61,50],\"desc\":\"But as a melee hero, Tigreal is countered by Ranged Mage heroes like Chang'e and Zhask.\"},\"assist\":{\"ids\":[38,46],\"desc\":\"Tigreal works well with heroes with strong initiation skills, that gives him a better chance to hit the enemies with his CC skills, such as Vexana and Odette.\"}},\"meta\":{\"win\":45.42,\"pick\":2.01,\"ban\":7.7}},{\"id\":7,\"name\":\"Alucard\",\"roles\":[\"Fighter\",\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Damage\"],\"ability\":{\"durability\":50,\"offense\":50,\"effects\":10,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_0f51b6906e08897aa02330d65b0deeac.png\",\"tags\":{\"Buff\":2,\"Mobility\":1,\"AOE\":2,\"Burst\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":1,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[42,109],\"desc\":\"Alucard has great chase abilities and damage resistance, making him powerful against squishy Assassins like Harley and Aamon.\"},\"weak\":{\"ids\":[10,32],\"desc\":\"But he can be countered by heroes with powerful control abilities like Franco and Johnson. If controlled, Alucard won't be able to steal HP and can be easily eliminated.\"},\"assist\":{\"ids\":[41,115],\"desc\":\"He's best with heroes with crowd control, such as Gatotkaca and Xavier, which makes up for his lack of powerful control abilities.\"}},\"meta\":{\"win\":49.16,\"pick\":0.49,\"ban\":0.32}},{\"id\":8,\"name\":\"Karina\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Finisher\",\"Magic Damage\"],\"ability\":{\"durability\":50,\"offense\":70,\"effects\":10,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_f49394186dc0e55d545da8377be83280.png\",\"tags\":{\"Buff\":2,\"Damage\":1,\"Speed Up\":1,\"AOE\":1,\"Burst\":1,\"Mobility\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":2,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":3,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[18,60],\"desc\":\"Karina counters Marksmen that lack mobility, such as Layla and Hanabi, since her 1st Skill can neutralize their Basic Attacks and they can't escape her high mobility and burst damage.\"},\"weak\":{\"ids\":[9,78],\"desc\":\"Karina is countered by Tanky heroes with CC abilities, like Akai and Khufra because they can tank her damage, and protect their allies from her.\"},\"assist\":{\"ids\":[6,76],\"desc\":\"Karina works well with heroes who can pull enemies together, such as Tigreal and Faramis, since her Ultimate and 2nd Skill also hits anyone near her main target, setting them up to be chain killed by her Ultimate.\"}},\"meta\":{\"win\":49.15,\"pick\":0.95,\"ban\":5.49}},{\"id\":9,\"name\":\"Akai\",\"roles\":[\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Guard\",\"Crowd Control\"],\"ability\":{\"durability\":90,\"offense\":30,\"effects\":90,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_28f223447f0174336ff0922d364d81d3.png\",\"tags\":{\"Buff\":1,\"Mobility\":1,\"CC\":2,\"AOE\":2},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":3,\"hardCc\":4,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[15,46],\"desc\":\"Akai is strong against heroes with poor Mobility since he can easily catch and eliminate them with his Ultimate, such as Eudora and Odette.\"},\"weak\":{\"ids\":[5,48],\"desc\":\"Akai is countered by heroes with CC removers or transformation abilities that allow them to escape or counter Akai's Ultimate, such as Nana and Diggie.\"},\"assist\":{\"ids\":[3,15],\"desc\":\"Akai works best with heroes who can deal high burst damage as they can help him take down enemies caught in his Ultimate, such as Saber and Eudora.\"}},\"meta\":{\"win\":50.21,\"pick\":0.33,\"ban\":1.07}},{\"id\":10,\"name\":\"Franco\",\"roles\":[\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Initiator\",\"Control\"],\"ability\":{\"durability\":80,\"offense\":10,\"effects\":100,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_9bed3c0095335606e0ce616c6e5a8553.png\",\"tags\":{\"Buff\":1,\"CC\":2,\"Damage\":1,\"Slow\":1,\"Burst\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[66,34,18],\"desc\":\"Heroes with low mobility like Vale, Estes and Layla.\"},\"weak\":{\"ids\":[89,17,77],\"desc\":\"Heroes with high mobility or Control Immunity such as Wanwan, Fanny and Badang.\"},\"assist\":{\"ids\":[66,8,100],\"desc\":\"Heroes with high burst damage such as Vale, Karina and Brody to take advantage of his CC.\"}},\"meta\":{\"win\":41.75,\"pick\":0.93,\"ban\":3.01}},{\"id\":11,\"name\":\"Bane\",\"roles\":[\"Fighter\",\"Mage\"],\"lanes\":[\"jungle\",\"exp\"],\"specialities\":[\"Push\",\"Burst\"],\"ability\":{\"durability\":50,\"offense\":60,\"effects\":40,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_7e4e74bb161da0f477cc0d1819fa39e6.png\",\"tags\":{\"Burst\":2,\"Damage\":1,\"Heal\":1,\"AOE\":1,\"CC\":1},\"sig\":{\"phys\":2,\"magic\":2,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[49,70],\"desc\":\"Bane counters Tanks with high HP but low damage, such as Hylos and Belerick, because he can out-sustain them and deals HP percentage-based damage.\"},\"weak\":{\"ids\":[66,115],\"desc\":\"Bane is countered by Mages that deal heavy damage from afar, such as Vale and Xavier who can deal significant damage to him before he can get in range.\"},\"assist\":{\"ids\":[6,96],\"desc\":\"Bane works best with heroes like as Tigreal and Luo Yi who can pull enemies together so he can do even more damage with his AOE.\"}},\"meta\":{\"win\":51.59,\"pick\":0.28,\"ban\":0.18}},{\"id\":12,\"name\":\"Bruno\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Burst\"],\"ability\":{\"durability\":20,\"offense\":60,\"effects\":20,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_2a733ac5b7d1f97093e82940af6f5008.png\",\"tags\":{\"Buff\":2,\"Damage\":1,\"Slow\":1,\"Mobility\":1,\"Burst\":1,\"CC\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":1,\"crit\":1,\"maxHp\":0,\"hardCc\":3,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[60,1],\"desc\":\"Bruno is strong against Marksmen that are weaker in the early game like Hanabi and Miya who Bruno can out-trade thanks to his high damage.\"},\"weak\":{\"ids\":[41,117],\"desc\":\"Bruno is countered by Tanks with high Physical Defense like Gatotkaca and Fredrinn that take greatly reduced damage from his attacks.\"},\"assist\":{\"ids\":[10,78],\"desc\":\"Bruno is best with Supports that can force enemies to engage and allow him to make use of his early game damage, such as Franco and Khufra.\"}},\"meta\":{\"win\":53.79,\"pick\":0.65,\"ban\":0.38}},{\"id\":13,\"name\":\"Clint\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Burst\"],\"ability\":{\"durability\":30,\"offense\":70,\"effects\":40,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_fd120c3e9261a233442ee88a1d7c9f58.png\",\"tags\":{\"Burst\":1,\"AOE\":2,\"Mobility\":1,\"CC\":1,\"Slow\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":1,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[31,1],\"desc\":\"Clint counters heroes with comparatively shorter range like Moskov and Miya thanks to the superior range of his skills and Basic Attacks.\"},\"weak\":{\"ids\":[114,40],\"desc\":\"Clint is countered by Marksmen with burst damage like Melissa and Karrie since he lacks burst in the early and mid game to trade blows with them.\"},\"assist\":{\"ids\":[14,55],\"desc\":\"Clint works best with Supportsthat can enhance his kiting ability, such as Rafaela and Angela.\"}},\"meta\":{\"win\":50.14,\"pick\":0.74,\"ban\":0.63}},{\"id\":14,\"name\":\"Rafaela\",\"roles\":[\"Support\"],\"lanes\":[\"roam\"],\"specialities\":[\"Regen\",\"Guard\"],\"ability\":{\"durability\":60,\"offense\":20,\"effects\":70,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_68277dce415742c4a98883151c693a07.png\",\"tags\":{\"Buff\":1,\"AOE\":2,\"Slow\":1,\"Heal\":1,\"Speed Up\":1,\"CC\":1},\"sig\":{\"phys\":0,\"magic\":2,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[88,99],\"desc\":\"Rafaela has great healing and decent mobility, and performs well against heroes that lack burst damage or mobility, such as Masha and Barats.\"},\"weak\":{\"ids\":[84,21],\"desc\":\"Rafaela struggles against bursty and agile Assassins, like Ling and Hayabusa.\"},\"assist\":{\"ids\":[22,37],\"desc\":\"When teamed up with Fighters like Freya and Lapu-Lapu, Rafaela can boost their offensive power and survivability.\"}},\"meta\":{\"win\":53.98,\"pick\":0.78,\"ban\":10.66}},{\"id\":15,\"name\":\"Eudora\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Control\",\"Burst\"],\"ability\":{\"durability\":10,\"offense\":80,\"effects\":80,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_87b2a655b254c136dce8976e21935a80.png\",\"tags\":{\"Buff\":1,\"AOE\":1,\"CC\":1,\"Damage\":1,\"Burst\":1},\"sig\":{\"phys\":0,\"magic\":7,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[131,31],\"desc\":\"Eudora possesses strong targeted CC and burst capabilities, allowing her to keep squishy heroes like Moskov and Obsidia in check.\"},\"weak\":{\"ids\":[21,75],\"desc\":\"Eudora lacks self-preservation and struggles against dive heroes or Assassins who can negate targeted CC, such as Hayabusa and Kadita.\"},\"assist\":{\"ids\":[48,6],\"desc\":\"Eudora's skills can deal massive AOE damage, so pairing her with heroes who can group enemies, like Diggie and Tigreal, will make it easier to maximize her damage.\"}},\"meta\":{\"win\":50.17,\"pick\":1.72,\"ban\":43.43}},{\"id\":16,\"name\":\"Zilong\",\"roles\":[\"Fighter\",\"Assassin\"],\"lanes\":[\"exp\"],\"specialities\":[\"Chase\",\"Damage\"],\"ability\":{\"durability\":20,\"offense\":50,\"effects\":60,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_9db57da4f0daef6d432676e4f19101ed.png\",\"tags\":{\"Buff\":2,\"Heal\":1,\"CC\":1,\"Damage\":1,\"Mobility\":1,\"Debuff\":1,\"Speed Up\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":5,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[18,86],\"desc\":\"The immunity to Slow effects that Zilong gets from his Ultimate makes him strong against squishy heroes without CC skills, such as Layla and Lylia.\"},\"weak\":{\"ids\":[10,5],\"desc\":\"Zilong is still vulnerable to non-slow CC skills, making him weak against heroes with powerful single-target CC skills, such as Franco and Nana.\"},\"assist\":{\"ids\":[52,60],\"desc\":\"Zilong works best with heroes with strong defensive abilities that can hold off enemy attacks while he solos the lane, such as Pharsa and Hanabi.\"}},\"meta\":{\"win\":46.35,\"pick\":0.7,\"ban\":0.5}},{\"id\":17,\"name\":\"Fanny\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Finisher\"],\"ability\":{\"durability\":60,\"offense\":70,\"effects\":10,\"difficulty\":100},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_3391df36d6dcc54dd1c417098e15ec59.png\",\"tags\":{\"Buff\":1,\"AOE\":1,\"Mobility\":2,\"Burst\":1},\"sig\":{\"phys\":2,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[40,43],\"desc\":\"Fanny counters squishy heroes that lack targeted CC like Karrie and Irithel who cannot stop Fanny's extreme mobility while she bursts them down.\"},\"weak\":{\"ids\":[62,78],\"desc\":\"Fanny is countered by heroes that can restrict mobility, such as Kaja and Khufra, since they can easily shutdown her main advantage.\"},\"assist\":{\"ids\":[19,41],\"desc\":\"Fanny works best with heroes that can chain AOE CC to keep the enemy pinned, such as Minotaur and Gatotkaca, so she can deal damage without interruption.\"}},\"meta\":{\"win\":42.79,\"pick\":0.65,\"ban\":1.99}},{\"id\":18,\"name\":\"Layla\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Damage\"],\"ability\":{\"durability\":10,\"offense\":80,\"effects\":10,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_b2b38e9406ea0de0b866db7674feea0f.png\",\"tags\":{\"Buff\":3,\"Burst\":2,\"AOE\":1,\"CC\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":1,\"maxHp\":0,\"hardCc\":1,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[6,70],\"desc\":\"Layla's relatively longer attack range lets her counter slow Tanks like Tigreal and Belerick.\"},\"weak\":{\"ids\":[8,84],\"desc\":\"Layla is countered by Assassins with high burst damage, such as Karina and Ling, as they can get the jump on Layla and melt her easily.\"},\"assist\":{\"ids\":[74,70],\"desc\":\"Layla works best with Tanks that can protect backline heroes, such as Minsitthar and Belerick, since their protection gives Layla more opportunities to deal damage.\"}},\"meta\":{\"win\":49.47,\"pick\":1.78,\"ban\":1.81}},{\"id\":19,\"name\":\"Minotaur\",\"roles\":[\"Tank\",\"Support\"],\"lanes\":[\"roam\"],\"specialities\":[\"Crowd Control\"],\"ability\":{\"durability\":100,\"offense\":10,\"effects\":80,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_3ecd2c0843df7ec85044dafff6bf4553.png\",\"tags\":{\"Buff\":2,\"CC\":2,\"AOE\":1,\"Heal\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":1,\"heal\":2,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":2,\"hardCc\":2,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[103,116],\"desc\":\"Minotaur is strong against heroes that rely on chaining skills or attacks, like Paquito and Julian because he can interrupt their combos with his CC.\"},\"weak\":{\"ids\":[18,53],\"desc\":\"Minotaur is countered by long-range Marksmen like Layla and Lesley since his lack of speed makes him an easy target.\"},\"assist\":{\"ids\":[79,114],\"desc\":\"Minotaur works best with burst damage Marksmen, such as Granger and Melissa, since his CC's give them more opportunities to deal damage.\"}},\"meta\":{\"win\":53.86,\"pick\":1.01,\"ban\":8.65}},{\"id\":20,\"name\":\"Lolita\",\"roles\":[\"Support\",\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Guard\",\"Crowd Control\"],\"ability\":{\"durability\":100,\"offense\":10,\"effects\":90,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_474cea36a4bfdc7bf7d94530853a99b2.png\",\"tags\":{\"Shield\":2,\"Mobility\":1,\"CC\":2,\"Damage\":1,\"AOE\":1},\"sig\":{\"phys\":2,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":7,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":2,\"hardCc\":3,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[71,33],\"desc\":\"Lolita's shield makes her strong against heroes who rely on projectiles and ranged skills, such as Kimmy and Cyclops.\"},\"weak\":{\"ids\":[84,103],\"desc\":\"Lolita is countered by melee heroes with high burst damage like Ling and Paquito.\"},\"assist\":{\"ids\":[60,18],\"desc\":\"Due to her powerful defensive and CC abilities, Lolita is great at protecting Marksmen like Hanabi and Layla.\"}},\"meta\":{\"win\":53.38,\"pick\":0.08,\"ban\":0.2}},{\"id\":21,\"name\":\"Hayabusa\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Burst\"],\"ability\":{\"durability\":40,\"offense\":50,\"effects\":10,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_9cc074562291a02644a0ddae28eeaa42.png\",\"tags\":{\"Buff\":2,\"Damage\":1,\"Mobility\":1,\"Summon\":1,\"Burst\":1},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":1,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":3},\"relation\":{\"strong\":{\"ids\":[61,91],\"desc\":\"Hayabusa counters squishy heroes that lack CC to shutdown the blinks from his 2nd Skill, and who are also easy targets for his Ultimate, such as Chang'e and Cecilion.\"},\"weak\":{\"ids\":[10,62],\"desc\":\"Hayabusa is countered by heroes with targeted CC like Franco and Kaja who can lock him down before he can blink away.\"},\"assist\":{\"ids\":[37,28],\"desc\":\"Hayabusa works best with Fighters like Lapu-Lapu and Alpha who can initiate with him to quickly focus down key targets.\"}},\"meta\":{\"win\":48.19,\"pick\":0.72,\"ban\":1.53}},{\"id\":22,\"name\":\"Freya\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\",\"jungle\"],\"specialities\":[\"Chase\",\"Damage\"],\"ability\":{\"durability\":60,\"offense\":70,\"effects\":60,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_b9c34c88762ca8e66ccd4d84071bf0bc.png\",\"tags\":{\"Buff\":2,\"CC\":1,\"Shield\":1,\"Mobility\":1,\"Damage\":1,\"Morph\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":2,\"basic\":3,\"atkSpeed\":1,\"crit\":1,\"maxHp\":0,\"hardCc\":1,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[53,121],\"desc\":\"Freya not only has exceptional mobility, she also excels in prolonged engagements, making her highly effective against fragile, low-HP Marksmen, such as Lesley and Ixia. Her excellent sustained damage and mobility also allows her to counter Tanks with low damage, like Uranus and Baxia.\"},\"weak\":{\"ids\":[106,130],\"desc\":\"However, all of Freya's skills have movement components, making her vulnerable to Phoveus's unique counter. Using her skills near Phoveus will allow him to quickly gain energy for his enhanced Basic Attacks. Freya is vulnerable to CC and movement-disabling effects, so Minsitthar and Obsidia's Ultimates can lock her down completely.\"},\"assist\":{\"ids\":[70,41],\"desc\":\"In order for Freya to maximize her damage, she prefers heroes with CC like Belerick and Gatotkaca to lock down the enemy for her.\"}},\"meta\":{\"win\":50.02,\"pick\":1.12,\"ban\":8.17}},{\"id\":23,\"name\":\"Gord\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Poke\",\"Burst\"],\"ability\":{\"durability\":10,\"offense\":70,\"effects\":80,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_9513f5e10ec33f76747732eaf2082259.png\",\"tags\":{\"Buff\":1,\"Slow\":1,\"CC\":1,\"AOE\":1,\"Burst\":1},\"sig\":{\"phys\":0,\"magic\":3,\"trueDmg\":1,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[99,117],\"desc\":\"Gord is strong against melee heroes with poor Mobility, such as Barats and Fredrinn.\"},\"weak\":{\"ids\":[17,47],\"desc\":\"Gord is countered by heroes with gap closers, such as Fanny and Lancelot.\"},\"assist\":{\"ids\":[49,70],\"desc\":\"Gord works well with tanky heroes with reliable CCs, like Hylos and Belerick.\"}},\"meta\":{\"win\":52.45,\"pick\":0.57,\"ban\":0.55}},{\"id\":24,\"name\":\"Natalia\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\",\"roam\"],\"specialities\":[\"Chase\",\"Finisher\"],\"ability\":{\"durability\":10,\"offense\":60,\"effects\":60,\"difficulty\":90},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_fbb5065b6ff174d1a20ccf5b7f523514.png\",\"tags\":{\"Buff\":3,\"Mobility\":1,\"AOE\":1,\"Slow\":1},\"sig\":{\"phys\":2,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":3,\"atkSpeed\":0,\"crit\":2,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":1,\"conceal\":2,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[119,43],\"desc\":\"Natalia counters squishy heroes who lack CC and burst like as Novaria and Irithel since they can't stop Natalia's burst damage.\"},\"weak\":{\"ids\":[74,62],\"desc\":\"Natalia is countered by heroes who can restrict her mobility like Minsitthar and Kaja since they can easily shutdown her main advantage.\"},\"assist\":{\"ids\":[30,38],\"desc\":\"Natalia works best with heroes with high AOE damage such as Yi Sun-shin and Vexana. She can stay hidden while they poke the enemy, then pounce on targets that get low on HP.\"}},\"meta\":{\"win\":51.24,\"pick\":0.31,\"ban\":2.19}},{\"id\":25,\"name\":\"Kagura\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Poke\",\"Finisher\"],\"ability\":{\"durability\":30,\"offense\":90,\"effects\":40,\"difficulty\":90},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_da424b020b8ac8235d64a1b8a09aa749.png\",\"tags\":{\"Shield\":2,\"CC\":4,\"Damage\":3,\"Slow\":2,\"Remove CC\":1,\"Mobility\":2,\"Burst\":2},\"sig\":{\"phys\":0,\"magic\":6,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":2,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":6,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[18,15],\"desc\":\"Kagura's Ultimate can deal high burst damage, making her strong against back-row heroes with no dash or blink, such as Layla and Eudora.\"},\"weak\":{\"ids\":[118,58],\"desc\":\"Kagura is countered by heroes with more than one control immunity abilities that allow them to escape her various CC skills, heroes like Joy and Martis are good examples.\"},\"assist\":{\"ids\":[93,6],\"desc\":\"Kagura works well with tank heroes with strong CC skills that allow her to deal more damage with her Ultimate, such as Atlas and Tigreal.\"}},\"meta\":{\"win\":50.63,\"pick\":0.83,\"ban\":1.34}},{\"id\":26,\"name\":\"Chou\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\",\"roam\"],\"specialities\":[\"Chase\",\"Control\"],\"ability\":{\"durability\":50,\"offense\":30,\"effects\":80,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_158209b180032c4564b8f3bde8c48888.png\",\"tags\":{\"Buff\":1,\"AOE\":1,\"Mobility\":2,\"CC\":1,\"Burst\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":1,\"atkSpeed\":0,\"crit\":1,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[82,28],\"desc\":\"Chou counters slower Fighters like Terizla and Alpha that have a hard time dealing with his quick hit and run tactics.\"},\"weak\":{\"ids\":[53,52],\"desc\":\"Chou is countered by heroes with very long-range like Lesley and Pharsa that can take out a chunk of his HP before he can get close.\"},\"assist\":{\"ids\":[55,14],\"desc\":\"Chou works best with Healers that can boost his survivability and speed, such as Angela and Rafaela.\"}},\"meta\":{\"win\":45.02,\"pick\":1.04,\"ban\":3.04}},{\"id\":27,\"name\":\"Sun\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\",\"jungle\"],\"specialities\":[\"Push\",\"Damage\"],\"ability\":{\"durability\":50,\"offense\":50,\"effects\":10,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_117b5cdcc13232157075ce7b7f6177e9.png\",\"tags\":{\"Debuff\":1,\"Heal\":1,\"Summon\":3,\"AOE\":1,\"Mobility\":2,\"Burst\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":1,\"maxHp\":0,\"hardCc\":0,\"slow\":1,\"immune\":0,\"conceal\":1,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[10,41],\"desc\":\"Sun can deal great sustained damage and has armor-busting capabilities, making him a good counter to tanks with low damage output, such as Franco and Gatotkaca.\"},\"weak\":{\"ids\":[29],\"desc\":\"Fighter heroes with Lifesteal can counter Sun, however. For example, heroes like Ruby can steal a lot of HP by hitting Sun and his Dopplegangers.\"},\"assist\":{\"ids\":[70,6],\"desc\":\"Pair Sun with tanks who have strong CC abilities such as Belerick or Tigreal to create opportunities for Sun to deal damage.\"}},\"meta\":{\"win\":53.99,\"pick\":1.72,\"ban\":44.33}},{\"id\":28,\"name\":\"Alpha\",\"roles\":[\"Fighter\"],\"lanes\":[\"jungle\",\"exp\"],\"specialities\":[\"Charge\",\"Damage\"],\"ability\":{\"durability\":60,\"offense\":40,\"effects\":70,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_86c9f91f530727db6498f920d19180d1.png\",\"tags\":{\"Damage\":1,\"Slow\":2,\"AOE\":2,\"Heal\":1,\"Mobility\":1,\"CC\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":4,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":3,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[18,121],\"desc\":\"Alpha counters heroes that lack mobility, such as Layla and Ixia, because these heroes have a hard time avoiding his skills.\"},\"weak\":{\"ids\":[26,56],\"desc\":\"Alpha is countered by heroes that are very mobile, such as Chou and Gusion, because they have a lot of ways to dodge Alpha's skills.\"},\"assist\":{\"ids\":[38,63],\"desc\":\"Alpha works well with heroes that can initiate with CC like Vexana and Selena. With their help, he'll have a much easier time landing his skills.\"}},\"meta\":{\"win\":48.93,\"pick\":1.34,\"ban\":0.71}},{\"id\":29,\"name\":\"Ruby\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Crowd Control\",\"Regen\"],\"ability\":{\"durability\":90,\"offense\":20,\"effects\":90,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_4b96c75b136290576d849309722d4d20.png\",\"tags\":{\"Buff\":1,\"AOE\":3,\"Slow\":1,\"CC\":2},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":3,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[64,80],\"desc\":\"Ruby is strong against Fighter heroes with high burst damage. She can easily survive their burst with her excellent Regen and Lifesteal abilities. Such as Aldous and Guinevere.\"},\"weak\":{\"ids\":[89,43],\"desc\":\"Ruby is countered by Marksman heroes with good Mobility. Because they can easily dodge her 2nd and Ultimate skills. Like Wanwan and Irithel.\"},\"assist\":{\"ids\":[52,75],\"desc\":\"Ruby works best with heroes who can deal high AOE burst damage. Their skills can deal more damage to enemies who are stunned and pulled by her 2nd and Ultimate skills. Such as Pharsa and Kadita.\"}},\"meta\":{\"win\":49.17,\"pick\":0.32,\"ban\":0.32}},{\"id\":30,\"name\":\"Yi Sun-shin\",\"roles\":[\"Assassin\",\"Marksman\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Finisher\",\"Chase\"],\"ability\":{\"durability\":40,\"offense\":90,\"effects\":40,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_961378be3f498d42c25b3defd1635ad1.png\",\"tags\":{\"Buff\":1,\"Mobility\":1,\"AOE\":2,\"Burst\":1,\"CC\":1},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":1,\"crit\":1,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[59,82],\"desc\":\"Yi Sun-shin counters heroes that lack CC like Uranus and Terizla who are at the mercy of his ability to jump in and out of melee range using his 2 weapons.\"},\"weak\":{\"ids\":[10,62],\"desc\":\"Yi Sun-shin is countered by heroes with CC skills, such as Franco and Kaja who can lock him down and stop him from freely swapping weapons.\"},\"assist\":{\"ids\":[28,98],\"desc\":\"Yi Sun-shin works best with Fighters who can initiate, such as Alpha and Khaleed, so he can follow up and unleash his full damage after they have CC'd the enemy.\"}},\"meta\":{\"win\":48.91,\"pick\":0.9,\"ban\":2.09}},{\"id\":31,\"name\":\"Moskov\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Chase\"],\"ability\":{\"durability\":20,\"offense\":60,\"effects\":60,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_a60a866ab6752a7f66766e720da987ea.png\",\"tags\":{\"Buff\":2,\"Mobility\":1,\"CC\":1,\"Damage\":1,\"Slow\":1,\"Teleport\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":3,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[72,2],\"desc\":\"Moskov's 1st Skill provides a blink effect, making him a threat to fighters with poor mobility like Thamuz and Balmond.\"},\"weak\":{\"ids\":[47,24],\"desc\":\"Moskov is countered by heroes with high mobility, such as Lancelot and Natalia, who can quickly close the gap and take him out.\"},\"assist\":{\"ids\":[117,41],\"desc\":\"Moskov works well with heroes like Atlas and Gatotkaca who can CC groups of enemies so he can focus on maximizing the damage of his piercing AOE.\"}},\"meta\":{\"win\":50.38,\"pick\":0.9,\"ban\":0.27}},{\"id\":32,\"name\":\"Johnson\",\"roles\":[\"Tank\",\"Support\"],\"lanes\":[\"roam\"],\"specialities\":[\"Support\",\"Crowd Control\"],\"ability\":{\"durability\":80,\"offense\":30,\"effects\":90,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_85ff988c6660b4d04f8dd3d40df988bb.png\",\"tags\":{\"Shield\":1,\"CC\":2,\"AOE\":2,\"Slow\":1,\"Morph\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":3,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[7,16],\"desc\":\"Johnson counters melee heroes with high burst like Alucard and Zilong because of Johnson's high Physical Defense and CC ability.\"},\"weak\":{\"ids\":[73,25],\"desc\":\"Johnson is countered by agile heroes who deal Magic Damage such as Harith and Kagura because they can easily dodge Johnson's skills while their damage is not affected by his Physical Defense.\"},\"assist\":{\"ids\":[46,75],\"desc\":\"Johnson works well with heroes that need help initiating like Odette and Kadita since they can just jump into Johnson's Ultimate for a ride.\"}},\"meta\":{\"win\":49.74,\"pick\":0.71,\"ban\":1.96}},{\"id\":33,\"name\":\"Cyclops\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Damage\",\"Control\"],\"ability\":{\"durability\":30,\"offense\":100,\"effects\":70,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_6b62c64ce43e682ee7660652d5b057e4.png\",\"tags\":{\"Buff\":1,\"AOE\":1,\"Burst\":1,\"CC\":1,\"Damage\":1},\"sig\":{\"phys\":0,\"magic\":3,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[82,28],\"desc\":\"Cyclops' short skill cooldown makes him strong against mid-ranged heroes with poor Mobility, such as Terizla and Alpha.\"},\"weak\":{\"ids\":[47,7,25],\"desc\":\"Cyclops lacks Dash or Blink skills, making him the preferred target for heroes with gap closers and CC skills. Such as Lancelot, Alucard and Kagura.\"},\"assist\":{\"ids\":[70,74],\"desc\":\"Cyclops is best with tanky heroes with strong CC skills, like Belerick and Minsitthar.\"}},\"meta\":{\"win\":51.85,\"pick\":0.83,\"ban\":1.11}},{\"id\":34,\"name\":\"Estes\",\"roles\":[\"Support\"],\"lanes\":[\"roam\"],\"specialities\":[\"Regen\",\"Guard\"],\"ability\":{\"durability\":70,\"offense\":10,\"effects\":20,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_ff4de3b0aabd1d2f6e184db1c831f6a9.png\",\"tags\":{\"Buff\":3,\"Heal\":2,\"Slow\":1,\"AOE\":1},\"sig\":{\"phys\":0,\"magic\":3,\"trueDmg\":0,\"heal\":4,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":4,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[57,4],\"desc\":\"Estes counters heroes with no burst damage, he can easily heal through minor damages from heroes like Faramis and Alice.\"},\"weak\":{\"ids\":[3,15],\"desc\":\"Estes is countered by heroes with high burst damage. Heroes like Saber and Eudora can easily burst down Estes or the hero he protects in a few seconds.\"},\"assist\":{\"ids\":[53,60],\"desc\":\"Estes works best with typical Marksman heroes, his healing will allow them to deal more damage. Heroes like Lesley and Hanabi are good examples here.\"}},\"meta\":{\"win\":52.75,\"pick\":0.62,\"ban\":47.35}},{\"id\":35,\"name\":\"Hilda\",\"roles\":[\"Fighter\",\"Tank\"],\"lanes\":[\"roam\",\"exp\"],\"specialities\":[\"Damage\",\"Regen\"],\"ability\":{\"durability\":90,\"offense\":40,\"effects\":40,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_acd700708dc515f5c63a08f8835a9941.png\",\"tags\":{\"Buff\":2,\"AOE\":1,\"Speed Up\":1,\"Damage\":1,\"CC\":2,\"Burst\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":1,\"basic\":3,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[16,18],\"desc\":\"Hilda excels in prolonged battles. She works well against heroes with lower burst damage. Such as Zilong and Layla.\"},\"weak\":{\"ids\":[72,59],\"desc\":\"Hilda is countered by heroes with high sustain. Such as Thamuz and Uranus. This is because they can utilize their healing abilities to prevent being executed.\"},\"assist\":{\"ids\":[14,10],\"desc\":\"Hilda works well with tanky heroes, which can create room for her to dish out more damage. Such as Atlas and Tigreal.\"}},\"meta\":{\"win\":51.2,\"pick\":0.57,\"ban\":14.09}},{\"id\":36,\"name\":\"Aurora\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Crowd Control\",\"Poke\"],\"ability\":{\"durability\":40,\"offense\":70,\"effects\":100,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_f9b2be0150361018bb98f941b9667c42.png\",\"tags\":{\"Death Immunity\":1,\"AOE\":3,\"Slow\":1,\"CC\":2},\"sig\":{\"phys\":0,\"magic\":6,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":5,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[67,72,82],\"desc\":\"Aurora counters heroes who like to charge in, such as Leomord, Thamuz, and Terizla, since her skills can stop them dead in their tracks.\"},\"weak\":{\"ids\":[84,75,80],\"desc\":\"Because most of Aurora's skills have delayed effects, she is countered by high mobility heroes who can dodge them with ease, such as Ling, Kadita, and Guinevere.\"},\"assist\":{\"ids\":[121,22,40],\"desc\":\"With her very powerful CC abilities, Aurora works well with heroes who deal high sustained damage, like Ixia, Freya, and Karrie.\"}},\"meta\":{\"win\":48.8,\"pick\":0.64,\"ban\":0.38}},{\"id\":37,\"name\":\"Lapu-Lapu\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Chase\",\"Burst\"],\"ability\":{\"durability\":80,\"offense\":40,\"effects\":40,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_28036c4584c914c5aad4d2feeafb2452.png\",\"tags\":{\"Buff\":2,\"Shield\":2,\"AOE\":3,\"Mobility\":3,\"Damage\":1,\"Morph\":1,\"CC\":1,\"Reduce DMG\":1,\"Burst\":1},\"sig\":{\"phys\":9,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":2,\"basic\":3,\"atkSpeed\":0,\"crit\":2,\"maxHp\":0,\"hardCc\":2,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":4},\"relation\":{\"strong\":{\"ids\":[18,15],\"desc\":\"Lapu-Lapu is strong against squishy heroes who lack movement abilities, such as Layla and Eudora, because he has high burst damage and can use his mobility to get on top of them.\"},\"weak\":{\"ids\":[53,31],\"desc\":\"Lapu-Lapu is countered by agile Marksmen who can knock him away, such as Lesley and Moskov. They can speed up or blink to avoid Lapu-Lapu's Ultimate, and use knockback effects to interrupt his 1st Skill in Great Sword stance or to keep him away.\"},\"assist\":{\"ids\":[6,93],\"desc\":\"Lapu-Lapu works well with heroes who can pull enemies together, like Tigreal and Atlas, to allow his AOE skills to hit more targets and get more Damage Reduction from his 2nd Skill in Great Sword stance by hitting more heroes.\"}},\"meta\":{\"win\":47.89,\"pick\":0.34,\"ban\":0.27}},{\"id\":38,\"name\":\"Vexana\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Poke\",\"Control\"],\"ability\":{\"durability\":20,\"offense\":90,\"effects\":50,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_743edd1702084c4ed247908d698bca77.png\",\"tags\":{\"Damage\":2,\"CC\":1,\"AOE\":2,\"Summon\":1},\"sig\":{\"phys\":0,\"magic\":6,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[18,43,115],\"desc\":\"Backline DPS heroes such as Layla, Irithel and Xavier.\"},\"weak\":{\"ids\":[3,109,8],\"desc\":\"Mobile Assassins such as Saber, Aamon and Karina.\"},\"assist\":{\"ids\":[93,105],\"desc\":\"Heroes with powerful CC such as Atlas or high damage output like Beatrix to burst down enemies.\"}},\"meta\":{\"win\":49.23,\"pick\":1.53,\"ban\":1.15}},{\"id\":39,\"name\":\"Roger\",\"roles\":[\"Fighter\",\"Marksman\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Finisher\",\"Burst\"],\"ability\":{\"durability\":60,\"offense\":40,\"effects\":10,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_b40e578f13465b3ae99d0a9baac7ecc9.png\",\"tags\":{\"Buff\":3,\"Damage\":1,\"Debuff\":1,\"Speed Up\":2,\"Morph\":2,\"Mobility\":3,\"Burst\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":0,\"atkSpeed\":2,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[60,46],\"desc\":\"Roger counters squishy heroes that lack mobility such as Hanabi and Odette because they cannot easily escape from him.\"},\"weak\":{\"ids\":[74,78],\"desc\":\"Roger is countered by heroes that can restrict his mobility and prevent him from jumping in and out using his two forms, like Minsitthar and Khufra.\"},\"assist\":{\"ids\":[52,38],\"desc\":\"Roger works best with heroes with high AOE damage that can nuke the enemy team to low HP for him to finish off, such as Pharsa and Vexana.\"}},\"meta\":{\"win\":48.3,\"pick\":0.27,\"ban\":0.1}},{\"id\":40,\"name\":\"Karrie\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Damage\"],\"ability\":{\"durability\":30,\"offense\":80,\"effects\":10,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_294576f2bd0dcbcc9041031969d0eb09.png\",\"tags\":{\"Buff\":2,\"AOE\":1,\"Slow\":1,\"Mobility\":1,\"Damage\":1,\"Burst\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":1,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[6,117],\"desc\":\"Tanks such as Tigreal and Fredrinn that take more damage from her HP percent attacks.\"},\"weak\":{\"ids\":[115,18,5],\"desc\":\"Long range heroes such as Xavier, Layla and Nana due to Karrie's medium range.\"},\"assist\":{\"ids\":[3,109],\"desc\":\"Assassins like Saber and Aamon who can eliminate ranged threats so Karrie can focus the frontline.\"}},\"meta\":{\"win\":48.95,\"pick\":0.58,\"ban\":0.87}},{\"id\":41,\"name\":\"Gatotkaca\",\"roles\":[\"Tank\",\"Fighter\"],\"lanes\":[\"roam\",\"exp\"],\"specialities\":[\"Crowd Control\",\"Burst\"],\"ability\":{\"durability\":90,\"offense\":30,\"effects\":90,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_96f9dbbc096e0f0a28f9b9e587d06a9c.png\",\"tags\":{\"Buff\":1,\"Heal\":1,\"AOE\":1,\"Slow\":1,\"CC\":2,\"Mobility\":2},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":5,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[18,94],\"desc\":\"Due to his great CC and high Physical Defense, Gatotkaca counters Marksmen with no mobility skills like Layla and Popol and Kupa..\"},\"weak\":{\"ids\":[48,89],\"desc\":\"Gatotkaca is countered by heroes that can remove CC like Diggie and Wanwan who will greatly reduce his effectiveness.\"},\"assist\":{\"ids\":[25,66],\"desc\":\"Gatotkaca works best with heroes with strong CC and damage, such as Kagura and Vale who can give his Ultimate even more value.\"}},\"meta\":{\"win\":45.49,\"pick\":0.57,\"ban\":0.31}},{\"id\":42,\"name\":\"Harley\",\"roles\":[\"Assassin\",\"Mage\"],\"lanes\":[\"jungle\",\"mid\"],\"specialities\":[\"Burst\",\"Poke\"],\"ability\":{\"durability\":30,\"offense\":90,\"effects\":10,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_3aa6964c07a70f9b125da447f320e1ac.png\",\"tags\":{\"Debuff\":1,\"AOE\":1,\"Buff\":1,\"Mobility\":1,\"Speed Up\":1,\"Burst\":1,\"Slow\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[91,121],\"desc\":\"Harley counters squishy heroes with poor mobility, such as Cecilion and Ixia, since he can deal burst damage while being on the move.\"},\"weak\":{\"ids\":[20,59],\"desc\":\"Harley is countered by tanky heroes like Lolita and Uranus, because Harley can't deal enough meaningful damage to them and they can block and tank his Ultimate for their teammates.\"},\"assist\":{\"ids\":[9,78],\"desc\":\"Harley is best with heroes who can disrupt the enemy formation like Akai and Khufra. He can follow them into the fight and burst down the squishy targets.\"}},\"meta\":{\"win\":48.4,\"pick\":0.82,\"ban\":3}},{\"id\":43,\"name\":\"Irithel\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Burst\"],\"ability\":{\"durability\":10,\"offense\":80,\"effects\":10,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_a65d1e2ced64fbfdfcefdcfba719b3fd.png\",\"tags\":{\"Buff\":2,\"AOE\":2,\"Debuff\":1,\"Slow\":1,\"Mobility\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":3,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[1,28],\"desc\":\"Irithel counters heroes with a shorter Basic Attack range than her or ones that lack mobility and can be easily kited, such as Miya and Alpha.\"},\"weak\":{\"ids\":[77,90],\"desc\":\"Irithel is countered by heroes with strong CC capabilities or can restrict movement, such as Badang and Silvanna. Because Irithel does not have any Blink skills, her advantage vanishes once her mobility is restricted.\"},\"assist\":{\"ids\":[57,49],\"desc\":\"Irithel works best with heroes that can slow or provide hard CC such as Valir and Hylos because they allow her more opportunities to deal damage.\"}},\"meta\":{\"win\":53.06,\"pick\":0.42,\"ban\":0.26}},{\"id\":44,\"name\":\"Grock\",\"roles\":[\"Tank\",\"Fighter\"],\"lanes\":[\"roam\"],\"specialities\":[\"Crowd Control\",\"Initiator\"],\"ability\":{\"durability\":90,\"offense\":40,\"effects\":80,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_f8b8c8964d3202b7b762947ac96f1ed3.png\",\"tags\":{\"Buff\":1,\"CC\":2,\"AOE\":3,\"Mobility\":1},\"sig\":{\"phys\":6,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":2,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":0,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[23,18],\"desc\":\"Grock works well against heroes who cannot Blink over his wallto escape his CC,such as Gord and Layla.\"},\"weak\":{\"ids\":[71,42],\"desc\":\"Grock is countered by Magic Damage heroes with Blink who can kite him with relative ease,such as Kimmy and Harley.\"},\"assist\":{\"ids\":[46,52],\"desc\":\"Grock's Ultimate is a powerful CC that covers a wide area,so he pairs well with Mages like Odette and Pharsa to maximize their AOE damage.\"}},\"meta\":{\"win\":46.68,\"pick\":0.34,\"ban\":0.73}},{\"id\":45,\"name\":\"Argus\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Charge\",\"Burst\"],\"ability\":{\"durability\":70,\"offense\":50,\"effects\":50,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_0bd96658e5b8ec578226ea1622bd7231.png\",\"tags\":{\"Buff\":2,\"Mobility\":1,\"Debuff\":1,\"CC\":1,\"Damage\":1,\"Death Immunity\":1},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":0,\"heal\":2,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":2,\"crit\":6,\"maxHp\":0,\"hardCc\":4,\"slow\":1,\"immune\":3,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[23,36],\"desc\":\"Argus counters heroes with poor mobility who cannot escape his attacks once he closes in, such as Gord and Aurora.\"},\"weak\":{\"ids\":[41,6],\"desc\":\"Argus is countered by Tanks with high Physical Defense, like Gatotkaca and Tigreal, because a lot of his damage comes from Basic Attacks.\"},\"assist\":{\"ids\":[55,14],\"desc\":\"Argus works well with utility Supports like Angela and Rafaela who can provide extra Movement Speed and CC to allow Argus to stick to his targets and dish out maximum damage.\"}},\"meta\":{\"win\":56.99,\"pick\":0.53,\"ban\":0.99}},{\"id\":46,\"name\":\"Odette\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Burst\",\"Poke\"],\"ability\":{\"durability\":30,\"offense\":100,\"effects\":70,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_d9251718a8894546ba04cfa9ca68dedc.png\",\"tags\":{\"Buff\":1,\"AOE\":1,\"Slow\":1,\"CC\":1,\"Damage\":1,\"Burst\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[18,43],\"desc\":\"Odette's Ultimate is capable of unleashing massive damage and is effective against heroes lacking interruption skills, such as Layla and Irithel.\"},\"weak\":{\"ids\":[19,111],\"desc\":\"Odette is countered by heroes with Crowd Control skills, such as Minotaur and Edith, because they can easily interrupt her Ultimate.\"},\"assist\":{\"ids\":[32,54],\"desc\":\"Pair Odette with heroes who can relocate their teammates like Johnson and Jawhead to make it easier for her to find the perfect position for her Ultimate.\"}},\"meta\":{\"win\":49.83,\"pick\":0.54,\"ban\":0.26}},{\"id\":47,\"name\":\"Lancelot\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Burst\"],\"ability\":{\"durability\":40,\"offense\":50,\"effects\":10,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_dc4b821e49b904715172136017798da3.png\",\"tags\":{\"Buff\":1,\"Mobility\":2,\"AOE\":2,\"Slow\":1,\"Burst\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":2,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[91,52],\"desc\":\"Lancelot counters long-range Mages, such as Cecilion and Pharsa, because there is a delay to their skills and Lancelot can use his 1st Skill to dodge them while going in for the kill.\"},\"weak\":{\"ids\":[74,106],\"desc\":\"Lancelot is weak against heroes who can counter his mobility like Minsitthar and Phoveus, as his 1st Skill and Ultimate will be heavily restricted.\"},\"assist\":{\"ids\":[93,6],\"desc\":\"Lancelot works well with heroes who can pull enemies together, like Atlas and Tigreal, because they allow him to hit more enemies with his AOE skills.\"}},\"meta\":{\"win\":42.92,\"pick\":0.48,\"ban\":0.47}},{\"id\":48,\"name\":\"Diggie\",\"roles\":[\"Support\"],\"lanes\":[\"roam\"],\"specialities\":[\"Guard\",\"Poke\"],\"ability\":{\"durability\":40,\"offense\":40,\"effects\":20,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_b1bdf46136cb8a7903dae6d58e8349cb.png\",\"tags\":{\"Buff\":1,\"AOE\":1,\"Slow\":1,\"CC\":1,\"Damage\":1,\"CC Immune\":1,\"Speed Up\":1},\"sig\":{\"phys\":0,\"magic\":2,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":2,\"immune\":2,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[93,20],\"desc\":\"Diggie counters close range, CC focused heroes like Atlas and Lolita since he can pull them away and remove their CCs with his Ultimate.\"},\"weak\":{\"ids\":[84,109],\"desc\":\"Diggie is countered by agile and bursty Assassins like Ling and Aamon because his own lack of defense makes him an easy target.\"},\"assist\":{\"ids\":[18,1],\"desc\":\"Diggie works best with Marksmen that lack mobility or survivability like Layla and Miya because his skills can protect them very well.\"}},\"meta\":{\"win\":54.69,\"pick\":0.2,\"ban\":3.83}},{\"id\":49,\"name\":\"Hylos\",\"roles\":[\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Guard\",\"Initiator\"],\"ability\":{\"durability\":100,\"offense\":20,\"effects\":80,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_195ad9af866afaab415ae23a6be13b45.png\",\"tags\":{\"Buff\":1,\"CC\":1,\"Damage\":1,\"AOE\":1,\"Debuff\":1,\"Speed Up\":1,\"Heal\":1},\"sig\":{\"phys\":0,\"magic\":2,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":3,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[18,23],\"desc\":\"Hylos is strong against heroes without mobility skills that can't easily escape his 2nd Skill, like Layla and Gord.\"},\"weak\":{\"ids\":[40,53],\"desc\":\"Hylos is countered by high mobility heroes like Karrie and Lesley, as they are hard for him to lock down and can also take him out.\"},\"assist\":{\"ids\":[82,74],\"desc\":\"Hylos works best with heroes that need faster Movement Speed to engage, such as Terizla and Minsitthar.\"}},\"meta\":{\"win\":48.51,\"pick\":0.27,\"ban\":0.24}},{\"id\":50,\"name\":\"Zhask\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Chase\",\"Damage\"],\"ability\":{\"durability\":10,\"offense\":100,\"effects\":40,\"difficulty\":70},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_d8f170087cb2d5b71bb22a0a4664a927.png\",\"tags\":{\"Summon\":2,\"CC\":1,\"AOE\":1,\"Slow\":1,\"Damage\":1,\"Morph\":1,\"Buff\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":1,\"crit\":1,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[64,103],\"desc\":\"Zhask is strong against burst damage heroes like Aldous and Paquito because his high HP after fusing with his Nightmaric Spawn, makes him tough to burst down.\"},\"weak\":{\"ids\":[52,91],\"desc\":\"Zhask is countered by agile or long range heroes, such as Pharsa and Cecilion, because they can quickly step out of range of his immobile Nightmaric Spawn.\"},\"assist\":{\"ids\":[70,20],\"desc\":\"Zhask works best with heroes that can lock down enemies so he can have more time to deal damage, like Belerick and Lolita.\"}},\"meta\":{\"win\":52.57,\"pick\":0.33,\"ban\":0.42}},{\"id\":51,\"name\":\"Helcurt\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\",\"roam\"],\"specialities\":[\"Push\",\"Burst\"],\"ability\":{\"durability\":30,\"offense\":50,\"effects\":50,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_6abf0c552b59b8ca4cbc1af3662ef176.png\",\"tags\":{\"Buff\":2,\"Mobility\":1,\"CC\":1,\"Burst\":1,\"Debuff\":1},\"sig\":{\"phys\":2,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":1,\"crit\":1,\"maxHp\":0,\"hardCc\":0,\"slow\":0,\"immune\":0,\"conceal\":1,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[18,61,66],\"desc\":\"Helcurt can swiftly approach enemies with his mobility and quickly take down heroes like Layla, Chang'e, and Vale with his burst damage.\"},\"weak\":{\"ids\":[117,70,41],\"desc\":\"Helcurt should avoid tank heroes that he can't burst down, such as Fredrinn, Belerick, and Gatotkaca. Once Helcurt is caught by their CC, they can make short work of him with their teammates.\"},\"assist\":{\"ids\":[6,81,82],\"desc\":\"Helcurt's Ultimate is a great tool to obscure the enemy's vision and makes it easier for him and his team to engage. Additionally, heroes with CC like Tigreal, Esmeralda, and Terizla work great with Helcurt to secure kills.\"}},\"meta\":{\"win\":47.86,\"pick\":0.61,\"ban\":4.7}},{\"id\":52,\"name\":\"Pharsa\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Burst\",\"Poke\"],\"ability\":{\"durability\":20,\"offense\":90,\"effects\":50,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_10151d43910e62f7aa9ce08df481a20f.png\",\"tags\":{\"Damage\":2,\"Slow\":1,\"CC\":1,\"AOE\":1,\"Burst\":1,\"Morph\":1,\"Speed Up\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[18,60,115],\"desc\":\"Pharsa can deal high burst damage from a very long range. A great counter to enemy back-row heroes with poor Mobility, such as Layla, Hanabi and Xavier.\"},\"weak\":{\"ids\":[10,16,74],\"desc\":\"Pharsa should beware of any displacement ability skill. Heroes like Franco, Zilong and Minsitthar can easily interrupt Pharsa's Ultimate.\"},\"assist\":{\"ids\":[93,10],\"desc\":\"Pharsa is best with heroes who can CC the enemy so that her skills can hit them. Atlas and Franco are good examples of this.\"}},\"meta\":{\"win\":47.06,\"pick\":0.31,\"ban\":0.18}},{\"id\":53,\"name\":\"Lesley\",\"roles\":[\"Marksman\",\"Assassin\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Burst\"],\"ability\":{\"durability\":10,\"offense\":70,\"effects\":20,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_08770893183018333f54a98e63c41ee3.png\",\"tags\":{\"Buff\":2,\"CC\":1,\"Mobility\":1,\"Burst\":1},\"sig\":{\"phys\":2,\"magic\":0,\"trueDmg\":1,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":4,\"maxHp\":0,\"hardCc\":1,\"slow\":0,\"immune\":0,\"conceal\":1,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[41,117],\"desc\":\"Lesley is strong against tank heroes who rely heavily on equipment. Because her attacks can deal True Damage that will ignore the defense these heroes get from the equipment. Such as Gatotkaca and Fredrinn.\"},\"weak\":{\"ids\":[84,47],\"desc\":\"Lesley is countered by Assassin heroes with multiple movement abilities, which will cause her to lose her range advantage. Such as Ling and Lancelot.\"},\"assist\":{\"ids\":[19,87],\"desc\":\"Lesley works best with tank heroes who can provide better attacking conditions for her, like Minotaur and Baxia.\"}},\"meta\":{\"win\":48.45,\"pick\":1.95,\"ban\":8.96}},{\"id\":54,\"name\":\"Jawhead\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\",\"roam\"],\"specialities\":[\"Charge\",\"Burst\"],\"ability\":{\"durability\":60,\"offense\":30,\"effects\":60,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_bd87c30b6c7de6ae3b5aa56162c48c8b.png\",\"tags\":{\"Buff\":1,\"Burst\":1,\"Shield\":1,\"CC\":2,\"Mobility\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":5,\"slow\":0,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[3,15],\"desc\":\"Jawhead counters squishy heroes with no defensive skills that he can burst down after connecting with his Ultimate, such as Saber and Eudora.\"},\"weak\":{\"ids\":[111,72],\"desc\":\"Jawhead is countered by heroes with high sustained damage or high survivability, like Edith and Thamuz, because they can survive Jawhead's burst damage and beat him in a prolonged battle.\"},\"assist\":{\"ids\":[46,70],\"desc\":\"Jawhead works best with heroes that benefit from a quick engage like Odette and Belerick because he can throw them into the enemy for a surprise attack.\"}},\"meta\":{\"win\":47.88,\"pick\":0.35,\"ban\":0.35}},{\"id\":55,\"name\":\"Angela\",\"roles\":[\"Support\"],\"lanes\":[\"roam\"],\"specialities\":[\"Guard\",\"Support\"],\"ability\":{\"durability\":30,\"offense\":20,\"effects\":50,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_c7e0183956b2c2fd6d3fa0b18fe46917.png\",\"tags\":{\"Speed Up\":1,\"Heal\":1,\"AOE\":1,\"Slow\":1,\"CC\":1,\"Attach\":1,\"Shield\":1},\"sig\":{\"phys\":0,\"magic\":3,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":2,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[59,70],\"desc\":\"Angela counters heroes with low mobility, such as Uranus and Belerick, by slowing them even further and speeding up her allies.\"},\"weak\":{\"ids\":[84,42],\"desc\":\"Angela is countered by nimble Assassins with burst damage, such as Ling and Harley.\"},\"assist\":{\"ids\":[47,109],\"desc\":\"Angela works best with highly mobile Assassins such as Lancelot and Aamon since she can provide CC and heals while increasing their mobility even further.\"}},\"meta\":{\"win\":49.99,\"pick\":1.77,\"ban\":12.68}},{\"id\":56,\"name\":\"Gusion\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Burst\",\"Magic Damage\"],\"ability\":{\"durability\":30,\"offense\":90,\"effects\":10,\"difficulty\":80},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_c6cd232de60da5372a7101a203e56554.png\",\"tags\":{\"Buff\":2,\"Heal\":1,\"Damage\":1,\"Mobility\":2,\"AOE\":1,\"Slow\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[18,60],\"desc\":\"Gusion is strong against squishy heroes who lack movement abilities, so that Gusion can easily chase them down. Like Layla and Hanabi.\"},\"weak\":{\"ids\":[10,62],\"desc\":\"Gusion is countered by tank heroes with good single-target CC. Once controlled by them, Gusion will have a hard time escaping. Such as Franco and Kaja.\"},\"assist\":{\"ids\":[38,52],\"desc\":\"Gusion works well with heroes with strong opening CC, which will allow him to hit the target more easily with his 1st Skill, such as Vexana and Pharsa.\"}},\"meta\":{\"win\":48.68,\"pick\":1.24,\"ban\":3.23}},{\"id\":57,\"name\":\"Valir\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Damage\",\"Guard\"],\"ability\":{\"durability\":20,\"offense\":70,\"effects\":70,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_bf16690876761b80822df90eb3320d69.png\",\"tags\":{\"CC\":2,\"Damage\":1,\"AOE\":2,\"Slow\":1,\"Remove CC\":1,\"Buff\":1},\"sig\":{\"phys\":0,\"magic\":6,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":3,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[2,117],\"desc\":\"Valir excels in both sustained damage and Crowd Control. He counters heroes lacking mobility like Balmond and Fredrinn.\"},\"weak\":{\"ids\":[47,17],\"desc\":\"Valir is countered by agile Assassins like Lancelot and Fanny because they can easily evade his 1st Skill.\"},\"assist\":{\"ids\":[98,95],\"desc\":\"Teaming up with Fighters with strong initiation like Khaleed and Yu Zhong can simultaneously enhance the entire team's combat potential.\"}},\"meta\":{\"win\":53.92,\"pick\":1.26,\"ban\":4.41}},{\"id\":58,\"name\":\"Martis\",\"roles\":[\"Fighter\"],\"lanes\":[\"jungle\",\"exp\"],\"specialities\":[\"Finisher\",\"Charge\"],\"ability\":{\"durability\":60,\"offense\":30,\"effects\":50,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_cc8124b0eb6ca22d950b000744d69fbf.png\",\"tags\":{\"Buff\":2,\"CC\":1,\"AOE\":2,\"Mobility\":1,\"Burst\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":1,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[18,46],\"desc\":\"Martis counters squishy heroes with no mobility skills, such as Layla and Odette, who have a hard time avoiding his 1st Skill - 2nd Skill combo. Their relatively low HP also makes it easier for Martis to put them into execute range for his Ultimate.\"},\"weak\":{\"ids\":[72,117],\"desc\":\"Martis is countered by Fighters with high combat sustainability, such as Thamuz and Fredrinn, because they can survive Martis' burst damage and defeat him in prolonged battles.\"},\"assist\":{\"ids\":[28,98],\"desc\":\"Martis works best with Fighters that initiate teamfights like Alpha and Khaleed who he can follow up to secure a kill and chain more kills with his Ultimate.\"}},\"meta\":{\"win\":47.21,\"pick\":0.63,\"ban\":0.44}},{\"id\":59,\"name\":\"Uranus\",\"roles\":[\"Tank\"],\"lanes\":[\"exp\"],\"specialities\":[\"Regen\"],\"ability\":{\"durability\":100,\"offense\":20,\"effects\":20,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_2e15a0a506aaecd9b3de40a8cc9f7ec7.png\",\"tags\":{\"Heal\":1,\"AOE\":1,\"Slow\":1,\"Mobility\":1,\"Shield\":1,\"Buff\":1,\"Speed Up\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":3,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":3,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[6,10],\"desc\":\"Uranus has great sustainability, making him strong against heroes with low-damage abilities, such as Tigreal and Franco.\"},\"weak\":{\"ids\":[18,53],\"desc\":\"Uranus lacks Mobility and CC abilities which makes him an easy target for ranged heroes, such as Layla and Lesley.\"},\"assist\":{\"ids\":[105,60],\"desc\":\"Uranus becomes much more powerful when working with high-damage heroes like Beatrix and Hanabi.\"}},\"meta\":{\"win\":49.5,\"pick\":0.29,\"ban\":0.32}},{\"id\":60,\"name\":\"Hanabi\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Damage\"],\"ability\":{\"durability\":20,\"offense\":70,\"effects\":80,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_8a9c1966feb34e85d7bdcc1ed01ffb5d.png\",\"tags\":{\"Buff\":2,\"Shield\":1,\"AOE\":2,\"CC\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":5,\"basic\":4,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":0,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[6,70],\"desc\":\"Hanabi counters heroes that rely heavily on CC abilities, such as Tigreal and Belerick, since Hanabi can use her 1st Skill to ignore CC.\"},\"weak\":{\"ids\":[47,16],\"desc\":\"Hanabi is weak against heroes with high burst damage, such as Lancelot and Zilong, because they can quickly take down her shield.\"},\"assist\":{\"ids\":[92,93],\"desc\":\"Hanabi works well with heroes who can initiate with CC, such as Carmilla and Atlas, so she can focus on maximizing her bounce and Ultimate damage.\"}},\"meta\":{\"win\":52.81,\"pick\":2.42,\"ban\":4.09}},{\"id\":61,\"name\":\"Chang'e\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Poke\",\"Burst\"],\"ability\":{\"durability\":40,\"offense\":80,\"effects\":20,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_46cfe9c30e8a14f85b4d022496aca274.png\",\"tags\":{\"Debuff\":1,\"AOE\":1,\"Slow\":1,\"Buff\":1,\"Shield\":1,\"Burst\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":2,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":3,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[15,46],\"desc\":\"Chang'e is strong against squishy heroes who have low mobility and short damage range, such as Eudora and Odette. Chang'e can easily hit them with her long-range skills while dodging their attacks.\"},\"weak\":{\"ids\":[69,42],\"desc\":\"Chang'e is countered by agile Assassins with high burst like Hanzo and Harley, as they can avoid Chang'e's skills and use their high burst damage to kill her since she lacks self-protection.\"},\"assist\":{\"ids\":[41,6],\"desc\":\"Chang'e works well with Tanks who can pull enemies together, like Gatotkaca and Tigreal, because Chang'e can follow them into teamfights to deal massive damage.\"}},\"meta\":{\"win\":48.17,\"pick\":0.59,\"ban\":0.31}},{\"id\":62,\"name\":\"Kaja\",\"roles\":[\"Support\"],\"lanes\":[\"roam\"],\"specialities\":[\"Initiator\",\"Charge\"],\"ability\":{\"durability\":80,\"offense\":20,\"effects\":70,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_d558bb881e18a070eaeda1e1fdc248a8.png\",\"tags\":{\"Debuff\":1,\"AOE\":1,\"Slow\":1,\"Mobility\":1,\"CC\":2},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":2,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":3,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[18,121,38],\"desc\":\"Kaja does well against carries with no mobility skills, such as Layla, Ixia, and Vexana. Once he flies in and lassoes them, there's no hope of escape.\"},\"weak\":{\"ids\":[25,30,126],\"desc\":\"Now, if you're up against Kaja, remember that while his Ultimate can't be Purified, heroes with mobility like Kagura, Yi Sun-shin, and Suyou can still dodge it with a dash.\"},\"assist\":{\"ids\":[46,52,121],\"desc\":\"He also pairs well with allies with AoE, like Odette, Pharsa, and Ixia. Kaja can hold enemies in place while they pile on the damage. The perfect set!\"}},\"meta\":{\"win\":49.65,\"pick\":0.65,\"ban\":18.65}},{\"id\":63,\"name\":\"Selena\",\"roles\":[\"Assassin\",\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Initiator\",\"Finisher\"],\"ability\":{\"durability\":30,\"offense\":70,\"effects\":100,\"difficulty\":80},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_c3f967121519ae40509c5b2fdf52b19d.png\",\"tags\":{\"Buff\":3,\"Summon\":1,\"Slow\":1,\"CC\":1,\"Speed Up\":3,\"Morph\":2,\"Burst\":1,\"Shield\":1,\"Mobility\":1},\"sig\":{\"phys\":0,\"magic\":8,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":3,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[23,18],\"desc\":\"Selena is strong against squishy heroes with poor Mobility, simply because it's hard for them to dodge her 2nd Skill. Such as Gord and Layla.\"},\"weak\":{\"ids\":[60,89],\"desc\":\"But Selena is weak against heroes that can resist or remove her CC abilities, such as Hanabi and Wanwan.\"},\"assist\":{\"ids\":[115,105],\"desc\":\"Selena works well with ranged heroes that can deal high burst damage, such as Xavier and Beatrix.\"}},\"meta\":{\"win\":48.62,\"pick\":1.32,\"ban\":5.02}},{\"id\":64,\"name\":\"Aldous\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Burst\",\"Support\"],\"ability\":{\"durability\":70,\"offense\":30,\"effects\":50,\"difficulty\":70},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_0eb32187d08f14779585a8be53b83f01.png\",\"tags\":{\"Shield\":1,\"Damage\":2,\"Buff\":2,\"CC\":1,\"Mobility\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[16,67],\"desc\":\"Aldous is strong against heroes who cannot pressure him in the early game, so that he can easily build up the damage buff for his 1st Skill. Such as Zilong and Leomord.\"},\"weak\":{\"ids\":[58,85],\"desc\":\"Aldous is countered by heroes who are strong in the early game. They would make it very difficult for Aldous to build up the damage buff he needs. Heroes like Martis and Dyrroth are good examples here.\"},\"assist\":{\"ids\":[2,12],\"desc\":\"Aldous works well with heroes that are strong in the early game so that he can farm efficiently, such as Balmond and Bruno.\"}},\"meta\":{\"win\":53.18,\"pick\":0.51,\"ban\":0.66}},{\"id\":65,\"name\":\"Claude\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Burst\",\"Chase\"],\"ability\":{\"durability\":30,\"offense\":60,\"effects\":10,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_e1097b9d3e1d5e9f14600d32e8b18acd.png\",\"tags\":{\"Buff\":2,\"AOE\":1,\"Mobility\":1,\"Summon\":1,\"Burst\":1,\"Shield\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":3,\"atkSpeed\":2,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[38,112],\"desc\":\"Claude is strong against heroes with weak CC abilities and poor Mobility, so he can easily dodge their attacks with his 2nd Skill, such as Vexana and Luo Yi.\"},\"weak\":{\"ids\":[15,10],\"desc\":\"Claude is countered by heroes with powerful CC abilities. Their CC abilities will cause Claude to lose his Mobility advantage. Like Eudora and Franco.\"},\"assist\":{\"ids\":[55,76],\"desc\":\"Claude works best with heroes who can buff him, like Angela and Faramis.\"}},\"meta\":{\"win\":48.83,\"pick\":0.77,\"ban\":0.22}},{\"id\":66,\"name\":\"Vale\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Burst\",\"Crowd Control\"],\"ability\":{\"durability\":20,\"offense\":100,\"effects\":70,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_2a7a8d1531a1c4f8524880413535348d.png\",\"tags\":{\"Buff\":1,\"Speed Up\":1,\"AOE\":3,\"CC\":2},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[82,35],\"desc\":\"Vale counters slow Fighters like Terizla and Hilda because he can chip away their HP with his skills from afar while using his high Movement Speed to dodge their skills.\"},\"weak\":{\"ids\":[21,84],\"desc\":\"Vale is countered by agile Assassins that can become untargetable like Hayabusa and Ling, as it will be difficult to catch them with his CC while they can eliminate Vale easily with their high damage.\"},\"assist\":{\"ids\":[20,70],\"desc\":\"Vale works well with frontline Tanks like Lolita and Belerick who can protect him while he continuously pokes the enemy.\"}},\"meta\":{\"win\":50.08,\"pick\":0.5,\"ban\":0.2}},{\"id\":67,\"name\":\"Leomord\",\"roles\":[\"Fighter\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Burst\"],\"ability\":{\"durability\":70,\"offense\":50,\"effects\":30,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_554cdf13a7587fe08c5deed60132c61c.png\",\"tags\":{\"Buff\":2,\"AOE\":2,\"Slow\":3,\"Mobility\":2,\"Summon\":2,\"Morph\":2,\"CC\":1},\"sig\":{\"phys\":6,\"magic\":0,\"trueDmg\":0,\"heal\":2,\"vamp\":0,\"shield\":0,\"basic\":8,\"atkSpeed\":0,\"crit\":8,\"maxHp\":0,\"hardCc\":3,\"slow\":4,\"immune\":0,\"conceal\":0,\"dash\":3},\"relation\":{\"strong\":{\"ids\":[46,52,101,91],\"desc\":\"Mages without mobility such as Odette, Pharsa, Yve and Cecilion will fall to Leomord's high movement speed and burst damage.\"},\"weak\":{\"ids\":[106,10,9,5],\"desc\":\"Heroes with CC like Phoveus, Franco, Akai and Nana.\"},\"assist\":{\"ids\":[52,38],\"desc\":\"Heroes with AOE or CC like Pharsa and Vexana that can follow up after Leomord breaks the enemy formation.\"}},\"meta\":{\"win\":50.02,\"pick\":0.29,\"ban\":0.63}},{\"id\":68,\"name\":\"Lunox\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Burst\",\"Damage\"],\"ability\":{\"durability\":30,\"offense\":90,\"effects\":20,\"difficulty\":90},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_e162688afdcaf3f6498af30badfe31c5.png\",\"tags\":{\"Buff\":3,\"AOE\":7,\"Heal\":3,\"Damage\":3,\"Slow\":3,\"Invincible\":2,\"Mobility\":2,\"Burst\":1},\"sig\":{\"phys\":0,\"magic\":11,\"trueDmg\":0,\"heal\":0,\"vamp\":3,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":4,\"immune\":3,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[101,86],\"desc\":\"Lunox counters heroes that lack burst damage and healing, such as Yve and Lylia, because Lunox can use her self-healing to get the upper hand in a trade.\"},\"weak\":{\"ids\":[122,84],\"desc\":\"Lunox is countered by heroes with high mobility since her 2nd Skill has limited range and she lacks CC. Nimble heroes like Nolan and Ling can get in and out of her range all too easily.\"},\"assist\":{\"ids\":[10,19],\"desc\":\"Lunox is best paired with heroes with strong CC abilities like Franco and Minotaur. While Lunox lacks hard CC, if she can spam her skills on a stationary target, she can deal a ton of damage.\"}},\"meta\":{\"win\":51.55,\"pick\":0.56,\"ban\":1.27}},{\"id\":69,\"name\":\"Hanzo\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Poke\",\"Burst\"],\"ability\":{\"durability\":70,\"offense\":80,\"effects\":20,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_d2d28d2fcb060726fa27553920ca1a33.png\",\"tags\":{\"Buff\":2,\"Burst\":1,\"AOE\":2,\"Slow\":1,\"Morph\":1,\"Mobility\":1,\"Damage\":1,\"CC\":1},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":4,\"atkSpeed\":1,\"crit\":2,\"maxHp\":0,\"hardCc\":1,\"slow\":4,\"immune\":2,\"conceal\":0,\"dash\":4},\"relation\":{\"strong\":{\"ids\":[18,121,125],\"desc\":\"Hanzo's Ultimate enables him to poke or dive with relative safety, making him a serious threat to squishy heroes without mobility, like Layla, Ixia, and Zhuxin, while also disrupting the enemy in teamfights.\"},\"weak\":{\"ids\":[17,47,120],\"desc\":\"Hanzo fares less favorably against heroes with lots of mobility, such as Fanny, Lancelot, and Arlott, since it's difficult to build stacks on them, thus limiting Hanzo's damage.\"},\"assist\":{\"ids\":[36,70,6],\"desc\":\"Hanzo has high burst potential but needs time to stack his Passive, so he works best with heroes who can keep the enemy CC'd, like Aurora, Belerick, and Tigreal.\"}},\"meta\":{\"win\":49.88,\"pick\":0.35,\"ban\":4.9}},{\"id\":70,\"name\":\"Belerick\",\"roles\":[\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Crowd Control\",\"Regen\"],\"ability\":{\"durability\":90,\"offense\":40,\"effects\":100,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_5f2a9eca0bafd4ed8dc39a93c771b3af.png\",\"tags\":{\"Buff\":1,\"CC\":2,\"AOE\":2,\"Speed Up\":1,\"Heal\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":3,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[47,84],\"desc\":\"Belerick excels at controlling enemies at close range, making him a great counter against squishy Assassins who need to get close to deal damage, like Lancelot and Ling.\"},\"weak\":{\"ids\":[57,115],\"desc\":\"Belerick is countered by heroes with long-range attacks like Valir and Xavier.\"},\"assist\":{\"ids\":[107,1],\"desc\":\"Belerick works well with heroes who can dish out a lot of damage against enemies CC'd by his taunt, such as Miya and Natan.\"}},\"meta\":{\"win\":51.94,\"pick\":1.67,\"ban\":56.26}},{\"id\":71,\"name\":\"Kimmy\",\"roles\":[\"Marksman\",\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Damage\",\"Magic Damage\"],\"ability\":{\"durability\":30,\"offense\":80,\"effects\":50,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_61295dfefd369004e5e4a7f4fc86647b.png\",\"tags\":{\"Damage\":2,\"Speed Up\":1,\"Buff\":1,\"CC\":2,\"AOE\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":0,\"vamp\":1,\"shield\":0,\"basic\":3,\"atkSpeed\":2,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":4,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[79,91],\"desc\":\"Kimmy's ability to Basic Attack while moving makes her effective against heroes who rely on skillshots like Granger and Cecilion.\"},\"weak\":{\"ids\":[3,47],\"desc\":\"As a Marksman who cannot lock onto targets with Basic Attacks, Kimmy can be countered by heroes with high burst damage and mobility, such as Saber and Lancelot.\"},\"assist\":{\"ids\":[77,29],\"desc\":\"Kimmy excels at controlling and grouping enemies while dealing substantial damage, so she works well with heroes who have AOE CC like Badang and Ruby.\"}},\"meta\":{\"win\":48.25,\"pick\":0.83,\"ban\":0.69}},{\"id\":72,\"name\":\"Thamuz\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\",\"jungle\"],\"specialities\":[\"Chase\",\"Damage\"],\"ability\":{\"durability\":70,\"offense\":40,\"effects\":20,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_b5ad55e408b68acf6a86e7ff76f5f569.png\",\"tags\":{\"Debuff\":1,\"AOE\":2,\"Slow\":1,\"Mobility\":1,\"Buff\":2},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":1,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":4,\"atkSpeed\":1,\"crit\":0,\"maxHp\":1,\"hardCc\":0,\"slow\":3,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[16,27],\"desc\":\"Thamuz is good against other sustained damage Fighters like Zilong and Sun because he has the top notch laning power.\"},\"weak\":{\"ids\":[40,43],\"desc\":\"Thamuz is countered by agile Marksmen, such as Karrie and Irithel, since he lacks CC and relies on Basic Attacks, making him an easy target to kite.\"},\"assist\":{\"ids\":[55,14],\"desc\":\"Thamuz can play to his strength when working with Supports who provide Movement Speed or CC, such as Angela and Rafaela, because they enable him to stay on his targets.\"}},\"meta\":{\"win\":48.94,\"pick\":0.86,\"ban\":1.6}},{\"id\":73,\"name\":\"Harith\",\"roles\":[\"Mage\"],\"lanes\":[\"gold\"],\"specialities\":[\"Chase\",\"Damage\"],\"ability\":{\"durability\":40,\"offense\":50,\"effects\":10,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_d228a823b477fdf6c458c829c2e62bcf.png\",\"tags\":{\"Buff\":3,\"AOE\":1,\"Mobility\":1,\"Slow\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":1,\"shield\":1,\"basic\":3,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":5},\"relation\":{\"strong\":{\"ids\":[70,32],\"desc\":\"Harith is a very agile hero and his Ultimate reduces the duration of control effects, so he is excellent at countering heroes who rely on CC and have relatively long casting animations, like Belerick and Johnson.\"},\"weak\":{\"ids\":[119,52],\"desc\":\"Harith is countered by heroes who can quickly escape from his Ultimate, such as Novaria and Pharsa.\"},\"assist\":{\"ids\":[74,19],\"desc\":\"Harith pairs well with heroes who have AOE CC and can make it harder for enemies to escape his Ultimate's range, such as Minsitthar and Minotaur.\"}},\"meta\":{\"win\":47.45,\"pick\":0.15,\"ban\":0.05}},{\"id\":74,\"name\":\"Minsitthar\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Initiator\",\"Crowd Control\"],\"ability\":{\"durability\":60,\"offense\":40,\"effects\":80,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_c5d24a1dad6cef21de2698a4ed1d80ce.png\",\"tags\":{\"CC\":3,\"Damage\":2,\"Reduce DMG\":1,\"Buff\":1,\"Summon\":1},\"sig\":{\"phys\":6,\"magic\":0,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":1,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":2,\"hardCc\":7,\"slow\":3,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[97,120],\"desc\":\"Minsitthar is strong against heroes that rely on mobility skills since his Ultimate disables them. Minsitthar can instantly negate the advantages of heroes like Lancelot, Benedetta and Arlott.\"},\"weak\":{\"ids\":[16,108],\"desc\":\"Minsitthar is countered by heroes with high Movement Speed, such as Zilong and Aulus, who can easily dodge his 1st Skill and run out of his Ultimate.\"},\"assist\":{\"ids\":[114,60],\"desc\":\"Minsitthar works best with high damage Marksmen, such as Melissa and Hanabi, because he can create more opportunities for them to deal damage.\"}},\"meta\":{\"win\":52.46,\"pick\":0.6,\"ban\":3.6}},{\"id\":75,\"name\":\"Kadita\",\"roles\":[\"Mage\",\"Assassin\"],\"lanes\":[\"mid\"],\"specialities\":[\"Burst\",\"Charge\"],\"ability\":{\"durability\":40,\"offense\":80,\"effects\":80,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_99c0a77d0e01b06ad3f4351f8ef2869c.png\",\"tags\":{\"Heal\":1,\"Mobility\":1,\"AOE\":2,\"CC\":1,\"Burst\":1,\"Invincible\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":2,\"immune\":2,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[36,15],\"desc\":\"Kadita excels at countering heroes that lack mobility, such as Aurora and Eudora, because it's difficult for them to escape Kadita's 2nd Skill, and knocking them airborne sets them up for her Ultimate.\"},\"weak\":{\"ids\":[13,105],\"desc\":\"Kadita is countered by heroes with long range and high mobility, such as Clint and Beatrix, since it's difficult for Kadita to close in on them or hit them with her 2nd Skill.\"},\"assist\":{\"ids\":[93,6],\"desc\":\"Kadita works well with heroes who possess strong CC abilities, such as Atlas and Tigreal, as their CC will make it easier for Kadita to hit more enemies with her Ultimate.\"}},\"meta\":{\"win\":50.95,\"pick\":0.76,\"ban\":2.8}},{\"id\":76,\"name\":\"Faramis\",\"roles\":[\"Support\",\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Guard\",\"Charge\"],\"ability\":{\"durability\":40,\"offense\":60,\"effects\":10,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_04e575d648d7f7ac1174f4369595c3a2.png\",\"tags\":{\"Buff\":3,\"CC\":1,\"AOE\":1,\"Burst\":1,\"Death Immunity\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[3,15],\"desc\":\"Faramis' ability to temporarily prevent teammates from being killed makes him a good pick against heroes that go all-in to burst down a target, like Saber and Eudora.\"},\"weak\":{\"ids\":[119,52],\"desc\":\"Faramis is countered by high mobility heroes that are difficult for him to catch with his 1st Skill, such as Novaria and Pharsa.\"},\"assist\":{\"ids\":[67,58],\"desc\":\"Faramis works well with heroes that are designed to dive into the enemy, such as Leomord and Martis, as he'll be able to maximize the life-saving effect of his Ultimate.\"}},\"meta\":{\"win\":50.51,\"pick\":0.1,\"ban\":0.36}},{\"id\":77,\"name\":\"Badang\",\"roles\":[\"Fighter\"],\"lanes\":[\"roam\",\"exp\"],\"specialities\":[\"Charge\",\"Burst\"],\"ability\":{\"durability\":40,\"offense\":70,\"effects\":50,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_a81815e34246147b672d48209089da9c.png\",\"tags\":{\"CC\":2,\"Damage\":1,\"AOE\":2,\"Slow\":1,\"Mobility\":1,\"Burst\":1},\"sig\":{\"phys\":7,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":6,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[18,46],\"desc\":\"Badang counters squishy heroes with low mobility like Layla and Odette who have a hard time escaping from his 2nd Skill into Ultimate combo.\"},\"weak\":{\"ids\":[89,84],\"desc\":\"Badang is countered by agile heroes such as Wanwan and Ling who can dodge or escape his 2nd Skill, greatly diminishing his damage and CC.\"},\"assist\":{\"ids\":[6,96],\"desc\":\"Badang works best with heroes that can pull enemies together to make it easier for him to land his 2nd Skill and Ultimate combo, such as Tigreal and Luo Yi.\"}},\"meta\":{\"win\":50.18,\"pick\":1.35,\"ban\":3.72}},{\"id\":78,\"name\":\"Khufra\",\"roles\":[\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Initiator\",\"Crowd Control\"],\"ability\":{\"durability\":90,\"offense\":20,\"effects\":100,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_2fe99f4001211d18b3d2b95d0d3dc395.png\",\"tags\":{\"Heal\":1,\"Damage\":1,\"Mobility\":1,\"CC\":2,\"Slow\":1,\"Buff\":1,\"AOE\":1},\"sig\":{\"phys\":4,\"magic\":2,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":5,\"slow\":4,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[118,47],\"desc\":\"Khufra's 2nd Skill can be used to interrupt movement abilities, making him strong against heroes who fight with movement abilities, such as Joy and Lancelot.\"},\"weak\":{\"ids\":[117,104],\"desc\":\"Khufra is countered by resilient tank heroes, as his CC abilities pose no threat to these heroes. Heroes like Fredrinn and Gloo are good examples here.\"},\"assist\":{\"ids\":[15,52],\"desc\":\"Khufra works best with heroes with strong CC abilities that make it easier for his 1st Skill to hit, such as Eudora and Pharsa.\"}},\"meta\":{\"win\":54.81,\"pick\":0.37,\"ban\":2.3}},{\"id\":79,\"name\":\"Granger\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Burst\",\"Finisher\"],\"ability\":{\"durability\":30,\"offense\":70,\"effects\":10,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_a7729262d5b4abdc34ae5181e964c235.png\",\"tags\":{\"Damage\":1,\"Buff\":2,\"Burst\":2,\"Mobility\":1,\"Slow\":1},\"sig\":{\"phys\":2,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":1,\"maxHp\":0,\"hardCc\":0,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[61,91],\"desc\":\"Granger counters squishy heroes who lack mobility, such as Chang'e and Cecilion, who have a hard time dodging his 1st Skill and are vulnerable to the high damage of his Ultimate.\"},\"weak\":{\"ids\":[3,21],\"desc\":\"Granger is countered by heroes with strong single target killing power. Despite having good mobility, Granger lacks other defensive measures. Heroes like Saber and Hayabusa can quickly get the jump on Granger and finish him off.\"},\"assist\":{\"ids\":[10,62],\"desc\":\"Granger pairs well with heroes that have strong CC abilities, such as Franco and Kaja, who can hold enemies in place for Granger's entire 1st Skill.\"}},\"meta\":{\"win\":42.85,\"pick\":1.32,\"ban\":1.67}},{\"id\":80,\"name\":\"Guinevere\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Burst\",\"Magic Damage\"],\"ability\":{\"durability\":40,\"offense\":50,\"effects\":70,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_901bdd5d4432a2c0290dfc71df615a5a.png\",\"tags\":{\"Buff\":2,\"Damage\":2,\"Mobility\":1,\"CC\":2,\"Burst\":1},\"sig\":{\"phys\":0,\"magic\":7,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":3,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":5,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[16,90],\"desc\":\"Guinevere is strong against heroes with poor sustainability or who are simply weak in the early game. This is because Guinevere can easily deliver her poking combo and escape. Heroes like Zilong and Silvanna are good examples here.\"},\"weak\":{\"ids\":[77,26],\"desc\":\"But Guinevere is countered by heroes with CC immunities or strong CC skills. Since she needs to chain her CC to unleash her full damage potential, such as Badang and Chou.\"},\"assist\":{\"ids\":[10,49],\"desc\":\"Guinevere works best with heroes with good single-target CC that will give her a better environment to farm and deal damage, such as Franco and Hylos.\"}},\"meta\":{\"win\":51.23,\"pick\":0.81,\"ban\":1.75}},{\"id\":81,\"name\":\"Esmeralda\",\"roles\":[\"Tank\",\"Mage\"],\"lanes\":[\"exp\"],\"specialities\":[\"Regen\",\"Mixed Damage\"],\"ability\":{\"durability\":90,\"offense\":30,\"effects\":60,\"difficulty\":70},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_4661a64a2c6b724e7b67032fcbface27.png\",\"tags\":{\"Buff\":3,\"Shield\":2,\"AOE\":1,\"Burst\":1,\"Mobility\":1},\"sig\":{\"phys\":4,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":7,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[9,20],\"desc\":\"Esmeralda works well against heroes with shields, like Akai and Lolita, because her skills not only ignore their shields, but she also converts them into her own.\"},\"weak\":{\"ids\":[40,53],\"desc\":\"Esmeralda is countered by highly mobile Marksmen, such as Karrie and Lesley, because she lacks the burst damage to finish them off quickly and can't keep up with their mobility.\"},\"assist\":{\"ids\":[93,6],\"desc\":\"Esmeralda works best with heroes that can pull enemies together like Atlas and Tigreal to allow her to hit more targets with her Ultimate.\"}},\"meta\":{\"win\":47.07,\"pick\":0.83,\"ban\":2.16}},{\"id\":82,\"name\":\"Terizla\",\"roles\":[\"Fighter\",\"Tank\"],\"lanes\":[\"exp\"],\"specialities\":[\"Burst\",\"Crowd Control\"],\"ability\":{\"durability\":90,\"offense\":30,\"effects\":40,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_c4bb270c28c7be663f57e993b0d6d3d8.png\",\"tags\":{\"Buff\":1,\"AOE\":2,\"Speed Up\":1,\"Burst\":1,\"Slow\":1,\"CC\":1},\"sig\":{\"phys\":6,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":2,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":4,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[16,27],\"desc\":\"Terizla is strong against light melee fighters cause they'll have a hard time surviving his heavy skill damage, such as Zilong and Sun.\"},\"weak\":{\"ids\":[120,53],\"desc\":\"Terizla is countered by heroes with good Mobility or long attack range, because it will be diffcult to hit them with his skills. Such as Arlott and Lesley.\"},\"assist\":{\"ids\":[41,93],\"desc\":\"Terizla works best with heroes who have strong initiation skills that allow him to deal more damage with his skills, heroes like Gatotkaca and Atlas are good examples here.\"}},\"meta\":{\"win\":50.64,\"pick\":0.35,\"ban\":0.18}},{\"id\":83,\"name\":\"X.Borg\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Regen\",\"Burst\"],\"ability\":{\"durability\":80,\"offense\":30,\"effects\":10,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_efe9c7ed8d8f84f1bb0f88a3e08de5fc.png\",\"tags\":{\"Buff\":1,\"AOE\":1,\"CC\":1,\"Burst\":1,\"Mobility\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":2,\"heal\":2,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[82,108],\"desc\":\"X.Borg counters Fighters that lack mobility, such as Terizla and Aulus. His 1st Skill has a large range and can be cast while moving, making it easy for him to kite.\"},\"weak\":{\"ids\":[58,85],\"desc\":\"X.Borg is countered by Fighters with burst damage like Martis and Dyrroth. They can quickly burst down X.Borg when he is Armorless.\"},\"assist\":{\"ids\":[8,58],\"desc\":\"X.Borg pairs well with heroes who excel in burst damage, such as Karina and Martis. X.Borg's AOE damage will leave enemies low enough for his teammate to finishing off.\"}},\"meta\":{\"win\":49.91,\"pick\":0.57,\"ban\":1.94}},{\"id\":84,\"name\":\"Ling\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Burst\"],\"ability\":{\"durability\":50,\"offense\":60,\"effects\":30,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_017bade52b9fc94bbc12615de6d75c08.png\",\"tags\":{\"Buff\":2,\"Mobility\":2,\"Damage\":1,\"Burst\":1,\"CC\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":3,\"maxHp\":0,\"hardCc\":1,\"slow\":3,\"immune\":1,\"conceal\":3,\"dash\":5},\"relation\":{\"strong\":{\"ids\":[18,60],\"desc\":\"Ling's excellent pursuit abilities and high burst damage make him strong against squishy heroes, like Layla and Hanabi.\"},\"weak\":{\"ids\":[15,54],\"desc\":\"Ling is countered by heroes with strong single-target CC and high burst damage, as they can easily control Ling and burst him down. Such as Eudora and Jawhead.\"},\"assist\":{\"ids\":[55,78],\"desc\":\"Ling works best with support heroes with CC abilities, that make Ling more flexible in different situations. Such as Angela and Khufra.\"}},\"meta\":{\"win\":52.39,\"pick\":0.67,\"ban\":0.61}},{\"id\":85,\"name\":\"Dyrroth\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\",\"jungle\"],\"specialities\":[\"Charge\",\"Burst\"],\"ability\":{\"durability\":50,\"offense\":50,\"effects\":20,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_8ec13b59871b2862d773beac2d69fa3e.png\",\"tags\":{\"Buff\":1,\"Heal\":1,\"AOE\":1,\"Slow\":2,\"Mobility\":1,\"Damage\":1,\"Burst\":1},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":4,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[23,60],\"desc\":\"Dyrroth has good chasing abilities and good melee burst damage, he is strong against heroes with poor Mobility, such as Gord and Hanabi.\"},\"weak\":{\"ids\":[38,70],\"desc\":\"Being a melee hero makes Dyrroth weak against heroes with Slow and kiting abilities, such as Vexana and Belerick.\"},\"assist\":{\"ids\":[10,62],\"desc\":\"Dyrroth's high melee burst damage works best with heroes with single-target CC, such as Franco and Kaja.\"}},\"meta\":{\"win\":49.33,\"pick\":1.64,\"ban\":1.67}},{\"id\":86,\"name\":\"Lylia\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Push\",\"Damage\"],\"ability\":{\"durability\":50,\"offense\":100,\"effects\":20,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_706573f138055c3df3df94948b4f26bd.png\",\"tags\":{\"Buff\":2,\"Speed Up\":1,\"AOE\":2,\"Slow\":2,\"Heal\":1},\"sig\":{\"phys\":0,\"magic\":3,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[92,49],\"desc\":\"Lylia counters Tank heroes without Blink skills, such as Carmilla and Hylos, who cannot easily escape Gloom's AOE range and are more susceptible to Lylia's high sustained damage.\"},\"weak\":{\"ids\":[122,84],\"desc\":\"Since most of Lylia's damage comes from detonating her 2nd Skill, but setting up Gloom can be quite slow, nimble Assassins like Nolan and Ling counter Lylia as she'll have a tough time hitting them.\"},\"assist\":{\"ids\":[19,10],\"desc\":\"Lylia excels in prolonged battles, and works well with heroes with strong CC, like Franco and Minotaur.\"}},\"meta\":{\"win\":49,\"pick\":0.47,\"ban\":0.39}},{\"id\":87,\"name\":\"Baxia\",\"roles\":[\"Tank\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Support\",\"Damage\"],\"ability\":{\"durability\":100,\"offense\":30,\"effects\":60,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_80e408203869ca99302af195ac4f756c.png\",\"tags\":{\"Buff\":1,\"Debuff\":1,\"Speed Up\":2,\"CC\":1,\"Damage\":1,\"Slow\":1,\"AOE\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":5,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[61,90],\"desc\":\"Baxia counters heroes with multi-hit skills or those who rely on shields or HP Regen, such as Chang'e and Silvanna, thanks to his Passive.\"},\"weak\":{\"ids\":[40,53],\"desc\":\"Baxia is countered by agile Marksmen who deal True Damage like Karrie and Lesley because they can easily stay out of Baxia's range while dealing massive damage to him.\"},\"assist\":{\"ids\":[72,28],\"desc\":\"Baxia can utilize his AOE damage and slow effect to help sustained damage heroes like Thamuz and Alpha stay on their targets.\"}},\"meta\":{\"win\":45.87,\"pick\":0.05,\"ban\":0.1}},{\"id\":88,\"name\":\"Masha\",\"roles\":[\"Fighter\",\"Tank\"],\"lanes\":[\"exp\"],\"specialities\":[\"Push\",\"Damage\"],\"ability\":{\"durability\":50,\"offense\":70,\"effects\":30,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_4d79ba6ebb0a0f2bf542917f0b19d056.png\",\"tags\":{\"Buff\":1,\"AOE\":1,\"Mobility\":1,\"Slow\":1,\"CC\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[15,75],\"desc\":\"Burst Mages like Eudora and Kadita are ideal prey for Masha. With three HP bars and CC removal plus damage negation when losing a bar, Masha has built-in anti-burst against them.\"},\"weak\":{\"ids\":[17,65],\"desc\":\"Choose highly mobile heroes with multiple dashes, such as Fanny or Claude. Thwart her initiation, then focus her down before she goes Feral.\"},\"assist\":{\"ids\":[93,19],\"desc\":\"Masha also pairs well with CC heroes like Atlas and Minotaur. Once they pull the enemies together, she can tear them to shreds with her savage claws!\"}},\"meta\":{\"win\":59.08,\"pick\":0.48,\"ban\":41.27}},{\"id\":89,\"name\":\"Wanwan\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Burst\"],\"ability\":{\"durability\":20,\"offense\":60,\"effects\":30,\"difficulty\":80},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_44bfa1dc44deb8d7620605faaa9ffae7.png\",\"tags\":{\"Buff\":1,\"Mobility\":1,\"AOE\":2,\"CC\":1,\"Remove CC\":1,\"Burst\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":1,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":3,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":3},\"relation\":{\"strong\":{\"ids\":[117,96],\"desc\":\"Wanwan is exceptional in dashing and powerful against heroes with short ranges or heavy weight, such as Fredrinn and Luo Yi.\"},\"weak\":{\"ids\":[47,23],\"desc\":\"However, due to her lack of durability and short attack range, Mages with longer ranges like Gord can poke her easily. She also lacks survival abilities when taking Burst damage and can be weak against Burst Assassins like Lancelot.\"},\"assist\":{\"ids\":[10,70],\"desc\":\"She's best with Supporting Tanks with powerful crowd control, like Franco and Belerick. They can help Wanwan hit more Weaknesses and unlock her Ultimate.\"}},\"meta\":{\"win\":47.52,\"pick\":0.14,\"ban\":0.14}},{\"id\":90,\"name\":\"Silvanna\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Initiator\",\"Magic Damage\"],\"ability\":{\"durability\":50,\"offense\":40,\"effects\":70,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_5e7b297af7c6e32a420b897aa4998071.png\",\"tags\":{\"Buff\":1,\"Debuff\":1,\"Mobility\":1,\"CC\":2,\"AOE\":2,\"Shield\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":1,\"shield\":1,\"basic\":3,\"atkSpeed\":2,\"crit\":1,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[18,57],\"desc\":\"Silvanna has a long attack range and powerful crowd control abilities,which makes her stronger against back-row Mages and Marksmen,such as Layla and Valir.\"},\"weak\":{\"ids\":[58],\"desc\":\"But she can be weak against Fighters with multiple CCs like Martis because they can easily interrupt her 2nd Skill.\"},\"assist\":{\"ids\":[93,6],\"desc\":\"Pairing Silvanna with Tanks gives her sufficient space to dish out damage. For example, Atlas and Tigreal.\"}},\"meta\":{\"win\":51.45,\"pick\":1,\"ban\":2.15}},{\"id\":91,\"name\":\"Cecilion\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Poke\",\"Burst\"],\"ability\":{\"durability\":40,\"offense\":100,\"effects\":50,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_045399c265021d47da6512e6de20b64f.png\",\"tags\":{\"Buff\":1,\"AOE\":2,\"Speed Up\":2,\"CC\":1,\"Burst\":1,\"Shield\":1,\"Slow\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":2,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":3,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[2,82],\"desc\":\"Cecilion counters less mobile Fighters like Balmond and Terizla because these heroes have a hard time getting close to Cecilion while Cecilion can more easily hit them with his skills.\"},\"weak\":{\"ids\":[84,17],\"desc\":\"Cecilion is countered by Assassins who can quickly close the gap like Ling and Fanny because Cecilion lacks defensive tools and his normal skills cannot hit enemies in melee range.\"},\"assist\":{\"ids\":[92,19],\"desc\":\"Cecilion works well with Tanks with sustained CC abilities, such as Carmilla and Minotaur, since their CC can help Cecilion land his skills.\"}},\"meta\":{\"win\":50.67,\"pick\":0.65,\"ban\":0.17}},{\"id\":92,\"name\":\"Carmilla\",\"roles\":[\"Support\",\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Crowd Control\",\"Damage\"],\"ability\":{\"durability\":90,\"offense\":20,\"effects\":80,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_6fb8f120dafdcbc1b5da2a2667016ad5.png\",\"tags\":{\"Buff\":1,\"Debuff\":1,\"Damage\":1,\"Heal\":1,\"Speed Up\":1,\"CC\":2},\"sig\":{\"phys\":0,\"magic\":3,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":3,\"slow\":4,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[85,37],\"desc\":\"Carmilla counters melee Fighters with low durability, such as Dyrroth and Lapu-Lapu, because she can rapidly steal their Defenses with her 1st Skill and Passive while healing herself.\"},\"weak\":{\"ids\":[60,89],\"desc\":\"Carmilla is countered by heroes that can ignore or remove her CC, such as Hanabi and Wanwan, since they can't be locked down by Carmilla's 2nd Skill or Ultimate.\"},\"assist\":{\"ids\":[91,36],\"desc\":\"Carmilla is best paired with sustained damage Mages with CC abilities like Cecilion and Aurora, as her Ultimate can greatly amplify their strengths.\"}},\"meta\":{\"win\":52.98,\"pick\":1.28,\"ban\":22.94}},{\"id\":93,\"name\":\"Atlas\",\"roles\":[\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Crowd Control\",\"Initiator\"],\"ability\":{\"durability\":80,\"offense\":10,\"effects\":90,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_d974ac796678180ff8724b88e192898b.png\",\"tags\":{\"Buff\":1,\"Debuff\":1,\"AOE\":2,\"Mobility\":1,\"CC\":2},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":5,\"slow\":3,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[38,15],\"desc\":\"Atlas counters squishy heroes without mobility skills like Vexana and Eudora because they cannot reliably escape his CC.\"},\"weak\":{\"ids\":[57,31],\"desc\":\"Atlas is countered by heroes who can knock him away, such as Valir and Moskov, since they can easily stop his 2nd Skill which Atlas relies on to land his other skills.\"},\"assist\":{\"ids\":[66,121],\"desc\":\"Atlas works well with heroes with high AOE damage like Vale and Ixia because Atlas can pull enemies together and keep them CC'd.\"}},\"meta\":{\"win\":50.45,\"pick\":0.89,\"ban\":8.76}},{\"id\":94,\"name\":\"Popol and Kupa\",\"roles\":[\"Marksman\"],\"lanes\":[\"jungle\",\"gold\"],\"specialities\":[\"Control\",\"Burst\"],\"ability\":{\"durability\":40,\"offense\":70,\"effects\":70,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_f37281ad588cf152cfafdd662f7edc9b.png\",\"tags\":{\"Buff\":4,\"Damage\":2,\"CC\":4,\"Mobility\":2,\"Shield\":2,\"Summon\":2},\"sig\":{\"phys\":6,\"magic\":0,\"trueDmg\":2,\"heal\":6,\"vamp\":0,\"shield\":4,\"basic\":4,\"atkSpeed\":2,\"crit\":0,\"maxHp\":2,\"hardCc\":4,\"slow\":4,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[100,23,101],\"desc\":\"Squishies with low mobility like Brody, Gord, and Yve are Popol and Kupa's favorite prey. Combo their Skill 1 and Skill 3 for an inescapable CC chain.\"},\"weak\":{\"ids\":[56,8,133],\"desc\":\"But against bursty Assassins like Gusion, Karina, or Hirara, Popol and Kupa need to tread carefully. One misstep and they'll close in, putting an end to your hunt.\"},\"assist\":{\"ids\":[132,6,93],\"desc\":\"Strong initiators like Marcel, Tigreal, and Atlas make ideal hunting companions. They can easily follow up on Popol's CC, diving the enemy formation to focus the main prey.\"}},\"meta\":{\"win\":50.21,\"pick\":0.47,\"ban\":1.44}},{\"id\":95,\"name\":\"Yu Zhong\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Regen\",\"Damage\"],\"ability\":{\"durability\":70,\"offense\":40,\"effects\":70,\"difficulty\":70},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_9823ce4fe5eb89c0082b24f6d5ea67f6.png\",\"tags\":{\"Buff\":2,\"AOE\":1,\"Slow\":1,\"Mobility\":2,\"CC\":1,\"Morph\":1},\"sig\":{\"phys\":7,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[108,16],\"desc\":\"Yu Zhong counters squishy Fighter heroes such as Aulus and Zilong, because they can't easily dodge Yu Zhong's skills and have a hard time with him in the early game.\"},\"weak\":{\"ids\":[53,40],\"desc\":\"Yu Zhong is countered by nimble Marksman heroes such as Lesley and Karrie, since it's hard for Yu Zhong to land his skills, making him a vulnerable and easy target.\"},\"assist\":{\"ids\":[38,115],\"desc\":\"Yu Zhong works well with Mages that can initiate with CC such as Vexana and Xavier. Their control effects allow Yu Zhong to land his skills more easily.\"}},\"meta\":{\"win\":48.8,\"pick\":0.67,\"ban\":0.73}},{\"id\":96,\"name\":\"Luo Yi\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Support\",\"Crowd Control\"],\"ability\":{\"durability\":20,\"offense\":100,\"effects\":40,\"difficulty\":80},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_26e03fd72532d11c7b32911b95b8d559.png\",\"tags\":{\"Burst\":1,\"CC\":1,\"AOE\":2,\"Slow\":1,\"Teleport\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[15,23],\"desc\":\"Luo Yi counters heroes with low mobility such as Eudora and Gord because they are easy targets for her Sigils and Yin-Yang Reactions.\"},\"weak\":{\"ids\":[59,117],\"desc\":\"Luo Yi is countered by Fighters or Tanks with high HP recovery like Uranus and Fredrinn because she can't deal enough damage to finish them off quickly.\"},\"assist\":{\"ids\":[109,8],\"desc\":\"Luo Yi works best with Junglers who are often looking for fights around the map, such as Aamon and Karina, because she can use her Ultimate to cut down their travel time.\"}},\"meta\":{\"win\":47,\"pick\":0.17,\"ban\":0.07}},{\"id\":97,\"name\":\"Benedetta\",\"roles\":[\"Assassin\",\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Chase\",\"Burst\"],\"ability\":{\"durability\":60,\"offense\":50,\"effects\":20,\"difficulty\":80},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_b4a5e537894bdc00787e80e4d3ada5dd.png\",\"tags\":{\"Mobility\":4,\"Damage\":1,\"AOE\":1,\"Buff\":1,\"Burst\":1},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":2,\"immune\":2,\"conceal\":0,\"dash\":4},\"relation\":{\"strong\":{\"ids\":[54,80],\"desc\":\"Benedetta's 2nd Skill can effectively block enemy CC, making her a great counter to heroes with predictable CC skills, such as Jawhead and Guinevere.\"},\"weak\":{\"ids\":[74,106],\"desc\":\"Benedetta is countered by heroes with skills that shutdown mobility skills, such as Minsitthar and Phoveus, since all of Benedetta's skills are considered mobility.\"},\"assist\":{\"ids\":[32,41],\"desc\":\"Benedetta works well with strong CC initiators, like Johnson and Gatotkaca, because they allow her to maximize the effects of her Ultimate.\"}},\"meta\":{\"win\":52.07,\"pick\":0.42,\"ban\":0.39}},{\"id\":98,\"name\":\"Khaleed\",\"roles\":[\"Fighter\"],\"lanes\":[\"roam\",\"exp\"],\"specialities\":[\"Damage\",\"Regen\"],\"ability\":{\"durability\":80,\"offense\":50,\"effects\":50,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_540a6a9d343842674ce002082366ec9d.png\",\"tags\":{\"Speed Up\":1,\"Damage\":1,\"AOE\":1,\"Reduce DMG\":1,\"Heal\":1,\"CC\":1,\"Mobility\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":1,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[33,115],\"desc\":\"Khaleed counters heroes who lack mobility like Cyclops and Xavier since they will have difficult time avoiding his combo.\"},\"weak\":{\"ids\":[83,26],\"desc\":\"Khaleed is countered by heroes who have the ability to knock him back or airborne to interrupt his 2nd Skill, such as X.Borg and Chou.\"},\"assist\":{\"ids\":[39,8],\"desc\":\"Because Khaleed can deal a lot of AOE damage, he works well with heroes like Roger and Karina who excel at finishing off multiple low HP targets.\"}},\"meta\":{\"win\":50.19,\"pick\":0.13,\"ban\":0.09}},{\"id\":99,\"name\":\"Barats\",\"roles\":[\"Tank\",\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Damage\",\"Crowd Control\"],\"ability\":{\"durability\":100,\"offense\":30,\"effects\":90,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_6495be044c2d28106e200f6918391d54.png\",\"tags\":{\"Buff\":1,\"AOE\":2,\"CC\":2,\"Mobility\":1},\"sig\":{\"phys\":7,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":4,\"hardCc\":2,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[70,20],\"desc\":\"Barats counters Tank heroes that rely on CC skills, such as Belerick and Lolita, since the extra Resilience provided by his Passive will greatly reduce the duration of their CC.\"},\"weak\":{\"ids\":[9,31],\"desc\":\"Barats is countered by agile Marksmen who can deal high damage to Tanks, such as Karrie and Moskov, because Barats lacks mobility and his skills can be avoided, making these heroes very difficult to kill.\"},\"assist\":{\"ids\":[102,55],\"desc\":\"Barats works best with Supports who can give him Movement Speed to make up for his lack of mobility, such as Mathilda and Angela.\"}},\"meta\":{\"win\":51.57,\"pick\":0.63,\"ban\":2.87}},{\"id\":100,\"name\":\"Brody\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Burst\",\"Finisher\"],\"ability\":{\"durability\":40,\"offense\":70,\"effects\":50,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_cbb309b63cdf838fce79bd9cb95d4ed7.png\",\"tags\":{\"Buff\":1,\"AOE\":2,\"Slow\":1,\"Mobility\":1,\"CC\":1,\"Burst\":1},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":4,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":3,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[109,113],\"desc\":\"Brody is strong against heroes with poor survivability in the early game and heroes without dash, because he can easily lock on them and attack beyond their reach. Like Aamon and Yin.\"},\"weak\":{\"ids\":[58,89],\"desc\":\"Brody is countered by heroes with CC immunity and multiple movement abilities, because they can quickly close in on Brody, giving him no chance to stack the Abyss Mark. Such as Martis and Wanwan.\"},\"assist\":{\"ids\":[49,74],\"desc\":\"Brody works best with heroes who can perform lock-on attacks or heroes with area CC abilities, as they can give Brody more room to deal damage and farm better. Such as Hylos and Minsitthar.\"}},\"meta\":{\"win\":49.93,\"pick\":0.8,\"ban\":1.31}},{\"id\":101,\"name\":\"Yve\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Poke\",\"Burst\"],\"ability\":{\"durability\":40,\"offense\":80,\"effects\":40,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_d9b0a1d92b1c4b3643d6332fd66aa8e6.png\",\"tags\":{\"Shield\":1,\"AOE\":2,\"Buff\":1,\"Slow\":1,\"Burst\":1,\"CC\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":3,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[117,99,108],\"desc\":\"Yve counters Tanks and Fighters with low mobility like Fredrinn, Barats, and Aulus due to her long range skills.\"},\"weak\":{\"ids\":[113,3,8],\"desc\":\"Yve's low survivability makes her a target for divers and burst damage heroes like Yin, Saber, and Karina.\"},\"assist\":{\"ids\":[19,41,93],\"desc\":\"Yve's works best with Tanks and Supports with strong CC to lockdown enemies for her Ultimate, like Minotaur, Gatotkaca, and Atlas.\"}},\"meta\":{\"win\":52.1,\"pick\":0.06,\"ban\":0.04}},{\"id\":102,\"name\":\"Mathilda\",\"roles\":[\"Support\",\"Assassin\"],\"lanes\":[\"roam\"],\"specialities\":[\"Initiator\",\"Guard\"],\"ability\":{\"durability\":80,\"offense\":20,\"effects\":40,\"difficulty\":70},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_24d08ed788a9f5984bcf3b732ddcaf04.png\",\"tags\":{\"Damage\":1,\"Speed Up\":1,\"Burst\":1,\"Mobility\":2,\"Shield\":2},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":3,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":3},\"relation\":{\"strong\":{\"ids\":[23,66],\"desc\":\"Mathilda excels in harassment and single-target CC, making her a great counter to squishy heroes with no escape skills, like Gord and Vale.\"},\"weak\":{\"ids\":[10,74],\"desc\":\"Mathilda is countered by Tanks with multiple CC skills, such as Franco and Minsitthar.\"},\"assist\":{\"ids\":[3,15],\"desc\":\"Mathilda works well with high burst damage heroes who can use Guiding Wind and follow up her Ultimate to secure kills, such as Saber and Eudora.\"}},\"meta\":{\"win\":44.43,\"pick\":0.13,\"ban\":0.18}},{\"id\":103,\"name\":\"Paquito\",\"roles\":[\"Fighter\",\"Assassin\"],\"lanes\":[\"exp\",\"jungle\"],\"specialities\":[\"Chase\",\"Damage\"],\"ability\":{\"durability\":60,\"offense\":50,\"effects\":40,\"difficulty\":90},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_5ab87805b9107b126a3bab64a8a199ad.png\",\"tags\":{\"Buff\":1,\"Damage\":1,\"AOE\":1,\"Shield\":1,\"Burst\":2,\"Mobility\":1,\"CC\":1},\"sig\":{\"phys\":7,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":3,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":3,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[23,18],\"desc\":\"Paquito is a hero with dash and high burst damage, making him strong against squishy heroes without defensive abilities, such as Gord and Layla.\"},\"weak\":{\"ids\":[10,62],\"desc\":\"Paquito is an agile hero, but he is also kind of squishy, which makes him weak against heroes with strong CC abilities. Such as Franco and Kaja.\"},\"assist\":{\"ids\":[55,14],\"desc\":\"Paquito works best with support heroes who can buff him, like Angela and Rafaela.\"}},\"meta\":{\"win\":49.97,\"pick\":1.19,\"ban\":14.02}},{\"id\":104,\"name\":\"Gloo\",\"roles\":[\"Tank\"],\"lanes\":[\"roam\",\"exp\"],\"specialities\":[\"Regen\",\"Control\"],\"ability\":{\"durability\":100,\"offense\":30,\"effects\":100,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_c472fe0233e5ef84a3ac9ba4a229d09f.png\",\"tags\":{\"Slow\":1,\"Buff\":1,\"AOE\":2,\"CC\":2,\"Attach\":1,\"Heal\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[91,61],\"desc\":\"Gloo is strong against Mage heroes without good CC. Because he can easily attach himself to them, and take them where he wants them to go. Such as Cecilion and Chang'e.\"},\"weak\":{\"ids\":[40,53],\"desc\":\"Gloo is countered by Marksman heroes with good mobility. It's difficult for Gloo to attach himself to them, and he can easily be killed if he tries. Such as Karrie and Lesley.\"},\"assist\":{\"ids\":[15,3],\"desc\":\"Gloo works best with high burst damage heroes, as they can quickly take down the enemy hero that he brings back with his Ultimate. Like Eudora and Saber.\"}},\"meta\":{\"win\":52.08,\"pick\":0.69,\"ban\":40.65}},{\"id\":105,\"name\":\"Beatrix\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Damage\"],\"ability\":{\"durability\":30,\"offense\":80,\"effects\":10,\"difficulty\":70},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_4687eca874feec9017b448a0b9110d65.png\",\"tags\":{\"Buff\":12,\"Morph\":8,\"Mobility\":4,\"Burst\":2,\"AOE\":3,\"Slow\":1},\"sig\":{\"phys\":8,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":8,\"shield\":0,\"basic\":8,\"atkSpeed\":0,\"crit\":8,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[49,70],\"desc\":\"Beatrix is strong against heroes without movement abilities, as they can be easily hit by her skills, such as Hylos and Belerick.\"},\"weak\":{\"ids\":[15,84],\"desc\":\"Beatrix is countered by high burst damage heroes with strong single-target CC, as they can catch her with a CC and burst her down. Such as Eudora and Ling.\"},\"assist\":{\"ids\":[78,93],\"desc\":\"Beatrix works best with tank heroes with good CC abilities, as they can help improve the accuracy of Beatrix's skills. Like Khufra and Atlas.\"}},\"meta\":{\"win\":50.3,\"pick\":0.64,\"ban\":0.42}},{\"id\":106,\"name\":\"Phoveus\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Regen\",\"Damage\"],\"ability\":{\"durability\":60,\"offense\":80,\"effects\":50,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_af21c0dd8b5308c27974bff900803a9a.png\",\"tags\":{\"Buff\":1,\"AOE\":2,\"Slow\":1,\"CC\":1,\"Mobility\":1,\"Burst\":1},\"sig\":{\"phys\":2,\"magic\":3,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":3},\"relation\":{\"strong\":{\"ids\":[89,120,26],\"desc\":\"Enemies with multiple mobility abilities can greatly reduce Phoveus's cooldowns, so he can use his enhanced Basic Attacks and skills more often when facing heroes like Wanwan, Arlott, and Chou.\"},\"weak\":{\"ids\":[36,57,38],\"desc\":\"Phoveus will struggle against ranged heroes with strong CC, such as Aurora, Valir, and Vexana.\"},\"assist\":{\"ids\":[41,19,6],\"desc\":\"Tanks with good initiation like Gatotkaca, Minotaur, and Tigreal can create opportunities for Phoveus to maximize his damage while they take some of the incoming damage.\"}},\"meta\":{\"win\":48.38,\"pick\":0.28,\"ban\":0.91}},{\"id\":107,\"name\":\"Natan\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Burst\",\"Magic Damage\"],\"ability\":{\"durability\":20,\"offense\":60,\"effects\":20,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_da02742f59013365923b216420bc4082.png\",\"tags\":{\"Buff\":1,\"Burst\":1,\"CC\":1,\"Summon\":1,\"Mobility\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[6,41],\"desc\":\"Natan is strong against Tanks with low mobility such as Tigreal and Gatotkaca because he can easily avoid their control abilities with his UIltimate and get more hits in with his Basic Attacks on slower targets.\"},\"weak\":{\"ids\":[3,15],\"desc\":\"Natan is countered by heroes with targeted control and high burst like Saber and Eudora that can lock him down and finish him off.\"},\"assist\":{\"ids\":[32,28],\"desc\":\"Natan's Ultimate allows him to blink a great distance, so he works best with initiator heroes such as Johnson and Alpha because he can dive with them and unleash a lot of damage.\"}},\"meta\":{\"win\":51.37,\"pick\":0.31,\"ban\":0.13}},{\"id\":108,\"name\":\"Aulus\",\"roles\":[\"Fighter\"],\"lanes\":[\"jungle\",\"exp\"],\"specialities\":[\"Damage\",\"Charge\"],\"ability\":{\"durability\":60,\"offense\":60,\"effects\":10,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_1366d775809e52ee6526b5b58d93cdff.png\",\"tags\":{\"Buff\":2,\"Speed Up\":1,\"CC\":1,\"Mobility\":1,\"Burst\":1},\"sig\":{\"phys\":6,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":3,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[60,1,23],\"desc\":\"Aulus's strong engage and sustained combat capabilities, along with his Control Immunity, makes him a good counter to squishy, low-mobility heroes like Hanabi, Miya, and Gord.\"},\"weak\":{\"ids\":[10,114,8],\"desc\":\"Since Aulus's damage relies on landing his enhanced Basic Attacks, heroes who can keep him at bay and avoid them are a tough matchup, such as Franco, Melissa, and Karina.\"},\"assist\":{\"ids\":[55,112],\"desc\":\"Aulus is a dive Fighter and he thrives with reliable ranged Support, such as Angela and Floryn.\"}},\"meta\":{\"win\":53.03,\"pick\":0.66,\"ban\":20.64}},{\"id\":109,\"name\":\"Aamon\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Magic Damage\"],\"ability\":{\"durability\":30,\"offense\":70,\"effects\":10,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_b3a7602fe7ffd1e54bf8ea79ceadfa72.png\",\"tags\":{\"Buff\":2,\"Damage\":2,\"Burst\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":4,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":1,\"conceal\":5,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[115,91],\"desc\":\"Squishy heroes with low mobility such as Layla and Hanabi.\"},\"weak\":{\"ids\":[2,117],\"desc\":\"Tanky heroes or those that deal damage over time such as Balmond and Fredrinn.\"},\"assist\":{\"ids\":[14,112],\"desc\":\"Support heroes that can provide buffs such as Rafaela and Floryn.\"}},\"meta\":{\"win\":50.2,\"pick\":0.65,\"ban\":2.64}},{\"id\":110,\"name\":\"Valentina\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Burst\",\"Finisher\"],\"ability\":{\"durability\":50,\"offense\":40,\"effects\":40,\"difficulty\":80},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_24837021ec9d7aaf41b13fa55b6d13c9.png\",\"tags\":{\"Buff\":2,\"Heal\":1,\"Damage\":1,\"CC\":1,\"Mobility\":1,\"Morph\":1,\"Slow\":1},\"sig\":{\"phys\":1,\"magic\":2,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[60,76],\"desc\":\"Heroes that lack mobility or burst such as Hanabi and Faramis are suspectible to Valentina's low cooldown skills that provide soft CC and sustained damage.\"},\"weak\":{\"ids\":[21,24,69],\"desc\":\"Heroes with gap closers or high burst like Hayabusa, Natalia, and Hanzo.\"},\"assist\":{\"ids\":[92,93],\"desc\":\"Heroes that can buff or CC such as Carmilla and Atlas to give her more opportunities to deal damage.\"}},\"meta\":{\"win\":44.4,\"pick\":0.14,\"ban\":0.13}},{\"id\":111,\"name\":\"Edith\",\"roles\":[\"Tank\",\"Marksman\"],\"lanes\":[\"exp\"],\"specialities\":[\"Control\",\"Burst\"],\"ability\":{\"durability\":70,\"offense\":30,\"effects\":100,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_daab57918de01a6d5bb2ed6f45808a7e.png\",\"tags\":{\"Buff\":4,\"CC\":3,\"AOE\":2,\"Charge\":1,\"Morph\":2,\"Burst\":1},\"sig\":{\"phys\":3,\"magic\":7,\"trueDmg\":0,\"heal\":0,\"vamp\":2,\"shield\":2,\"basic\":4,\"atkSpeed\":2,\"crit\":0,\"maxHp\":7,\"hardCc\":5,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[16,108],\"desc\":\"Edith is strong against heroes that are not very agile and on the fragile side, such as Zilong and Aulus, because her skills deal enough burst damage to eliminate them after connecting with her 2nd Skill.\"},\"weak\":{\"ids\":[60,89],\"desc\":\"Edith is countered by Marksmen that can negate CC like Hanabi and Wanwan, since she will have a hard time locking them down.\"},\"assist\":{\"ids\":[19,93],\"desc\":\"Edith works best with heroes like Minotaur and Atlas that can more reliably CC a target first, allowing her to follow up with her own CC.\"}},\"meta\":{\"win\":53.12,\"pick\":0.27,\"ban\":0.12}},{\"id\":112,\"name\":\"Floryn\",\"roles\":[\"Support\"],\"lanes\":[\"roam\"],\"specialities\":[\"Poke\",\"Guard\"],\"ability\":{\"durability\":60,\"offense\":10,\"effects\":70,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_5a57b91e4914cf071a3849e352e530a5.png\",\"tags\":{\"Buff\":1,\"Damage\":2,\"Heal\":2,\"CC\":1},\"sig\":{\"phys\":0,\"magic\":2,\"trueDmg\":0,\"heal\":3,\"vamp\":0,\"shield\":2,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[59,20],\"desc\":\"Floryn excels at sustained healing and counters Tanks with low damage output, such as Uranus and Lolita.\"},\"weak\":{\"ids\":[8,3],\"desc\":\"Floryn is countered by high mobility and burst damage Assassins, like Karina and Saber.\"},\"assist\":{\"ids\":[82,72],\"desc\":\"Floryn works well with tanky Fighters, such as Terizla and Thamuz, because they are easier to keep alive with heals and can peel enemies off of her.\"}},\"meta\":{\"win\":54.07,\"pick\":0.96,\"ban\":13.64}},{\"id\":113,\"name\":\"Yin\",\"roles\":[\"Fighter\",\"Assassin\"],\"lanes\":[\"jungle\",\"exp\"],\"specialities\":[\"Burst\",\"Control\"],\"ability\":{\"durability\":50,\"offense\":60,\"effects\":80,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_ee1c12c84f49514a30e405fb5c617796.png\",\"tags\":{\"Buff\":4,\"Burst\":2,\"Speed Up\":1,\"Mobility\":2,\"CC\":4},\"sig\":{\"phys\":7,\"magic\":0,\"trueDmg\":0,\"heal\":2,\"vamp\":2,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":7,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[18,91],\"desc\":\"Yin counters squishy heroes without Blink skills like Layla and Cecilion because they will have a hard time dodging his Golden Rings. Once they are stunned or trapped in his Ultimate, Yin can easily finish them off.\"},\"weak\":{\"ids\":[117,77],\"desc\":\"Yin is countered by Fighters that can interrupt skills, such as Fredrinn and Badang, because they can easily interrupt his Ultimate during the initial delay. These heroes can also hold their own in a duel, making them risky targets for Yin's Ultimate.\"},\"assist\":{\"ids\":[102,14],\"desc\":\"Yin works best with Supports that can enhance his mobility, such as Mathilda and Rafaela to help him get to the enemy and eliminate key targets.\"}},\"meta\":{\"win\":49.76,\"pick\":0.52,\"ban\":1.72}},{\"id\":114,\"name\":\"Melissa\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Damage\"],\"ability\":{\"durability\":20,\"offense\":90,\"effects\":40,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_1fa7436301fea3f13fbcd4772051d22d.png\",\"tags\":{\"Buff\":3,\"Mobility\":1,\"Debuff\":1,\"AOE\":1,\"Summon\":1},\"sig\":{\"phys\":1,\"magic\":2,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":1,\"atkSpeed\":1,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[27,16],\"desc\":\"Fighters like Sun and Zilong that can't get past her Ultimate.\"},\"weak\":{\"ids\":[115,5],\"desc\":\"Long range Mages such as Xavier and Nana.\"},\"assist\":{\"ids\":[6,19],\"desc\":\"Tanks that can chain CC such as Tigreal and Minotaur, allowing her to keep enemies linked.\"}},\"meta\":{\"win\":50.94,\"pick\":0.43,\"ban\":0.96}},{\"id\":115,\"name\":\"Xavier\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Damage\",\"Burst\"],\"ability\":{\"durability\":20,\"offense\":100,\"effects\":80,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_df0a8dfc494f85ed9bbc4512cc1e5d3c.png\",\"tags\":{\"CC\":1,\"Damage\":1,\"AOE\":2,\"Slow\":1,\"Burst\":1,\"Buff\":1},\"sig\":{\"phys\":0,\"magic\":3,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[60,76],\"desc\":\"Xavier possesses short cooldowns, a soft CC, good sustainability and performs well against heroes without Blink or burst damage, such as Hanabi and Faramis.\"},\"weak\":{\"ids\":[97,21,24],\"desc\":\"Xavier is countered by heroes with high mobility that can quickly close a gap such as Benedetta, Hayabusa, and Natalia.\"},\"assist\":{\"ids\":[92,93],\"desc\":\"He works well alongside heroes that can buff or provide CC to give him more opportunities to deal damage, such as Carmilla and Atlas.\"}},\"meta\":{\"win\":52.61,\"pick\":1.1,\"ban\":0.8}},{\"id\":116,\"name\":\"Julian\",\"roles\":[\"Assassin\",\"Fighter\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Magic Damage\"],\"ability\":{\"durability\":60,\"offense\":60,\"effects\":70,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_5511ddc0ad2789b525f32ef572b017eb.png\",\"tags\":{\"Buff\":2,\"Damage\":5,\"Slow\":2,\"Mobility\":2,\"CC\":2,\"Conceal\":1},\"sig\":{\"phys\":0,\"magic\":10,\"trueDmg\":0,\"heal\":0,\"vamp\":2,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":3,\"immune\":1,\"conceal\":1,\"dash\":3},\"relation\":{\"strong\":{\"ids\":[91,64],\"desc\":\"Julian is a hero who can constantly grow his own advantage, so he is strong against heroes who are weak in the early game, like Cecilion and Aldous.\"},\"weak\":{\"ids\":[118,73],\"desc\":\"Julian needs to hit enemy heroes with his skills to bring out his potential, so he is countered by heroes with good Mobility. Such as Joy and Harith.\"},\"assist\":{\"ids\":[55,48],\"desc\":\"Julian works best with powerful support heroes who can buff him, like Angela and Diggie.\"}},\"meta\":{\"win\":49.88,\"pick\":0.68,\"ban\":0.77}},{\"id\":117,\"name\":\"Fredrinn\",\"roles\":[\"Fighter\",\"Tank\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Damage\",\"Chase\"],\"ability\":{\"durability\":80,\"offense\":50,\"effects\":60,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_dea170bfd5f26c41fb04e5edf72afedb.png\",\"tags\":{\"Buff\":1,\"Heal\":1,\"Damage\":1,\"Mobility\":1,\"CC\":2,\"AOE\":2,\"Burst\":1},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":1,\"hardCc\":3,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[66,15],\"desc\":\"Fredrinn is strong against Mage heroes who rely on skill bursts, as it is difficult for them to one-shot him with their bursts. Instead, once Fredrinn has enough Combo Points, he can use his 2nd Ultimate to easily finish them off. Such as Vale and Eudora.\"},\"weak\":{\"ids\":[40,53],\"desc\":\"Fredrinn is countered by Marksman heroes who can deal True Damage, as they can take him down very easily. Heroes like Kerrie and Lesley are good examples here.\"},\"assist\":{\"ids\":[55,112],\"desc\":\"Fredrinn works best with support heroes, who can further improve his survivability, like Angela and Floryn.\"}},\"meta\":{\"win\":51.38,\"pick\":0.4,\"ban\":1.56}},{\"id\":118,\"name\":\"Joy\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Damage\"],\"ability\":{\"durability\":30,\"offense\":70,\"effects\":10,\"difficulty\":90},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_d3a3a55c22000ae78732fed8cba2efef.png\",\"tags\":{\"Damage\":2,\"Speed Up\":2,\"Summon\":1,\"Mobility\":1,\"AOE\":1},\"sig\":{\"phys\":0,\"magic\":5,\"trueDmg\":0,\"heal\":0,\"vamp\":1,\"shield\":1,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":2,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[115,38],\"desc\":\"Joy is strong against heroes that lack mobility or rely on CC, like Xavier and Vexana, because she has an easier time hitting them with her 2nd Skill while being immune to their CC's.\"},\"weak\":{\"ids\":[74,78],\"desc\":\"Joy is countered by heroes that can restrict mobility skills, such as Minsitthar and Khufra, due to her kit's heavy reliance on her 2nd Skill.\"},\"assist\":{\"ids\":[55,49],\"desc\":\"Joy works best with heroes with that can provide powerful support or have strong initiation, like Angela and Hylos.\"}},\"meta\":{\"win\":48.72,\"pick\":0.14,\"ban\":0.18}},{\"id\":119,\"name\":\"Novaria\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Burst\",\"Poke\"],\"ability\":{\"durability\":30,\"offense\":90,\"effects\":30,\"difficulty\":70},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_57eeea6d5bd8d21229de8df79751db9f.png\",\"tags\":{\"Buff\":3,\"Slow\":1,\"AOE\":1,\"Burst\":1},\"sig\":{\"phys\":0,\"magic\":3,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":0,\"slow\":4,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[15,46],\"desc\":\"Novaria counters Mages with shorter range and low mobility, such as Eudora and Odette, because these heroes can't reach Novaria while Novaria can hit them with her 2nd Skill.\"},\"weak\":{\"ids\":[3,21],\"desc\":\"Novaria is countered by Assassins with strong targeted burst damage, such as Saber and Hayabusa, because they can easily close in on Novaria and burst her down.\"},\"assist\":{\"ids\":[105,18],\"desc\":\"Novaria works well with other long-range heroes like Beatrix and Layla because her Ultimate makes any target a sitting duck for her team to pick off.\"}},\"meta\":{\"win\":49.09,\"pick\":1.15,\"ban\":3.79}},{\"id\":120,\"name\":\"Arlott\",\"roles\":[\"Fighter\",\"Assassin\"],\"lanes\":[\"exp\"],\"specialities\":[\"Charge\",\"Burst\"],\"ability\":{\"durability\":60,\"offense\":60,\"effects\":50,\"difficulty\":70},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_f666faa5ec6be5353f10dcd1d8997a42.png\",\"tags\":{\"Buff\":1,\"CC\":2,\"AOE\":2,\"Damage\":1,\"Mobility\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[27,16],\"desc\":\"Arlott counters Fighters with relatively lower HP, such as Sun and Zilong. Arlott can deal high burst damage and has excellent chasing and control abilities, allowing him to quickly eliminate more fragile Fighters.\"},\"weak\":{\"ids\":[72,117],\"desc\":\"Arlott is countered by tanky Fighters that can withstand lots of damage, like Thamuz and Fredrinn, because he lacks the burst to take them out quickly and will lose in a prolonged battle.\"},\"assist\":{\"ids\":[41,93],\"desc\":\"Arlott works well with Tanks who can initiate with CC, such as Gatotkaca and Atlas. Their CC will also mark enemies for Arlott, allowing him to use his 2nd Skill even more for tons of damage.\"}},\"meta\":{\"win\":47.53,\"pick\":0.52,\"ban\":0.69}},{\"id\":121,\"name\":\"Ixia\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Damage\"],\"ability\":{\"durability\":30,\"offense\":70,\"effects\":50,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_f070d82521ecd2e14d4ef3f25880830a.png\",\"tags\":{\"Damage\":1,\"Heal\":1,\"Burst\":1,\"CC\":1,\"AOE\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":1,\"vamp\":1,\"shield\":0,\"basic\":7,\"atkSpeed\":0,\"crit\":1,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[117,11],\"desc\":\"Ixia's skills make her a nice kiter. She works well against heroes with short ranges or poor Slow abilities, such as Fredrinn and Bane.\"},\"weak\":{\"ids\":[3,109],\"desc\":\"Ixia lacks survivability, that's why she can be countered by heroes with high burst damage or strong control abilities such as Saber and Aamon.\"},\"assist\":{\"ids\":[117,11],\"desc\":\"With her Ultimate, Ixia is capable of dealing impressive sustained damage. So she works best with heroes with area CC abilities, like Atlas and Vexana.\"}},\"meta\":{\"win\":50.2,\"pick\":0.8,\"ban\":0.86}},{\"id\":122,\"name\":\"Nolan\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Burst\"],\"ability\":{\"durability\":30,\"offense\":60,\"effects\":20,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_9012ee9f73fbb4db4e1953e5fb5172e1.png\",\"tags\":{\"Damage\":1,\"AOE\":1,\"Mobility\":1,\"Burst\":1},\"sig\":{\"phys\":5,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":4},\"relation\":{\"strong\":{\"ids\":[60,15],\"desc\":\"Nolan counters squishy heroes that lack mobility skills like Hanabi and Eudora because they have a hard time avoiding his rifts while Nolan's own mobility makes them easy targets.\"},\"weak\":{\"ids\":[72,117],\"desc\":\"Nolan is countered by tanky heroes with high sustained damage, such as Thamuz and Fredrinn, who can survive Nolan's burst and kill him afterwards.\"},\"assist\":{\"ids\":[6,41],\"desc\":\"Nolan works well with Tanks that can initiate and CC the enemy so Nolan to focus on dealing as much damage as possible, such as Tigreal and Gatotkaca.\"}},\"meta\":{\"win\":49.89,\"pick\":2.16,\"ban\":24.96}},{\"id\":123,\"name\":\"Cici\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\"],\"specialities\":[\"Damage\",\"Regen\"],\"ability\":{\"durability\":50,\"offense\":60,\"effects\":30,\"difficulty\":20},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_60e3e11da30f404c77fff9e22d3bdc72.png\",\"tags\":{\"Buff\":1,\"Burst\":1,\"Mobility\":1,\"CC\":1,\"Slow\":1},\"sig\":{\"phys\":3,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":1,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":3},\"relation\":{\"strong\":{\"ids\":[117,19],\"desc\":\"Because of Cici's great kiting ability and her 1st Skill dealing Max HP damage, Cici counters certain Tanks like Fredrinn and Minotaur.\"},\"weak\":{\"ids\":[3,62],\"desc\":\"Cici is countered by heroes with targeted CC skills who can stop her dead in her tracks, such as Saber and Kaja.\"},\"assist\":{\"ids\":[55,112],\"desc\":\"Cici works well with heroes that have buffs and can boost survivability. Supports like Angela and Floryn can help Cici gain an early advantage by greatly amplifying her combat capabilities to end the game before it drags on too long.\"}},\"meta\":{\"win\":49.22,\"pick\":0.71,\"ban\":1.26}},{\"id\":124,\"name\":\"Chip\",\"roles\":[\"Support\",\"Tank\"],\"lanes\":[\"roam\"],\"specialities\":[\"Support\",\"Crowd Control\"],\"ability\":{\"durability\":80,\"offense\":20,\"effects\":60,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_79224d297f14377ad2eda8543432330d.png\",\"tags\":{\"Heal\":1,\"CC\":1,\"AOE\":1,\"Speed Up\":1,\"Teleport\":2},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":1,\"vamp\":0,\"shield\":2,\"basic\":3,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":3,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[38,18,121],\"desc\":\"Chip possesses strong initiation and CC abilities, making him a great counter against heroes with low mobility or those who are relatively squishy, such as Vexana, Layla, and Ixia.\"},\"weak\":{\"ids\":[99,6],\"desc\":\"Since enemies can also use Chip's Connecting Portals, certain heroes with strong teamfighting abilities, like Barats and Tigreal, can use them to their advantage.\"},\"assist\":{\"ids\":[28,60,75],\"desc\":\"Chip's Ultimate allows his team to group up from anywhere, so he works well with heroes who can't cross the map quickly but excel in teamfights, such as Alpha, Hanabi, and Kadita.\"}},\"meta\":{\"win\":47.66,\"pick\":0.04,\"ban\":0.22}},{\"id\":125,\"name\":\"Zhuxin\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Damage\",\"Crowd Control\"],\"ability\":{\"durability\":40,\"offense\":80,\"effects\":80,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_595f85bc90df3889c711c6b1f02dc02d.png\",\"tags\":{\"Buff\":2,\"AOE\":1,\"Damage\":1,\"CC\":1,\"Shield\":1,\"Mobility\":1},\"sig\":{\"phys\":0,\"magic\":4,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":1,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[33,94],\"desc\":\"Zhuxin is a good counter to enemies with less range and low mobility, such as Popol and Kupa and Cyclops, where she has a big advantage.\"},\"weak\":{\"ids\":[3,17],\"desc\":\"Like most Mages, Zhuxin is countered by heroes with high mobility and burst, such as Fanny and Saber, who can quickly take her down.\"},\"assist\":{\"ids\":[123,71,70],\"desc\":\"Zhuxin can provide great damage and CC, but she can't realize her potential until later in the game, so heroes with CC can help Zhuxin get through the early period. Zhuxin also works well with sustained damage heroes like Belerick, Kimmy, and Cici to dish out a surprising amount of damage.\"}},\"meta\":{\"win\":49.18,\"pick\":0.24,\"ban\":0.43}},{\"id\":126,\"name\":\"Suyou\",\"roles\":[\"Assassin\",\"Fighter\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Burst\"],\"ability\":{\"durability\":60,\"offense\":60,\"effects\":50,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_5e4ca70172332dde18bb1dc158ccc5c8.png\",\"tags\":{\"Buff\":1,\"Mobility\":1,\"CC\":1,\"AOE\":1,\"Burst\":1,\"Damage\":1,\"Debuff\":1},\"sig\":{\"phys\":10,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":2,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":1,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":2},\"relation\":{\"strong\":{\"ids\":[121,115],\"desc\":\"Suyou's powerful long-range burst and pursuit abilities make it impossible for heroes without Blinks or Charges, such as Xavier and Ixia, to escape.\"},\"weak\":{\"ids\":[114,77],\"desc\":\"Because Suyou requires hold-casting skills, heroes with control can easily interrupt his attacks, such as Badang and Melissa.\"},\"assist\":{\"ids\":[14,6],\"desc\":\"Heroes that provide control (like Tigreal) make it easier for Suyou to deal massive damage; heroes that provide recovery and extra movement speed (like Rafaela) help Suyou kite better.\"}},\"meta\":{\"win\":49.66,\"pick\":1.19,\"ban\":1.74}},{\"id\":127,\"name\":\"Lukas\",\"roles\":[\"Fighter\"],\"lanes\":[\"exp\",\"jungle\"],\"specialities\":[\"Regen\",\"Damage\"],\"ability\":{\"durability\":70,\"offense\":50,\"effects\":60,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_63040edd0cf15b815fcbbb8b2d08d7f7.png\",\"tags\":{\"Buff\":5,\"Damage\":2,\"CC\":2,\"Mobility\":2,\"Morph\":1,\"Burst\":1},\"sig\":{\"phys\":14,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":6,\"atkSpeed\":3,\"crit\":0,\"maxHp\":0,\"hardCc\":6,\"slow\":0,\"immune\":4,\"conceal\":0,\"dash\":5},\"relation\":{\"strong\":{\"ids\":[60,121],\"desc\":\"Lukas excels in close-quarter combat and is a good counter to heroes with low mobility and CC, like Hanabi and Ixia.\"},\"weak\":{\"ids\":[17,57,116],\"desc\":\"Lukas needs to stay close to enemies to deal damage, which makes him vulnerable to heroes with strong burst and CC, such as Fanny, Valir, and Julian.\"},\"assist\":{\"ids\":[93,6,41],\"desc\":\"Lukas's Sacred Beast form has extended attack range and enhanced mobility, which synergizes well with heroes possessing AOE CC, such as Atlas, Tigreal, and Gatotkaca.\"}},\"meta\":{\"win\":51.13,\"pick\":0.75,\"ban\":26.96}},{\"id\":128,\"name\":\"Kalea\",\"roles\":[\"Support\",\"Fighter\"],\"lanes\":[\"roam\"],\"specialities\":[\"Control\",\"Regen\"],\"ability\":{\"durability\":60,\"offense\":20,\"effects\":90,\"difficulty\":40},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_4f3d4649e301c76daf20bd8811f3095c.png\",\"tags\":{\"Buff\":1,\"AOE\":1,\"Mobility\":1,\"CC\":2},\"sig\":{\"phys\":7,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":6,\"atkSpeed\":1,\"crit\":0,\"maxHp\":3,\"hardCc\":2,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":3},\"relation\":{\"strong\":{\"ids\":[18,61],\"desc\":\"Kalea counters heroes who lack mobility like Layla and Chang'e.\"},\"weak\":{\"ids\":[48,19],\"desc\":\"However, Kalea cannot grab enemies with Control Immunity, so heroes like Diggie and Minotaur can effectively counter her.\"},\"assist\":{\"ids\":[15,42,13],\"desc\":\"Kalea's strong single-target CC makes her work well with heroes who have high single-target burst, like Eudora, Harley, and Clint.\"}},\"meta\":{\"win\":50.74,\"pick\":0.71,\"ban\":7.99}},{\"id\":129,\"name\":\"Zetian\",\"roles\":[\"Mage\"],\"lanes\":[\"mid\"],\"specialities\":[\"Damage\",\"Crowd Control\"],\"ability\":{\"durability\":40,\"offense\":70,\"effects\":50,\"difficulty\":10},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_8d965f05f84621a51f799aeb8fb5f4c4.png\",\"tags\":{\"Shield\":1,\"CC\":2,\"AOE\":2,\"Slow\":1,\"Debuff\":1},\"sig\":{\"phys\":0,\"magic\":6,\"trueDmg\":0,\"heal\":0,\"vamp\":2,\"shield\":1,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":2,\"immune\":0,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[2,16],\"desc\":\"Zetian's Passive counters melee heroes with limited gap closers like Balmond and Zilong, allowing her to continue poking the enemy from a safe distance.\"},\"weak\":{\"ids\":[110],\"desc\":\"Zetian's Ultimate can strike down anywhere on the map, but having such a powerful Ult means a hero like Valentina can also use it against Zetian's team.\"},\"assist\":{\"ids\":[112,14],\"desc\":\"While Zetian already has decent survivability, when paired with supports who can protect allies like Floryn and Rafaela, Fighters with limited range will struggle even more to approach Zetian. And with the healing from these supports, Zetian can win any ranged battle of attrition.\"}},\"meta\":{\"win\":50.75,\"pick\":1.61,\"ban\":4.75}},{\"id\":130,\"name\":\"Obsidia\",\"roles\":[\"Marksman\"],\"lanes\":[\"gold\"],\"specialities\":[\"Finisher\",\"Damage\"],\"ability\":{\"durability\":30,\"offense\":80,\"effects\":10,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_9c3daef5625bfade5c4cb8a219845dd3.png\",\"tags\":{\"Buff\":1,\"Damage\":1,\"AOE\":1,\"Speed Up\":1,\"CC\":1,\"Mobility\":1},\"sig\":{\"phys\":4,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":1,\"basic\":5,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":0,\"conceal\":0,\"dash\":0},\"relation\":{\"strong\":{\"ids\":[21,22,47],\"desc\":\"Obsidia's Ultimate will disable dash and blink skills, making her excellent at countering heroes who rely on them, such as Hayabusa, Freya, and Lancelot.\"},\"weak\":{\"ids\":[12,18],\"desc\":\"Obsidia struggles during the early laning phase, making her vulnerable to other Marksmen with strong early game, such as Bruno and Layla.\"},\"assist\":{\"ids\":[55,34],\"desc\":\"Obsidia usually reaches her damage potential in the mid-to-late game, so she wants support heroes who can help her in the early game, like Angela and Estes.\"}},\"meta\":{\"win\":53.01,\"pick\":2.08,\"ban\":52.57}},{\"id\":131,\"name\":\"Sora\",\"roles\":[\"Fighter\",\"Assassin\"],\"lanes\":[\"exp\"],\"specialities\":[\"Charge\",\"Burst\"],\"ability\":{\"durability\":60,\"offense\":60,\"effects\":50,\"difficulty\":50},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_8143d7bbd4318d7c699908e808de885e.png\",\"tags\":{\"Buff\":4,\"Damage\":8,\"Mobility\":3,\"CC\":2},\"sig\":{\"phys\":16,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":8,\"hardCc\":6,\"slow\":4,\"immune\":2,\"conceal\":0,\"dash\":6},\"relation\":{\"strong\":{\"ids\":[18,1,60],\"desc\":\"Sora excels at diving in with explosive burst damage and AOE CC, so squishy heroes without escape abilities—like Layla, Miya, and Hanabi—will find themselves helpless against Sora's relentless assault.\"},\"weak\":{\"ids\":[57,17,120],\"desc\":\"Sora relies on landing his 1st Skill to get Cloudstep stacks. Heroes with high mobility or Knockbacks, like Fanny, Arlott, and Valir, can prevent Sora from gaining this precious resource.\"},\"assist\":{\"ids\":[41,6,19],\"desc\":\"Sora's transformed Ultimate deals considerable damage, and pairing him with Tigreal, Minotaur, Gatotkaca, and other strong CC heroes will maximize Sora's damage potential.\"}},\"meta\":{\"win\":49.51,\"pick\":0.68,\"ban\":4.56}},{\"id\":132,\"name\":\"Marcel\",\"roles\":[\"Support\"],\"lanes\":[\"roam\"],\"specialities\":[\"Crowd Control\",\"Support\"],\"ability\":{\"durability\":70,\"offense\":30,\"effects\":100,\"difficulty\":30},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_df7603c292198bf4aa7b551d401ea5c1.png\",\"tags\":{\"CC\":2,\"AOE\":1,\"Speed Up\":1},\"sig\":{\"phys\":2,\"magic\":0,\"trueDmg\":1,\"heal\":0,\"vamp\":0,\"shield\":2,\"basic\":1,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":4,\"slow\":1,\"immune\":1,\"conceal\":0,\"dash\":1},\"relation\":{\"strong\":{\"ids\":[18,38],\"desc\":\"Marcel is more effective against low-mobility heroes, such as Layla and Vexana, as they are easily caught by his Ultimate, allowing him and his allies to secure easy kills.\"},\"weak\":{\"ids\":[84,83],\"desc\":\"Heroes who possess Invincibility or Untargetable effects that can bypass Marcel's CC, like Ling and X.Borg, will reduce his impact on the battlefield.\"},\"assist\":{\"ids\":[60,121],\"desc\":\"Because of Marcel's excellent AOE CC, he pairs well with allies with high AOE damage, like Hanabi and Ixia, to maximize their damage potential.\"}},\"meta\":{\"win\":57.25,\"pick\":0.28,\"ban\":43.06}},{\"id\":133,\"name\":\"Hirara\",\"roles\":[\"Assassin\"],\"lanes\":[\"jungle\"],\"specialities\":[\"Chase\",\"Finisher\"],\"ability\":{\"durability\":40,\"offense\":70,\"effects\":40,\"difficulty\":60},\"icon\":\"https://akmweb.youngjoygame.com/web/svnres/img/test/homepage_2_2_16_1235_1/100_71224844b111f09367df00e4f9b97753.png\",\"tags\":{\"Buff\":2,\"Mobility\":1,\"AOE\":2,\"Burst\":1,\"Invincible\":1,\"CC\":1},\"sig\":{\"phys\":2,\"magic\":0,\"trueDmg\":0,\"heal\":0,\"vamp\":0,\"shield\":0,\"basic\":0,\"atkSpeed\":0,\"crit\":0,\"maxHp\":0,\"hardCc\":2,\"slow\":0,\"immune\":1,\"conceal\":0,\"dash\":4},\"relation\":{\"strong\":{\"ids\":[52,121,113,56],\"desc\":\"Hirara's high mobility allows her to dive the enemy backline with ease, making her an excellent counter to squishy heroes who lack self-protection, like Ixia and Pharsa.The untargetable effect from Hirara's 2nd + 1st Combo Skill is great against delayed skills that deal high damage, giving her a big advantage when facing heroes like Yin and Gusion.\"},\"weak\":{\"ids\":[3,24],\"desc\":\"However, while Hirara is quick and nimble, she is also quite fragile. Against burst Assassins with targeted abilities, such as Saber and Natalia, it can be difficult to predict their attacks and use her 2nd + 1st Combo Skill in time. If she gets caught, she'll be taken down instantly.\"},\"assist\":{\"ids\":[55,19],\"desc\":\"Hirara has high damage output in the early-to-mid game, but the delay in her skills makes landing them less consistent. Hirara works especially well with strong early-game heroes with CC, such as Angela and Minotaur, allowing her to build an early advantage more easily.\"}},\"meta\":{\"win\":50,\"pick\":0.61,\"ban\":67.53}}]");
@@ -221,489 +221,6 @@ function findHero(text) {
 		}
 	}
 	return bestDist <= Math.floor(key.length / 5) ? best : void 0;
-}
-// src/data/builds.ts
-var CARRY_DEF_PHYS = ["wind_of_nature", "immortality"];
-var CARRY_DEF_MAGIC = ["rose_gold_meteor", "valkyries_shield"];
-var MAGE_DEF = ["winter_crown", "immortality"];
-var FRONT_PHYS = [
-	"antique_cuirass",
-	"blade_armor",
-	"chastise_pauldron",
-	"brute_force_breastplate"
-];
-var FRONT_MAGIC = [
-	"valkyries_shield",
-	"radiant_armor",
-	"oracle"
-];
-var FLICKER = {
-	name: "Flicker",
-	reason: "A blink to escape a dive or reposition for the kill."
-};
-var TEMPLATES = {
-	mm_crit: {
-		label: "Crit marksman",
-		boots: "swift_boots",
-		core: ["windtalker", "berserkers_fury"],
-		coreWhy: "Attack speed first, then crit — your damage comes from basic attacks.",
-		filler: [
-			"haas_claws",
-			"blade_of_despair",
-			"malefic_roar",
-			"great_dragon_spear"
-		],
-		antiheal: "sea_halberd",
-		pen: "malefic_roar",
-		tankShred: "demon_hunter_sword",
-		defense: {
-			physical: CARRY_DEF_PHYS,
-			magic: CARRY_DEF_MAGIC
-		},
-		maxDefense: 2,
-		spell: FLICKER,
-		emblem: {
-			name: "Marksman",
-			talents: [
-				"Fatal",
-				"Weapon Master",
-				"Weakness Finder"
-			],
-			reason: "Crit, more stats from your items, and a slow on your basic attacks."
-		}
-	},
-	mm_onhit: {
-		label: "On-hit marksman",
-		boots: "swift_boots",
-		core: [
-			"corrosion_scythe",
-			"demon_hunter_sword",
-			"golden_staff"
-		],
-		coreWhy: "The attack-speed trio: every hit slows, shreds HP and triggers your passive faster.",
-		filler: [
-			"malefic_roar",
-			"haas_claws",
-			"blade_of_despair"
-		],
-		antiheal: "sea_halberd",
-		pen: "malefic_roar",
-		tankShred: "demon_hunter_sword",
-		defense: {
-			physical: CARRY_DEF_PHYS,
-			magic: CARRY_DEF_MAGIC
-		},
-		maxDefense: 2,
-		spell: {
-			name: "Inspire",
-			reason: "A burst of attack speed for your on-hit damage. Take Flicker instead if they have divers."
-		},
-		emblem: {
-			name: "Marksman",
-			talents: [
-				"Swift",
-				"Weapon Master",
-				"Weakness Finder"
-			],
-			reason: "Attack speed, more stats from your items, and a slow on your basic attacks."
-		}
-	},
-	mm_burst: {
-		label: "Burst marksman",
-		boots: "swift_boots",
-		core: ["hunter_strike", "blade_of_despair"],
-		coreWhy: "Skill damage and penetration — you burst with abilities, not sustained attacks.",
-		filler: [
-			"malefic_roar",
-			"berserkers_fury",
-			"endless_battle",
-			"great_dragon_spear"
-		],
-		antiheal: "sea_halberd",
-		pen: "malefic_roar",
-		tankShred: "demon_hunter_sword",
-		defense: {
-			physical: CARRY_DEF_PHYS,
-			magic: CARRY_DEF_MAGIC
-		},
-		maxDefense: 2,
-		spell: FLICKER,
-		emblem: {
-			name: "Assassin",
-			talents: [
-				"Rupture",
-				"Weapon Master",
-				"Quantum Charge"
-			],
-			reason: "Penetration, more stats from your items, and speed plus healing on basic attacks."
-		}
-	},
-	mm_magic: {
-		label: "Magic marksman",
-		boots: "arcane_boots",
-		core: ["feather_of_heaven", "genius_wand"],
-		coreWhy: "Attack speed with magic on-hit, then penetration.",
-		filler: [
-			"holy_crystal",
-			"divine_glaive",
-			"blood_wings"
-		],
-		antiheal: "glowing_wand",
-		pen: "divine_glaive",
-		tankShred: "glowing_wand",
-		defense: {
-			physical: MAGE_DEF,
-			magic: ["winter_crown", "valkyries_shield"]
-		},
-		maxDefense: 2,
-		spell: FLICKER,
-		emblem: {
-			name: "Mage",
-			talents: [
-				"Swift",
-				"Weapon Master",
-				"Impure Rage"
-			],
-			reason: "Attack speed, more stats from your items, and max-HP damage on skills."
-		}
-	},
-	mage: {
-		label: "Mage",
-		boots: "arcane_boots",
-		core: ["clock_of_destiny", "lightning_truncheon"],
-		coreWhy: "Clock first so it stacks, then Lightning Truncheon for burst.",
-		filler: [
-			"genius_wand",
-			"holy_crystal",
-			"divine_glaive",
-			"blood_wings"
-		],
-		antiheal: "glowing_wand",
-		pen: "divine_glaive",
-		tankShred: "glowing_wand",
-		defense: {
-			physical: MAGE_DEF,
-			magic: ["winter_crown", "valkyries_shield"]
-		},
-		maxDefense: 2,
-		spell: FLICKER,
-		emblem: {
-			name: "Mage",
-			talents: [
-				"Rupture",
-				"Bargain Hunter",
-				"Lethal Ignition"
-			],
-			reason: "Penetration, cheaper items, and bonus damage when you land a burst."
-		}
-	},
-	mage_tank: {
-		label: "Sustain mage",
-		boots: "tough_boots",
-		core: ["clock_of_destiny", "oracle"],
-		coreWhy: "Clock for HP and power, Oracle to amplify your own shields and healing.",
-		filler: [
-			"glowing_wand",
-			"genius_wand",
-			"thunder_belt",
-			"immortality"
-		],
-		antiheal: "dominance_ice",
-		pen: "genius_wand",
-		tankShred: "glowing_wand",
-		defense: {
-			physical: FRONT_PHYS,
-			magic: FRONT_MAGIC
-		},
-		maxDefense: 4,
-		spell: FLICKER,
-		emblem: {
-			name: "Mage",
-			talents: [
-				"Agility",
-				"Festival of Blood",
-				"Impure Rage"
-			],
-			reason: "Movement speed, spell vamp, and max-HP damage on skills."
-		}
-	},
-	assassin_phys: {
-		label: "Physical assassin",
-		boots: "tough_boots",
-		core: ["hunter_strike", "blade_of_the_heptaseas"],
-		coreWhy: "Cooldown and penetration to delete squishy targets.",
-		filler: [
-			"blade_of_despair",
-			"malefic_roar",
-			"sky_piercer"
-		],
-		antiheal: "sea_halberd",
-		pen: "malefic_roar",
-		defense: {
-			physical: ["immortality", "brute_force_breastplate"],
-			magic: ["rose_gold_meteor", "valkyries_shield"]
-		},
-		maxDefense: 2,
-		spell: {
-			name: "Execute",
-			reason: "Finishes low-health targets through shields and escapes."
-		},
-		emblem: {
-			name: "Assassin",
-			talents: [
-				"Rupture",
-				"Master Assassin",
-				"Killing Spree"
-			],
-			reason: "Penetration, more damage to isolated targets, and a heal when you hit low-health heroes."
-		}
-	},
-	assassin_magic: {
-		label: "Magic assassin",
-		boots: "arcane_boots",
-		core: ["genius_wand", "holy_crystal"],
-		coreWhy: "Penetration then raw magic power to one-shot carries.",
-		filler: [
-			"divine_glaive",
-			"blood_wings",
-			"starlium_scythe"
-		],
-		antiheal: "glowing_wand",
-		pen: "divine_glaive",
-		defense: {
-			physical: MAGE_DEF,
-			magic: ["winter_crown", "valkyries_shield"]
-		},
-		maxDefense: 2,
-		spell: {
-			name: "Execute",
-			reason: "Finishes low-health targets through shields and escapes."
-		},
-		emblem: {
-			name: "Assassin",
-			talents: [
-				"Rupture",
-				"Master Assassin",
-				"Lethal Ignition"
-			],
-			reason: "Penetration, more damage to isolated targets, and bonus damage when you land a burst."
-		}
-	},
-	fighter_phys: {
-		label: "Fighter",
-		boots: "warrior_boots",
-		core: ["war_axe", "hunter_strike"],
-		coreWhy: "War Axe for sustained fights, then cooldown and penetration.",
-		filler: [
-			"thunder_belt",
-			"queens_wings",
-			"malefic_roar",
-			"immortality"
-		],
-		antiheal: "sea_halberd",
-		pen: "malefic_roar",
-		defense: {
-			physical: FRONT_PHYS,
-			magic: FRONT_MAGIC
-		},
-		maxDefense: 3,
-		spell: FLICKER,
-		emblem: {
-			name: "Fighter",
-			talents: [
-				"Firmness",
-				"Festival of Blood",
-				"Brave Smite"
-			],
-			reason: "Defense, spell vamp, and healing when your skills hit."
-		}
-	},
-	fighter_magic: {
-		label: "Magic fighter",
-		boots: "arcane_boots",
-		core: ["genius_wand", "concentrated_energy"],
-		coreWhy: "Penetration, then spell vamp to stay in the fight.",
-		filler: [
-			"holy_crystal",
-			"starlium_scythe",
-			"divine_glaive"
-		],
-		antiheal: "glowing_wand",
-		pen: "divine_glaive",
-		defense: {
-			physical: [
-				"winter_crown",
-				"antique_cuirass",
-				"immortality"
-			],
-			magic: ["winter_crown", "valkyries_shield"]
-		},
-		maxDefense: 2,
-		spell: FLICKER,
-		emblem: {
-			name: "Fighter",
-			talents: [
-				"Rupture",
-				"Festival of Blood",
-				"Brave Smite"
-			],
-			reason: "Penetration, spell vamp, and healing when your skills hit."
-		}
-	},
-	tank: {
-		label: "Tank",
-		boots: "tough_boots",
-		core: [],
-		coreWhy: "",
-		filler: [
-			"thunder_belt",
-			"immortality",
-			"guardian_helmet",
-			"cursed_helmet"
-		],
-		antiheal: "dominance_ice",
-		defense: {
-			physical: FRONT_PHYS,
-			magic: FRONT_MAGIC
-		},
-		maxDefense: 5,
-		spell: FLICKER,
-		emblem: {
-			name: "Tank",
-			talents: [
-				"Vitality",
-				"Tenacity",
-				"Concussive Blast"
-			],
-			reason: "HP, damage reduction when low, and area damage that scales with your HP."
-		}
-	},
-	support_heal: {
-		label: "Healer",
-		boots: "magic_shoes",
-		core: ["flask_of_the_oasis", "enchanted_talisman"],
-		coreWhy: "Stronger heals and the cooldown and mana to keep casting them.",
-		filler: [
-			"fleeting_time",
-			"oracle",
-			"immortality"
-		],
-		antiheal: "dominance_ice",
-		defense: {
-			physical: ["antique_cuirass", "chastise_pauldron"],
-			magic: ["valkyries_shield", "radiant_armor"]
-		},
-		maxDefense: 3,
-		spell: FLICKER,
-		emblem: {
-			name: "Support",
-			talents: [
-				"Agility",
-				"Pull Yourself Together",
-				"Focusing Mark"
-			],
-			reason: "Movement speed, shorter battle-spell cooldown, and a mark that makes allies hit your target harder."
-		}
-	},
-	support: {
-		label: "Support",
-		boots: "tough_boots",
-		core: ["enchanted_talisman"],
-		coreWhy: "Cooldown and mana so your utility is always up.",
-		filler: [
-			"fleeting_time",
-			"thunder_belt",
-			"immortality",
-			"oracle"
-		],
-		antiheal: "dominance_ice",
-		defense: {
-			physical: [
-				"antique_cuirass",
-				"chastise_pauldron",
-				"blade_armor"
-			],
-			magic: ["valkyries_shield", "radiant_armor"]
-		},
-		maxDefense: 4,
-		spell: FLICKER,
-		emblem: {
-			name: "Support",
-			talents: [
-				"Agility",
-				"Pull Yourself Together",
-				"Focusing Mark"
-			],
-			reason: "Movement speed, shorter battle-spell cooldown, and a mark that makes allies hit your target harder."
-		}
-	}
-};
-/** Heroes whose signature build differs from their archetype's default core. */
-var HERO_CORE = {
-	Esmeralda: {
-		boots: "tough_boots",
-		core: ["clock_of_destiny", "oracle"],
-		filler: [
-			"dominance_ice",
-			"thunder_belt",
-			"immortality",
-			"glowing_wand"
-		]
-	},
-	Aldous: {
-		boots: "tough_boots",
-		core: ["thunder_belt", "endless_battle"],
-		coreWhy: "Your stacks are the damage — build to survive long enough to land the punch."
-	},
-	Sun: {
-		boots: "swift_boots",
-		core: ["corrosion_scythe", "demon_hunter_sword"],
-		coreWhy: "Your clones copy on-hit effects, so attack speed scales three times over."
-	},
-	Argus: {
-		boots: "swift_boots",
-		core: ["corrosion_scythe", "demon_hunter_sword"],
-		coreWhy: "Attack speed charges your passive and keeps targets in range."
-	},
-	Zilong: {
-		boots: "swift_boots",
-		core: ["corrosion_scythe", "demon_hunter_sword"],
-		coreWhy: "You win by out-hitting people, so stack attack speed."
-	},
-	Masha: {
-		boots: "swift_boots",
-		core: ["corrosion_scythe", "demon_hunter_sword"],
-		coreWhy: "Attack speed is what feeds your HP bars."
-	}
-};
-function templateFor(hero, lane) {
-	const override = HERO_CORE[hero.name];
-	const base = hero.archetype === "support" && hero.ability.durability >= 60 ? TEMPLATES.tank : TEMPLATES[hero.archetype];
-	const tpl = {
-		...base,
-		...override,
-		coreWhy: override?.coreWhy ?? base.coreWhy
-	};
-	if (lane === "jungle") {
-		const talents = tpl.emblem.talents.map((t, i) => i === 1 ? "Seasoned Hunter" : t);
-		return {
-			...tpl,
-			spell: {
-				name: "Retribution",
-				reason: "Required to jungle, and it unlocks the jungle blessing on your boots."
-			},
-			emblem: {
-				...tpl.emblem,
-				talents,
-				reason: "Your usual emblem, with Seasoned Hunter for extra damage to Turtle and Lord."
-			}
-		};
-	}
-	return tpl;
-}
-function bootsNote(lane) {
-	if (lane === "jungle") return "Add a free jungle blessing to your boots: Ice steals movement speed, Flame steals attack, Bloody steals HP.";
-	if (lane === "roam") return "Add a free roam blessing to your boots: Conceal for team stealth, Encourage for ally defense, Favor if you heal or shield, Dire Hit for a bonus hit.";
 }
 var item_icons_default = {
 	antique_cuirass: "antique_cuirass.webp",
@@ -1383,6 +900,489 @@ function findItem(text) {
 		name: ownedLabel(id)
 	} : void 0;
 }
+// src/data/builds.ts
+var CARRY_DEF_PHYS = ["wind_of_nature", "immortality"];
+var CARRY_DEF_MAGIC = ["rose_gold_meteor", "valkyries_shield"];
+var MAGE_DEF = ["winter_crown", "immortality"];
+var FRONT_PHYS = [
+	"antique_cuirass",
+	"blade_armor",
+	"chastise_pauldron",
+	"brute_force_breastplate"
+];
+var FRONT_MAGIC = [
+	"valkyries_shield",
+	"radiant_armor",
+	"oracle"
+];
+var FLICKER = {
+	name: "Flicker",
+	reason: "A blink to escape a dive or reposition for the kill."
+};
+var TEMPLATES = {
+	mm_crit: {
+		label: "Crit marksman",
+		boots: "swift_boots",
+		core: ["windtalker", "berserkers_fury"],
+		coreWhy: "Attack speed first, then crit — your damage comes from basic attacks.",
+		filler: [
+			"haas_claws",
+			"blade_of_despair",
+			"malefic_roar",
+			"great_dragon_spear"
+		],
+		antiheal: "sea_halberd",
+		pen: "malefic_roar",
+		tankShred: "demon_hunter_sword",
+		defense: {
+			physical: CARRY_DEF_PHYS,
+			magic: CARRY_DEF_MAGIC
+		},
+		maxDefense: 2,
+		spell: FLICKER,
+		emblem: {
+			name: "Marksman",
+			talents: [
+				"Fatal",
+				"Weapon Master",
+				"Weakness Finder"
+			],
+			reason: "Crit, more stats from your items, and a slow on your basic attacks."
+		}
+	},
+	mm_onhit: {
+		label: "On-hit marksman",
+		boots: "swift_boots",
+		core: [
+			"corrosion_scythe",
+			"demon_hunter_sword",
+			"golden_staff"
+		],
+		coreWhy: "The attack-speed trio: every hit slows, shreds HP and triggers your passive faster.",
+		filler: [
+			"malefic_roar",
+			"haas_claws",
+			"blade_of_despair"
+		],
+		antiheal: "sea_halberd",
+		pen: "malefic_roar",
+		tankShred: "demon_hunter_sword",
+		defense: {
+			physical: CARRY_DEF_PHYS,
+			magic: CARRY_DEF_MAGIC
+		},
+		maxDefense: 2,
+		spell: {
+			name: "Inspire",
+			reason: "A burst of attack speed for your on-hit damage. Take Flicker instead if they have divers."
+		},
+		emblem: {
+			name: "Marksman",
+			talents: [
+				"Swift",
+				"Weapon Master",
+				"Weakness Finder"
+			],
+			reason: "Attack speed, more stats from your items, and a slow on your basic attacks."
+		}
+	},
+	mm_burst: {
+		label: "Burst marksman",
+		boots: "swift_boots",
+		core: ["hunter_strike", "blade_of_despair"],
+		coreWhy: "Skill damage and penetration — you burst with abilities, not sustained attacks.",
+		filler: [
+			"malefic_roar",
+			"berserkers_fury",
+			"endless_battle",
+			"great_dragon_spear"
+		],
+		antiheal: "sea_halberd",
+		pen: "malefic_roar",
+		tankShred: "demon_hunter_sword",
+		defense: {
+			physical: CARRY_DEF_PHYS,
+			magic: CARRY_DEF_MAGIC
+		},
+		maxDefense: 2,
+		spell: FLICKER,
+		emblem: {
+			name: "Assassin",
+			talents: [
+				"Rupture",
+				"Weapon Master",
+				"Quantum Charge"
+			],
+			reason: "Penetration, more stats from your items, and speed plus healing on basic attacks."
+		}
+	},
+	mm_magic: {
+		label: "Magic marksman",
+		boots: "arcane_boots",
+		core: ["feather_of_heaven", "genius_wand"],
+		coreWhy: "Attack speed with magic on-hit, then penetration.",
+		filler: [
+			"holy_crystal",
+			"divine_glaive",
+			"blood_wings"
+		],
+		antiheal: "glowing_wand",
+		pen: "divine_glaive",
+		tankShred: "glowing_wand",
+		defense: {
+			physical: MAGE_DEF,
+			magic: ["winter_crown", "valkyries_shield"]
+		},
+		maxDefense: 2,
+		spell: FLICKER,
+		emblem: {
+			name: "Mage",
+			talents: [
+				"Swift",
+				"Weapon Master",
+				"Impure Rage"
+			],
+			reason: "Attack speed, more stats from your items, and max-HP damage on skills."
+		}
+	},
+	mage: {
+		label: "Mage",
+		boots: "arcane_boots",
+		core: ["clock_of_destiny", "lightning_truncheon"],
+		coreWhy: "Clock first so it stacks, then Lightning Truncheon for burst.",
+		filler: [
+			"genius_wand",
+			"holy_crystal",
+			"divine_glaive",
+			"blood_wings"
+		],
+		antiheal: "glowing_wand",
+		pen: "divine_glaive",
+		tankShred: "glowing_wand",
+		defense: {
+			physical: MAGE_DEF,
+			magic: ["winter_crown", "valkyries_shield"]
+		},
+		maxDefense: 2,
+		spell: FLICKER,
+		emblem: {
+			name: "Mage",
+			talents: [
+				"Rupture",
+				"Bargain Hunter",
+				"Lethal Ignition"
+			],
+			reason: "Penetration, cheaper items, and bonus damage when you land a burst."
+		}
+	},
+	mage_tank: {
+		label: "Sustain mage",
+		boots: "tough_boots",
+		core: ["clock_of_destiny", "oracle"],
+		coreWhy: "Clock for HP and power, Oracle to amplify your own shields and healing.",
+		filler: [
+			"glowing_wand",
+			"genius_wand",
+			"thunder_belt",
+			"immortality"
+		],
+		antiheal: "dominance_ice",
+		pen: "genius_wand",
+		tankShred: "glowing_wand",
+		defense: {
+			physical: FRONT_PHYS,
+			magic: FRONT_MAGIC
+		},
+		maxDefense: 4,
+		spell: FLICKER,
+		emblem: {
+			name: "Mage",
+			talents: [
+				"Agility",
+				"Festival of Blood",
+				"Impure Rage"
+			],
+			reason: "Movement speed, spell vamp, and max-HP damage on skills."
+		}
+	},
+	assassin_phys: {
+		label: "Physical assassin",
+		boots: "tough_boots",
+		core: ["hunter_strike", "blade_of_the_heptaseas"],
+		coreWhy: "Cooldown and penetration to delete squishy targets.",
+		filler: [
+			"blade_of_despair",
+			"malefic_roar",
+			"sky_piercer"
+		],
+		antiheal: "sea_halberd",
+		pen: "malefic_roar",
+		defense: {
+			physical: ["immortality", "brute_force_breastplate"],
+			magic: ["rose_gold_meteor", "valkyries_shield"]
+		},
+		maxDefense: 2,
+		spell: {
+			name: "Execute",
+			reason: "Finishes low-health targets through shields and escapes."
+		},
+		emblem: {
+			name: "Assassin",
+			talents: [
+				"Rupture",
+				"Master Assassin",
+				"Killing Spree"
+			],
+			reason: "Penetration, more damage to isolated targets, and a heal when you hit low-health heroes."
+		}
+	},
+	assassin_magic: {
+		label: "Magic assassin",
+		boots: "arcane_boots",
+		core: ["genius_wand", "holy_crystal"],
+		coreWhy: "Penetration then raw magic power to one-shot carries.",
+		filler: [
+			"divine_glaive",
+			"blood_wings",
+			"starlium_scythe"
+		],
+		antiheal: "glowing_wand",
+		pen: "divine_glaive",
+		defense: {
+			physical: MAGE_DEF,
+			magic: ["winter_crown", "valkyries_shield"]
+		},
+		maxDefense: 2,
+		spell: {
+			name: "Execute",
+			reason: "Finishes low-health targets through shields and escapes."
+		},
+		emblem: {
+			name: "Assassin",
+			talents: [
+				"Rupture",
+				"Master Assassin",
+				"Lethal Ignition"
+			],
+			reason: "Penetration, more damage to isolated targets, and bonus damage when you land a burst."
+		}
+	},
+	fighter_phys: {
+		label: "Fighter",
+		boots: "warrior_boots",
+		core: ["war_axe", "hunter_strike"],
+		coreWhy: "War Axe for sustained fights, then cooldown and penetration.",
+		filler: [
+			"thunder_belt",
+			"queens_wings",
+			"malefic_roar",
+			"immortality"
+		],
+		antiheal: "sea_halberd",
+		pen: "malefic_roar",
+		defense: {
+			physical: FRONT_PHYS,
+			magic: FRONT_MAGIC
+		},
+		maxDefense: 3,
+		spell: FLICKER,
+		emblem: {
+			name: "Fighter",
+			talents: [
+				"Firmness",
+				"Festival of Blood",
+				"Brave Smite"
+			],
+			reason: "Defense, spell vamp, and healing when your skills hit."
+		}
+	},
+	fighter_magic: {
+		label: "Magic fighter",
+		boots: "arcane_boots",
+		core: ["genius_wand", "concentrated_energy"],
+		coreWhy: "Penetration, then spell vamp to stay in the fight.",
+		filler: [
+			"holy_crystal",
+			"starlium_scythe",
+			"divine_glaive"
+		],
+		antiheal: "glowing_wand",
+		pen: "divine_glaive",
+		defense: {
+			physical: [
+				"winter_crown",
+				"antique_cuirass",
+				"immortality"
+			],
+			magic: ["winter_crown", "valkyries_shield"]
+		},
+		maxDefense: 2,
+		spell: FLICKER,
+		emblem: {
+			name: "Fighter",
+			talents: [
+				"Rupture",
+				"Festival of Blood",
+				"Brave Smite"
+			],
+			reason: "Penetration, spell vamp, and healing when your skills hit."
+		}
+	},
+	tank: {
+		label: "Tank",
+		boots: "tough_boots",
+		core: [],
+		coreWhy: "",
+		filler: [
+			"thunder_belt",
+			"immortality",
+			"guardian_helmet",
+			"cursed_helmet"
+		],
+		antiheal: "dominance_ice",
+		defense: {
+			physical: FRONT_PHYS,
+			magic: FRONT_MAGIC
+		},
+		maxDefense: 5,
+		spell: FLICKER,
+		emblem: {
+			name: "Tank",
+			talents: [
+				"Vitality",
+				"Tenacity",
+				"Concussive Blast"
+			],
+			reason: "HP, damage reduction when low, and area damage that scales with your HP."
+		}
+	},
+	support_heal: {
+		label: "Healer",
+		boots: "magic_shoes",
+		core: ["flask_of_the_oasis", "enchanted_talisman"],
+		coreWhy: "Stronger heals and the cooldown and mana to keep casting them.",
+		filler: [
+			"fleeting_time",
+			"oracle",
+			"immortality"
+		],
+		antiheal: "dominance_ice",
+		defense: {
+			physical: ["antique_cuirass", "chastise_pauldron"],
+			magic: ["valkyries_shield", "radiant_armor"]
+		},
+		maxDefense: 3,
+		spell: FLICKER,
+		emblem: {
+			name: "Support",
+			talents: [
+				"Agility",
+				"Pull Yourself Together",
+				"Focusing Mark"
+			],
+			reason: "Movement speed, shorter battle-spell cooldown, and a mark that makes allies hit your target harder."
+		}
+	},
+	support: {
+		label: "Support",
+		boots: "tough_boots",
+		core: ["enchanted_talisman"],
+		coreWhy: "Cooldown and mana so your utility is always up.",
+		filler: [
+			"fleeting_time",
+			"thunder_belt",
+			"immortality",
+			"oracle"
+		],
+		antiheal: "dominance_ice",
+		defense: {
+			physical: [
+				"antique_cuirass",
+				"chastise_pauldron",
+				"blade_armor"
+			],
+			magic: ["valkyries_shield", "radiant_armor"]
+		},
+		maxDefense: 4,
+		spell: FLICKER,
+		emblem: {
+			name: "Support",
+			talents: [
+				"Agility",
+				"Pull Yourself Together",
+				"Focusing Mark"
+			],
+			reason: "Movement speed, shorter battle-spell cooldown, and a mark that makes allies hit your target harder."
+		}
+	}
+};
+/** Heroes whose signature build differs from their archetype's default core. */
+var HERO_CORE = {
+	Esmeralda: {
+		boots: "tough_boots",
+		core: ["clock_of_destiny", "oracle"],
+		filler: [
+			"dominance_ice",
+			"thunder_belt",
+			"immortality",
+			"glowing_wand"
+		]
+	},
+	Aldous: {
+		boots: "tough_boots",
+		core: ["thunder_belt", "endless_battle"],
+		coreWhy: "Your stacks are the damage — build to survive long enough to land the punch."
+	},
+	Sun: {
+		boots: "swift_boots",
+		core: ["corrosion_scythe", "demon_hunter_sword"],
+		coreWhy: "Your clones copy on-hit effects, so attack speed scales three times over."
+	},
+	Argus: {
+		boots: "swift_boots",
+		core: ["corrosion_scythe", "demon_hunter_sword"],
+		coreWhy: "Attack speed charges your passive and keeps targets in range."
+	},
+	Zilong: {
+		boots: "swift_boots",
+		core: ["corrosion_scythe", "demon_hunter_sword"],
+		coreWhy: "You win by out-hitting people, so stack attack speed."
+	},
+	Masha: {
+		boots: "swift_boots",
+		core: ["corrosion_scythe", "demon_hunter_sword"],
+		coreWhy: "Attack speed is what feeds your HP bars."
+	}
+};
+function templateFor(hero, lane) {
+	const override = HERO_CORE[hero.name];
+	const base = hero.archetype === "support" && hero.ability.durability >= 60 ? TEMPLATES.tank : TEMPLATES[hero.archetype];
+	const tpl = {
+		...base,
+		...override,
+		coreWhy: override?.coreWhy ?? base.coreWhy
+	};
+	if (lane === "jungle") {
+		const talents = tpl.emblem.talents.map((t, i) => i === 1 ? "Seasoned Hunter" : t);
+		return {
+			...tpl,
+			spell: {
+				name: "Retribution",
+				reason: "Required to jungle, and it unlocks the jungle blessing on your boots."
+			},
+			emblem: {
+				...tpl.emblem,
+				talents,
+				reason: "Your usual emblem, with Seasoned Hunter for extra damage to Turtle and Lord."
+			}
+		};
+	}
+	return tpl;
+}
+function bootsNote(lane) {
+	if (lane === "jungle") return "Add a free jungle blessing to your boots: Ice steals movement speed, Flame steals attack, Bloody steals HP.";
+	if (lane === "roam") return "Add a free roam blessing to your boots: Conceal for team stealth, Encourage for ally defense, Favor if you heal or shield, Dire Hit for a bonus hit.";
+}
 // src/engine/threat.ts
 /** How much of a team's kill pressure a role normally carries. */
 var ROLE_PRESSURE = {
@@ -1473,6 +1473,20 @@ function analyzeThreat(enemies) {
 }
 // src/engine/build.ts
 var FROM_YOUR_BUILD = "From the build you chose in game.";
+var FROM_AI = "Chosen by the coach for this match.";
+/** With this much gold in hand there is almost always a piece of the next item to buy. */
+var PIECE_FLOOR = 400;
+/** The AI coach's build as catalog items: no duplicates, one pair of boots, six at most. Too short a list is ignored. */
+function aiItems(ai) {
+	const out = [];
+	for (const id of ai?.ids ?? []) {
+		const item = itemById(id);
+		if (!item || out.includes(item)) continue;
+		if (item.category === "boots" && out.some((i) => i.category === "boots")) continue;
+		out.push(item);
+	}
+	return out.length >= 3 ? out.slice(0, SLOTS) : void 0;
+}
 /** Use the player's own in-game build as the base, keeping the template's counters and defensive options. */
 function withPlannedBuild(tpl, plannedIds) {
 	const planned = (plannedIds ?? []).map(itemById).filter((i) => !!i);
@@ -1711,6 +1725,17 @@ function nextStep(slots, overflow, input, squishy) {
 	}
 	const goal = comp && !haveComp ? comp : void 0;
 	const goldNeeded = (goal ? price(goal.cost) : remaining) - gold;
+	if (!goal && gold >= PIECE_FLOOR) {
+		const listed = input.shopListed?.includes(item.id);
+		return {
+			action: "buy-pieces",
+			item,
+			goldNeeded,
+			where: `Open ${item.name}${listed ? "" : ` in the ${SHOP_TAB[item.category]} tab`} and buy the pieces in its build path that you can afford.`,
+			say: `Buy pieces of ${item.name} now. ${goldNeeded} more gold finishes it.`,
+			detail: `${why} You have ${gold} gold: spend it on pieces rather than carrying it.`.trim()
+		};
+	}
 	return {
 		action: "save",
 		item,
@@ -1756,8 +1781,11 @@ function planBuild(input) {
 		});
 		return true;
 	};
+	const ai = aiItems(input.aiBuild);
+	for (const item of ai ?? []) push(item, input.aiBuild?.why[item.id] || FROM_AI, item.category === "boots" ? "boots" : "core");
+	const aiHasBoots = !!ai?.some((i) => i.category === "boots");
 	const boots = chooseBoots(tpl, threat, squishy, fromPlayer && (input.plannedBuild ?? []).some((id) => itemById(id)?.category === "boots"));
-	push(itemById(boots.id), boots.reason, "boots");
+	if (!aiHasBoots) push(itemById(boots.id), boots.reason, "boots");
 	const [firstCore, ...restCore] = tpl.core;
 	if (firstCore) push(itemById(firstCore), tpl.coreWhy, "core");
 	for (const p of picks.filter((p) => p.score >= URGENT)) push(p.item, p.reason, "situational", p.score);
@@ -1783,22 +1811,46 @@ function planBuild(input) {
 	}));
 	const have = [...planned.filter((o) => ownedFull.includes(o.item.id)), ...offPlan];
 	const want = planned.filter((o) => !ownedFull.includes(o.item.id));
+	const entryFor = (item, reason) => planned.find((o) => o.item.id === item.id) ?? {
+		item,
+		reason,
+		kind: "core",
+		score: 0,
+		defensive: isDefensive(item)
+	};
 	const paidToward = /* @__PURE__ */ new Map();
+	const assumed = [];
+	let started;
 	if (input.spent !== void 0) {
 		let budget = input.spent - have.reduce((sum, o) => sum + price(o.item.cost), 0);
-		for (const o of want) {
-			const cost = price(o.item.cost);
+		const partial = input.partial ? itemById(input.partial) : void 0;
+		const inGame = (input.plannedBuild ?? []).map(itemById).filter((i) => !!i);
+		const expected = [];
+		const expect = (e) => {
+			if (ownedFull.includes(e.item.id) || expected.some((x) => x.item.id === e.item.id)) return;
+			if (e.item.category === "boots" && (ownedBoots || expected.some((x) => x.item.category === "boots"))) return;
+			expected.push(e);
+		};
+		if (partial) expect(entryFor(partial, "You already hold pieces of it."));
+		for (const item of inGame) expect(entryFor(item, FROM_YOUR_BUILD));
+		for (const o of want) if (o.kind !== "situational") expect(o);
+		for (const e of expected) {
+			const cost = price(e.item.cost);
 			if (budget + 60 >= cost) {
-				ownedFull = [...ownedFull, o.item.id];
+				ownedFull = [...ownedFull, e.item.id];
+				assumed.push(e);
 				budget -= cost;
 			} else {
-				if (budget >= 100) paidToward.set(o.item.id, Math.round(budget));
+				if (budget >= 100) {
+					paidToward.set(e.item.id, Math.round(budget));
+					started = e;
+				}
 				break;
 			}
 		}
 	}
-	const settled = [...have, ...want.filter((o) => ownedFull.includes(o.item.id))];
-	const pending = want.filter((o) => !ownedFull.includes(o.item.id));
+	const settled = [...have, ...assumed];
+	const pending = [...started ? [started] : [], ...want.filter((o) => !ownedFull.includes(o.item.id) && o.item.id !== started?.item.id)];
 	const fitted = [...settled, ...pending].slice(0, SLOTS);
 	const slots = fitted.map((o) => ({
 		item: o.item,
@@ -1830,524 +1882,6 @@ function planBuild(input) {
 		bootsNote: bootsNote(lane),
 		threat
 	};
-}
-// src/state/session.ts
-/**
-* Match state and how it changes. Pure and framework-free, so the same logic
-* runs in the browser app and in the screenshot endpoint.
-*/
-/** List value of a set of item / component ids. */
-var valueOf = (ids) => ids.reduce((sum, id) => sum + (id.startsWith("comp:") ? COMPONENTS.get(id)?.cost ?? 0 : itemById(id)?.cost ?? 0), 0);
-/**
-* Is an icon reading believable? Small item icons are the one thing vision models
-* misread, usually by naming an expensive finished item where a cheap piece sits.
-* Gold is printed text and reliable, so: nobody owns more than they have earned,
-* two pairs of boots, or the same item twice.
-*/
-function believableItems(ids, budget, slack = 300) {
-	if (!ids?.length) return true;
-	const finished = ids.filter((id) => !id.startsWith("comp:"));
-	if (new Set(finished).size !== finished.length) return false;
-	if (finished.filter((id) => itemById(id)?.category === "boots").length > 1) return false;
-	return budget === void 0 || valueOf(ids) <= budget + slack;
-}
-var keepBelievable = (p) => believableItems(p.items, p.gold) ? p : {
-	...p,
-	items: void 0
-};
-var EMPTY_SESSION = {
-	phase: "draft",
-	allies: [],
-	enemies: [],
-	banned: [],
-	enemyLive: {},
-	allyLive: {},
-	history: [],
-	manualFed: {},
-	owned: [],
-	log: [],
-	calls: 0,
-	costUsd: 0,
-	matchId: 0
-};
-var uniq = (xs) => [...new Set(xs)];
-var LOG_MAX$1 = 60;
-/** Owning a finished item makes its component irrelevant; keep the list tidy. */
-function tidyOwned(owned) {
-	const full = new Set(owned.filter((id) => !id.startsWith("comp:")));
-	const builtFrom = new Set([...full].map((id) => itemById(id)?.component).filter((c) => !!c).map((c) => componentId(c.name)));
-	return uniq(owned).filter((id) => !(id.startsWith("comp:") && builtFrom.has(id)));
-}
-/** Merge a roster reading. Screens that print hero names replace what we had; portrait-only reads just fill gaps. */
-function mergeRoster(current, seen, authoritative, exclude) {
-	const clean = seen.filter((id) => !exclude.includes(id));
-	if (authoritative && clean.length >= 3) return uniq(clean).slice(0, 5);
-	return uniq([...current, ...clean]).slice(0, 5);
-}
-var overlap = (a, b) => a.filter((id) => b.includes(id)).length;
-/**
-* Work out the shop's discount from printed prices. An item the player already
-* holds a piece of shows a much lower price, so only near-list ratios count.
-*/
-function learnPriceFactor(entries) {
-	const ratios = entries.map((e) => e.price && itemById(e.id) ? e.price / itemById(e.id).cost : 0).filter((r) => r >= .85 && r <= 1.001).sort((a, b) => a - b);
-	if (!ratios.length) return void 0;
-	return Math.round(ratios[Math.floor(ratios.length / 2)] * 100) / 100;
-}
-/**
-* Make sure "allies" really is the user's team. The model can only go by screen
-* position and colour, which is not reliable; what the app already knows is.
-* A flipped read would make the coach itemise against the user's own team.
-*/
-function orientObservation(obs, s) {
-	if (obs.meHeroId !== void 0 && (obs.screen === "scoreboard" || obs.screen === "loading")) return obs;
-	const seenAllies = obs.allies.map((p) => p.heroId);
-	const seenEnemies = obs.enemies.map((p) => p.heroId);
-	const me = s.myHeroId;
-	let flipped;
-	if (me !== void 0 && (seenAllies.includes(me) || seenEnemies.includes(me))) flipped = seenEnemies.includes(me);
-	else {
-		const mine = me !== void 0 ? [me, ...s.allies] : s.allies;
-		const asRead = overlap(seenAllies, mine) + overlap(seenEnemies, s.enemies);
-		flipped = overlap(seenEnemies, mine) + overlap(seenAllies, s.enemies) > asRead;
-	}
-	if (!flipped) return obs;
-	const meHeroId = obs.enemies.some((p) => p.heroId === obs.meHeroId) ? obs.meHeroId : void 0;
-	return {
-		...obs,
-		allies: obs.enemies,
-		enemies: obs.allies,
-		meHeroId
-	};
-}
-/**
-* A screen showing mostly different heroes means the next game has started.
-* The roster check matters: a mid-match screen misread as "loading" still shows
-* the same heroes and must not wipe the match. Loading and draft screens print
-* hero names, so two are enough; a scoreboard only shows portraits, so it needs
-* most of the lobby to disagree before we believe it.
-*/
-function isNewMatch(s, obs) {
-	const textScreen = obs.screen === "loading" || obs.screen === "draft";
-	if (!textScreen && obs.screen !== "scoreboard") return false;
-	if (s.phase !== "live" && s.owned.length === 0) return false;
-	const seen = [...obs.allies, ...obs.enemies].map((p) => p.heroId);
-	const known = [
-		...s.allies,
-		...s.enemies,
-		...s.myHeroId ? [s.myHeroId] : []
-	];
-	return seen.length >= (textScreen ? 2 : 6) && known.length >= 4 && overlap(seen, known) * 3 <= seen.length;
-}
-function applyObservation(s0, obs0, now, costUsd = 0) {
-	let s = s0;
-	let obs = obs0;
-	if (isNewMatch(s, obs)) s = {
-		...EMPTY_SESSION,
-		lane: s.lane,
-		log: s.log,
-		matchId: s.matchId + 1,
-		stage: "draft"
-	};
-	else obs = orientObservation(obs, s);
-	const next = {
-		...s,
-		calls: s.calls + 1,
-		costUsd: s.costUsd + costUsd,
-		tip: obs.tip
-	};
-	const printed = obs.screen === "scoreboard" || obs.screen === "loading" || obs.screen === "post_game";
-	if (printed || obs.screen === "draft") {
-		const seenAllies = obs.allies.map((p) => p.heroId);
-		const seenEnemies = obs.enemies.map((p) => p.heroId);
-		if (obs.meHeroId && (printed || !next.myHeroId)) next.myHeroId = obs.meHeroId;
-		const me = next.myHeroId;
-		next.enemies = mergeRoster(s.enemies, seenEnemies, printed, me ? [me] : []);
-		next.allies = mergeRoster(s.allies, seenAllies.filter((id) => id !== me), printed, [...next.enemies, ...me ? [me] : []]);
-		if (!next.lane && me) next.lane = heroById(me)?.lanes[0];
-	}
-	if (obs.screen === "scoreboard") {
-		const live = { ...s.enemyLive };
-		for (const p of obs.enemies) if (next.enemies.includes(p.heroId)) live[p.heroId] = keepBelievable(p);
-		next.enemyLive = live;
-		const mineLive = { ...s.allyLive };
-		for (const p of obs.allies) mineLive[p.heroId] = keepBelievable(p);
-		next.allyLive = mineLive;
-		const mine = obs.allies.find((p) => p.heroId === next.myHeroId);
-		if (mine?.gold !== void 0 && obs.myGold !== void 0 && mine.gold >= obs.myGold) next.spent = mine.gold - obs.myGold;
-	} else if (obs.myGold !== void 0 && s.gold !== void 0 && s.spent !== void 0 && obs.myGold < s.gold - 150) next.spent = s.spent + (s.gold - obs.myGold);
-	if (obs.screen === "shop" || obs.screen === "scoreboard") {
-		const mineRow = obs.screen === "scoreboard" ? obs.allies.find((p) => p.heroId === next.myHeroId) : void 0;
-		const seen = obs.myItems?.length ? obs.myItems : mineRow?.items;
-		if (seen?.length && believableItems(seen, next.spent ?? mineRow?.gold, 150)) next.seenItems = uniq(seen);
-	}
-	if (obs.shop) {
-		const rec = obs.shop.recommended.map((e) => e.id);
-		if (rec.length >= 3) next.plannedBuild = uniq(rec);
-		const listed = [...obs.shop.recommended, ...obs.shop.spare];
-		next.shopListed = uniq(listed.map((e) => e.id));
-		next.priceFactor = learnPriceFactor(listed) ?? next.priceFactor;
-		next.shopPrices = Object.fromEntries(listed.filter((e) => e.price !== void 0 && e.price > 0).map((e) => [e.id, e.price]));
-		next.shopPricesSpent = next.spent;
-	}
-	if (obs.myGold !== void 0) next.gold = obs.myGold;
-	const inMatch = obs.screen === "scoreboard" || obs.screen === "gameplay" || obs.screen === "shop";
-	if (obs.gameTimeSec !== void 0 && inMatch) {
-		const candidate = now - obs.gameTimeSec * 1e3;
-		if (next.clockStart === void 0 || !next.clockSure || Math.abs(candidate - next.clockStart) <= 12e4) {
-			next.clockStart = candidate;
-			next.clockSure = true;
-			next.pendingClock = void 0;
-		} else if (next.pendingClock !== void 0 && Math.abs(candidate - next.pendingClock) <= 3e4) {
-			next.clockStart = candidate;
-			next.pendingClock = void 0;
-		} else next.pendingClock = candidate;
-	}
-	if ((obs.screen === "scoreboard" || obs.screen === "gameplay" || obs.screen === "shop") && next.myHeroId) {
-		next.phase = "live";
-		next.clockStart ??= now;
-	}
-	if (obs.screen === "scoreboard") {
-		const at = obs.gameTimeSec ?? (next.clockStart !== void 0 ? Math.max(0, Math.round((now - next.clockStart) / 1e3)) : 0);
-		const players = {};
-		for (const p of [...obs.allies, ...obs.enemies]) if (p.gold !== void 0 || p.kills !== void 0) players[p.heroId] = {
-			gold: p.gold,
-			kills: p.kills,
-			deaths: p.deaths,
-			assists: p.assists
-		};
-		if (Object.keys(players).length) {
-			const history = [...next.history];
-			const last = history.at(-1);
-			if (last && Math.abs(last.at - at) < 20) history[history.length - 1] = {
-				at,
-				players
-			};
-			else history.push({
-				at,
-				players
-			});
-			next.history = history.slice(-40);
-		}
-	}
-	if (next.phase === "live") next.stage = "live";
-	else if (obs.screen === "loading") next.stage = "loading";
-	else if (obs.screen === "draft") next.stage = "draft";
-	return next;
-}
-function sessionReducer(s, a) {
-	switch (a.type) {
-		case "setTeam": return {
-			...s,
-			[a.side]: uniq(a.ids).slice(0, a.side === "banned" ? 10 : a.side === "allies" ? 4 : 5)
-		};
-		case "setMyHero": {
-			const hero = a.id ? heroById(a.id) : void 0;
-			return {
-				...s,
-				myHeroId: a.id,
-				lane: hero && (!s.lane || !hero.lanes.includes(s.lane)) ? hero.lanes[0] : s.lane,
-				allies: s.allies.filter((id) => id !== a.id),
-				owned: a.id === s.myHeroId ? s.owned : []
-			};
-		}
-		case "setLane": return {
-			...s,
-			lane: a.lane
-		};
-		case "setLaneOpponent": return {
-			...s,
-			laneOpponentId: a.id
-		};
-		case "startMatch": return {
-			...s,
-			phase: "live",
-			clockStart: a.now,
-			owned: [],
-			gold: void 0,
-			enemyLive: {},
-			allyLive: {},
-			history: [],
-			manualFed: {},
-			tip: void 0,
-			calls: 0,
-			costUsd: 0,
-			matchId: s.matchId + 1
-		};
-		case "newMatch": return {
-			...EMPTY_SESSION,
-			lane: s.lane,
-			matchId: s.matchId + 1
-		};
-		case "backToDraft": return {
-			...s,
-			phase: "draft"
-		};
-		case "toggleOwned": return {
-			...s,
-			owned: s.owned.includes(a.id) ? s.owned.filter((id) => id !== a.id) : tidyOwned([...s.owned, a.id])
-		};
-		case "bought": {
-			const full = itemById(a.id);
-			const pay = (n) => Math.floor(n * (s.priceFactor ?? 1));
-			const comp = full?.component;
-			const haveComp = !!comp && [...s.owned, ...s.seenItems ?? []].includes(componentId(comp.name));
-			const quoted = buildInputs(s).shopPrices?.[a.id];
-			const cost = a.id.startsWith("comp:") ? pay(COMPONENTS.get(a.id)?.cost ?? 0) : full ? quoted ?? pay(haveComp && comp ? full.cost - comp.cost : full.cost) : void 0;
-			return {
-				...s,
-				owned: tidyOwned([...s.owned, a.id]),
-				gold: s.gold !== void 0 && cost !== void 0 ? Math.max(0, s.gold - cost) : s.gold,
-				spent: s.spent !== void 0 && cost !== void 0 ? s.spent + cost : s.spent
-			};
-		}
-		case "sold": return {
-			...s,
-			owned: s.owned.filter((id) => id !== a.id)
-		};
-		case "swap": {
-			const refund = Math.round((itemById(a.sell)?.cost ?? 0) * SELL_REFUND);
-			const cost = itemById(a.buy)?.cost ?? 0;
-			return {
-				...s,
-				owned: tidyOwned([...s.owned.filter((id) => id !== a.sell), a.buy]),
-				gold: s.gold !== void 0 ? Math.max(0, s.gold + refund - cost) : s.gold
-			};
-		}
-		case "setGold": return {
-			...s,
-			gold: a.gold
-		};
-		case "cycleFed": {
-			const cur = s.manualFed[a.heroId];
-			const manualFed = { ...s.manualFed };
-			if (cur === void 0) manualFed[a.heroId] = 1;
-			else if (cur === 1) manualFed[a.heroId] = -1;
-			else delete manualFed[a.heroId];
-			return {
-				...s,
-				manualFed
-			};
-		}
-		case "syncClock": return {
-			...s,
-			clockStart: a.now - a.gameSec * 1e3,
-			clockSure: true,
-			pendingClock: void 0
-		};
-		case "observe": return applyObservation(s, a.obs, a.now, a.costUsd);
-		case "setStage":
-			switch (a.stage) {
-				case "draft": return {
-					...EMPTY_SESSION,
-					lane: s.lane,
-					log: s.log,
-					matchId: s.matchId + 1,
-					stage: "draft"
-				};
-				case "loading": return {
-					...s,
-					phase: "draft",
-					stage: "loading"
-				};
-				case "live": return s.phase === "live" ? {
-					...s,
-					stage: "live"
-				} : {
-					...s,
-					phase: "live",
-					stage: "live",
-					clockStart: s.clockStart ?? a.now
-				};
-				case "done": return {
-					...s,
-					phase: "draft",
-					stage: "done"
-				};
-			}
-			return s;
-		case "adopt": return {
-			...EMPTY_SESSION,
-			...a.session,
-			log: s.log
-		};
-		case "log": return {
-			...s,
-			log: [a.entry, ...s.log].slice(0, LOG_MAX$1)
-		};
-		default: return s;
-	}
-}
-/** Enemy roster with the best available "how fed are they" information attached. */
-function enemyStates(s) {
-	return s.enemies.map((heroId) => {
-		const live = s.enemyLive[heroId];
-		if (live) return live;
-		const mark = s.manualFed[heroId];
-		if (mark === 1) return {
-			heroId,
-			kills: 6,
-			deaths: 0
-		};
-		if (mark === -1) return {
-			heroId,
-			kills: 0,
-			deaths: 5
-		};
-		return { heroId };
-	});
-}
-var stageOf = (s) => s.stage ?? (s.phase === "live" ? "live" : "draft");
-/** Actions a controlling device (the phone) may send to the server's copy of the match. */
-var CONTROLLER_ACTIONS = /* @__PURE__ */ new Set([
-	"setStage",
-	"setTeam",
-	"setMyHero",
-	"setLane",
-	"setLaneOpponent",
-	"startMatch",
-	"newMatch",
-	"backToDraft",
-	"toggleOwned",
-	"bought",
-	"sold",
-	"swap",
-	"setGold",
-	"cycleFed",
-	"syncClock"
-]);
-/** Everything the build planner needs from a session, in one place so every caller agrees. */
-function buildInputs(s) {
-	const fresh = s.shopPrices && Math.abs((s.spent ?? 0) - (s.shopPricesSpent ?? 0)) <= 100;
-	return {
-		lane: s.lane,
-		enemies: enemyStates(s),
-		owned: s.owned,
-		seenItems: s.seenItems,
-		spent: s.spent,
-		shopPrices: fresh ? s.shopPrices : void 0,
-		plannedBuild: s.plannedBuild,
-		shopListed: s.shopListed,
-		priceFactor: s.priceFactor
-	};
-}
-// src/engine/coach.ts
-/** First sentence only — spoken lines must be short enough to hear mid-fight. */
-var firstSentence = (text) => {
-	const cut = text.search(/[.!?](\s|$)/);
-	return cut > 0 ? text.slice(0, cut + 1) : text;
-};
-/** The one thing to do with your gold right now. */
-function buyAdvice(plan) {
-	const n = plan.next;
-	const key = [
-		"buy",
-		n.action,
-		n.item?.id ?? "-",
-		n.component?.name ?? "-",
-		n.sell?.id ?? "-"
-	].join(":");
-	const reason = (n.action === "buy" || n.action === "sell-swap" || n.action === "buy-component") && n.detail ? ` ${firstSentence(n.detail)}` : "";
-	const where = n.where && n.action !== "save" ? ` ${n.where}` : "";
-	return {
-		key,
-		say: `${n.say}${n.action === "buy-component" ? "" : reason}${where}`,
-		detail: n.detail,
-		kind: "buy",
-		priority: n.action === "save" ? 0 : 1
-	};
-}
-/** Call-outs for enemies who have pulled ahead since we last looked. */
-function fedAdvice(threat, alreadyCalled) {
-	return threat.sources.filter((s) => s.fed && !alreadyCalled.has(s.heroId)).map((s) => {
-		const hero = heroById(s.heroId);
-		const dmg = hero.damage === "mixed" ? "mixed" : hero.damage;
-		const style = hero.traits.burst >= .7 ? "burst" : hero.traits.basicAttacker >= .55 ? "basic-attack" : "";
-		return {
-			key: `fed:${s.heroId}`,
-			say: `${hero.name} is fed. ${dmg[0].toUpperCase()}${dmg.slice(1)} ${style} damage — I'm adjusting your build.`.replace(/\s+/g, " "),
-			detail: `${hero.name} now carries about ${Math.round(s.weight * 100)}% of the enemy team's kill pressure.`,
-			kind: "threat",
-			priority: 2
-		};
-	});
-}
-// src/engine/draft.ts
-var fmt = (n) => `${n > 0 ? "+" : ""}${n.toFixed(1)}%`;
-/**
-* Rank picks against the enemy draft.
-*
-* Score is in win-rate points: the sum of this hero's measured edge over each
-* enemy (Moonton ranked stats), plus half-weight synergy with allies, a small
-* nudge for heroes that are strong in the current patch, and a bonus when the
-* game's own hero notes name the matchup.
-*/
-function rankCounters(input) {
-	const taken = /* @__PURE__ */ new Set([
-		...input.enemies,
-		...input.allies,
-		...input.banned ?? []
-	]);
-	const enemies = input.enemies.map(heroById).filter((h) => !!h);
-	const allies = input.allies.map(heroById).filter((h) => !!h);
-	const picks = [];
-	for (const hero of HEROES) {
-		if (taken.has(hero.id)) continue;
-		if (input.lane && !hero.lanes.includes(input.lane)) continue;
-		let score = 0;
-		const edges = [];
-		for (const enemy of enemies) {
-			const stat = versus(hero.id, enemy.id);
-			if (stat !== void 0) {
-				const inLane = enemy.id === input.laneOpponent;
-				const value = inLane ? stat * 2 : stat;
-				score += value;
-				if (Math.abs(stat) >= 1) edges.push({
-					text: `${fmt(stat)} win rate vs ${enemy.name}${inLane ? " (your lane)" : ""}`,
-					value
-				});
-			}
-			if (hero.relation.strong?.ids.includes(enemy.id)) {
-				score += 1.5;
-				edges.push({
-					text: hero.relation.strong.desc,
-					value: 1.5
-				});
-			} else if (enemy.relation.weak?.ids.includes(hero.id)) {
-				score += 1.5;
-				edges.push({
-					text: enemy.relation.weak.desc,
-					value: 1.5
-				});
-			}
-			if (hero.relation.weak?.ids.includes(enemy.id)) {
-				score -= 1.5;
-				edges.push({
-					text: `Careful: ${hero.relation.weak.desc}`,
-					value: -1.5
-				});
-			}
-		}
-		for (const ally of allies) {
-			const syn = synergy(hero.id, ally.id);
-			if (syn !== void 0) {
-				score += syn * .5;
-				if (syn >= 1.5) edges.push({
-					text: `${fmt(syn)} win rate alongside ${ally.name}`,
-					value: syn * .5
-				});
-			}
-		}
-		score += (hero.meta.win - 50) * .3;
-		const reasons = edges.sort((a, b) => Math.abs(b.value) - Math.abs(a.value)).map((e) => e.text).filter((text, i, all) => all.indexOf(text) === i).slice(0, 3);
-		if (!reasons.length) reasons.push(`${hero.meta.win.toFixed(1)}% win rate this patch — no strong matchup data either way`);
-		picks.push({
-			hero,
-			score,
-			reasons
-		});
-	}
-	return picks.sort((a, b) => b.score - a.score).slice(0, input.limit ?? 8);
 }
 // src/engine/story.ts
 var k = (n) => Math.abs(n) >= 1e3 ? `${(Math.abs(n) / 1e3).toFixed(1)}k` : String(Math.abs(Math.round(n)));
@@ -2457,6 +1991,82 @@ function matchStory(s) {
 		say: spoken.join(" ")
 	};
 	return story;
+}
+/**
+* One storyboard line for the latest scoreboard: what changed since the one before
+* (who got kills, whether the player died, how the gold lead moved). Numbers only.
+*/
+function storyBeat(s) {
+	const cur = s.history.at(-1);
+	const me = s.myHeroId;
+	if (!cur || !me) return void 0;
+	const prev = s.history.at(-2);
+	const mine = [me, ...s.allies.filter((id) => id !== me)];
+	const total = (snap, ids) => {
+		const golds = ids.map((id) => snap.players[id]?.gold).filter((g) => g !== void 0);
+		return golds.length >= 4 ? sum(golds) : void 0;
+	};
+	const leadOf = (snap) => {
+		const a = total(snap, mine);
+		const b = total(snap, s.enemies);
+		return a !== void 0 && b !== void 0 ? a - b : void 0;
+	};
+	const kda = (id) => {
+		const p = cur.players[id];
+		return p?.kills !== void 0 ? ` (${p.kills}/${p.deaths ?? "?"}/${p.assists ?? "?"})` : "";
+	};
+	const gained = (id, key) => {
+		const now = cur.players[id]?.[key];
+		const was = prev?.players[id]?.[key];
+		return now !== void 0 && was !== void 0 ? now - was : 0;
+	};
+	const top = (ids) => ids.map((id) => ({
+		id,
+		n: gained(id, "kills")
+	})).sort((a, b) => b.n - a.n)[0];
+	const parts = [];
+	let score = 0;
+	if (prev) {
+		const died = gained(me, "deaths");
+		if (died > 0) {
+			parts.push(died === 1 ? "You died once." : `You died ${died} times.`);
+			score -= died;
+		}
+		const myKills = gained(me, "kills");
+		if (myKills > 0) {
+			parts.push(myKills === 1 ? "You got a kill." : `You got ${myKills} kills.`);
+			score += myKills;
+		}
+		const enemy = top(s.enemies);
+		if (enemy && enemy.n >= 2) {
+			parts.push(`${heroName(enemy.id)} got ${enemy.n} kills${kda(enemy.id)}.`);
+			score -= 1;
+		}
+		const ally = top(s.allies.filter((id) => id !== me));
+		if (ally && ally.n >= 2) {
+			parts.push(`${heroName(ally.id)} got ${ally.n} kills${kda(ally.id)}.`);
+			score += 1;
+		}
+	} else {
+		const by = (id, key) => cur.players[id]?.[key] ?? -1;
+		const leader = [...s.enemies].sort((a, b) => by(b, "kills") - by(a, "kills") || by(b, "gold") - by(a, "gold"))[0];
+		if (leader && by(leader, "kills") >= 0) parts.push(`${heroName(leader)} leads their team${kda(leader)}.`);
+	}
+	const lead = leadOf(cur);
+	if (lead !== void 0) {
+		const was = prev ? leadOf(prev) : void 0;
+		const change = was !== void 0 ? lead - was : 0;
+		const moved = Math.abs(change) >= 300 ? ` (${change > 0 ? "+" : "-"}${k(change)})` : "";
+		parts.push(Math.abs(lead) < 500 ? `Gold is even${moved}.` : `Your team is ${lead > 0 ? "ahead" : "behind"} by ${k(lead)} gold${moved}.`);
+		if (change >= 400) score += 1;
+		if (change <= -400) score -= 1;
+	}
+	if (!parts.length) return void 0;
+	return {
+		at: cur.at,
+		text: parts.join(" "),
+		tone: score > 0 ? "good" : score < 0 ? "bad" : "neutral"
+	};
 }
 // src/engine/tips.ts
 var SKILLS = {
@@ -7069,6 +6679,1001 @@ function gamePlan(me, enemyIds, threat, laneOpponentId) {
 	out.push(...warnings.slice(0, 2));
 	out.push(JOB[me.roles[0] ?? "Fighter"] ?? "");
 	return out.filter(Boolean).slice(0, 5);
+}
+// src/state/session.ts
+/**
+* Match state and how it changes. Pure and framework-free, so the same logic
+* runs in the browser app and in the screenshot endpoint.
+*/
+var STAGE_LABEL = {
+	draft: "Hero selection",
+	loading: "Match starting",
+	live: "In match",
+	done: "Match over"
+};
+/** List value of a set of item / component ids. */
+var valueOf = (ids) => ids.reduce((sum, id) => sum + (id.startsWith("comp:") ? COMPONENTS.get(id)?.cost ?? 0 : itemById(id)?.cost ?? 0), 0);
+/**
+* Is an icon reading believable? Small item icons are the one thing vision models
+* misread, usually by naming an expensive finished item where a cheap piece sits.
+* Gold is printed text and reliable, so: nobody owns more than they have earned,
+* two pairs of boots, or the same item twice.
+*/
+function believableItems(ids, budget, slack = 300) {
+	if (!ids?.length) return true;
+	const finished = ids.filter((id) => !id.startsWith("comp:"));
+	if (new Set(finished).size !== finished.length) return false;
+	if (finished.filter((id) => itemById(id)?.category === "boots").length > 1) return false;
+	return budget === void 0 || valueOf(ids) <= budget + slack;
+}
+var keepBelievable = (p) => believableItems(p.items, p.gold) ? p : {
+	...p,
+	items: void 0
+};
+/** Starting gold, which some scoreboards leave out of a player's total. */
+var START_GOLD = 300;
+/**
+* Fit an icon read of the player's own items to what they have spent. Returns the
+* finished items, the one still being built when the list only fits that way (its
+* pieces were read as the finished item), and how far the list exceeds the spending.
+*/
+function fitOwnItems(ids, spent, factor = 1) {
+	if (!ids?.length) return void 0;
+	const finished = ids.filter((id) => !id.startsWith("comp:"));
+	if (new Set(finished).size !== finished.length) return void 0;
+	if (finished.filter((id) => itemById(id)?.category === "boots").length > 1) return void 0;
+	if (spent === void 0) return {
+		items: ids,
+		over: 0
+	};
+	const cost = (id) => Math.floor((id.startsWith("comp:") ? COMPONENTS.get(id)?.cost ?? 0 : itemById(id)?.cost ?? 0) * factor);
+	const value = ids.reduce((sum, id) => sum + cost(id), 0);
+	if (value <= spent + START_GOLD + 50) return {
+		items: ids,
+		over: Math.max(0, value - spent)
+	};
+	for (const id of [...finished].reverse()) {
+		const rest = value - cost(id);
+		if (rest <= spent + 60 && spent - rest < cost(id)) return {
+			items: ids.filter((x) => x !== id),
+			partial: id,
+			over: 0
+		};
+	}
+}
+var NUMBERS = [
+	"gold",
+	"kills",
+	"deaths",
+	"assists"
+];
+/** Scoreboard numbers only ever go up within a match. */
+var wentBackwards = (prev, p) => !!prev && NUMBERS.some((k) => prev[k] !== void 0 && p[k] !== void 0 && p[k] < prev[k]);
+/**
+* Decide what to believe about one scoreboard row. A row whose numbers went down
+* is a misread — unless the next read agrees with it, in which case the earlier
+* figure was the wrong one.
+*/
+function settleRow(prev, read, doubt) {
+	const p = keepBelievable(read);
+	const merged = () => ({
+		...p,
+		gold: p.gold ?? prev?.gold,
+		kills: p.kills ?? prev?.kills,
+		deaths: p.deaths ?? prev?.deaths,
+		assists: p.assists ?? prev?.assists,
+		level: p.level ?? prev?.level,
+		items: p.items?.length ? p.items : prev?.items
+	});
+	if (!wentBackwards(prev, p)) {
+		delete doubt[p.heroId];
+		return merged();
+	}
+	const held = doubt[p.heroId];
+	if (held && !wentBackwards(held, p)) {
+		delete doubt[p.heroId];
+		return p;
+	}
+	doubt[p.heroId] = p;
+	return prev;
+}
+var EMPTY_SESSION = {
+	phase: "draft",
+	allies: [],
+	enemies: [],
+	banned: [],
+	enemyLive: {},
+	allyLive: {},
+	history: [],
+	manualFed: {},
+	owned: [],
+	log: [],
+	calls: 0,
+	costUsd: 0,
+	matchId: 0
+};
+var uniq = (xs) => [...new Set(xs)];
+var LOG_MAX$1 = 60;
+/** Owning a finished item makes its component irrelevant; keep the list tidy. */
+function tidyOwned(owned) {
+	const full = new Set(owned.filter((id) => !id.startsWith("comp:")));
+	const builtFrom = new Set([...full].map((id) => itemById(id)?.component).filter((c) => !!c).map((c) => componentId(c.name)));
+	return uniq(owned).filter((id) => !(id.startsWith("comp:") && builtFrom.has(id)));
+}
+/** Merge a roster reading. Screens that print hero names replace what we had; portrait-only reads just fill gaps. */
+function mergeRoster(current, seen, authoritative, exclude) {
+	const clean = seen.filter((id) => !exclude.includes(id));
+	if (authoritative && clean.length >= 3) return uniq(clean).slice(0, 5);
+	return uniq([...current, ...clean]).slice(0, 5);
+}
+var overlap = (a, b) => a.filter((id) => b.includes(id)).length;
+/**
+* Work out the shop's discount from printed prices. An item the player already
+* holds a piece of shows a much lower price, so only near-list ratios count.
+*/
+function learnPriceFactor(entries) {
+	const ratios = entries.map((e) => e.price && itemById(e.id) ? e.price / itemById(e.id).cost : 0).filter((r) => r >= .85 && r <= 1.001).sort((a, b) => a - b);
+	if (!ratios.length) return void 0;
+	return Math.round(ratios[Math.floor(ratios.length / 2)] * 100) / 100;
+}
+/**
+* Make sure "allies" really is the user's team. The model can only go by screen
+* position and colour, which is not reliable; what the app already knows is.
+* A flipped read would make the coach itemise against the user's own team.
+*/
+function orientObservation(obs, s) {
+	if (obs.meHeroId !== void 0 && (obs.screen === "scoreboard" || obs.screen === "loading")) return obs;
+	const seenAllies = obs.allies.map((p) => p.heroId);
+	const seenEnemies = obs.enemies.map((p) => p.heroId);
+	const me = s.myHeroId;
+	let flipped;
+	if (me !== void 0 && (seenAllies.includes(me) || seenEnemies.includes(me))) flipped = seenEnemies.includes(me);
+	else {
+		const mine = me !== void 0 ? [me, ...s.allies] : s.allies;
+		const asRead = overlap(seenAllies, mine) + overlap(seenEnemies, s.enemies);
+		flipped = overlap(seenEnemies, mine) + overlap(seenAllies, s.enemies) > asRead;
+	}
+	if (!flipped) return obs;
+	const meHeroId = obs.enemies.some((p) => p.heroId === obs.meHeroId) ? obs.meHeroId : void 0;
+	return {
+		...obs,
+		allies: obs.enemies,
+		enemies: obs.allies,
+		meHeroId
+	};
+}
+/**
+* A screen showing mostly different heroes means the next game has started.
+* The roster check matters: a mid-match screen misread as "loading" still shows
+* the same heroes and must not wipe the match. Loading and draft screens print
+* hero names, so two are enough; a scoreboard only shows portraits, so it needs
+* most of the lobby to disagree before we believe it.
+*/
+function isNewMatch(s, obs) {
+	const textScreen = obs.screen === "loading" || obs.screen === "draft";
+	if (!textScreen && obs.screen !== "scoreboard") return false;
+	if (s.phase !== "live" && s.owned.length === 0) return false;
+	const seen = [...obs.allies, ...obs.enemies].map((p) => p.heroId);
+	const known = [
+		...s.allies,
+		...s.enemies,
+		...s.myHeroId ? [s.myHeroId] : []
+	];
+	return seen.length >= (textScreen ? 2 : 6) && known.length >= 4 && overlap(seen, known) * 3 <= seen.length;
+}
+function applyObservation(s0, obs0, now, costUsd = 0) {
+	let s = s0;
+	let obs = obs0;
+	if (isNewMatch(s, obs)) s = {
+		...EMPTY_SESSION,
+		lane: s.lane,
+		log: s.log,
+		matchId: s.matchId + 1,
+		stage: "draft"
+	};
+	else obs = orientObservation(obs, s);
+	const next = {
+		...s,
+		calls: s.calls + 1,
+		costUsd: s.costUsd + costUsd,
+		tip: obs.tip
+	};
+	const printed = obs.screen === "scoreboard" || obs.screen === "loading" || obs.screen === "post_game";
+	if (printed || obs.screen === "draft") {
+		const seenAllies = obs.allies.map((p) => p.heroId);
+		const seenEnemies = obs.enemies.map((p) => p.heroId);
+		if (obs.meHeroId && (printed || !next.myHeroId)) next.myHeroId = obs.meHeroId;
+		const me = next.myHeroId;
+		next.enemies = mergeRoster(s.enemies, seenEnemies, printed, me ? [me] : []);
+		next.allies = mergeRoster(s.allies, seenAllies.filter((id) => id !== me), printed, [...next.enemies, ...me ? [me] : []]);
+		if (!next.lane && me) next.lane = heroById(me)?.lanes[0];
+	}
+	if (obs.screen === "scoreboard") {
+		const doubt = { ...s.doubt ?? {} };
+		const live = { ...s.enemyLive };
+		for (const p of obs.enemies) if (next.enemies.includes(p.heroId)) live[p.heroId] = settleRow(s.enemyLive[p.heroId], p, doubt);
+		next.enemyLive = live;
+		const mineLive = { ...s.allyLive };
+		for (const p of obs.allies) mineLive[p.heroId] = settleRow(s.allyLive[p.heroId], p, doubt);
+		next.allyLive = mineLive;
+		next.doubt = doubt;
+		const mine = obs.allies.find((p) => p.heroId === next.myHeroId);
+		if (mine?.gold !== void 0 && obs.myGold !== void 0 && mine.gold >= obs.myGold && !doubt[mine.heroId]) next.spent = mine.gold - obs.myGold + (next.goldOffset ?? 0);
+	} else if (obs.myGold !== void 0 && s.gold !== void 0 && s.spent !== void 0 && obs.myGold < s.gold - 150) next.spent = s.spent + (s.gold - obs.myGold);
+	if (obs.shop) next.priceFactor = learnPriceFactor([...obs.shop.recommended, ...obs.shop.spare]) ?? next.priceFactor;
+	if (obs.screen === "shop" || obs.screen === "scoreboard") {
+		const mineRow = obs.screen === "scoreboard" ? obs.allies.find((p) => p.heroId === next.myHeroId) : void 0;
+		const fit = fitOwnItems(obs.myItems?.length ? obs.myItems : mineRow?.items, next.spent ?? mineRow?.gold, next.priceFactor);
+		if (fit) {
+			const now = uniq(fit.items);
+			const grows = (base) => !!base?.length && base.every((id) => now.includes(id));
+			if (obs.screen === "shop" || !s.seenItems?.length && !fit.partial || grows(s.seenItems) || grows(s.pendingSeen)) {
+				next.seenItems = now;
+				next.seenPartial = fit.partial;
+				next.pendingSeen = void 0;
+				if (obs.screen === "shop" && !next.goldOffset && next.spent !== void 0 && fit.over >= 200) {
+					next.goldOffset = START_GOLD;
+					next.spent += START_GOLD;
+				}
+			} else next.pendingSeen = now;
+		}
+	}
+	if (obs.shop) {
+		const rec = obs.shop.recommended.map((e) => e.id);
+		if (rec.length >= 3) next.plannedBuild = uniq(rec);
+		const listed = [...obs.shop.recommended, ...obs.shop.spare];
+		next.shopListed = uniq(listed.map((e) => e.id));
+		next.shopPrices = Object.fromEntries(listed.filter((e) => e.price !== void 0 && e.price > 0).map((e) => [e.id, e.price]));
+		next.shopPricesSpent = next.spent;
+	}
+	if (obs.myGold !== void 0) next.gold = obs.myGold;
+	const inMatch = obs.screen === "scoreboard" || obs.screen === "gameplay" || obs.screen === "shop";
+	if (obs.gameTimeSec !== void 0 && inMatch) {
+		const candidate = now - obs.gameTimeSec * 1e3;
+		if (next.clockStart === void 0 || !next.clockSure || Math.abs(candidate - next.clockStart) <= 12e4) {
+			next.clockStart = candidate;
+			next.clockSure = true;
+			next.pendingClock = void 0;
+		} else if (next.pendingClock !== void 0 && Math.abs(candidate - next.pendingClock) <= 3e4) {
+			next.clockStart = candidate;
+			next.pendingClock = void 0;
+		} else next.pendingClock = candidate;
+	}
+	if ((obs.screen === "scoreboard" || obs.screen === "gameplay" || obs.screen === "shop") && next.myHeroId) {
+		next.phase = "live";
+		next.clockStart ??= now;
+	}
+	if (obs.screen === "scoreboard") {
+		const at = obs.gameTimeSec ?? (next.clockStart !== void 0 ? Math.max(0, Math.round((now - next.clockStart) / 1e3)) : 0);
+		const players = {};
+		for (const seen of [...obs.allies, ...obs.enemies]) {
+			const p = next.allyLive[seen.heroId] ?? next.enemyLive[seen.heroId] ?? seen;
+			if (p.gold !== void 0 || p.kills !== void 0) players[p.heroId] = {
+				gold: p.gold,
+				kills: p.kills,
+				deaths: p.deaths,
+				assists: p.assists
+			};
+		}
+		if (Object.keys(players).length) {
+			const history = [...next.history];
+			const last = history.at(-1);
+			if (!!last && Math.abs(last.at - at) < 20) history[history.length - 1] = {
+				at,
+				players
+			};
+			else history.push({
+				at,
+				players
+			});
+			next.history = history.slice(-40);
+			const beat = storyBeat(next);
+			if (beat) next.story = addBeat(next.story, beat);
+		}
+	}
+	if (next.phase === "live") next.stage = "live";
+	else if (obs.screen === "loading") next.stage = "loading";
+	else if (obs.screen === "draft") next.stage = "draft";
+	return next;
+}
+/** Add a line to the storyboard; a line for the same moment replaces the one already there. */
+function addBeat(story, beat) {
+	const lines = [...story ?? []];
+	const last = lines.at(-1);
+	if (last && Math.abs(last.at - beat.at) < 20) lines[lines.length - 1] = beat;
+	else lines.push(beat);
+	return lines.slice(-40);
+}
+function sessionReducer(s, a) {
+	switch (a.type) {
+		case "setTeam": return {
+			...s,
+			[a.side]: uniq(a.ids).slice(0, a.side === "banned" ? 10 : a.side === "allies" ? 4 : 5)
+		};
+		case "setMyHero": {
+			const hero = a.id ? heroById(a.id) : void 0;
+			return {
+				...s,
+				myHeroId: a.id,
+				lane: hero && (!s.lane || !hero.lanes.includes(s.lane)) ? hero.lanes[0] : s.lane,
+				allies: s.allies.filter((id) => id !== a.id),
+				owned: a.id === s.myHeroId ? s.owned : []
+			};
+		}
+		case "setLane": return {
+			...s,
+			lane: a.lane
+		};
+		case "setLaneOpponent": return {
+			...s,
+			laneOpponentId: a.id
+		};
+		case "startMatch": return {
+			...s,
+			phase: "live",
+			clockStart: a.now,
+			owned: [],
+			gold: void 0,
+			enemyLive: {},
+			allyLive: {},
+			history: [],
+			manualFed: {},
+			tip: void 0,
+			calls: 0,
+			costUsd: 0,
+			matchId: s.matchId + 1,
+			spent: void 0,
+			seenItems: void 0,
+			seenPartial: void 0,
+			pendingSeen: void 0,
+			goldOffset: void 0,
+			doubt: void 0,
+			story: void 0,
+			ai: void 0,
+			aiBuild: void 0,
+			position: void 0
+		};
+		case "newMatch": return {
+			...EMPTY_SESSION,
+			lane: s.lane,
+			matchId: s.matchId + 1
+		};
+		case "backToDraft": return {
+			...s,
+			phase: "draft"
+		};
+		case "toggleOwned": return {
+			...s,
+			owned: s.owned.includes(a.id) ? s.owned.filter((id) => id !== a.id) : tidyOwned([...s.owned, a.id])
+		};
+		case "bought": {
+			const full = itemById(a.id);
+			const pay = (n) => Math.floor(n * (s.priceFactor ?? 1));
+			const comp = full?.component;
+			const haveComp = !!comp && [...s.owned, ...s.seenItems ?? []].includes(componentId(comp.name));
+			const quoted = buildInputs(s).shopPrices?.[a.id];
+			const cost = a.id.startsWith("comp:") ? pay(COMPONENTS.get(a.id)?.cost ?? 0) : full ? quoted ?? pay(haveComp && comp ? full.cost - comp.cost : full.cost) : void 0;
+			return {
+				...s,
+				owned: tidyOwned([...s.owned, a.id]),
+				gold: s.gold !== void 0 && cost !== void 0 ? Math.max(0, s.gold - cost) : s.gold,
+				spent: s.spent !== void 0 && cost !== void 0 ? s.spent + cost : s.spent
+			};
+		}
+		case "sold": return {
+			...s,
+			owned: s.owned.filter((id) => id !== a.id)
+		};
+		case "swap": {
+			const refund = Math.round((itemById(a.sell)?.cost ?? 0) * SELL_REFUND);
+			const cost = itemById(a.buy)?.cost ?? 0;
+			return {
+				...s,
+				owned: tidyOwned([...s.owned.filter((id) => id !== a.sell), a.buy]),
+				gold: s.gold !== void 0 ? Math.max(0, s.gold + refund - cost) : s.gold
+			};
+		}
+		case "setGold": return {
+			...s,
+			gold: a.gold
+		};
+		case "cycleFed": {
+			const cur = s.manualFed[a.heroId];
+			const manualFed = { ...s.manualFed };
+			if (cur === void 0) manualFed[a.heroId] = 1;
+			else if (cur === 1) manualFed[a.heroId] = -1;
+			else delete manualFed[a.heroId];
+			return {
+				...s,
+				manualFed
+			};
+		}
+		case "syncClock": return {
+			...s,
+			clockStart: a.now - a.gameSec * 1e3,
+			clockSure: true,
+			pendingClock: void 0
+		};
+		case "observe": return applyObservation(s, a.obs, a.now, a.costUsd);
+		case "setStage":
+			switch (a.stage) {
+				case "draft": return {
+					...EMPTY_SESSION,
+					lane: s.lane,
+					log: s.log,
+					matchId: s.matchId + 1,
+					stage: "draft"
+				};
+				case "loading": return {
+					...s,
+					phase: "draft",
+					stage: "loading"
+				};
+				case "live": return s.phase === "live" ? {
+					...s,
+					stage: "live"
+				} : {
+					...s,
+					phase: "live",
+					stage: "live",
+					clockStart: s.clockStart ?? a.now
+				};
+				case "done": return {
+					...s,
+					phase: "draft",
+					stage: "done"
+				};
+			}
+			return s;
+		case "ai": return {
+			...s,
+			ai: a.advice,
+			aiBuild: a.build ?? s.aiBuild,
+			story: a.beat ? addBeat(s.story, a.beat) : s.story
+		};
+		case "position": return {
+			...s,
+			position: a.advice
+		};
+		case "adopt": return {
+			...EMPTY_SESSION,
+			...a.session,
+			log: s.log
+		};
+		case "log": return {
+			...s,
+			log: [a.entry, ...s.log].slice(0, LOG_MAX$1)
+		};
+		default: return s;
+	}
+}
+/** Enemy roster with the best available "how fed are they" information attached. */
+function enemyStates(s) {
+	return s.enemies.map((heroId) => {
+		const live = s.enemyLive[heroId];
+		if (live) return live;
+		const mark = s.manualFed[heroId];
+		if (mark === 1) return {
+			heroId,
+			kills: 6,
+			deaths: 0
+		};
+		if (mark === -1) return {
+			heroId,
+			kills: 0,
+			deaths: 5
+		};
+		return { heroId };
+	});
+}
+var gameSeconds = (s, now) => s.phase === "live" && s.clockStart !== void 0 ? Math.max(0, Math.floor((now - s.clockStart) / 1e3)) : void 0;
+var stageOf = (s) => s.stage ?? (s.phase === "live" ? "live" : "draft");
+/** Actions a controlling device (the phone) may send to the server's copy of the match. */
+var CONTROLLER_ACTIONS = /* @__PURE__ */ new Set([
+	"setStage",
+	"setTeam",
+	"setMyHero",
+	"setLane",
+	"setLaneOpponent",
+	"startMatch",
+	"newMatch",
+	"backToDraft",
+	"toggleOwned",
+	"bought",
+	"sold",
+	"swap",
+	"setGold",
+	"cycleFed",
+	"syncClock"
+]);
+/** Everything the build planner needs from a session, in one place so every caller agrees. */
+function buildInputs(s) {
+	const fresh = s.shopPrices && Math.abs((s.spent ?? 0) - (s.shopPricesSpent ?? 0)) <= 100;
+	return {
+		lane: s.lane,
+		enemies: enemyStates(s),
+		owned: s.owned,
+		seenItems: s.seenItems,
+		spent: s.spent,
+		shopPrices: fresh ? s.shopPrices : void 0,
+		plannedBuild: s.plannedBuild,
+		shopListed: s.shopListed,
+		priceFactor: s.priceFactor,
+		partial: s.seenPartial,
+		aiBuild: s.aiBuild
+	};
+}
+// src/ai/coach.ts
+/**
+* The AI coach: a strong model that decides what to buy and do next.
+*
+* The screenshot reader only transcribes the screen. This step gets the whole
+* match as text — both teams with their numbers, what the player owns and has
+* spent, the rule engine's own plan, the storyboard so far — and answers with a
+* build order, the calls for the next two minutes and one storyboard line.
+* Everything it names is checked against the catalog before it is used.
+*/
+var COACH_SYSTEM = `You are the in-match coach for a NEW player of Mobile Legends: Bang Bang. Another step has already read the player's screenshots; you receive the match state as text. Decide what the player should buy and do next. Your answer is shown on a dashboard they glance at mid-fight and is read aloud, so every line is short, concrete and in plain words. Name heroes and items. Do not give advice that would be true in any match.
+
+How to decide
+- Judge who is dangerous from kills, deaths and gold in THIS match, not from a hero's reputation. An enemy well ahead on gold or kills is fed: build and play around that one.
+- Purchase order matters more than the final build. Put first what helps most in the next few minutes: the player's main damage item, or a defensive answer when they keep dying to one fed enemy.
+- Counters. Anti-heal (Sea Halberd, Glowing Wand or Dominance Ice) only when enemy healing or shields are a real part of their team. Physical defense against a fed physical hero, magic defense against a fed magic hero. Penetration when they stack armor or magic resistance. A carry (marksman, mage, assassin) takes at most two defensive items.
+- One pair of boots. Never repeat an item. Never drop an item the player already owns: owned items stay at the front of the build in the same order, followed by the item they are part-way through buying.
+- When two items are about equally good, prefer the one from the player's in-game list: that is one tap for them to buy.
+- Item lists seen on other heroes come from tiny icons and are often wrong. Do not rely on them.
+- If the state is too thin to decide (no scoreboard read yet), say what you need in the headline and keep the current plan.
+
+Use only item names from the ITEM CATALOG below, spelled exactly. Use only hero names that appear in the match state.
+
+Answer fields
+- situation: whether the player's team is ahead, even or behind.
+- headline: the single most important thing right now, at most 12 words.
+- do_now: one to three short instructions for the next two minutes (where to be, who to stay with, what to take: turtle, lord, a turret, farm).
+- avoid: one thing not to do right now, or "".
+- focus_hero and focus_why: the enemy to kill first in a fight, or to stay away from, and why in under 15 words. "" when nobody stands out.
+- build: the full six-item build in purchase order. Each entry has a reason under 14 words, written to the player ("Freya is 9/3 and dives you; this lets you survive her jump").
+- story_beat: one line under 18 words recording what just changed in the match, with names and numbers, for the storyboard. story_tone: good, bad or neutral for the player.
+
+ITEM CATALOG (name | price | shop tab | what it does)
+${ITEMS.map((i) => `${i.name} | ${i.cost} | ${SHOP_TAB[i.category]} | ${i.blurb}`).join("\n")}`;
+var COACH_SCHEMA = {
+	type: "object",
+	properties: {
+		situation: {
+			type: "string",
+			enum: [
+				"ahead",
+				"even",
+				"behind"
+			]
+		},
+		headline: { type: "string" },
+		do_now: {
+			type: "array",
+			items: { type: "string" }
+		},
+		avoid: { type: "string" },
+		focus_hero: { type: "string" },
+		focus_why: { type: "string" },
+		build: {
+			type: "array",
+			items: {
+				type: "object",
+				properties: {
+					item: { type: "string" },
+					why: { type: "string" }
+				},
+				required: ["item", "why"],
+				additionalProperties: false
+			}
+		},
+		story_beat: { type: "string" },
+		story_tone: {
+			type: "string",
+			enum: [
+				"good",
+				"bad",
+				"neutral"
+			]
+		}
+	},
+	required: [
+		"situation",
+		"headline",
+		"do_now",
+		"avoid",
+		"focus_hero",
+		"focus_why",
+		"build",
+		"story_beat",
+		"story_tone"
+	],
+	additionalProperties: false
+};
+var clock = (sec) => `${Math.floor(sec / 60)}:${String(Math.floor(sec % 60)).padStart(2, "0")}`;
+/** What a hero brings to a fight, in a few plain words. */
+function kit(hero) {
+	const t = hero.traits;
+	const tags = [
+		t.burst >= .5 && "burst damage",
+		t.sustain >= .5 && "heals or lifesteal",
+		t.shields >= .5 && "shields",
+		t.cc >= .5 && "crowd control",
+		t.mobility >= .5 && "dashes in",
+		t.tanky >= .5 && "tanky",
+		t.basicAttacker >= .5 && "basic attacks",
+		t.crit && "crit",
+		t.trueDamage && "true damage",
+		t.maxHpDamage && "shreds tanks",
+		t.conceal && "goes invisible",
+		t.poke && "long-range poke"
+	].filter(Boolean);
+	return `${hero.roles.join("/")}, ${hero.damage} damage${tags.length ? `; ${tags.join(", ")}` : ""}`;
+}
+var numbers = (p) => p && (p.kills !== void 0 || p.gold !== void 0) ? `${p.kills ?? "?"}/${p.deaths ?? "?"}/${p.assists ?? "?"}${p.gold !== void 0 ? `, ${p.gold} gold` : ""}` : "no numbers yet";
+/** The match as text for the coach. Returns undefined when there is not enough to coach on. */
+function coachBrief(s, now) {
+	const hero = s.myHeroId ? heroById(s.myHeroId) : void 0;
+	if (!hero || s.enemies.length < 3) return void 0;
+	const sec = gameSeconds(s, now);
+	const plan = planBuild({
+		hero,
+		gold: s.gold,
+		gameTimeSec: sec,
+		...buildInputs(s)
+	});
+	const me = s.allyLive[hero.id];
+	const lines = [];
+	lines.push(`Stage: ${STAGE_LABEL[stageOf(s)]}.${sec !== void 0 ? ` Match clock ${clock(sec)}.` : ""}`);
+	lines.push(`PLAYER: ${hero.name} — ${kit(hero)}.${s.lane ? ` Lane: ${s.lane}.` : ""} ${numbers(me)}.${s.gold !== void 0 ? ` Gold in pocket: ${s.gold}.` : ""}${s.spent !== void 0 ? ` Spent so far: about ${s.spent}.` : ""}`);
+	const owned = plan.slots.filter((x) => x.owned).map((x) => x.item.name);
+	const started = plan.slots.find((x) => !x.owned && x.paid);
+	lines.push(`OWNS (from the inventory when it could be read, otherwise estimated from gold spent): ${owned.join(", ") || "nothing yet"}.` + (started ? ` Part-way through ${started.item.name} (${started.paid} of ${started.price} paid).` : ""));
+	if (s.plannedBuild?.length) lines.push(`IN-GAME LIST (one tap to buy): ${s.plannedBuild.map((id) => itemById(id)?.name ?? id).join(", ")}.`);
+	lines.push(`CURRENT PLAN: ${plan.slots.map((x, i) => `${i + 1}. ${x.item.name}${x.owned ? " (owned)" : ""}`).join("  ")}. Next step by the rules: ${plan.next.say}`);
+	lines.push("TEAMMATES");
+	for (const id of s.allies) {
+		const h = heroById(id);
+		if (h && id !== hero.id) lines.push(`- ${h.name} — ${kit(h)}. ${numbers(s.allyLive[id])}.`);
+	}
+	const laneId = s.laneOpponentId ?? guessLaneOpponent(s.lane, s.enemies);
+	const fed = new Set(plan.threat.sources.filter((x) => x.fed).map((x) => x.heroId));
+	lines.push("ENEMIES");
+	for (const id of s.enemies) {
+		const h = heroById(id);
+		if (!h) continue;
+		const skills = skillsOf(id).filter((k) => k.slot !== "Passive").slice(0, 3).map((k) => `${k.name}: ${k.text.slice(0, 110)}`);
+		lines.push(`- ${h.name} — ${kit(h)}. ${numbers(s.enemyLive[id])}.${fed.has(id) ? " FED." : ""}${id === laneId ? " In the player's lane." : ""}${skills.length ? `\n  ${skills.join("\n  ")}` : ""}`);
+	}
+	lines.push(`ENEMY DAMAGE: about ${Math.round(plan.threat.physShare * 100)}% physical, ${Math.round(plan.threat.magicShare * 100)}% magic, weighted by who is ahead.`);
+	const story = matchStory(s);
+	if (story?.teamGold) lines.push(`TEAM GOLD: the player's team ${story.teamGold.mine}, enemy ${story.teamGold.theirs}.${story.leadChange !== void 0 ? ` The lead moved by ${Math.round(story.leadChange)} over the last ${story.overMinutes} minute(s).` : ""}`);
+	const beats = (s.story ?? []).slice(-6);
+	if (beats.length) lines.push("STORY SO FAR", ...beats.map((b) => `- ${clock(b.at)} ${b.text}`));
+	if (!s.history.length) lines.push("No scoreboard has been read yet this match: there are no kills or gold to go by.");
+	lines.push("Decide the build order and the calls for the next two minutes.");
+	return lines.join("\n");
+}
+var text$1 = (v, max) => typeof v === "string" ? v.replace(/\s+/g, " ").trim().slice(0, max) : "";
+/**
+* Check the coach's answer against what the app knows before any of it is shown:
+* unknown items and heroes are dropped, and what the player already owns stays
+* at the front of the build whatever the model said.
+*/
+function normalizeCoach(raw, s, model, now) {
+	const r = raw ?? {};
+	const headline = text$1(r.headline, 140);
+	if (!headline) return void 0;
+	const hero = s.myHeroId ? heroById(s.myHeroId) : void 0;
+	const sec = gameSeconds(s, now);
+	const advice = {
+		at: now,
+		clock: sec,
+		model,
+		situation: r.situation === "ahead" || r.situation === "behind" ? r.situation : "even",
+		headline,
+		doNow: (Array.isArray(r.do_now) ? r.do_now : []).map((x) => text$1(x, 160)).filter(Boolean).slice(0, 3),
+		avoid: text$1(r.avoid, 160) || void 0
+	};
+	const focus = findHero(text$1(r.focus_hero, 40));
+	if (focus && s.enemies.includes(focus.id)) advice.focus = {
+		heroId: focus.id,
+		why: text$1(r.focus_why, 160)
+	};
+	const ids = [];
+	const why = {};
+	for (const entry of Array.isArray(r.build) ? r.build : []) {
+		const found = findItem(text$1(entry?.item, 60));
+		const item = found && !found.id.startsWith("comp:") ? itemById(found.id) : void 0;
+		if (!item || ids.includes(item.id)) continue;
+		if (item.category === "boots" && ids.some((id) => itemById(id)?.category === "boots")) continue;
+		ids.push(item.id);
+		why[item.id] = text$1(entry?.why, 160);
+	}
+	let build;
+	if (hero && ids.length >= 3) {
+		const plan = planBuild({
+			hero,
+			gold: s.gold,
+			gameTimeSec: sec,
+			...buildInputs(s),
+			aiBuild: void 0
+		});
+		const held = plan.slots.filter((x) => x.owned || x.paid).map((x) => x.item);
+		const hasBoots = held.some((i) => i.category === "boots");
+		const rest = ids.filter((id) => !held.some((i) => i.id === id) && !(hasBoots && itemById(id)?.category === "boots"));
+		build = {
+			ids: [...held.map((i) => i.id), ...rest].slice(0, 6),
+			why
+		};
+		const next = build.ids.find((id) => !plan.slots.some((x) => x.owned && x.item.id === id));
+		if (next) advice.item = {
+			id: next,
+			why: why[next] || ""
+		};
+	}
+	const line = text$1(r.story_beat, 180);
+	return {
+		advice,
+		beat: line && sec !== void 0 ? {
+			at: s.history.at(-1)?.at ?? sec,
+			text: line,
+			tone: r.story_tone === "good" || r.story_tone === "bad" ? r.story_tone : "neutral"
+		} : void 0,
+		build
+	};
+}
+/** A canned coach answer for the demo reader, so the whole flow can be tried with no key. */
+function demoCoach(s) {
+	const hero = s.myHeroId ? heroById(s.myHeroId) : void 0;
+	const plan = hero ? planBuild({
+		hero,
+		gold: s.gold,
+		...buildInputs(s),
+		aiBuild: void 0
+	}) : void 0;
+	const top = plan?.threat.sources[0];
+	const fed = top?.fed ? heroName(top.heroId) : "";
+	return {
+		situation: "even",
+		headline: fed ? `${fed} is fed. Stay with your team.` : "Farm your lane and take safe fights.",
+		do_now: fed ? [`Stay behind your tank when ${fed} is near.`, "Clear the minion wave, then group."] : ["Clear minion waves for gold.", "Join your team for the turtle."],
+		avoid: fed ? `Do not face ${fed} alone.` : "",
+		focus_hero: top ? heroName(top.heroId) : "",
+		focus_why: fed ? "Furthest ahead on their team." : "Their main damage dealer.",
+		build: (plan?.slots ?? []).map((x) => ({
+			item: x.item.name,
+			why: x.reason
+		})),
+		story_beat: fed ? `${fed} is pulling ahead.` : "A quiet start.",
+		story_tone: fed ? "bad" : "neutral"
+	};
+}
+// src/ai/position.ts
+/**
+* "Help me position": the player asks by voice, the phone sends a screenshot of
+* the fight around them, then one with the map opened, and a model says where to
+* stand or go. It is told to describe only what it can actually see.
+*/
+var POSITION_SYSTEM = `You are a positioning coach for a NEW player of Mobile Legends: Bang Bang. You are given one or two screenshots taken seconds apart: the battlefield around the player's hero, and the same moment with the map opened large (if only one picture arrives, use its small map in the corner). You are also told who is in the match. Say where the player should stand or go right now.
+
+Reading the pictures
+- The player's hero is the one the camera is centred on. Teammates have health bars in the player's team colour; enemies have red health bars.
+- On the map, each visible hero is a round portrait. Work out which side is the player's from their own position and their team's portraits. Turrets, the river and the three lanes are fixed landmarks; the turtle and the lord sit in the river.
+- An enemy who is not on the map is missing, and could be anywhere nearby.
+- Describe only what you can actually see. If the map is not open or is unreadable, say so and base the advice on the battlefield picture alone. Never invent positions.
+
+What good positioning means for a new player
+- Stay where teammates can reach you. Alone, far past your own turrets, with enemies missing, is the most common way to die.
+- A fragile damage dealer (marksman, mage) stands behind the tank or fighter, at the edge of their own range, and backs off when a diving enemy disappears from the map.
+- A tank or fighter stands between the enemy and their damage dealers.
+- When ahead and grouped: take the nearest turret, the turtle (early) or the lord (later). When behind or outnumbered: clear minion waves near your own turrets and wait for the team.
+
+Answer fields
+- map_open: true if a large opened map is visible in one of the pictures.
+- where: one sentence on where the player is (lane or jungle, how far forward, who is next to them).
+- enemies_seen: one sentence on which enemies are visible and where, and how many are missing.
+- risk: low, medium or high for the player's current spot.
+- say: the advice to read aloud, at most 30 words: where to go or stand and why.
+- moves: up to three short steps in order.`;
+var POSITION_SCHEMA = {
+	type: "object",
+	properties: {
+		map_open: { type: "boolean" },
+		where: { type: "string" },
+		enemies_seen: { type: "string" },
+		risk: {
+			type: "string",
+			enum: [
+				"low",
+				"medium",
+				"high"
+			]
+		},
+		say: { type: "string" },
+		moves: {
+			type: "array",
+			items: { type: "string" }
+		}
+	},
+	required: [
+		"map_open",
+		"where",
+		"enemies_seen",
+		"risk",
+		"say",
+		"moves"
+	],
+	additionalProperties: false
+};
+/** Who is in the match, so the model can put names to the portraits. */
+function positionBrief(s, now, pictures) {
+	const lines = [];
+	const hero = s.myHeroId ? heroById(s.myHeroId) : void 0;
+	const sec = gameSeconds(s, now);
+	if (hero) lines.push(`The player is ${hero.name} (${hero.roles.join("/")})${s.lane ? `, ${s.lane} lane` : ""}.`);
+	if (sec !== void 0) lines.push(`Match clock: about ${Math.floor(sec / 60)} minutes in.`);
+	if (s.allies.length) lines.push(`Teammates: ${s.allies.filter((id) => id !== s.myHeroId).map(heroName).join(", ")}.`);
+	if (s.enemies.length) {
+		const line = s.enemies.map((id) => {
+			const p = s.enemyLive[id];
+			return `${heroName(id)}${p?.kills !== void 0 ? ` (${p.kills}/${p.deaths ?? "?"}/${p.assists ?? "?"})` : ""}`;
+		});
+		lines.push(`Enemies: ${line.join(", ")}.`);
+	}
+	lines.push(pictures >= 2 ? "Picture 1 is the battlefield around the player. Picture 2 was taken a few seconds later, after the player was asked to open the map." : "One picture only: use the small map in its corner.");
+	lines.push("Where should the player stand or go right now?");
+	return lines.join("\n");
+}
+var text = (v, max) => typeof v === "string" ? v.replace(/\s+/g, " ").trim().slice(0, max) : "";
+function normalizePosition(raw, model, now) {
+	const r = raw ?? {};
+	const say = text(r.say, 260);
+	if (!say) return void 0;
+	const where = text(r.where, 200);
+	const seen = text(r.enemies_seen, 200);
+	const risk = r.risk === "high" || r.risk === "medium" ? r.risk : "low";
+	const mapNote = r.map_open === false ? " (The map was not open, so this is from the battlefield view only.)" : "";
+	return {
+		at: now,
+		summary: [where, seen].filter(Boolean).join(" ") + mapNote,
+		danger: risk === "low" ? void 0 : `${risk === "high" ? "High" : "Some"} risk where you are standing.`,
+		moves: (Array.isArray(r.moves) ? r.moves : []).map((x) => text(x, 140)).filter(Boolean).slice(0, 3),
+		say,
+		model
+	};
+}
+/** Canned answer for the demo reader. */
+var demoPosition = () => ({
+	map_open: true,
+	where: "You are in the middle lane, just past the river.",
+	enemies_seen: "Two enemies are visible in the top lane; three are missing.",
+	risk: "medium",
+	say: "Three enemies are missing. Step back to your turret and wait for your tank before pushing.",
+	moves: [
+		"Walk back to your turret.",
+		"Clear the minion wave from there.",
+		"Push again when you can see three enemies on the map."
+	]
+});
+// src/engine/coach.ts
+/** First sentence only — spoken lines must be short enough to hear mid-fight. */
+var firstSentence = (text) => {
+	const cut = text.search(/[.!?](\s|$)/);
+	return cut > 0 ? text.slice(0, cut + 1) : text;
+};
+/** The one thing to do with your gold right now. */
+function buyAdvice(plan) {
+	const n = plan.next;
+	const key = [
+		"buy",
+		n.action,
+		n.item?.id ?? "-",
+		n.component?.name ?? "-",
+		n.sell?.id ?? "-"
+	].join(":");
+	const reason = (n.action === "buy" || n.action === "sell-swap" || n.action === "buy-component") && n.detail ? ` ${firstSentence(n.detail)}` : "";
+	const where = n.where && n.action !== "save" ? ` ${n.where}` : "";
+	return {
+		key,
+		say: `${n.say}${n.action === "buy-component" ? "" : reason}${where}`,
+		detail: n.detail,
+		kind: "buy",
+		priority: n.action === "save" ? 0 : 1
+	};
+}
+/** Call-outs for enemies who have pulled ahead since we last looked. */
+function fedAdvice(threat, alreadyCalled) {
+	return threat.sources.filter((s) => s.fed && !alreadyCalled.has(s.heroId)).map((s) => {
+		const hero = heroById(s.heroId);
+		const dmg = hero.damage === "mixed" ? "mixed" : hero.damage;
+		const style = hero.traits.burst >= .7 ? "burst" : hero.traits.basicAttacker >= .55 ? "basic-attack" : "";
+		return {
+			key: `fed:${s.heroId}`,
+			say: `${hero.name} is fed. ${dmg[0].toUpperCase()}${dmg.slice(1)} ${style} damage — I'm adjusting your build.`.replace(/\s+/g, " "),
+			detail: `${hero.name} now carries about ${Math.round(s.weight * 100)}% of the enemy team's kill pressure.`,
+			kind: "threat",
+			priority: 2
+		};
+	});
+}
+// src/engine/draft.ts
+var fmt = (n) => `${n > 0 ? "+" : ""}${n.toFixed(1)}%`;
+/**
+* Rank picks against the enemy draft.
+*
+* Score is in win-rate points: the sum of this hero's measured edge over each
+* enemy (Moonton ranked stats), plus half-weight synergy with allies, a small
+* nudge for heroes that are strong in the current patch, and a bonus when the
+* game's own hero notes name the matchup.
+*/
+function rankCounters(input) {
+	const taken = /* @__PURE__ */ new Set([
+		...input.enemies,
+		...input.allies,
+		...input.banned ?? []
+	]);
+	const enemies = input.enemies.map(heroById).filter((h) => !!h);
+	const allies = input.allies.map(heroById).filter((h) => !!h);
+	const picks = [];
+	for (const hero of HEROES) {
+		if (taken.has(hero.id)) continue;
+		if (input.lane && !hero.lanes.includes(input.lane)) continue;
+		let score = 0;
+		const edges = [];
+		for (const enemy of enemies) {
+			const stat = versus(hero.id, enemy.id);
+			if (stat !== void 0) {
+				const inLane = enemy.id === input.laneOpponent;
+				const value = inLane ? stat * 2 : stat;
+				score += value;
+				if (Math.abs(stat) >= 1) edges.push({
+					text: `${fmt(stat)} win rate vs ${enemy.name}${inLane ? " (your lane)" : ""}`,
+					value
+				});
+			}
+			if (hero.relation.strong?.ids.includes(enemy.id)) {
+				score += 1.5;
+				edges.push({
+					text: hero.relation.strong.desc,
+					value: 1.5
+				});
+			} else if (enemy.relation.weak?.ids.includes(hero.id)) {
+				score += 1.5;
+				edges.push({
+					text: enemy.relation.weak.desc,
+					value: 1.5
+				});
+			}
+			if (hero.relation.weak?.ids.includes(enemy.id)) {
+				score -= 1.5;
+				edges.push({
+					text: `Careful: ${hero.relation.weak.desc}`,
+					value: -1.5
+				});
+			}
+		}
+		for (const ally of allies) {
+			const syn = synergy(hero.id, ally.id);
+			if (syn !== void 0) {
+				score += syn * .5;
+				if (syn >= 1.5) edges.push({
+					text: `${fmt(syn)} win rate alongside ${ally.name}`,
+					value: syn * .5
+				});
+			}
+		}
+		score += (hero.meta.win - 50) * .3;
+		const reasons = edges.sort((a, b) => Math.abs(b.value) - Math.abs(a.value)).map((e) => e.text).filter((text, i, all) => all.indexOf(text) === i).slice(0, 3);
+		if (!reasons.length) reasons.push(`${hero.meta.win.toFixed(1)}% win rate this patch — no strong matchup data either way`);
+		picks.push({
+			hero,
+			score,
+			reasons
+		});
+	}
+	return picks.sort((a, b) => b.score - a.score).slice(0, input.limit ?? 8);
 }
 // src/engine/reply.ts
 /**
@@ -13333,7 +13938,7 @@ var require_sha256 = /* @__PURE__ */ __commonJSMin(((exports, module, this$15) =
 	});
 }));
 // node_modules/standardwebhooks/dist/timing_safe_equal.js
-var require_timing_safe_equal = /* @__PURE__ */ __commonJSMin(((exports) => {
+var require_timing_safe_equal$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.timingSafeEqual = timingSafeEqual;
 	function assert(expr, msg = "") {
@@ -13353,12 +13958,12 @@ var require_timing_safe_equal = /* @__PURE__ */ __commonJSMin(((exports) => {
 	}
 }));
 // node_modules/standardwebhooks/dist/index.js
-var require_dist$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+var require_dist$5 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Webhook = exports.WebhookVerificationError = void 0;
 	var base64 = require_base64();
 	var sha256 = require_sha256();
-	var timing_safe_equal_1 = require_timing_safe_equal();
+	var timing_safe_equal_1 = require_timing_safe_equal$1();
 	var WEBHOOK_TOLERANCE_IN_SECONDS = 300;
 	var ExtendableError = class ExtendableError extends Error {
 		constructor(message) {
@@ -13447,7 +14052,7 @@ var require_dist$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
 var import_dist, Webhooks$2;
 var init_webhooks$1 = __esmMin((() => {
 	init_resource();
-	import_dist = require_dist$2();
+	import_dist = require_dist$5();
 	Webhooks$2 = class extends APIResource {
 		/**
 		* Parses a webhook payload into an event without verifying its signature. Prefer
@@ -38539,6 +39144,37 @@ var num = (v) => {
 	const n = typeof v === "string" ? Number(v) : v;
 	return typeof n === "number" && Number.isFinite(n) && n >= 0 ? Math.round(n) : void 0;
 };
+/** Nobody has this many kills, deaths or assists: a bigger number is a gold figure read from the wrong column. */
+var KDA_MAX = 60;
+/**
+* The enemy half of the scoreboard mirrors the player's half, and readers sometimes
+* come out one column over: gold lands in "kills", kills in "deaths", deaths in
+* "assists" (and assists in "gold", or nowhere). When most of a side shows that
+* pattern, shift it back; an isolated impossible row just loses its numbers.
+*/
+function unscramble(rows) {
+	const shifted = (p) => (p.kills ?? 0) > KDA_MAX;
+	const blank = (p) => ({
+		...p,
+		kills: void 0,
+		deaths: void 0,
+		assists: void 0,
+		gold: void 0
+	});
+	const impossible = (p) => (p.deaths ?? 0) > KDA_MAX || (p.assists ?? 0) > KDA_MAX;
+	const repair = rows.filter(shifted).length * 2 >= rows.length;
+	return rows.map((p) => {
+		if (!shifted(p)) return impossible(p) ? blank(p) : p;
+		if (!repair || impossible(p)) return blank(p);
+		return {
+			...p,
+			gold: p.kills,
+			kills: p.deaths,
+			deaths: p.assists,
+			assists: p.gold !== void 0 && p.gold <= KDA_MAX ? p.gold : void 0
+		};
+	});
+}
 function parseGameTime(text) {
 	if (typeof text !== "string") return void 0;
 	const m = /^\s*(\d{1,2}):(\d{2})\s*$/.exec(text);
@@ -38595,7 +39231,7 @@ function normalizeObservation(raw) {
 			});
 		}
 		return {
-			rows,
+			rows: unscramble(rows),
 			me
 		};
 	};
@@ -38680,7 +39316,8 @@ function toVisionError$1(err) {
 	if (err instanceof Anthropic.APIError) return new VisionError(`Claude API error ${err.status ?? ""}: ${err.message}`, "api");
 	return new VisionError(err instanceof Error ? err.message : String(err), "api");
 }
-function claudeVision(apiKey, model) {
+/** Ask Claude a question that must be answered as JSON matching a schema, with optional pictures. */
+function claudeAsk(apiKey, model) {
 	if (!apiKey) throw new VisionError("Add your Claude API key in Settings.", "config");
 	const client = new Anthropic({
 		apiKey,
@@ -38688,34 +39325,34 @@ function claudeVision(apiKey, model) {
 		maxRetries: 1,
 		timeout: 45e3
 	});
-	return async (image, ctx) => {
+	return async ({ system, user, images = [], schema }) => {
 		const common = {
 			model,
 			max_tokens: 16e3,
 			system: [{
 				type: "text",
-				text: SYSTEM_PROMPT,
+				text: system,
 				cache_control: { type: "ephemeral" }
 			}],
 			output_config: {
 				effort: "low",
 				format: {
 					type: "json_schema",
-					schema: VISION_SCHEMA
+					schema
 				}
 			},
 			messages: [{
 				role: "user",
-				content: [{
+				content: [...images.map((image) => ({
 					type: "image",
 					source: {
 						type: "base64",
 						media_type: image.mediaType,
 						data: image.base64
 					}
-				}, {
+				})), {
 					type: "text",
-					text: userPrompt(ctx)
+					text: user
 				}]
 			}]
 		};
@@ -38725,7 +39362,7 @@ function claudeVision(apiKey, model) {
 				betas: [FALLBACK_BETA],
 				fallbacks: "default"
 			}) : await client.messages.create(common);
-			if (response.stop_reason === "refusal") throw new VisionError("Claude declined to read this screenshot.", "refused");
+			if (response.stop_reason === "refusal") throw new VisionError("Claude declined to answer this one.", "refused");
 			if (response.stop_reason === "max_tokens") throw new VisionError("Claude ran out of output tokens before finishing.", "bad-output");
 			let text = "";
 			for (const block of response.content) if (block.type === "text") text += block.text;
@@ -38742,6 +39379,16 @@ function claudeVision(apiKey, model) {
 			throw toVisionError$1(err);
 		}
 	};
+}
+/** The screenshot reader: one picture in, the screen's contents out. */
+function claudeVision(apiKey, model) {
+	const ask = claudeAsk(apiKey, model);
+	return (image, ctx) => ask({
+		system: SYSTEM_PROMPT,
+		user: userPrompt(ctx),
+		images: [image],
+		schema: VISION_SCHEMA
+	});
 }
 // src/vision/demo.ts
 /**
@@ -39260,7 +39907,7 @@ var init_package$1 = __esmMin((() => {
 }));
 // node_modules/gaxios/build/cjs/src/util.cjs
 var require_util$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	module.exports = { pkg: (init_package$1(), __toCommonJS(package_exports$1).default) };
+	module.exports = { pkg: (init_package$1(), __toCommonJS$1(package_exports$1).default) };
 }));
 // node_modules/gaxios/build/cjs/src/common.js
 var require_common$1 = /* @__PURE__ */ __commonJSMin(((exports, module, this$14) => {
@@ -40364,7 +41011,7 @@ var require_helpers = /* @__PURE__ */ __commonJSMin(((exports, module, this$13) 
 	exports.req = req;
 }));
 // node_modules/agent-base/dist/index.js
-var require_dist$1 = /* @__PURE__ */ __commonJSMin(((exports, module, this$12) => {
+var require_dist$4 = /* @__PURE__ */ __commonJSMin(((exports, module, this$12) => {
 	var __createBinding = this$12 && this$12.__createBinding || (Object.create ? (function(o, m, k, k2) {
 		if (k2 === void 0) k2 = k;
 		var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -40572,7 +41219,7 @@ var require_parse_proxy_response = /* @__PURE__ */ __commonJSMin(((exports, modu
 	exports.parseProxyResponse = parseProxyResponse;
 }));
 // node_modules/https-proxy-agent/dist/index.js
-var require_dist = /* @__PURE__ */ __commonJSMin(((exports, module, this$10) => {
+var require_dist$3 = /* @__PURE__ */ __commonJSMin(((exports, module, this$10) => {
 	var __createBinding = this$10 && this$10.__createBinding || (Object.create ? (function(o, m, k, k2) {
 		if (k2 === void 0) k2 = k;
 		var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -40613,7 +41260,7 @@ var require_dist = /* @__PURE__ */ __commonJSMin(((exports, module, this$10) => 
 	var tls = __importStar(__require("tls"));
 	var assert_1 = __importDefault(__require("assert"));
 	var debug_1 = __importDefault(require_src$4());
-	var agent_base_1 = require_dist$1();
+	var agent_base_1 = require_dist$4();
 	var url_1 = __require("url");
 	var parse_proxy_response_1 = require_parse_proxy_response();
 	var debug = (0, debug_1.default)("https-proxy-agent");
@@ -44651,7 +45298,7 @@ var require_node_domexception = /* @__PURE__ */ __commonJSMin(((exports, module)
 // node_modules/fetch-blob/from.js
 var import_node_domexception, stat, blobFromSync, blobFrom, fileFrom, fileFromSync, fromBlob, fromFile, BlobDataItem;
 var init_from = __esmMin((() => {
-	import_node_domexception = /* @__PURE__ */ __toESM(require_node_domexception(), 1);
+	import_node_domexception = /* @__PURE__ */ __toESM$1(require_node_domexception(), 1);
 	init_file();
 	init_fetch_blob();
 	({stat} = promises);
@@ -45814,7 +46461,7 @@ var init_abort_error = __esmMin((() => {
 *
 * All spec algorithm step numbers are based on https://fetch.spec.whatwg.org/commit-snapshots/ae716822cb3a61843226cd090eefc6589446c1d2/.
 */
-var src_exports = /* @__PURE__ */ __exportAll({
+var src_exports$1 = /* @__PURE__ */ __exportAll({
 	AbortError: () => AbortError,
 	Blob: () => Blob$1,
 	FetchError: () => FetchError,
@@ -46427,12 +47074,12 @@ var require_gaxios = /* @__PURE__ */ __commonJSMin(((exports, module, this$8) =>
 		* @returns A proxy agent
 		*/
 		static async #getProxyAgent() {
-			this.#proxyAgent ||= (await Promise.resolve().then(() => /* @__PURE__ */ __toESM(require_dist()))).HttpsProxyAgent;
+			this.#proxyAgent ||= (await Promise.resolve().then(() => /* @__PURE__ */ __toESM$1(require_dist$3()))).HttpsProxyAgent;
 			return this.#proxyAgent;
 		}
 		static async #getFetch() {
 			const hasWindow = typeof window !== "undefined" && !!window;
-			this.#fetch ||= hasWindow ? window.fetch : (await Promise.resolve().then(() => (init_src(), src_exports))).default;
+			this.#fetch ||= hasWindow ? window.fetch : (await Promise.resolve().then(() => (init_src(), src_exports$1))).default;
 			return this.#fetch;
 		}
 		/**
@@ -47808,7 +48455,7 @@ var require_stringify = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	})();
 }));
 // node_modules/json-bigint/lib/parse.js
-var require_parse = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+var require_parse$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var BigNumber = null;
 	var suspectProtoRx = /(?:_|\\u005[Ff])(?:_|\\u005[Ff])(?:p|\\u0070)(?:r|\\u0072)(?:o|\\u006[Ff])(?:t|\\u0074)(?:o|\\u006[Ff])(?:_|\\u005[Ff])(?:_|\\u005[Ff])/;
 	var suspectConstructorRx = /(?:c|\\u0063)(?:o|\\u006[Ff])(?:n|\\u006[Ee])(?:s|\\u0073)(?:t|\\u0074)(?:r|\\u0072)(?:u|\\u0075)(?:c|\\u0063)(?:t|\\u0074)(?:o|\\u006[Ff])(?:r|\\u0072)/;
@@ -48032,7 +48679,7 @@ var require_parse = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 // node_modules/json-bigint/index.js
 var require_json_bigint = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var json_stringify = require_stringify().stringify;
-	var json_parse = require_parse();
+	var json_parse = require_parse$1();
 	module.exports = function(options) {
 		return {
 			parse: json_parse(options),
@@ -49610,7 +50257,7 @@ var init_package = __esmMin((() => {
 var require_shared = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.USER_AGENT = exports.PRODUCT_NAME = exports.pkg = void 0;
-	var pkg = (init_package(), __toCommonJS(package_exports).default);
+	var pkg = (init_package(), __toCommonJS$1(package_exports).default);
 	exports.pkg = pkg;
 	var PRODUCT_NAME = "google-api-nodejs-client";
 	exports.PRODUCT_NAME = PRODUCT_NAME;
@@ -55653,7 +56300,7 @@ var require_buffer_util = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			else websocketUnmask(buffer, mask);
 		};
 	} else if (!process.env.WS_NO_BUFFER_UTIL) try {
-		const bufferUtil = (init___vite_optional_peer_dep_bufferutil_ws(), __toCommonJS(__vite_optional_peer_dep_bufferutil_ws_exports));
+		const bufferUtil = (init___vite_optional_peer_dep_bufferutil_ws(), __toCommonJS$1(__vite_optional_peer_dep_bufferutil_ws_exports));
 		module.exports.mask = function(source, mask, output, offset, length) {
 			if (length < 48) _mask(source, mask, output, offset, length);
 			else bufferUtil.mask(source, mask, output, offset, length);
@@ -56242,7 +56889,7 @@ var require_validation = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return buf.length < 24 ? _isValidUTF8(buf) : isUtf8(buf);
 	};
 	else if (!process.env.WS_NO_UTF_8_VALIDATE) try {
-		const isValidUTF8 = (init___vite_optional_peer_dep_utf_8_validate_ws(), __toCommonJS(__vite_optional_peer_dep_utf_8_validate_ws_exports));
+		const isValidUTF8 = (init___vite_optional_peer_dep_utf_8_validate_ws(), __toCommonJS$1(__vite_optional_peer_dep_utf_8_validate_ws_exports));
 		module.exports.isValidUTF8 = function(buf) {
 			return buf.length < 32 ? _isValidUTF8(buf) : isValidUTF8(buf);
 		};
@@ -57585,7 +58232,7 @@ var require_extension = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 }));
 // node_modules/ws/lib/websocket.js
-var require_websocket = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+var require_websocket$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var EventEmitter = __require("events");
 	var https = __require("https");
 	var http = __require("http");
@@ -58616,8 +59263,8 @@ var require_websocket = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 }));
 // node_modules/ws/lib/stream.js
-var require_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	require_websocket();
+var require_stream$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	require_websocket$1();
 	var { Duplex } = __require("stream");
 	/**
 	* Emits the `'close'` event on a stream.
@@ -58777,7 +59424,7 @@ var require_websocket_server = /* @__PURE__ */ __commonJSMin(((exports, module) 
 	var extension = require_extension();
 	var PerMessageDeflate = require_permessage_deflate();
 	var subprotocol = require_subprotocol();
-	var WebSocket = require_websocket();
+	var WebSocket = require_websocket$1();
 	var { CLOSE_TIMEOUT, GUID, kWebSocket } = require_constants();
 	var keyRegex = /^[+/0-9A-Za-z]{22}==$/;
 	var RUNNING = 0;
@@ -59158,17 +59805,33 @@ var require_websocket_server = /* @__PURE__ */ __commonJSMin(((exports, module) 
 	}
 }));
 // node_modules/ws/wrapper.mjs
-var import_p_retry = /* @__PURE__ */ __toESM(require_p_retry(), 1);
-var import_src = require_src();
-require_stream();
-require_extension();
-require_permessage_deflate();
-require_receiver();
-require_sender();
-require_subprotocol();
-var import_websocket = /* @__PURE__ */ __toESM(require_websocket(), 1);
-require_websocket_server();
+var wrapper_exports = /* @__PURE__ */ __exportAll({
+	PerMessageDeflate: () => import_permessage_deflate.default,
+	Receiver: () => import_receiver.default,
+	Sender: () => import_sender.default,
+	WebSocket: () => import_websocket$1.default,
+	WebSocketServer: () => import_websocket_server.default,
+	createWebSocketStream: () => import_stream.default,
+	default: () => wrapper_default,
+	extension: () => import_extension.default,
+	subprotocol: () => import_subprotocol.default
+});
+var import_stream, import_extension, import_permessage_deflate, import_receiver, import_sender, import_subprotocol, import_websocket$1, import_websocket_server, wrapper_default;
+var init_wrapper = __esmMin((() => {
+	import_stream = /* @__PURE__ */ __toESM$1(require_stream$1(), 1);
+	import_extension = /* @__PURE__ */ __toESM$1(require_extension(), 1);
+	import_permessage_deflate = /* @__PURE__ */ __toESM$1(require_permessage_deflate(), 1);
+	import_receiver = /* @__PURE__ */ __toESM$1(require_receiver(), 1);
+	import_sender = /* @__PURE__ */ __toESM$1(require_sender(), 1);
+	import_subprotocol = /* @__PURE__ */ __toESM$1(require_subprotocol(), 1);
+	import_websocket$1 = /* @__PURE__ */ __toESM$1(require_websocket$1(), 1);
+	import_websocket_server = /* @__PURE__ */ __toESM$1(require_websocket_server(), 1);
+	wrapper_default = import_websocket$1.default;
+}));
 // node_modules/@google/genai/dist/node/index.mjs
+var import_p_retry = /* @__PURE__ */ __toESM$1(require_p_retry(), 1);
+var import_src = require_src();
+init_wrapper();
 /**
 * @license
 * Copyright 2025 Google LLC
@@ -81340,7 +82003,7 @@ var NodeWebSocket = class {
 		this.callbacks = callbacks;
 	}
 	connect() {
-		this.ws = new import_websocket.default(this.url, { headers: this.headers });
+		this.ws = new import_websocket$1.default(this.url, { headers: this.headers });
 		this.ws.onopen = this.callbacks.onopen;
 		this.ws.onerror = this.callbacks.onerror;
 		this.ws.onclose = this.callbacks.onclose;
@@ -82856,8 +83519,8 @@ function resolveCloudFlag(options) {
 		if (options.enterprise !== void 0 && options.vertexai !== void 0 && options.enterprise !== options.vertexai) throw new Error("enterprise and vertexAI flags have conflicting values, please set enterprise value only.");
 		return (_a = options.enterprise) !== null && _a !== void 0 ? _a : options.vertexai;
 	}
-	const envEnterpriseStr = getEnv("GOOGLE_GENAI_USE_ENTERPRISE");
-	const envVertexaiStr = getEnv("GOOGLE_GENAI_USE_VERTEXAI");
+	const envEnterpriseStr = getEnv$1("GOOGLE_GENAI_USE_ENTERPRISE");
+	const envVertexaiStr = getEnv$1("GOOGLE_GENAI_USE_VERTEXAI");
 	const useEnterpriseEnv = stringToBoolean(envEnterpriseStr);
 	const useVertexaiEnv = stringToBoolean(envVertexaiStr);
 	if (envEnterpriseStr !== void 0 && envVertexaiStr !== void 0 && useEnterpriseEnv !== useVertexaiEnv) console.warn("Warning: Both GOOGLE_GENAI_USE_ENTERPRISE and GOOGLE_GENAI_USE_VERTEXAI are set with conflicting values. The value of GOOGLE_GENAI_USE_ENTERPRISE will be used.");
@@ -82961,8 +83624,8 @@ var GoogleGenAI = class {
 		this.vertexai = resolveCloudFlag(options);
 		if ((options.project || options.location) && !this.vertexai) throw new Error("Project and location are not supported for Gemini API backend.");
 		const envApiKey = getApiKeyFromEnv();
-		const envProject = getEnv("GOOGLE_CLOUD_PROJECT");
-		const envLocation = getEnv("GOOGLE_CLOUD_LOCATION");
+		const envProject = getEnv$1("GOOGLE_CLOUD_PROJECT");
+		const envLocation = getEnv$1("GOOGLE_CLOUD_LOCATION");
 		this.apiKey = (_a = options.apiKey) !== null && _a !== void 0 ? _a : envApiKey;
 		this.project = (_b = options.project) !== null && _b !== void 0 ? _b : envProject;
 		this.location = (_c = options.location) !== null && _c !== void 0 ? _c : envLocation;
@@ -82985,12 +83648,12 @@ var GoogleGenAI = class {
 			}
 			if (!this.location && !this.apiKey) this.location = "global";
 		}
-		const baseUrl = getBaseUrl(options.httpOptions, this.vertexai, getEnv("GOOGLE_VERTEX_BASE_URL"), getEnv("GOOGLE_GEMINI_BASE_URL"));
+		const baseUrl = getBaseUrl(options.httpOptions, this.vertexai, getEnv$1("GOOGLE_VERTEX_BASE_URL"), getEnv$1("GOOGLE_GEMINI_BASE_URL"));
 		if (baseUrl) {
 			if (options.httpOptions) options.httpOptions.baseUrl = baseUrl;
 			else options.httpOptions = { baseUrl };
 		}
-		const envApiVersion = getEnv("GOOGLE_GENAI_API_VERSION") || void 0;
+		const envApiVersion = getEnv$1("GOOGLE_GENAI_API_VERSION") || void 0;
 		const resolvedEnvApiVersion = envApiVersion === "beta" ? this.vertexai ? "v1beta1" : "v1beta" : envApiVersion;
 		this.apiVersion = (_e = options.apiVersion) !== null && _e !== void 0 ? _e : ((_f = options.httpOptions) === null || _f === void 0 ? void 0 : _f.apiVersion) !== void 0 ? void 0 : resolvedEnvApiVersion;
 		this.httpOptions = options.httpOptions;
@@ -83022,7 +83685,7 @@ var GoogleGenAI = class {
 		this.fileSearchStores = new FileSearchStores(this.apiClient);
 	}
 };
-function getEnv(env) {
+function getEnv$1(env) {
 	var _a, _b, _c;
 	return (_c = (_b = (_a = process === null || process === void 0 ? void 0 : process.env) === null || _a === void 0 ? void 0 : _a[env]) === null || _b === void 0 ? void 0 : _b.trim()) !== null && _c !== void 0 ? _c : void 0;
 }
@@ -83031,8 +83694,8 @@ function stringToBoolean(str) {
 	return str.toLowerCase() === "true";
 }
 function getApiKeyFromEnv() {
-	const envGoogleApiKey = getEnv("GOOGLE_API_KEY");
-	const envGeminiApiKey = getEnv("GEMINI_API_KEY");
+	const envGoogleApiKey = getEnv$1("GOOGLE_API_KEY");
+	const envGeminiApiKey = getEnv$1("GEMINI_API_KEY");
 	if (envGoogleApiKey && envGeminiApiKey) console.warn("Both GOOGLE_API_KEY and GEMINI_API_KEY are set. Using GOOGLE_API_KEY.");
 	return envGoogleApiKey || envGeminiApiKey || void 0;
 }
@@ -83051,25 +83714,26 @@ function toVisionError(err) {
 }
 /** Tried in order when the chosen model does not exist for this key. */
 var FALLBACK_MODELS = ["gemini-flash-latest", "gemini-2.5-flash"];
-function geminiVision(apiKey, model) {
+/** Ask Gemini a question that must be answered as JSON matching a schema, with optional pictures. */
+function geminiAsk(apiKey, model) {
 	if (!apiKey) throw new VisionError("Add your Gemini API key in Settings.", "config");
 	const ai = new GoogleGenAI({ apiKey });
 	const candidates = [...new Set([model, ...FALLBACK_MODELS].filter(Boolean))];
 	let working = 0;
-	const ask = async (name, image, ctx) => {
+	const ask = async (name, { system, user, images = [], schema }) => {
 		const response = await ai.models.generateContent({
 			model: name,
 			contents: [{
 				role: "user",
-				parts: [{ inlineData: {
+				parts: [...images.map((image) => ({ inlineData: {
 					mimeType: image.mediaType,
 					data: image.base64
-				} }, { text: userPrompt(ctx) }]
+				} })), { text: user }]
 			}],
 			config: {
-				systemInstruction: SYSTEM_PROMPT,
+				systemInstruction: system,
 				responseMimeType: "application/json",
-				responseJsonSchema: VISION_SCHEMA
+				responseJsonSchema: schema
 			}
 		});
 		const text = response.text;
@@ -83084,10 +83748,10 @@ function geminiVision(apiKey, model) {
 			} : void 0
 		};
 	};
-	return async (image, ctx) => {
+	return async (input) => {
 		let lastError;
 		for (let i = working; i < candidates.length; i++) try {
-			const reply = await ask(candidates[i], image, ctx);
+			const reply = await ask(candidates[i], input);
 			working = i;
 			return reply;
 		} catch (err) {
@@ -83097,27 +83761,13278 @@ function geminiVision(apiKey, model) {
 		throw lastError ?? new VisionError("No Gemini model answered.", "api");
 	};
 }
+/** The screenshot reader: one picture in, the screen's contents out. */
+function geminiVision(apiKey, model) {
+	const ask = geminiAsk(apiKey, model);
+	return (image, ctx) => ask({
+		system: SYSTEM_PROMPT,
+		user: userPrompt(ctx),
+		images: [image],
+		schema: VISION_SCHEMA
+	});
+}
+// node_modules/@vercel/functions/headers.js
+var require_headers = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var headers_exports = {};
+	__export(headers_exports, {
+		CITY_HEADER_NAME: () => CITY_HEADER_NAME,
+		COUNTRY_HEADER_NAME: () => COUNTRY_HEADER_NAME,
+		EMOJI_FLAG_UNICODE_STARTING_POSITION: () => EMOJI_FLAG_UNICODE_STARTING_POSITION,
+		IP_HEADER_NAME: () => IP_HEADER_NAME,
+		LATITUDE_HEADER_NAME: () => LATITUDE_HEADER_NAME,
+		LONGITUDE_HEADER_NAME: () => LONGITUDE_HEADER_NAME,
+		POSTAL_CODE_HEADER_NAME: () => POSTAL_CODE_HEADER_NAME,
+		REGION_HEADER_NAME: () => REGION_HEADER_NAME,
+		REQUEST_ID_HEADER_NAME: () => REQUEST_ID_HEADER_NAME,
+		geolocation: () => geolocation,
+		ipAddress: () => ipAddress
+	});
+	module.exports = __toCommonJS(headers_exports);
+	var CITY_HEADER_NAME = "x-vercel-ip-city";
+	var COUNTRY_HEADER_NAME = "x-vercel-ip-country";
+	var IP_HEADER_NAME = "x-real-ip";
+	var LATITUDE_HEADER_NAME = "x-vercel-ip-latitude";
+	var LONGITUDE_HEADER_NAME = "x-vercel-ip-longitude";
+	var REGION_HEADER_NAME = "x-vercel-ip-country-region";
+	var POSTAL_CODE_HEADER_NAME = "x-vercel-ip-postal-code";
+	var REQUEST_ID_HEADER_NAME = "x-vercel-id";
+	var EMOJI_FLAG_UNICODE_STARTING_POSITION = 127397;
+	function getHeader(headers, key) {
+		return headers.get(key) ?? void 0;
+	}
+	function hasRequestHeaders(input) {
+		return "headers" in input && typeof input.headers?.get === "function";
+	}
+	function getHeaderWithDecode(request, key) {
+		const header = getHeader(request.headers, key);
+		return header ? decodeURIComponent(header) : void 0;
+	}
+	function getFlag(countryCode) {
+		const regex = (/* @__PURE__ */ new RegExp("^[A-Z]{2}$")).test(countryCode);
+		if (!countryCode || !regex) return void 0;
+		return String.fromCodePoint(...countryCode.split("").map((char) => EMOJI_FLAG_UNICODE_STARTING_POSITION + char.charCodeAt(0)));
+	}
+	function ipAddress(input) {
+		return getHeader(hasRequestHeaders(input) ? input.headers : input, IP_HEADER_NAME);
+	}
+	function getRegionFromRequestId(requestId) {
+		if (!requestId) return "dev1";
+		return requestId.split(":")[0];
+	}
+	function geolocation(request) {
+		return {
+			city: getHeaderWithDecode(request, CITY_HEADER_NAME),
+			country: getHeader(request.headers, COUNTRY_HEADER_NAME),
+			flag: getFlag(getHeader(request.headers, COUNTRY_HEADER_NAME)),
+			countryRegion: getHeader(request.headers, REGION_HEADER_NAME),
+			region: getRegionFromRequestId(getHeader(request.headers, REQUEST_ID_HEADER_NAME)),
+			latitude: getHeader(request.headers, LATITUDE_HEADER_NAME),
+			longitude: getHeader(request.headers, LONGITUDE_HEADER_NAME),
+			postalCode: getHeader(request.headers, POSTAL_CODE_HEADER_NAME)
+		};
+	}
+	0 && (module.exports = {
+		CITY_HEADER_NAME,
+		COUNTRY_HEADER_NAME,
+		EMOJI_FLAG_UNICODE_STARTING_POSITION,
+		IP_HEADER_NAME,
+		LATITUDE_HEADER_NAME,
+		LONGITUDE_HEADER_NAME,
+		POSTAL_CODE_HEADER_NAME,
+		REGION_HEADER_NAME,
+		REQUEST_ID_HEADER_NAME,
+		geolocation,
+		ipAddress
+	});
+}));
+// node_modules/@vercel/functions/get-env.js
+var require_get_env = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var get_env_exports = {};
+	__export(get_env_exports, { getEnv: () => getEnv });
+	module.exports = __toCommonJS(get_env_exports);
+	var getEnv = (env = process.env) => ({
+		/**
+		* An indicator to show that System Environment Variables have been exposed to your project's Deployments.
+		* @example "1"
+		*/
+		VERCEL: get(env, "VERCEL"),
+		/**
+		* An indicator that the code is running in a Continuous Integration environment.
+		* @example "1"
+		*/
+		CI: get(env, "CI"),
+		/**
+		* The Environment that the app is deployed and running on.
+		* @example "production"
+		*/
+		VERCEL_ENV: get(env, "VERCEL_ENV"),
+		/**
+		* The domain name of the generated deployment URL. The value does not include the protocol scheme https://.
+		* NOTE: This Variable cannot be used in conjunction with Standard Deployment Protection.
+		* @example "*.vercel.app"
+		*/
+		VERCEL_URL: get(env, "VERCEL_URL"),
+		/**
+		* The domain name of the generated Git branch URL. The value does not include the protocol scheme https://.
+		* @example "*-git-*.vercel.app"
+		*/
+		VERCEL_BRANCH_URL: get(env, "VERCEL_BRANCH_URL"),
+		/**
+		* A production domain name of the project. This is useful to reliably generate links that point to production such as OG-image URLs.
+		* The value does not include the protocol scheme https://.
+		* @example "myproject.vercel.app"
+		*/
+		VERCEL_PROJECT_PRODUCTION_URL: get(env, "VERCEL_PROJECT_PRODUCTION_URL"),
+		/**
+		* The ID of the Region where the app is running.
+		*
+		* Possible values:
+		* - arn1 (Stockholm, Sweden)
+		* - bom1 (Mumbai, India)
+		* - cdg1 (Paris, France)
+		* - cle1 (Cleveland, USA)
+		* - cpt1 (Cape Town, South Africa)
+		* - dub1 (Dublin, Ireland)
+		* - fra1 (Frankfurt, Germany)
+		* - gru1 (São Paulo, Brazil)
+		* - hkg1 (Hong Kong)
+		* - hnd1 (Tokyo, Japan)
+		* - iad1 (Washington, D.C., USA)
+		* - icn1 (Seoul, South Korea)
+		* - kix1 (Osaka, Japan)
+		* - lhr1 (London, United Kingdom)
+		* - pdx1 (Portland, USA)
+		* - sfo1 (San Francisco, USA)
+		* - sin1 (Singapore)
+		* - syd1 (Sydney, Australia)
+		* - dev1 (Development Region)
+		*
+		* @example "iad1"
+		*/
+		VERCEL_REGION: get(env, "VERCEL_REGION"),
+		/**
+		* The unique identifier for the deployment, which can be used to implement Skew Protection.
+		* @example "dpl_7Gw5ZMBpQA8h9GF832KGp7nwbuh3"
+		*/
+		VERCEL_DEPLOYMENT_ID: get(env, "VERCEL_DEPLOYMENT_ID"),
+		/**
+		* When Skew Protection is enabled in Project Settings, this value is set to 1.
+		* @example "1"
+		*/
+		VERCEL_SKEW_PROTECTION_ENABLED: get(env, "VERCEL_SKEW_PROTECTION_ENABLED"),
+		/**
+		* The Protection Bypass for Automation value, if the secret has been generated in the project's Deployment Protection settings.
+		*/
+		VERCEL_AUTOMATION_BYPASS_SECRET: get(env, "VERCEL_AUTOMATION_BYPASS_SECRET"),
+		/**
+		* The Git Provider the deployment is triggered from.
+		* @example "github"
+		*/
+		VERCEL_GIT_PROVIDER: get(env, "VERCEL_GIT_PROVIDER"),
+		/**
+		* The origin repository the deployment is triggered from.
+		* @example "my-site"
+		*/
+		VERCEL_GIT_REPO_SLUG: get(env, "VERCEL_GIT_REPO_SLUG"),
+		/**
+		* The account that owns the repository the deployment is triggered from.
+		* @example "acme"
+		*/
+		VERCEL_GIT_REPO_OWNER: get(env, "VERCEL_GIT_REPO_OWNER"),
+		/**
+		* The ID of the repository the deployment is triggered from.
+		* @example "117716146"
+		*/
+		VERCEL_GIT_REPO_ID: get(env, "VERCEL_GIT_REPO_ID"),
+		/**
+		* The git branch of the commit the deployment was triggered by.
+		* @example "improve-about-page"
+		*/
+		VERCEL_GIT_COMMIT_REF: get(env, "VERCEL_GIT_COMMIT_REF"),
+		/**
+		* The git SHA of the commit the deployment was triggered by.
+		* @example "fa1eade47b73733d6312d5abfad33ce9e4068081"
+		*/
+		VERCEL_GIT_COMMIT_SHA: get(env, "VERCEL_GIT_COMMIT_SHA"),
+		/**
+		* The message attached to the commit the deployment was triggered by.
+		* @example "Update about page"
+		*/
+		VERCEL_GIT_COMMIT_MESSAGE: get(env, "VERCEL_GIT_COMMIT_MESSAGE"),
+		/**
+		* The username attached to the author of the commit that the project was deployed by.
+		* @example "johndoe"
+		*/
+		VERCEL_GIT_COMMIT_AUTHOR_LOGIN: get(env, "VERCEL_GIT_COMMIT_AUTHOR_LOGIN"),
+		/**
+		* The name attached to the author of the commit that the project was deployed by.
+		* @example "John Doe"
+		*/
+		VERCEL_GIT_COMMIT_AUTHOR_NAME: get(env, "VERCEL_GIT_COMMIT_AUTHOR_NAME"),
+		/**
+		* The git SHA of the last successful deployment for the project and branch.
+		* NOTE: This Variable is only exposed when an Ignored Build Step is provided.
+		* @example "fa1eade47b73733d6312d5abfad33ce9e4068080"
+		*/
+		VERCEL_GIT_PREVIOUS_SHA: get(env, "VERCEL_GIT_PREVIOUS_SHA"),
+		/**
+		* The pull request id the deployment was triggered by. If a deployment is created on a branch before a pull request is made, this value will be an empty string.
+		* @example "23"
+		*/
+		VERCEL_GIT_PULL_REQUEST_ID: get(env, "VERCEL_GIT_PULL_REQUEST_ID")
+	});
+	var get = (env, key) => {
+		const value = env[key];
+		return value === "" ? void 0 : value;
+	};
+	0 && (module.exports = { getEnv });
+}));
+// node_modules/@vercel/functions/get-context.js
+var require_get_context$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var get_context_exports = {};
+	__export(get_context_exports, {
+		SYMBOL_FOR_REQ_CONTEXT: () => SYMBOL_FOR_REQ_CONTEXT,
+		getContext: () => getContext
+	});
+	module.exports = __toCommonJS(get_context_exports);
+	var SYMBOL_FOR_REQ_CONTEXT = Symbol.for("@vercel/request-context");
+	function getContext() {
+		return globalThis[SYMBOL_FOR_REQ_CONTEXT]?.get?.() ?? {};
+	}
+	0 && (module.exports = {
+		SYMBOL_FOR_REQ_CONTEXT,
+		getContext
+	});
+}));
+// node_modules/@vercel/functions/deadline.js
+var require_deadline = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var deadline_exports = {};
+	__export(deadline_exports, { getDeadline: () => getDeadline });
+	module.exports = __toCommonJS(deadline_exports);
+	var import_get_context = require_get_context$1();
+	function getDeadline() {
+		const deadline = (0, import_get_context.getContext)().deadline;
+		if (deadline === void 0) return;
+		const date = new Date(deadline);
+		if (isNaN(date.getTime())) return;
+		return date;
+	}
+	0 && (module.exports = { getDeadline });
+}));
+// node_modules/@vercel/functions/wait-until.js
+var require_wait_until = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var wait_until_exports = {};
+	__export(wait_until_exports, { waitUntil: () => waitUntil });
+	module.exports = __toCommonJS(wait_until_exports);
+	var import_get_context = require_get_context$1();
+	var waitUntil = (promise) => {
+		if (promise === null || typeof promise !== "object" || typeof promise.then !== "function") throw new TypeError(`waitUntil can only be called with a Promise, got ${typeof promise}`);
+		return (0, import_get_context.getContext)().waitUntil?.(promise);
+	};
+	0 && (module.exports = { waitUntil });
+}));
+// node_modules/@vercel/functions/metric.js
+var require_metric = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var metric_exports = {};
+	__export(metric_exports, { metric: () => metric });
+	module.exports = __toCommonJS(metric_exports);
+	var RUSTY_RUNTIME_IPC_SYMBOL = Symbol.for("@vercel/rusty-runtime-ipc");
+	function metric(name, value, tags) {
+		globalThis[RUSTY_RUNTIME_IPC_SYMBOL]?.sendMetric?.(name, value, tags);
+	}
+	0 && (module.exports = { metric });
+}));
+// node_modules/@vercel/functions/middleware.js
+var require_middleware = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var middleware_exports = {};
+	__export(middleware_exports, {
+		next: () => next,
+		rewrite: () => rewrite
+	});
+	module.exports = __toCommonJS(middleware_exports);
+	function handleMiddlewareField(init, headers) {
+		if (init?.request?.headers) {
+			if (!(init.request.headers instanceof Headers)) throw new Error("request.headers must be an instance of Headers");
+			const keys = [];
+			for (const [key, value] of init.request.headers) {
+				headers.set("x-middleware-request-" + key, value);
+				keys.push(key);
+			}
+			headers.set("x-middleware-override-headers", keys.join(","));
+		}
+	}
+	function rewrite(destination, init) {
+		const headers = new Headers(init?.headers ?? {});
+		headers.set("x-middleware-rewrite", String(destination));
+		handleMiddlewareField(init, headers);
+		return new Response(null, {
+			...init,
+			headers
+		});
+	}
+	function next(init) {
+		const headers = new Headers(init?.headers ?? {});
+		headers.set("x-middleware-next", "1");
+		handleMiddlewareField(init, headers);
+		return new Response(null, {
+			...init,
+			headers
+		});
+	}
+	0 && (module.exports = {
+		next,
+		rewrite
+	});
+}));
+// node_modules/@vercel/functions/cache/in-memory-cache.js
+var require_in_memory_cache = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var in_memory_cache_exports = {};
+	__export(in_memory_cache_exports, { InMemoryCache: () => InMemoryCache });
+	module.exports = __toCommonJS(in_memory_cache_exports);
+	var InMemoryCache = class {
+		constructor() {
+			this.cache = {};
+		}
+		async get(key) {
+			const entry = this.cache[key];
+			if (entry) {
+				if (entry.ttl && entry.lastModified + entry.ttl * 1e3 < Date.now()) {
+					await this.delete(key);
+					return null;
+				}
+				return JSON.parse(entry.value);
+			}
+			return null;
+		}
+		async set(key, value, options) {
+			const serialized = JSON.stringify(value ?? null);
+			this.cache[key] = {
+				value: serialized,
+				lastModified: Date.now(),
+				ttl: options?.ttl,
+				tags: new Set(options?.tags || [])
+			};
+		}
+		async delete(key) {
+			delete this.cache[key];
+		}
+		async expireTag(tag) {
+			const tags = Array.isArray(tag) ? tag : [tag];
+			for (const key in this.cache) if (Object.prototype.hasOwnProperty.call(this.cache, key)) {
+				const entry = this.cache[key];
+				if (tags.some((t) => entry.tags.has(t))) delete this.cache[key];
+			}
+		}
+	};
+	0 && (module.exports = { InMemoryCache });
+}));
+// node_modules/@vercel/functions/cache/build-client.js
+var require_build_client = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var build_client_exports = {};
+	__export(build_client_exports, { BuildCache: () => BuildCache });
+	module.exports = __toCommonJS(build_client_exports);
+	var import_index = require_cache();
+	var BuildCache = class {
+		constructor({ endpoint, headers, onError, timeout = 500 }) {
+			this.get = async (key) => {
+				const controller = new AbortController();
+				const timeoutId = setTimeout(() => controller.abort(), this.timeout);
+				try {
+					const res = await fetch(`${this.endpoint}${key}`, {
+						headers: this.headers,
+						method: "GET",
+						signal: controller.signal
+					});
+					if (res.status === 404) {
+						clearTimeout(timeoutId);
+						return null;
+					}
+					if (res.status === 200) {
+						if (res.headers.get(import_index.HEADERS_VERCEL_CACHE_STATE) !== import_index.PkgCacheState.Fresh) {
+							res.body?.cancel?.();
+							clearTimeout(timeoutId);
+							return null;
+						}
+						const result = await res.json();
+						clearTimeout(timeoutId);
+						return result;
+					} else {
+						clearTimeout(timeoutId);
+						throw new Error(`Failed to get cache: ${res.statusText}`);
+					}
+				} catch (error) {
+					clearTimeout(timeoutId);
+					if (error.name === "AbortError") {
+						const timeoutError = /* @__PURE__ */ new Error(`Cache request timed out after ${this.timeout}ms`);
+						timeoutError.stack = error.stack;
+						this.onError?.(timeoutError);
+					} else this.onError?.(error);
+					return null;
+				}
+			};
+			this.set = async (key, value, options) => {
+				const controller = new AbortController();
+				const timeoutId = setTimeout(() => controller.abort(), this.timeout);
+				try {
+					const optionalHeaders = {};
+					if (options?.ttl) optionalHeaders[import_index.HEADERS_VERCEL_REVALIDATE] = options.ttl.toString();
+					if (options?.tags && options.tags.length > 0) optionalHeaders[import_index.HEADERS_VERCEL_CACHE_TAGS] = options.tags.join(",");
+					if (options?.name) optionalHeaders[import_index.HEADERS_VERCEL_CACHE_ITEM_NAME] = options.name;
+					const res = await fetch(`${this.endpoint}${key}`, {
+						method: "POST",
+						headers: {
+							...this.headers,
+							...optionalHeaders
+						},
+						body: JSON.stringify(value),
+						signal: controller.signal
+					});
+					clearTimeout(timeoutId);
+					if (res.status !== 200) throw new Error(`Failed to set cache: ${res.status} ${res.statusText}`);
+				} catch (error) {
+					clearTimeout(timeoutId);
+					if (error.name === "AbortError") {
+						const timeoutError = /* @__PURE__ */ new Error(`Cache request timed out after ${this.timeout}ms`);
+						timeoutError.stack = error.stack;
+						this.onError?.(timeoutError);
+					} else this.onError?.(error);
+				}
+			};
+			this.delete = async (key) => {
+				const controller = new AbortController();
+				const timeoutId = setTimeout(() => controller.abort(), this.timeout);
+				try {
+					const res = await fetch(`${this.endpoint}${key}`, {
+						method: "DELETE",
+						headers: this.headers,
+						signal: controller.signal
+					});
+					clearTimeout(timeoutId);
+					if (res.status !== 200) throw new Error(`Failed to delete cache: ${res.statusText}`);
+				} catch (error) {
+					clearTimeout(timeoutId);
+					if (error.name === "AbortError") {
+						const timeoutError = /* @__PURE__ */ new Error(`Cache request timed out after ${this.timeout}ms`);
+						timeoutError.stack = error.stack;
+						this.onError?.(timeoutError);
+					} else this.onError?.(error);
+				}
+			};
+			this.expireTag = async (tag) => {
+				const controller = new AbortController();
+				const timeoutId = setTimeout(() => controller.abort(), this.timeout);
+				try {
+					if (Array.isArray(tag)) tag = tag.join(",");
+					const res = await fetch(`${this.endpoint}revalidate?tags=${tag}`, {
+						method: "POST",
+						headers: this.headers,
+						signal: controller.signal
+					});
+					clearTimeout(timeoutId);
+					if (res.status !== 200) throw new Error(`Failed to revalidate tag: ${res.statusText}`);
+				} catch (error) {
+					clearTimeout(timeoutId);
+					if (error.name === "AbortError") {
+						const timeoutError = /* @__PURE__ */ new Error(`Cache request timed out after ${this.timeout}ms`);
+						timeoutError.stack = error.stack;
+						this.onError?.(timeoutError);
+					} else this.onError?.(error);
+				}
+			};
+			this.endpoint = endpoint;
+			this.headers = headers;
+			this.onError = onError;
+			this.timeout = timeout;
+		}
+	};
+	0 && (module.exports = { BuildCache });
+}));
+// node_modules/@vercel/functions/cache/index.js
+var require_cache = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var cache_exports = {};
+	__export(cache_exports, {
+		HEADERS_VERCEL_CACHE_ITEM_NAME: () => HEADERS_VERCEL_CACHE_ITEM_NAME,
+		HEADERS_VERCEL_CACHE_STATE: () => HEADERS_VERCEL_CACHE_STATE,
+		HEADERS_VERCEL_CACHE_TAGS: () => HEADERS_VERCEL_CACHE_TAGS,
+		HEADERS_VERCEL_REVALIDATE: () => HEADERS_VERCEL_REVALIDATE,
+		PkgCacheState: () => PkgCacheState,
+		getCache: () => getCache
+	});
+	module.exports = __toCommonJS(cache_exports);
+	var import_get_context = require_get_context$1();
+	var import_in_memory_cache = require_in_memory_cache();
+	var import_build_client = require_build_client();
+	var defaultKeyHashFunction = (key) => {
+		let hash = 5381;
+		for (let i = 0; i < key.length; i++) hash = hash * 33 ^ key.charCodeAt(i);
+		return (hash >>> 0).toString(16);
+	};
+	var defaultNamespaceSeparator = "$";
+	var inMemoryCacheInstance = null;
+	var buildCacheInstance = null;
+	var getCache = (cacheOptions) => {
+		const resolveCache = () => {
+			let cache;
+			if ((0, import_get_context.getContext)().cache) cache = (0, import_get_context.getContext)().cache;
+			else cache = getCacheImplementation(process.env.SUSPENSE_CACHE_DEBUG === "true");
+			return cache;
+		};
+		return wrapWithKeyTransformation(resolveCache, createKeyTransformer(cacheOptions));
+	};
+	function createKeyTransformer(cacheOptions) {
+		const hashFunction = cacheOptions?.keyHashFunction || defaultKeyHashFunction;
+		return (key) => {
+			if (!cacheOptions?.namespace) return hashFunction(key);
+			const separator = cacheOptions.namespaceSeparator || defaultNamespaceSeparator;
+			return `${cacheOptions.namespace}${separator}${hashFunction(key)}`;
+		};
+	}
+	function wrapWithKeyTransformation(resolveCache, makeKey) {
+		return {
+			get: (key) => {
+				return resolveCache().get(makeKey(key));
+			},
+			set: (key, value, options) => {
+				return resolveCache().set(makeKey(key), value, {
+					...options,
+					name: options?.name ?? key
+				});
+			},
+			delete: (key) => {
+				return resolveCache().delete(makeKey(key));
+			},
+			expireTag: (tag) => {
+				return resolveCache().expireTag(tag);
+			}
+		};
+	}
+	var warnedCacheUnavailable = false;
+	function getCacheImplementation(debug) {
+		if (!inMemoryCacheInstance) inMemoryCacheInstance = new import_in_memory_cache.InMemoryCache();
+		if (process.env.RUNTIME_CACHE_DISABLE_BUILD_CACHE === "true") {
+			debug && console.log("Using InMemoryCache as build cache is disabled");
+			return inMemoryCacheInstance;
+		}
+		const { RUNTIME_CACHE_ENDPOINT, RUNTIME_CACHE_HEADERS } = process.env;
+		if (debug) console.log("Runtime cache environment variables:", {
+			RUNTIME_CACHE_ENDPOINT,
+			RUNTIME_CACHE_HEADERS
+		});
+		if (!RUNTIME_CACHE_ENDPOINT || !RUNTIME_CACHE_HEADERS) {
+			if (!warnedCacheUnavailable) {
+				console.warn("Runtime Cache unavailable in this environment. Falling back to in-memory cache.");
+				warnedCacheUnavailable = true;
+			}
+			return inMemoryCacheInstance;
+		}
+		if (!buildCacheInstance) {
+			let parsedHeaders = {};
+			try {
+				parsedHeaders = JSON.parse(RUNTIME_CACHE_HEADERS);
+			} catch (e) {
+				console.error("Failed to parse RUNTIME_CACHE_HEADERS:", e);
+				return inMemoryCacheInstance;
+			}
+			let timeout = 500;
+			if (process.env.RUNTIME_CACHE_TIMEOUT) {
+				const parsed = parseInt(process.env.RUNTIME_CACHE_TIMEOUT, 10);
+				if (!isNaN(parsed) && parsed > 0) timeout = parsed;
+				else console.warn(`Invalid RUNTIME_CACHE_TIMEOUT value: "${process.env.RUNTIME_CACHE_TIMEOUT}". Using default: ${timeout}ms`);
+			}
+			buildCacheInstance = new import_build_client.BuildCache({
+				endpoint: RUNTIME_CACHE_ENDPOINT,
+				headers: parsedHeaders,
+				onError: (error) => console.error(error),
+				timeout
+			});
+		}
+		return buildCacheInstance;
+	}
+	var PkgCacheState = /* @__PURE__ */ ((PkgCacheState2) => {
+		PkgCacheState2["Fresh"] = "fresh";
+		PkgCacheState2["Stale"] = "stale";
+		PkgCacheState2["Expired"] = "expired";
+		PkgCacheState2["NotFound"] = "notFound";
+		PkgCacheState2["Error"] = "error";
+		return PkgCacheState2;
+	})(PkgCacheState || {});
+	var HEADERS_VERCEL_CACHE_STATE = "x-vercel-cache-state";
+	var HEADERS_VERCEL_REVALIDATE = "x-vercel-revalidate";
+	var HEADERS_VERCEL_CACHE_TAGS = "x-vercel-cache-tags";
+	var HEADERS_VERCEL_CACHE_ITEM_NAME = "x-vercel-cache-item-name";
+	0 && (module.exports = {
+		HEADERS_VERCEL_CACHE_ITEM_NAME,
+		HEADERS_VERCEL_CACHE_STATE,
+		HEADERS_VERCEL_CACHE_TAGS,
+		HEADERS_VERCEL_REVALIDATE,
+		PkgCacheState,
+		getCache
+	});
+}));
+// node_modules/@vercel/functions/db-connections/index.js
+var require_db_connections = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var db_connections_exports = {};
+	__export(db_connections_exports, {
+		attachDatabasePool: () => attachDatabasePool,
+		experimental_attachDatabasePool: () => experimental_attachDatabasePool
+	});
+	module.exports = __toCommonJS(db_connections_exports);
+	var import_get_context = require_get_context$1();
+	var import_deadline = require_deadline();
+	var DEBUG = !!process.env.DEBUG;
+	function getIdleTimeout(dbPool) {
+		if ("options" in dbPool && dbPool.options) {
+			if ("idleTimeoutMillis" in dbPool.options) return typeof dbPool.options.idleTimeoutMillis === "number" ? dbPool.options.idleTimeoutMillis : 1e4;
+			if ("maxIdleTimeMS" in dbPool.options) return typeof dbPool.options.maxIdleTimeMS === "number" ? dbPool.options.maxIdleTimeMS : 0;
+			if ("status" in dbPool) return 5e3;
+			if ("connect" in dbPool && "execute" in dbPool) return 3e4;
+		}
+		if ("config" in dbPool && dbPool.config) {
+			if ("connectionConfig" in dbPool.config && dbPool.config.connectionConfig) return dbPool.config.connectionConfig.idleTimeout || 6e4;
+			if ("idleTimeout" in dbPool.config) return typeof dbPool.config.idleTimeout === "number" ? dbPool.config.idleTimeout : 6e4;
+		}
+		if ("poolTimeout" in dbPool) return typeof dbPool.poolTimeout === "number" ? dbPool.poolTimeout : 6e4;
+		if ("idleTimeout" in dbPool) return typeof dbPool.idleTimeout === "number" ? dbPool.idleTimeout : 0;
+		return 1e4;
+	}
+	var fallbackDuration = 9e5;
+	function captureRequest() {
+		const context = (0, import_get_context.getContext)();
+		return {
+			waitUntil: context.waitUntil?.bind(context),
+			deadline: (0, import_deadline.getDeadline)()?.getTime() ?? Date.now() + fallbackDuration
+		};
+	}
+	var idleTimeouts = /* @__PURE__ */ new WeakMap();
+	var attachedPgPools = /* @__PURE__ */ new WeakSet();
+	function trackPgRequests(pgPool) {
+		if (typeof pgPool.connect !== "function") return;
+		const requests = /* @__PURE__ */ new WeakMap();
+		const connect = pgPool.connect.bind(pgPool);
+		function connectWithContext(callback) {
+			const request = captureRequest();
+			if (callback) return connect(function(...args) {
+				const [error, client] = args;
+				if (!error && client) requests.set(client, request);
+				callback.apply(this, args);
+			});
+			return connect().then((client) => {
+				requests.set(client, request);
+				return client;
+			});
+		}
+		pgPool.connect = connectWithContext;
+		return requests;
+	}
+	function waitUntilIdleTimeout(dbPool, request = captureRequest()) {
+		if (!process.env.VERCEL_URL || !process.env.VERCEL_REGION) return;
+		if (!request?.waitUntil) {
+			console.warn("Pool release event triggered outside of request scope.");
+			return;
+		}
+		let { waitUntil, deadline } = request;
+		const previous = idleTimeouts.get(dbPool);
+		if (previous) {
+			if (previous.deadline > deadline) {
+				waitUntil = previous.waitUntil;
+				deadline = previous.deadline;
+			}
+			clearTimeout(previous.timeout);
+			previous.resolve();
+		}
+		const waitTime = Math.min(getIdleTimeout(dbPool) + 100, Math.max(100, deadline - Date.now() - 1e3));
+		const promise = new Promise((resolve) => {
+			const timeout = setTimeout(() => {
+				if (idleTimeouts.get(dbPool)?.timeout === timeout) idleTimeouts.delete(dbPool);
+				resolve();
+				if (DEBUG) console.log("Database pool idle timeout reached. Releasing connections.");
+			}, waitTime);
+			idleTimeouts.set(dbPool, {
+				timeout,
+				resolve,
+				waitUntil,
+				deadline
+			});
+		});
+		waitUntil(promise);
+	}
+	function attachDatabasePool(dbPool) {
+		if ("on" in dbPool && dbPool.on && "options" in dbPool && "idleTimeoutMillis" in dbPool.options) {
+			const pgPool = dbPool;
+			if (attachedPgPools.has(pgPool)) return;
+			const requests = trackPgRequests(pgPool);
+			pgPool.on("release", (_error, client) => {
+				if (DEBUG) console.log("Client released from pool");
+				const request = requests ? (client && requests.get(client)) ?? null : captureRequest();
+				if (client) requests?.delete(client);
+				waitUntilIdleTimeout(dbPool, request);
+			});
+			attachedPgPools.add(pgPool);
+			return;
+		} else if ("on" in dbPool && dbPool.on && "config" in dbPool && dbPool.config && "connectionConfig" in dbPool.config) {
+			dbPool.on("release", () => {
+				if (DEBUG) console.log("MySQL client released from pool");
+				waitUntilIdleTimeout(dbPool);
+			});
+			return;
+		} else if ("on" in dbPool && dbPool.on && "config" in dbPool && dbPool.config && "idleTimeout" in dbPool.config) {
+			dbPool.on("release", () => {
+				if (DEBUG) console.log("MySQL2/MariaDB client released from pool");
+				waitUntilIdleTimeout(dbPool);
+			});
+			return;
+		}
+		if ("on" in dbPool && dbPool.on && "options" in dbPool && dbPool.options && "maxIdleTimeMS" in dbPool.options) {
+			dbPool.on("connectionCheckedOut", () => {
+				if (DEBUG) console.log("MongoDB connection checked out");
+				waitUntilIdleTimeout(dbPool);
+			});
+			return;
+		}
+		if ("on" in dbPool && dbPool.on && "options" in dbPool && dbPool.options && "socket" in dbPool.options) {
+			dbPool.on("end", () => {
+				if (DEBUG) console.log("Redis connection ended");
+				waitUntilIdleTimeout(dbPool);
+			});
+			return;
+		}
+		throw new Error("Unsupported database pool type");
+	}
+	var experimental_attachDatabasePool = attachDatabasePool;
+	0 && (module.exports = {
+		attachDatabasePool,
+		experimental_attachDatabasePool
+	});
+}));
+// node_modules/@vercel/functions/purge/index.js
+var require_purge = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var purge_exports = {};
+	__export(purge_exports, {
+		dangerouslyDeleteBySrcImage: () => dangerouslyDeleteBySrcImage,
+		dangerouslyDeleteByTag: () => dangerouslyDeleteByTag,
+		invalidateBySrcImage: () => invalidateBySrcImage,
+		invalidateByTag: () => invalidateByTag
+	});
+	module.exports = __toCommonJS(purge_exports);
+	var import_get_context = require_get_context$1();
+	var invalidateByTag = (tag) => {
+		const api = (0, import_get_context.getContext)().purge;
+		if (api) return api.invalidateByTag(tag);
+		return Promise.resolve();
+	};
+	var dangerouslyDeleteByTag = (tag, options) => {
+		const api = (0, import_get_context.getContext)().purge;
+		if (api) return api.dangerouslyDeleteByTag(tag, options);
+		return Promise.resolve();
+	};
+	var invalidateBySrcImage = (src) => {
+		const api = (0, import_get_context.getContext)().purge;
+		return api ? api.invalidateBySrcImage(src) : Promise.resolve();
+	};
+	var dangerouslyDeleteBySrcImage = (src, options) => {
+		const api = (0, import_get_context.getContext)().purge;
+		return api ? api.dangerouslyDeleteBySrcImage(src, options) : Promise.resolve();
+	};
+	0 && (module.exports = {
+		dangerouslyDeleteBySrcImage,
+		dangerouslyDeleteByTag,
+		invalidateBySrcImage,
+		invalidateByTag
+	});
+}));
+// node_modules/@vercel/functions/addcachetag/index.js
+var require_addcachetag = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var addcachetag_exports = {};
+	__export(addcachetag_exports, { addCacheTag: () => addCacheTag });
+	module.exports = __toCommonJS(addcachetag_exports);
+	var import_get_context = require_get_context$1();
+	var addCacheTag = (tag) => {
+		const addCacheTag2 = (0, import_get_context.getContext)().addCacheTag;
+		if (addCacheTag2) return addCacheTag2(tag);
+		return Promise.resolve();
+	};
+	0 && (module.exports = { addCacheTag });
+}));
+// node_modules/@vercel/functions/websocket/index.js
+var require_websocket = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var websocket_exports = {};
+	__export(websocket_exports, {
+		experimental_upgradeWebSocket: () => experimental_upgradeWebSocket,
+		upgradeWebSocket: () => upgradeWebSocket
+	});
+	module.exports = __toCommonJS(websocket_exports);
+	var import_get_context = require_get_context$1();
+	var DEFAULT_MAX_PAYLOAD = 262144;
+	async function loadWebSocketServer() {
+		try {
+			return (await Promise.resolve().then(() => (init_wrapper(), wrapper_exports))).WebSocketServer;
+		} catch {
+			throw new Error("The \"ws\" package is required for upgradeWebSocket(). Install it with: npm install ws");
+		}
+	}
+	async function upgradeWebSocket(handler, options = {}) {
+		const ctx = (0, import_get_context.getContext)();
+		if (typeof ctx.upgradeWebSocket !== "function") throw new Error("upgradeWebSocket is not available in the current runtime environment. This feature requires a Vercel runtime that supports WebSocket upgrades.");
+		const WebSocketServer = await loadWebSocketServer();
+		const { req, socket, head } = ctx.upgradeWebSocket();
+		const wss = new WebSocketServer({
+			noServer: true,
+			maxPayload: options.maxPayload ?? DEFAULT_MAX_PAYLOAD
+		});
+		const ws = await new Promise((resolve, reject) => {
+			const cleanup = () => {
+				socket.removeListener("error", onError);
+				socket.removeListener("close", onClose);
+			};
+			const rejectUpgrade = (err) => {
+				cleanup();
+				if (err instanceof Error) {
+					reject(err);
+					return;
+				}
+				const error = /* @__PURE__ */ new Error("WebSocket upgrade failed");
+				error.cause = err;
+				reject(error);
+			};
+			const resolveUpgrade = (ws2) => {
+				cleanup();
+				resolve(ws2);
+			};
+			const onError = (err) => rejectUpgrade(err);
+			const onClose = () => rejectUpgrade(/* @__PURE__ */ new Error("socket closed before the WebSocket upgrade completed"));
+			socket.once("error", onError);
+			socket.once("close", onClose);
+			try {
+				wss.handleUpgrade(req, socket, head, resolveUpgrade);
+			} catch (err) {
+				rejectUpgrade(err);
+			}
+		});
+		try {
+			await handler(ws);
+		} catch (err) {
+			ws.close(1011, "WebSocket handler failed");
+			throw err;
+		}
+		return new Response(null, { status: 204 });
+	}
+	var experimental_upgradeWebSocket = upgradeWebSocket;
+	0 && (module.exports = {
+		experimental_upgradeWebSocket,
+		upgradeWebSocket
+	});
+}));
+// node_modules/@vercel/oidc/dist/version.js
+var require_version = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var version_exports = {};
+	__export(version_exports, { version: () => version });
+	module.exports = __toCommonJS(version_exports);
+	var version = "4.0.9";
+	0 && (module.exports = { version });
+}));
+// node_modules/@vercel/oidc/dist/exchange-vercel-oidc-token.js
+var require_exchange_vercel_oidc_token = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var exchange_vercel_oidc_token_exports = {};
+	__export(exchange_vercel_oidc_token_exports, { exchangeVercelOidcToken: () => exchangeVercelOidcToken });
+	module.exports = __toCommonJS(exchange_vercel_oidc_token_exports);
+	var import_version = require_version();
+	var TokenCache = class {
+		constructor(maxEntries) {
+			this.maxEntries = maxEntries;
+			this.entries = /* @__PURE__ */ new Map();
+		}
+		/**
+		* Returns a cached token for the key when present and unexpired, refreshing
+		* its recency for LRU eviction. Expired entries are removed on access.
+		*/
+		get(key) {
+			const entry = this.entries.get(key);
+			if (entry === void 0) return;
+			if (entry.expiresAt <= Date.now()) {
+				this.entries.delete(key);
+				return;
+			}
+			this.entries.delete(key);
+			this.entries.set(key, entry);
+			return entry.token;
+		}
+		/**
+		* Stores a token under the key and evicts the least-recently-used entries
+		* once the cache exceeds its size limit.
+		*/
+		set({ key, token, expiresAt }) {
+			this.entries.delete(key);
+			this.entries.set(key, {
+				token,
+				expiresAt
+			});
+			while (this.entries.size > this.maxEntries) {
+				const oldest = this.entries.keys().next().value;
+				if (oldest === void 0) break;
+				this.entries.delete(oldest);
+			}
+		}
+	};
+	var tokenCache = new TokenCache(1e3);
+	async function getCacheKey(options) {
+		const input = JSON.stringify([
+			options.token,
+			options.audience,
+			options.jti
+		]);
+		const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input));
+		return Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
+	}
+	async function exchangeVercelOidcToken(options) {
+		const cacheKey = await getCacheKey(options);
+		if (!options.skipCache) {
+			const cached = tokenCache.get(cacheKey);
+			if (cached !== void 0) return cached;
+		}
+		const response = await fetch("https://oidc.vercel.com/~token", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Accept: "application/json",
+				"User-Agent": `@vercel/oidc@${import_version.version}`
+			},
+			body: JSON.stringify({
+				token: options.token,
+				aud: options.audience,
+				...options.jti ? { jti: options.jti } : void 0
+			})
+		});
+		if (!response.ok) throw new Error(`Failed to exchange token: ${await readErrorMessage(response)}`);
+		let data;
+		try {
+			data = await response.json();
+		} catch (_error) {
+			throw new Error("Failed to exchange token: response was not valid JSON");
+		}
+		if (!data || typeof data !== "object" || !("token" in data) || typeof data.token !== "string") throw new Error("Failed to exchange token: response did not contain a token");
+		const { token } = data;
+		const expiry = "expiry" in data && typeof data.expiry === "number" ? data.expiry : void 0;
+		if (expiry !== void 0) {
+			const expiresAt = expiry * 1e3;
+			if (expiresAt > Date.now()) tokenCache.set({
+				key: cacheKey,
+				token,
+				expiresAt
+			});
+		}
+		return token;
+	}
+	async function readErrorMessage(response) {
+		try {
+			const data = await response.json();
+			if (data && typeof data === "object" && "error" in data && typeof data.error === "string") return data.error;
+		} catch (_error) {}
+		return response.statusText || `HTTP ${response.status}`;
+	}
+	0 && (module.exports = { exchangeVercelOidcToken });
+}));
+// node_modules/@vercel/oidc/dist/get-context.js
+var require_get_context = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var get_context_exports = {};
+	__export(get_context_exports, {
+		SYMBOL_FOR_REQ_CONTEXT: () => SYMBOL_FOR_REQ_CONTEXT,
+		getContext: () => getContext
+	});
+	module.exports = __toCommonJS(get_context_exports);
+	var SYMBOL_FOR_REQ_CONTEXT = Symbol.for("@vercel/request-context");
+	function getContext() {
+		return globalThis[SYMBOL_FOR_REQ_CONTEXT]?.get?.() ?? {};
+	}
+	0 && (module.exports = {
+		SYMBOL_FOR_REQ_CONTEXT,
+		getContext
+	});
+}));
+// node_modules/@vercel/oidc/dist/get-vercel-oidc-token-sync.js
+var require_get_vercel_oidc_token_sync = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var get_vercel_oidc_token_sync_exports = {};
+	__export(get_vercel_oidc_token_sync_exports, { getVercelOidcTokenSync: () => getVercelOidcTokenSync });
+	module.exports = __toCommonJS(get_vercel_oidc_token_sync_exports);
+	var import_get_context = require_get_context();
+	function getVercelOidcTokenSync() {
+		const token = (0, import_get_context.getContext)().headers?.["x-vercel-oidc-token"] ?? process.env.VERCEL_OIDC_TOKEN;
+		if (!token) throw new Error(`The 'x-vercel-oidc-token' header is missing from the request.`);
+		return token;
+	}
+	0 && (module.exports = { getVercelOidcTokenSync });
+}));
+// node_modules/@vercel/oidc/dist/token-error.js
+var require_token_error = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var token_error_exports = {};
+	__export(token_error_exports, { VercelOidcTokenError: () => VercelOidcTokenError });
+	module.exports = __toCommonJS(token_error_exports);
+	var VercelOidcTokenError = class extends Error {
+		constructor(message, cause) {
+			super(message);
+			this.name = "VercelOidcTokenError";
+			this.cause = cause;
+		}
+		toString() {
+			if (this.cause) return `${this.name}: ${this.message}: ${this.cause}`;
+			return `${this.name}: ${this.message}`;
+		}
+	};
+	0 && (module.exports = { VercelOidcTokenError });
+}));
+// node_modules/@vercel/cli-exec/dist/errors.js
+var require_errors$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var errors_exports = {};
+	__export(errors_exports, {
+		VercelCliError: () => VercelCliError,
+		assertValidCwd: () => assertValidCwd,
+		getCliNotFoundMessage: () => getCliNotFoundMessage,
+		toVercelCliError: () => toVercelCliError
+	});
+	module.exports = __toCommonJS(errors_exports);
+	var import_promises = __require("node:fs/promises");
+	var VercelCliError = class extends Error {
+		constructor(options) {
+			super(options.message);
+			this.name = "VercelCliError";
+			this.code = options.code;
+			this.invocation = options.invocation;
+			this.stdout = options.stdout;
+			this.stderr = options.stderr;
+			this.exitCode = options.exitCode;
+			if (options.cause !== void 0) this.cause = options.cause;
+		}
+	};
+	function getCliNotFoundMessage(diagnostics) {
+		const details = [];
+		const { localBinSearch } = diagnostics;
+		if (localBinSearch.stopReason === "project-root-marker") details.push(`Local bin lookup stopped at ${JSON.stringify(localBinSearch.stoppedAt)} (${JSON.stringify(localBinSearch.markerPath)}).`);
+		else if (localBinSearch.stopReason === "filesystem-root") details.push(`No project root marker was found from ${JSON.stringify(localBinSearch.searchRoot)}; local bin lookup reached the filesystem root.`);
+		for (const skippedNodeModules of localBinSearch.skippedNodeModules) details.push(`Skipped ${JSON.stringify(skippedNodeModules.directory)}: ${skippedNodeModules.reason}.`);
+		for (const skippedLocalBin of diagnostics.skippedLocalBins) details.push(`Skipped ${JSON.stringify(skippedLocalBin.candidate)}: ${skippedLocalBin.reason}.`);
+		if (details.length === 0) return "Unable to find a usable Vercel CLI installation.";
+		return ["Unable to find a usable Vercel CLI installation.", ...details].join("\n");
+	}
+	async function assertValidCwd(cwd) {
+		try {
+			if (!(await (0, import_promises.stat)(cwd)).isDirectory()) throw new Error("not a directory");
+		} catch {
+			throw new VercelCliError({
+				code: "VERCEL_CLI_INVALID_CWD",
+				message: `Working directory ${JSON.stringify(cwd)} does not exist or is not a directory.`
+			});
+		}
+	}
+	function toVercelCliError(invocation, error) {
+		if (typeof error === "object" && error !== null) {
+			const execaError = error;
+			if (execaError.code === "ENOENT") return new VercelCliError({
+				code: "VERCEL_CLI_NOT_FOUND",
+				message: `Unable to find Vercel CLI command ${JSON.stringify(invocation.command)}.`,
+				invocation,
+				cause: error
+			});
+			if (execaError.code === "EACCES" || execaError.code === "EPERM") return new VercelCliError({
+				code: "VERCEL_CLI_PERMISSION_DENIED",
+				message: `Permission denied while executing Vercel CLI command ${JSON.stringify(invocation.command)}.`,
+				invocation,
+				cause: error
+			});
+			if (execaError.timedOut) return new VercelCliError({
+				code: "VERCEL_CLI_TIMED_OUT",
+				message: `Timed out while executing Vercel CLI command ${JSON.stringify(invocation.command)}.`,
+				invocation,
+				stdout: execaError.stdout,
+				stderr: execaError.stderr,
+				cause: error
+			});
+			if (execaError.isCanceled) return new VercelCliError({
+				code: "VERCEL_CLI_CANCELED",
+				message: `Canceled while executing Vercel CLI command ${JSON.stringify(invocation.command)}.`,
+				invocation,
+				stdout: execaError.stdout,
+				stderr: execaError.stderr,
+				cause: error
+			});
+			if (execaError.signal) return new VercelCliError({
+				code: "VERCEL_CLI_SIGNALED",
+				message: `Vercel CLI command ${JSON.stringify(invocation.command)} exited due to signal ${execaError.signal}.`,
+				invocation,
+				stdout: execaError.stdout,
+				stderr: execaError.stderr,
+				cause: error
+			});
+			if (typeof execaError.exitCode === "number") return new VercelCliError({
+				code: "VERCEL_CLI_ERRORED",
+				message: execaError.shortMessage ?? execaError.message ?? `Vercel CLI command ${JSON.stringify(invocation.command)} exited with code ${execaError.exitCode}.`,
+				invocation,
+				stdout: execaError.stdout,
+				stderr: execaError.stderr,
+				exitCode: execaError.exitCode,
+				cause: error
+			});
+		}
+		return new VercelCliError({
+			code: "VERCEL_CLI_EXEC_FAILED",
+			message: `Could not execute Vercel CLI command ${JSON.stringify(invocation.command)}.`,
+			invocation,
+			cause: error
+		});
+	}
+	0 && (module.exports = {
+		VercelCliError,
+		assertValidCwd,
+		getCliNotFoundMessage,
+		toVercelCliError
+	});
+}));
+// node_modules/isexe/windows.js
+var require_windows = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	module.exports = isexe;
+	isexe.sync = sync;
+	var fs = __require("fs");
+	function checkPathExt(path, options) {
+		var pathext = options.pathExt !== void 0 ? options.pathExt : process.env.PATHEXT;
+		if (!pathext) return true;
+		pathext = pathext.split(";");
+		if (pathext.indexOf("") !== -1) return true;
+		for (var i = 0; i < pathext.length; i++) {
+			var p = pathext[i].toLowerCase();
+			if (p && path.substr(-p.length).toLowerCase() === p) return true;
+		}
+		return false;
+	}
+	function checkStat(stat, path, options) {
+		if (!stat.isSymbolicLink() && !stat.isFile()) return false;
+		return checkPathExt(path, options);
+	}
+	function isexe(path, options, cb) {
+		fs.stat(path, function(er, stat) {
+			cb(er, er ? false : checkStat(stat, path, options));
+		});
+	}
+	function sync(path, options) {
+		return checkStat(fs.statSync(path), path, options);
+	}
+}));
+// node_modules/isexe/mode.js
+var require_mode = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	module.exports = isexe;
+	isexe.sync = sync;
+	var fs = __require("fs");
+	function isexe(path, options, cb) {
+		fs.stat(path, function(er, stat) {
+			cb(er, er ? false : checkStat(stat, options));
+		});
+	}
+	function sync(path, options) {
+		return checkStat(fs.statSync(path), options);
+	}
+	function checkStat(stat, options) {
+		return stat.isFile() && checkMode(stat, options);
+	}
+	function checkMode(stat, options) {
+		var mod = stat.mode;
+		var uid = stat.uid;
+		var gid = stat.gid;
+		var myUid = options.uid !== void 0 ? options.uid : process.getuid && process.getuid();
+		var myGid = options.gid !== void 0 ? options.gid : process.getgid && process.getgid();
+		var u = parseInt("100", 8);
+		var g = parseInt("010", 8);
+		var o = parseInt("001", 8);
+		var ug = u | g;
+		return mod & o || mod & g && gid === myGid || mod & u && uid === myUid || mod & ug && myUid === 0;
+	}
+}));
+// node_modules/isexe/index.js
+var require_isexe = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	__require("fs");
+	var core;
+	if (process.platform === "win32" || global.TESTING_WINDOWS) core = require_windows();
+	else core = require_mode();
+	module.exports = isexe;
+	isexe.sync = sync;
+	function isexe(path, options, cb) {
+		if (typeof options === "function") {
+			cb = options;
+			options = {};
+		}
+		if (!cb) {
+			if (typeof Promise !== "function") throw new TypeError("callback not provided");
+			return new Promise(function(resolve, reject) {
+				isexe(path, options || {}, function(er, is) {
+					if (er) reject(er);
+					else resolve(is);
+				});
+			});
+		}
+		core(path, options || {}, function(er, is) {
+			if (er) {
+				if (er.code === "EACCES" || options && options.ignoreErrors) {
+					er = null;
+					is = false;
+				}
+			}
+			cb(er, is);
+		});
+	}
+	function sync(path, options) {
+		try {
+			return core.sync(path, options || {});
+		} catch (er) {
+			if (options && options.ignoreErrors || er.code === "EACCES") return false;
+			else throw er;
+		}
+	}
+}));
+// node_modules/which/which.js
+var require_which = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var isWindows = process.platform === "win32" || process.env.OSTYPE === "cygwin" || process.env.OSTYPE === "msys";
+	var path = __require("path");
+	var COLON = isWindows ? ";" : ":";
+	var isexe = require_isexe();
+	var getNotFoundError = (cmd) => Object.assign(/* @__PURE__ */ new Error(`not found: ${cmd}`), { code: "ENOENT" });
+	var getPathInfo = (cmd, opt) => {
+		const colon = opt.colon || COLON;
+		const pathEnv = cmd.match(/\//) || isWindows && cmd.match(/\\/) ? [""] : [...isWindows ? [process.cwd()] : [], ...(opt.path || process.env.PATH || 
+		/* istanbul ignore next: very unusual */ "").split(colon)];
+		const pathExtExe = isWindows ? opt.pathExt || process.env.PATHEXT || ".EXE;.CMD;.BAT;.COM" : "";
+		const pathExt = isWindows ? pathExtExe.split(colon) : [""];
+		if (isWindows) {
+			if (cmd.indexOf(".") !== -1 && pathExt[0] !== "") pathExt.unshift("");
+		}
+		return {
+			pathEnv,
+			pathExt,
+			pathExtExe
+		};
+	};
+	var which = (cmd, opt, cb) => {
+		if (typeof opt === "function") {
+			cb = opt;
+			opt = {};
+		}
+		if (!opt) opt = {};
+		const { pathEnv, pathExt, pathExtExe } = getPathInfo(cmd, opt);
+		const found = [];
+		const step = (i) => new Promise((resolve, reject) => {
+			if (i === pathEnv.length) return opt.all && found.length ? resolve(found) : reject(getNotFoundError(cmd));
+			const ppRaw = pathEnv[i];
+			const pathPart = /^".*"$/.test(ppRaw) ? ppRaw.slice(1, -1) : ppRaw;
+			const pCmd = path.join(pathPart, cmd);
+			const p = !pathPart && /^\.[\\\/]/.test(cmd) ? cmd.slice(0, 2) + pCmd : pCmd;
+			resolve(subStep(p, i, 0));
+		});
+		const subStep = (p, i, ii) => new Promise((resolve, reject) => {
+			if (ii === pathExt.length) return resolve(step(i + 1));
+			const ext = pathExt[ii];
+			isexe(p + ext, { pathExt: pathExtExe }, (er, is) => {
+				if (!er && is) {
+					if (opt.all) found.push(p + ext);
+					else return resolve(p + ext);
+				}
+				return resolve(subStep(p, i, ii + 1));
+			});
+		});
+		return cb ? step(0).then((res) => cb(null, res), cb) : step(0);
+	};
+	var whichSync = (cmd, opt) => {
+		opt = opt || {};
+		const { pathEnv, pathExt, pathExtExe } = getPathInfo(cmd, opt);
+		const found = [];
+		for (let i = 0; i < pathEnv.length; i++) {
+			const ppRaw = pathEnv[i];
+			const pathPart = /^".*"$/.test(ppRaw) ? ppRaw.slice(1, -1) : ppRaw;
+			const pCmd = path.join(pathPart, cmd);
+			const p = !pathPart && /^\.[\\\/]/.test(cmd) ? cmd.slice(0, 2) + pCmd : pCmd;
+			for (let j = 0; j < pathExt.length; j++) {
+				const cur = p + pathExt[j];
+				try {
+					if (isexe.sync(cur, { pathExt: pathExtExe })) {
+						if (opt.all) found.push(cur);
+						else return cur;
+					}
+				} catch (ex) {}
+			}
+		}
+		if (opt.all && found.length) return found;
+		if (opt.nothrow) return null;
+		throw getNotFoundError(cmd);
+	};
+	module.exports = which;
+	which.sync = whichSync;
+}));
+// node_modules/path-key/index.js
+var require_path_key = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var pathKey = (options = {}) => {
+		const environment = options.env || process.env;
+		if ((options.platform || process.platform) !== "win32") return "PATH";
+		return Object.keys(environment).reverse().find((key) => key.toUpperCase() === "PATH") || "Path";
+	};
+	module.exports = pathKey;
+	module.exports.default = pathKey;
+}));
+// node_modules/cross-spawn/lib/util/resolveCommand.js
+var require_resolveCommand = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var path = __require("path");
+	var which = require_which();
+	var getPathKey = require_path_key();
+	function resolveCommandAttempt(parsed, withoutPathExt) {
+		const env = parsed.options.env || process.env;
+		const cwd = process.cwd();
+		const hasCustomCwd = parsed.options.cwd != null;
+		const shouldSwitchCwd = hasCustomCwd && process.chdir !== void 0 && !process.chdir.disabled;
+		if (shouldSwitchCwd) try {
+			process.chdir(parsed.options.cwd);
+		} catch (err) {}
+		let resolved;
+		try {
+			resolved = which.sync(parsed.command, {
+				path: env[getPathKey({ env })],
+				pathExt: withoutPathExt ? path.delimiter : void 0
+			});
+		} catch (e) {} finally {
+			if (shouldSwitchCwd) process.chdir(cwd);
+		}
+		if (resolved) resolved = path.resolve(hasCustomCwd ? parsed.options.cwd : "", resolved);
+		return resolved;
+	}
+	function resolveCommand(parsed) {
+		return resolveCommandAttempt(parsed) || resolveCommandAttempt(parsed, true);
+	}
+	module.exports = resolveCommand;
+}));
+// node_modules/cross-spawn/lib/util/escape.js
+var require_escape = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var metaCharsRegExp = /([()\][%!^"`<>&|;, *?])/g;
+	function escapeCommand(arg) {
+		arg = arg.replace(metaCharsRegExp, "^$1");
+		return arg;
+	}
+	function escapeArgument(arg, doubleEscapeMetaChars) {
+		arg = `${arg}`;
+		arg = arg.replace(/(?=(\\+?)?)\1"/g, "$1$1\\\"");
+		arg = arg.replace(/(?=(\\+?)?)\1$/, "$1$1");
+		arg = `"${arg}"`;
+		arg = arg.replace(metaCharsRegExp, "^$1");
+		if (doubleEscapeMetaChars) arg = arg.replace(metaCharsRegExp, "^$1");
+		return arg;
+	}
+	module.exports.command = escapeCommand;
+	module.exports.argument = escapeArgument;
+}));
+// node_modules/shebang-regex/index.js
+var require_shebang_regex = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	module.exports = /^#!(.*)/;
+}));
+// node_modules/shebang-command/index.js
+var require_shebang_command = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var shebangRegex = require_shebang_regex();
+	module.exports = (string = "") => {
+		const match = string.match(shebangRegex);
+		if (!match) return null;
+		const [path, argument] = match[0].replace(/#! ?/, "").split(" ");
+		const binary = path.split("/").pop();
+		if (binary === "env") return argument;
+		return argument ? `${binary} ${argument}` : binary;
+	};
+}));
+// node_modules/cross-spawn/lib/util/readShebang.js
+var require_readShebang = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var fs = __require("fs");
+	var shebangCommand = require_shebang_command();
+	function readShebang(command) {
+		const size = 150;
+		const buffer = Buffer.alloc(size);
+		let fd;
+		try {
+			fd = fs.openSync(command, "r");
+			fs.readSync(fd, buffer, 0, size, 0);
+			fs.closeSync(fd);
+		} catch (e) {}
+		return shebangCommand(buffer.toString());
+	}
+	module.exports = readShebang;
+}));
+// node_modules/cross-spawn/lib/parse.js
+var require_parse = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var path = __require("path");
+	var resolveCommand = require_resolveCommand();
+	var escape = require_escape();
+	var readShebang = require_readShebang();
+	var isWin = process.platform === "win32";
+	var isExecutableRegExp = /\.(?:com|exe)$/i;
+	var isCmdShimRegExp = /node_modules[\\/].bin[\\/][^\\/]+\.cmd$/i;
+	function detectShebang(parsed) {
+		parsed.file = resolveCommand(parsed);
+		const shebang = parsed.file && readShebang(parsed.file);
+		if (shebang) {
+			parsed.args.unshift(parsed.file);
+			parsed.command = shebang;
+			return resolveCommand(parsed);
+		}
+		return parsed.file;
+	}
+	function parseNonShell(parsed) {
+		if (!isWin) return parsed;
+		const commandFile = detectShebang(parsed);
+		const needsShell = !isExecutableRegExp.test(commandFile);
+		if (parsed.options.forceShell || needsShell) {
+			const needsDoubleEscapeMetaChars = isCmdShimRegExp.test(commandFile);
+			parsed.command = path.normalize(parsed.command);
+			parsed.command = escape.command(parsed.command);
+			parsed.args = parsed.args.map((arg) => escape.argument(arg, needsDoubleEscapeMetaChars));
+			parsed.args = [
+				"/d",
+				"/s",
+				"/c",
+				`"${[parsed.command].concat(parsed.args).join(" ")}"`
+			];
+			parsed.command = process.env.comspec || "cmd.exe";
+			parsed.options.windowsVerbatimArguments = true;
+		}
+		return parsed;
+	}
+	function parse(command, args, options) {
+		if (args && !Array.isArray(args)) {
+			options = args;
+			args = null;
+		}
+		args = args ? args.slice(0) : [];
+		options = Object.assign({}, options);
+		const parsed = {
+			command,
+			args,
+			options,
+			file: void 0,
+			original: {
+				command,
+				args
+			}
+		};
+		return options.shell ? parsed : parseNonShell(parsed);
+	}
+	module.exports = parse;
+}));
+// node_modules/cross-spawn/lib/enoent.js
+var require_enoent = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var isWin = process.platform === "win32";
+	function notFoundError(original, syscall) {
+		return Object.assign(/* @__PURE__ */ new Error(`${syscall} ${original.command} ENOENT`), {
+			code: "ENOENT",
+			errno: "ENOENT",
+			syscall: `${syscall} ${original.command}`,
+			path: original.command,
+			spawnargs: original.args
+		});
+	}
+	function hookChildProcess(cp, parsed) {
+		if (!isWin) return;
+		const originalEmit = cp.emit;
+		cp.emit = function(name, arg1) {
+			if (name === "exit") {
+				const err = verifyENOENT(arg1, parsed);
+				if (err) return originalEmit.call(cp, "error", err);
+			}
+			return originalEmit.apply(cp, arguments);
+		};
+	}
+	function verifyENOENT(status, parsed) {
+		if (isWin && status === 1 && !parsed.file) return notFoundError(parsed.original, "spawn");
+		return null;
+	}
+	function verifyENOENTSync(status, parsed) {
+		if (isWin && status === 1 && !parsed.file) return notFoundError(parsed.original, "spawnSync");
+		return null;
+	}
+	module.exports = {
+		hookChildProcess,
+		verifyENOENT,
+		verifyENOENTSync,
+		notFoundError
+	};
+}));
+// node_modules/cross-spawn/index.js
+var require_cross_spawn = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var cp = __require("child_process");
+	var parse = require_parse();
+	var enoent = require_enoent();
+	function spawn(command, args, options) {
+		const parsed = parse(command, args, options);
+		const spawned = cp.spawn(parsed.command, parsed.args, parsed.options);
+		enoent.hookChildProcess(spawned, parsed);
+		return spawned;
+	}
+	function spawnSync(command, args, options) {
+		const parsed = parse(command, args, options);
+		const result = cp.spawnSync(parsed.command, parsed.args, parsed.options);
+		result.error = result.error || enoent.verifyENOENTSync(result.status, parsed);
+		return result;
+	}
+	module.exports = spawn;
+	module.exports.spawn = spawn;
+	module.exports.sync = spawnSync;
+	module.exports._parse = parse;
+	module.exports._enoent = enoent;
+}));
+// node_modules/strip-final-newline/index.js
+var require_strip_final_newline = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	module.exports = (input) => {
+		const LF = typeof input === "string" ? "\n" : "\n".charCodeAt();
+		const CR = typeof input === "string" ? "\r" : "\r".charCodeAt();
+		if (input[input.length - 1] === LF) input = input.slice(0, input.length - 1);
+		if (input[input.length - 1] === CR) input = input.slice(0, input.length - 1);
+		return input;
+	};
+}));
+// node_modules/npm-run-path/index.js
+var require_npm_run_path = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var path = __require("path");
+	var pathKey = require_path_key();
+	var npmRunPath = (options) => {
+		options = {
+			cwd: process.cwd(),
+			path: process.env[pathKey()],
+			execPath: process.execPath,
+			...options
+		};
+		let previous;
+		let cwdPath = path.resolve(options.cwd);
+		const result = [];
+		while (previous !== cwdPath) {
+			result.push(path.join(cwdPath, "node_modules/.bin"));
+			previous = cwdPath;
+			cwdPath = path.resolve(cwdPath, "..");
+		}
+		const execPathDir = path.resolve(options.cwd, options.execPath, "..");
+		result.push(execPathDir);
+		return result.concat(options.path).join(path.delimiter);
+	};
+	module.exports = npmRunPath;
+	module.exports.default = npmRunPath;
+	module.exports.env = (options) => {
+		options = {
+			env: process.env,
+			...options
+		};
+		const env = { ...options.env };
+		const path = pathKey({ env });
+		options.path = env[path];
+		env[path] = module.exports(options);
+		return env;
+	};
+}));
+// node_modules/mimic-fn/index.js
+var require_mimic_fn = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var mimicFn = (to, from) => {
+		for (const prop of Reflect.ownKeys(from)) Object.defineProperty(to, prop, Object.getOwnPropertyDescriptor(from, prop));
+		return to;
+	};
+	module.exports = mimicFn;
+	module.exports.default = mimicFn;
+}));
+// node_modules/onetime/index.js
+var require_onetime = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var mimicFn = require_mimic_fn();
+	var calledFunctions = /* @__PURE__ */ new WeakMap();
+	var onetime = (function_, options = {}) => {
+		if (typeof function_ !== "function") throw new TypeError("Expected a function");
+		let returnValue;
+		let callCount = 0;
+		const functionName = function_.displayName || function_.name || "<anonymous>";
+		const onetime = function(...arguments_) {
+			calledFunctions.set(onetime, ++callCount);
+			if (callCount === 1) {
+				returnValue = function_.apply(this, arguments_);
+				function_ = null;
+			} else if (options.throw === true) throw new Error(`Function \`${functionName}\` can only be called once`);
+			return returnValue;
+		};
+		mimicFn(onetime, function_);
+		calledFunctions.set(onetime, callCount);
+		return onetime;
+	};
+	module.exports = onetime;
+	module.exports.default = onetime;
+	module.exports.callCount = (function_) => {
+		if (!calledFunctions.has(function_)) throw new Error(`The given function \`${function_.name}\` is not wrapped by the \`onetime\` package`);
+		return calledFunctions.get(function_);
+	};
+}));
+// node_modules/human-signals/build/src/core.js
+var require_core = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.SIGNALS = void 0;
+	exports.SIGNALS = [
+		{
+			name: "SIGHUP",
+			number: 1,
+			action: "terminate",
+			description: "Terminal closed",
+			standard: "posix"
+		},
+		{
+			name: "SIGINT",
+			number: 2,
+			action: "terminate",
+			description: "User interruption with CTRL-C",
+			standard: "ansi"
+		},
+		{
+			name: "SIGQUIT",
+			number: 3,
+			action: "core",
+			description: "User interruption with CTRL-\\",
+			standard: "posix"
+		},
+		{
+			name: "SIGILL",
+			number: 4,
+			action: "core",
+			description: "Invalid machine instruction",
+			standard: "ansi"
+		},
+		{
+			name: "SIGTRAP",
+			number: 5,
+			action: "core",
+			description: "Debugger breakpoint",
+			standard: "posix"
+		},
+		{
+			name: "SIGABRT",
+			number: 6,
+			action: "core",
+			description: "Aborted",
+			standard: "ansi"
+		},
+		{
+			name: "SIGIOT",
+			number: 6,
+			action: "core",
+			description: "Aborted",
+			standard: "bsd"
+		},
+		{
+			name: "SIGBUS",
+			number: 7,
+			action: "core",
+			description: "Bus error due to misaligned, non-existing address or paging error",
+			standard: "bsd"
+		},
+		{
+			name: "SIGEMT",
+			number: 7,
+			action: "terminate",
+			description: "Command should be emulated but is not implemented",
+			standard: "other"
+		},
+		{
+			name: "SIGFPE",
+			number: 8,
+			action: "core",
+			description: "Floating point arithmetic error",
+			standard: "ansi"
+		},
+		{
+			name: "SIGKILL",
+			number: 9,
+			action: "terminate",
+			description: "Forced termination",
+			standard: "posix",
+			forced: true
+		},
+		{
+			name: "SIGUSR1",
+			number: 10,
+			action: "terminate",
+			description: "Application-specific signal",
+			standard: "posix"
+		},
+		{
+			name: "SIGSEGV",
+			number: 11,
+			action: "core",
+			description: "Segmentation fault",
+			standard: "ansi"
+		},
+		{
+			name: "SIGUSR2",
+			number: 12,
+			action: "terminate",
+			description: "Application-specific signal",
+			standard: "posix"
+		},
+		{
+			name: "SIGPIPE",
+			number: 13,
+			action: "terminate",
+			description: "Broken pipe or socket",
+			standard: "posix"
+		},
+		{
+			name: "SIGALRM",
+			number: 14,
+			action: "terminate",
+			description: "Timeout or timer",
+			standard: "posix"
+		},
+		{
+			name: "SIGTERM",
+			number: 15,
+			action: "terminate",
+			description: "Termination",
+			standard: "ansi"
+		},
+		{
+			name: "SIGSTKFLT",
+			number: 16,
+			action: "terminate",
+			description: "Stack is empty or overflowed",
+			standard: "other"
+		},
+		{
+			name: "SIGCHLD",
+			number: 17,
+			action: "ignore",
+			description: "Child process terminated, paused or unpaused",
+			standard: "posix"
+		},
+		{
+			name: "SIGCLD",
+			number: 17,
+			action: "ignore",
+			description: "Child process terminated, paused or unpaused",
+			standard: "other"
+		},
+		{
+			name: "SIGCONT",
+			number: 18,
+			action: "unpause",
+			description: "Unpaused",
+			standard: "posix",
+			forced: true
+		},
+		{
+			name: "SIGSTOP",
+			number: 19,
+			action: "pause",
+			description: "Paused",
+			standard: "posix",
+			forced: true
+		},
+		{
+			name: "SIGTSTP",
+			number: 20,
+			action: "pause",
+			description: "Paused using CTRL-Z or \"suspend\"",
+			standard: "posix"
+		},
+		{
+			name: "SIGTTIN",
+			number: 21,
+			action: "pause",
+			description: "Background process cannot read terminal input",
+			standard: "posix"
+		},
+		{
+			name: "SIGBREAK",
+			number: 21,
+			action: "terminate",
+			description: "User interruption with CTRL-BREAK",
+			standard: "other"
+		},
+		{
+			name: "SIGTTOU",
+			number: 22,
+			action: "pause",
+			description: "Background process cannot write to terminal output",
+			standard: "posix"
+		},
+		{
+			name: "SIGURG",
+			number: 23,
+			action: "ignore",
+			description: "Socket received out-of-band data",
+			standard: "bsd"
+		},
+		{
+			name: "SIGXCPU",
+			number: 24,
+			action: "core",
+			description: "Process timed out",
+			standard: "bsd"
+		},
+		{
+			name: "SIGXFSZ",
+			number: 25,
+			action: "core",
+			description: "File too big",
+			standard: "bsd"
+		},
+		{
+			name: "SIGVTALRM",
+			number: 26,
+			action: "terminate",
+			description: "Timeout or timer",
+			standard: "bsd"
+		},
+		{
+			name: "SIGPROF",
+			number: 27,
+			action: "terminate",
+			description: "Timeout or timer",
+			standard: "bsd"
+		},
+		{
+			name: "SIGWINCH",
+			number: 28,
+			action: "ignore",
+			description: "Terminal window size changed",
+			standard: "bsd"
+		},
+		{
+			name: "SIGIO",
+			number: 29,
+			action: "terminate",
+			description: "I/O is available",
+			standard: "other"
+		},
+		{
+			name: "SIGPOLL",
+			number: 29,
+			action: "terminate",
+			description: "Watched event",
+			standard: "other"
+		},
+		{
+			name: "SIGINFO",
+			number: 29,
+			action: "ignore",
+			description: "Request for process information",
+			standard: "other"
+		},
+		{
+			name: "SIGPWR",
+			number: 30,
+			action: "terminate",
+			description: "Device running out of power",
+			standard: "systemv"
+		},
+		{
+			name: "SIGSYS",
+			number: 31,
+			action: "core",
+			description: "Invalid system call",
+			standard: "other"
+		},
+		{
+			name: "SIGUNUSED",
+			number: 31,
+			action: "terminate",
+			description: "Invalid system call",
+			standard: "other"
+		}
+	];
+}));
+// node_modules/human-signals/build/src/realtime.js
+var require_realtime = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.SIGRTMAX = exports.getRealtimeSignals = void 0;
+	var getRealtimeSignals = function() {
+		const length = SIGRTMAX - SIGRTMIN + 1;
+		return Array.from({ length }, getRealtimeSignal);
+	};
+	exports.getRealtimeSignals = getRealtimeSignals;
+	var getRealtimeSignal = function(value, index) {
+		return {
+			name: `SIGRT${index + 1}`,
+			number: SIGRTMIN + index,
+			action: "terminate",
+			description: "Application-specific signal (realtime)",
+			standard: "posix"
+		};
+	};
+	var SIGRTMIN = 34;
+	var SIGRTMAX = 64;
+	exports.SIGRTMAX = SIGRTMAX;
+}));
+// node_modules/human-signals/build/src/signals.js
+var require_signals$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.getSignals = void 0;
+	var _os = __require("os");
+	var _core = require_core();
+	var _realtime = require_realtime();
+	var getSignals = function() {
+		const realtimeSignals = (0, _realtime.getRealtimeSignals)();
+		return [..._core.SIGNALS, ...realtimeSignals].map(normalizeSignal);
+	};
+	exports.getSignals = getSignals;
+	var normalizeSignal = function({ name, number: defaultNumber, description, action, forced = false, standard }) {
+		const { signals: { [name]: constantSignal } } = _os.constants;
+		const supported = constantSignal !== void 0;
+		return {
+			name,
+			number: supported ? constantSignal : defaultNumber,
+			description,
+			supported,
+			action,
+			forced,
+			standard
+		};
+	};
+}));
+// node_modules/human-signals/build/src/main.js
+var require_main = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.signalsByNumber = exports.signalsByName = void 0;
+	var _os = __require("os");
+	var _signals = require_signals$1();
+	var _realtime = require_realtime();
+	var getSignalsByName = function() {
+		return (0, _signals.getSignals)().reduce(getSignalByName, {});
+	};
+	var getSignalByName = function(signalByNameMemo, { name, number, description, supported, action, forced, standard }) {
+		return {
+			...signalByNameMemo,
+			[name]: {
+				name,
+				number,
+				description,
+				supported,
+				action,
+				forced,
+				standard
+			}
+		};
+	};
+	exports.signalsByName = getSignalsByName();
+	var getSignalsByNumber = function() {
+		const signals = (0, _signals.getSignals)();
+		const length = _realtime.SIGRTMAX + 1;
+		const signalsA = Array.from({ length }, (value, number) => getSignalByNumber(number, signals));
+		return Object.assign({}, ...signalsA);
+	};
+	var getSignalByNumber = function(number, signals) {
+		const signal = findSignalByNumber(number, signals);
+		if (signal === void 0) return {};
+		const { name, description, supported, action, forced, standard } = signal;
+		return { [number]: {
+			name,
+			number,
+			description,
+			supported,
+			action,
+			forced,
+			standard
+		} };
+	};
+	var findSignalByNumber = function(number, signals) {
+		const signal = signals.find(({ name }) => _os.constants.signals[name] === number);
+		if (signal !== void 0) return signal;
+		return signals.find((signalA) => signalA.number === number);
+	};
+	exports.signalsByNumber = getSignalsByNumber();
+}));
+// node_modules/execa/lib/error.js
+var require_error = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var { signalsByName } = require_main();
+	var getErrorPrefix = ({ timedOut, timeout, errorCode, signal, signalDescription, exitCode, isCanceled }) => {
+		if (timedOut) return `timed out after ${timeout} milliseconds`;
+		if (isCanceled) return "was canceled";
+		if (errorCode !== void 0) return `failed with ${errorCode}`;
+		if (signal !== void 0) return `was killed with ${signal} (${signalDescription})`;
+		if (exitCode !== void 0) return `failed with exit code ${exitCode}`;
+		return "failed";
+	};
+	var makeError = ({ stdout, stderr, all, error, signal, exitCode, command, escapedCommand, timedOut, isCanceled, killed, parsed: { options: { timeout } } }) => {
+		exitCode = exitCode === null ? void 0 : exitCode;
+		signal = signal === null ? void 0 : signal;
+		const signalDescription = signal === void 0 ? void 0 : signalsByName[signal].description;
+		const execaMessage = `Command ${getErrorPrefix({
+			timedOut,
+			timeout,
+			errorCode: error && error.code,
+			signal,
+			signalDescription,
+			exitCode,
+			isCanceled
+		})}: ${command}`;
+		const isError = Object.prototype.toString.call(error) === "[object Error]";
+		const shortMessage = isError ? `${execaMessage}\n${error.message}` : execaMessage;
+		const message = [
+			shortMessage,
+			stderr,
+			stdout
+		].filter(Boolean).join("\n");
+		if (isError) {
+			error.originalMessage = error.message;
+			error.message = message;
+		} else error = new Error(message);
+		error.shortMessage = shortMessage;
+		error.command = command;
+		error.escapedCommand = escapedCommand;
+		error.exitCode = exitCode;
+		error.signal = signal;
+		error.signalDescription = signalDescription;
+		error.stdout = stdout;
+		error.stderr = stderr;
+		if (all !== void 0) error.all = all;
+		if ("bufferedData" in error) delete error.bufferedData;
+		error.failed = true;
+		error.timedOut = Boolean(timedOut);
+		error.isCanceled = isCanceled;
+		error.killed = killed && !timedOut;
+		return error;
+	};
+	module.exports = makeError;
+}));
+// node_modules/execa/lib/stdio.js
+var require_stdio = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var aliases = [
+		"stdin",
+		"stdout",
+		"stderr"
+	];
+	var hasAlias = (options) => aliases.some((alias) => options[alias] !== void 0);
+	var normalizeStdio = (options) => {
+		if (!options) return;
+		const { stdio } = options;
+		if (stdio === void 0) return aliases.map((alias) => options[alias]);
+		if (hasAlias(options)) throw new Error(`It's not possible to provide \`stdio\` in combination with one of ${aliases.map((alias) => `\`${alias}\``).join(", ")}`);
+		if (typeof stdio === "string") return stdio;
+		if (!Array.isArray(stdio)) throw new TypeError(`Expected \`stdio\` to be of type \`string\` or \`Array\`, got \`${typeof stdio}\``);
+		const length = Math.max(stdio.length, aliases.length);
+		return Array.from({ length }, (value, index) => stdio[index]);
+	};
+	module.exports = normalizeStdio;
+	module.exports.node = (options) => {
+		const stdio = normalizeStdio(options);
+		if (stdio === "ipc") return "ipc";
+		if (stdio === void 0 || typeof stdio === "string") return [
+			stdio,
+			stdio,
+			stdio,
+			"ipc"
+		];
+		if (stdio.includes("ipc")) return stdio;
+		return [...stdio, "ipc"];
+	};
+}));
+// node_modules/signal-exit/signals.js
+var require_signals = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	module.exports = [
+		"SIGABRT",
+		"SIGALRM",
+		"SIGHUP",
+		"SIGINT",
+		"SIGTERM"
+	];
+	if (process.platform !== "win32") module.exports.push("SIGVTALRM", "SIGXCPU", "SIGXFSZ", "SIGUSR2", "SIGTRAP", "SIGSYS", "SIGQUIT", "SIGIOT");
+	if (process.platform === "linux") module.exports.push("SIGIO", "SIGPOLL", "SIGPWR", "SIGSTKFLT", "SIGUNUSED");
+}));
+// node_modules/signal-exit/index.js
+var require_signal_exit = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var process = global.process;
+	var processOk = function(process) {
+		return process && typeof process === "object" && typeof process.removeListener === "function" && typeof process.emit === "function" && typeof process.reallyExit === "function" && typeof process.listeners === "function" && typeof process.kill === "function" && typeof process.pid === "number" && typeof process.on === "function";
+	};
+	/* istanbul ignore if */
+	if (!processOk(process)) module.exports = function() {
+		return function() {};
+	};
+	else {
+		var assert = __require("assert");
+		var signals = require_signals();
+		var isWin = /^win/i.test(process.platform);
+		var EE = __require("events");
+		/* istanbul ignore if */
+		if (typeof EE !== "function") EE = EE.EventEmitter;
+		var emitter;
+		if (process.__signal_exit_emitter__) emitter = process.__signal_exit_emitter__;
+		else {
+			emitter = process.__signal_exit_emitter__ = new EE();
+			emitter.count = 0;
+			emitter.emitted = {};
+		}
+		if (!emitter.infinite) {
+			emitter.setMaxListeners(Infinity);
+			emitter.infinite = true;
+		}
+		module.exports = function(cb, opts) {
+			/* istanbul ignore if */
+			if (!processOk(global.process)) return function() {};
+			assert.equal(typeof cb, "function", "a callback must be provided for exit handler");
+			if (loaded === false) load();
+			var ev = "exit";
+			if (opts && opts.alwaysLast) ev = "afterexit";
+			var remove = function() {
+				emitter.removeListener(ev, cb);
+				if (emitter.listeners("exit").length === 0 && emitter.listeners("afterexit").length === 0) unload();
+			};
+			emitter.on(ev, cb);
+			return remove;
+		};
+		var unload = function unload() {
+			if (!loaded || !processOk(global.process)) return;
+			loaded = false;
+			signals.forEach(function(sig) {
+				try {
+					process.removeListener(sig, sigListeners[sig]);
+				} catch (er) {}
+			});
+			process.emit = originalProcessEmit;
+			process.reallyExit = originalProcessReallyExit;
+			emitter.count -= 1;
+		};
+		module.exports.unload = unload;
+		var emit = function emit(event, code, signal) {
+			/* istanbul ignore if */
+			if (emitter.emitted[event]) return;
+			emitter.emitted[event] = true;
+			emitter.emit(event, code, signal);
+		};
+		var sigListeners = {};
+		signals.forEach(function(sig) {
+			sigListeners[sig] = function listener() {
+				/* istanbul ignore if */
+				if (!processOk(global.process)) return;
+				if (process.listeners(sig).length === emitter.count) {
+					unload();
+					emit("exit", null, sig);
+					/* istanbul ignore next */
+					emit("afterexit", null, sig);
+					/* istanbul ignore next */
+					if (isWin && sig === "SIGHUP") sig = "SIGINT";
+					/* istanbul ignore next */
+					process.kill(process.pid, sig);
+				}
+			};
+		});
+		module.exports.signals = function() {
+			return signals;
+		};
+		var loaded = false;
+		var load = function load() {
+			if (loaded || !processOk(global.process)) return;
+			loaded = true;
+			emitter.count += 1;
+			signals = signals.filter(function(sig) {
+				try {
+					process.on(sig, sigListeners[sig]);
+					return true;
+				} catch (er) {
+					return false;
+				}
+			});
+			process.emit = processEmit;
+			process.reallyExit = processReallyExit;
+		};
+		module.exports.load = load;
+		var originalProcessReallyExit = process.reallyExit;
+		var processReallyExit = function processReallyExit(code) {
+			/* istanbul ignore if */
+			if (!processOk(global.process)) return;
+			process.exitCode = code || /* istanbul ignore next */ 0;
+			emit("exit", process.exitCode, null);
+			/* istanbul ignore next */
+			emit("afterexit", process.exitCode, null);
+			/* istanbul ignore next */
+			originalProcessReallyExit.call(process, process.exitCode);
+		};
+		var originalProcessEmit = process.emit;
+		var processEmit = function processEmit(ev, arg) {
+			if (ev === "exit" && processOk(global.process)) {
+				/* istanbul ignore else */
+				if (arg !== void 0) process.exitCode = arg;
+				var ret = originalProcessEmit.apply(this, arguments);
+				/* istanbul ignore next */
+				emit("exit", process.exitCode, null);
+				/* istanbul ignore next */
+				emit("afterexit", process.exitCode, null);
+				/* istanbul ignore next */
+				return ret;
+			} else return originalProcessEmit.apply(this, arguments);
+		};
+	}
+}));
+// node_modules/execa/lib/kill.js
+var require_kill = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var os = __require("os");
+	var onExit = require_signal_exit();
+	var DEFAULT_FORCE_KILL_TIMEOUT = 5e3;
+	var spawnedKill = (kill, signal = "SIGTERM", options = {}) => {
+		const killResult = kill(signal);
+		setKillTimeout(kill, signal, options, killResult);
+		return killResult;
+	};
+	var setKillTimeout = (kill, signal, options, killResult) => {
+		if (!shouldForceKill(signal, options, killResult)) return;
+		const timeout = getForceKillAfterTimeout(options);
+		const t = setTimeout(() => {
+			kill("SIGKILL");
+		}, timeout);
+		// istanbul ignore else
+		if (t.unref) t.unref();
+	};
+	var shouldForceKill = (signal, { forceKillAfterTimeout }, killResult) => {
+		return isSigterm(signal) && forceKillAfterTimeout !== false && killResult;
+	};
+	var isSigterm = (signal) => {
+		return signal === os.constants.signals.SIGTERM || typeof signal === "string" && signal.toUpperCase() === "SIGTERM";
+	};
+	var getForceKillAfterTimeout = ({ forceKillAfterTimeout = true }) => {
+		if (forceKillAfterTimeout === true) return DEFAULT_FORCE_KILL_TIMEOUT;
+		if (!Number.isFinite(forceKillAfterTimeout) || forceKillAfterTimeout < 0) throw new TypeError(`Expected the \`forceKillAfterTimeout\` option to be a non-negative integer, got \`${forceKillAfterTimeout}\` (${typeof forceKillAfterTimeout})`);
+		return forceKillAfterTimeout;
+	};
+	var spawnedCancel = (spawned, context) => {
+		if (spawned.kill()) context.isCanceled = true;
+	};
+	var timeoutKill = (spawned, signal, reject) => {
+		spawned.kill(signal);
+		reject(Object.assign(/* @__PURE__ */ new Error("Timed out"), {
+			timedOut: true,
+			signal
+		}));
+	};
+	var setupTimeout = (spawned, { timeout, killSignal = "SIGTERM" }, spawnedPromise) => {
+		if (timeout === 0 || timeout === void 0) return spawnedPromise;
+		let timeoutId;
+		const timeoutPromise = new Promise((resolve, reject) => {
+			timeoutId = setTimeout(() => {
+				timeoutKill(spawned, killSignal, reject);
+			}, timeout);
+		});
+		const safeSpawnedPromise = spawnedPromise.finally(() => {
+			clearTimeout(timeoutId);
+		});
+		return Promise.race([timeoutPromise, safeSpawnedPromise]);
+	};
+	var validateTimeout = ({ timeout }) => {
+		if (timeout !== void 0 && (!Number.isFinite(timeout) || timeout < 0)) throw new TypeError(`Expected the \`timeout\` option to be a non-negative integer, got \`${timeout}\` (${typeof timeout})`);
+	};
+	var setExitHandler = async (spawned, { cleanup, detached }, timedPromise) => {
+		if (!cleanup || detached) return timedPromise;
+		const removeExitHandler = onExit(() => {
+			spawned.kill();
+		});
+		return timedPromise.finally(() => {
+			removeExitHandler();
+		});
+	};
+	module.exports = {
+		spawnedKill,
+		spawnedCancel,
+		setupTimeout,
+		validateTimeout,
+		setExitHandler
+	};
+}));
+// node_modules/is-stream/index.js
+var require_is_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var isStream = (stream) => stream !== null && typeof stream === "object" && typeof stream.pipe === "function";
+	isStream.writable = (stream) => isStream(stream) && stream.writable !== false && typeof stream._write === "function" && typeof stream._writableState === "object";
+	isStream.readable = (stream) => isStream(stream) && stream.readable !== false && typeof stream._read === "function" && typeof stream._readableState === "object";
+	isStream.duplex = (stream) => isStream.writable(stream) && isStream.readable(stream);
+	isStream.transform = (stream) => isStream.duplex(stream) && typeof stream._transform === "function";
+	module.exports = isStream;
+}));
+// node_modules/get-stream/buffer-stream.js
+var require_buffer_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var { PassThrough: PassThroughStream } = __require("stream");
+	module.exports = (options) => {
+		options = { ...options };
+		const { array } = options;
+		let { encoding } = options;
+		const isBuffer = encoding === "buffer";
+		let objectMode = false;
+		if (array) objectMode = !(encoding || isBuffer);
+		else encoding = encoding || "utf8";
+		if (isBuffer) encoding = null;
+		const stream = new PassThroughStream({ objectMode });
+		if (encoding) stream.setEncoding(encoding);
+		let length = 0;
+		const chunks = [];
+		stream.on("data", (chunk) => {
+			chunks.push(chunk);
+			if (objectMode) length = chunks.length;
+			else length += chunk.length;
+		});
+		stream.getBufferedValue = () => {
+			if (array) return chunks;
+			return isBuffer ? Buffer.concat(chunks, length) : chunks.join("");
+		};
+		stream.getBufferedLength = () => length;
+		return stream;
+	};
+}));
+// node_modules/get-stream/index.js
+var require_get_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var { constants: BufferConstants } = __require("buffer");
+	var stream = __require("stream");
+	var { promisify } = __require("util");
+	var bufferStream = require_buffer_stream();
+	var streamPipelinePromisified = promisify(stream.pipeline);
+	var MaxBufferError = class extends Error {
+		constructor() {
+			super("maxBuffer exceeded");
+			this.name = "MaxBufferError";
+		}
+	};
+	async function getStream(inputStream, options) {
+		if (!inputStream) throw new Error("Expected a stream");
+		options = {
+			maxBuffer: Infinity,
+			...options
+		};
+		const { maxBuffer } = options;
+		const stream = bufferStream(options);
+		await new Promise((resolve, reject) => {
+			const rejectPromise = (error) => {
+				if (error && stream.getBufferedLength() <= BufferConstants.MAX_LENGTH) error.bufferedData = stream.getBufferedValue();
+				reject(error);
+			};
+			(async () => {
+				try {
+					await streamPipelinePromisified(inputStream, stream);
+					resolve();
+				} catch (error) {
+					rejectPromise(error);
+				}
+			})();
+			stream.on("data", () => {
+				if (stream.getBufferedLength() > maxBuffer) rejectPromise(new MaxBufferError());
+			});
+		});
+		return stream.getBufferedValue();
+	}
+	module.exports = getStream;
+	module.exports.buffer = (stream, options) => getStream(stream, {
+		...options,
+		encoding: "buffer"
+	});
+	module.exports.array = (stream, options) => getStream(stream, {
+		...options,
+		array: true
+	});
+	module.exports.MaxBufferError = MaxBufferError;
+}));
+// node_modules/merge-stream/index.js
+var require_merge_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var { PassThrough } = __require("stream");
+	module.exports = function() {
+		var sources = [];
+		var output = new PassThrough({ objectMode: true });
+		output.setMaxListeners(0);
+		output.add = add;
+		output.isEmpty = isEmpty;
+		output.on("unpipe", remove);
+		Array.prototype.slice.call(arguments).forEach(add);
+		return output;
+		function add(source) {
+			if (Array.isArray(source)) {
+				source.forEach(add);
+				return this;
+			}
+			sources.push(source);
+			source.once("end", remove.bind(null, source));
+			source.once("error", output.emit.bind(output, "error"));
+			source.pipe(output, { end: false });
+			return this;
+		}
+		function isEmpty() {
+			return sources.length == 0;
+		}
+		function remove(source) {
+			sources = sources.filter(function(it) {
+				return it !== source;
+			});
+			if (!sources.length && output.readable) output.end();
+		}
+	};
+}));
+// node_modules/execa/lib/stream.js
+var require_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var isStream = require_is_stream();
+	var getStream = require_get_stream();
+	var mergeStream = require_merge_stream();
+	var handleInput = (spawned, input) => {
+		if (input === void 0 || spawned.stdin === void 0) return;
+		if (isStream(input)) input.pipe(spawned.stdin);
+		else spawned.stdin.end(input);
+	};
+	var makeAllStream = (spawned, { all }) => {
+		if (!all || !spawned.stdout && !spawned.stderr) return;
+		const mixed = mergeStream();
+		if (spawned.stdout) mixed.add(spawned.stdout);
+		if (spawned.stderr) mixed.add(spawned.stderr);
+		return mixed;
+	};
+	var getBufferedData = async (stream, streamPromise) => {
+		if (!stream) return;
+		stream.destroy();
+		try {
+			return await streamPromise;
+		} catch (error) {
+			return error.bufferedData;
+		}
+	};
+	var getStreamPromise = (stream, { encoding, buffer, maxBuffer }) => {
+		if (!stream || !buffer) return;
+		if (encoding) return getStream(stream, {
+			encoding,
+			maxBuffer
+		});
+		return getStream.buffer(stream, { maxBuffer });
+	};
+	var getSpawnedResult = async ({ stdout, stderr, all }, { encoding, buffer, maxBuffer }, processDone) => {
+		const stdoutPromise = getStreamPromise(stdout, {
+			encoding,
+			buffer,
+			maxBuffer
+		});
+		const stderrPromise = getStreamPromise(stderr, {
+			encoding,
+			buffer,
+			maxBuffer
+		});
+		const allPromise = getStreamPromise(all, {
+			encoding,
+			buffer,
+			maxBuffer: maxBuffer * 2
+		});
+		try {
+			return await Promise.all([
+				processDone,
+				stdoutPromise,
+				stderrPromise,
+				allPromise
+			]);
+		} catch (error) {
+			return Promise.all([
+				{
+					error,
+					signal: error.signal,
+					timedOut: error.timedOut
+				},
+				getBufferedData(stdout, stdoutPromise),
+				getBufferedData(stderr, stderrPromise),
+				getBufferedData(all, allPromise)
+			]);
+		}
+	};
+	var validateInputSync = ({ input }) => {
+		if (isStream(input)) throw new TypeError("The `input` option cannot be a stream in sync mode");
+	};
+	module.exports = {
+		handleInput,
+		makeAllStream,
+		getSpawnedResult,
+		validateInputSync
+	};
+}));
+// node_modules/execa/lib/promise.js
+var require_promise = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var nativePromisePrototype = (async () => {})().constructor.prototype;
+	var descriptors = [
+		"then",
+		"catch",
+		"finally"
+	].map((property) => [property, Reflect.getOwnPropertyDescriptor(nativePromisePrototype, property)]);
+	var mergePromise = (spawned, promise) => {
+		for (const [property, descriptor] of descriptors) {
+			const value = typeof promise === "function" ? (...args) => Reflect.apply(descriptor.value, promise(), args) : descriptor.value.bind(promise);
+			Reflect.defineProperty(spawned, property, {
+				...descriptor,
+				value
+			});
+		}
+		return spawned;
+	};
+	var getSpawnedPromise = (spawned) => {
+		return new Promise((resolve, reject) => {
+			spawned.on("exit", (exitCode, signal) => {
+				resolve({
+					exitCode,
+					signal
+				});
+			});
+			spawned.on("error", (error) => {
+				reject(error);
+			});
+			if (spawned.stdin) spawned.stdin.on("error", (error) => {
+				reject(error);
+			});
+		});
+	};
+	module.exports = {
+		mergePromise,
+		getSpawnedPromise
+	};
+}));
+// node_modules/execa/lib/command.js
+var require_command = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var normalizeArgs = (file, args = []) => {
+		if (!Array.isArray(args)) return [file];
+		return [file, ...args];
+	};
+	var NO_ESCAPE_REGEXP = /^[\w.-]+$/;
+	var DOUBLE_QUOTES_REGEXP = /"/g;
+	var escapeArg = (arg) => {
+		if (typeof arg !== "string" || NO_ESCAPE_REGEXP.test(arg)) return arg;
+		return `"${arg.replace(DOUBLE_QUOTES_REGEXP, "\\\"")}"`;
+	};
+	var joinCommand = (file, args) => {
+		return normalizeArgs(file, args).join(" ");
+	};
+	var getEscapedCommand = (file, args) => {
+		return normalizeArgs(file, args).map((arg) => escapeArg(arg)).join(" ");
+	};
+	var SPACES_REGEXP = / +/g;
+	var parseCommand = (command) => {
+		const tokens = [];
+		for (const token of command.trim().split(SPACES_REGEXP)) {
+			const previousToken = tokens[tokens.length - 1];
+			if (previousToken && previousToken.endsWith("\\")) tokens[tokens.length - 1] = `${previousToken.slice(0, -1)} ${token}`;
+			else tokens.push(token);
+		}
+		return tokens;
+	};
+	module.exports = {
+		joinCommand,
+		getEscapedCommand,
+		parseCommand
+	};
+}));
+// node_modules/execa/index.js
+var require_execa = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var path = __require("path");
+	var childProcess = __require("child_process");
+	var crossSpawn = require_cross_spawn();
+	var stripFinalNewline = require_strip_final_newline();
+	var npmRunPath = require_npm_run_path();
+	var onetime = require_onetime();
+	var makeError = require_error();
+	var normalizeStdio = require_stdio();
+	var { spawnedKill, spawnedCancel, setupTimeout, validateTimeout, setExitHandler } = require_kill();
+	var { handleInput, getSpawnedResult, makeAllStream, validateInputSync } = require_stream();
+	var { mergePromise, getSpawnedPromise } = require_promise();
+	var { joinCommand, parseCommand, getEscapedCommand } = require_command();
+	var DEFAULT_MAX_BUFFER = 1e8;
+	var getEnv = ({ env: envOption, extendEnv, preferLocal, localDir, execPath }) => {
+		const env = extendEnv ? {
+			...process.env,
+			...envOption
+		} : envOption;
+		if (preferLocal) return npmRunPath.env({
+			env,
+			cwd: localDir,
+			execPath
+		});
+		return env;
+	};
+	var handleArguments = (file, args, options = {}) => {
+		const parsed = crossSpawn._parse(file, args, options);
+		file = parsed.command;
+		args = parsed.args;
+		options = parsed.options;
+		options = {
+			maxBuffer: DEFAULT_MAX_BUFFER,
+			buffer: true,
+			stripFinalNewline: true,
+			extendEnv: true,
+			preferLocal: false,
+			localDir: options.cwd || process.cwd(),
+			execPath: process.execPath,
+			encoding: "utf8",
+			reject: true,
+			cleanup: true,
+			all: false,
+			windowsHide: true,
+			...options
+		};
+		options.env = getEnv(options);
+		options.stdio = normalizeStdio(options);
+		if (process.platform === "win32" && path.basename(file, ".exe") === "cmd") args.unshift("/q");
+		return {
+			file,
+			args,
+			options,
+			parsed
+		};
+	};
+	var handleOutput = (options, value, error) => {
+		if (typeof value !== "string" && !Buffer.isBuffer(value)) return error === void 0 ? void 0 : "";
+		if (options.stripFinalNewline) return stripFinalNewline(value);
+		return value;
+	};
+	var execa = (file, args, options) => {
+		const parsed = handleArguments(file, args, options);
+		const command = joinCommand(file, args);
+		const escapedCommand = getEscapedCommand(file, args);
+		validateTimeout(parsed.options);
+		let spawned;
+		try {
+			spawned = childProcess.spawn(parsed.file, parsed.args, parsed.options);
+		} catch (error) {
+			return mergePromise(new childProcess.ChildProcess(), Promise.reject(makeError({
+				error,
+				stdout: "",
+				stderr: "",
+				all: "",
+				command,
+				escapedCommand,
+				parsed,
+				timedOut: false,
+				isCanceled: false,
+				killed: false
+			})));
+		}
+		const spawnedPromise = getSpawnedPromise(spawned);
+		const timedPromise = setupTimeout(spawned, parsed.options, spawnedPromise);
+		const processDone = setExitHandler(spawned, parsed.options, timedPromise);
+		const context = { isCanceled: false };
+		spawned.kill = spawnedKill.bind(null, spawned.kill.bind(spawned));
+		spawned.cancel = spawnedCancel.bind(null, spawned, context);
+		const handlePromise = async () => {
+			const [{ error, exitCode, signal, timedOut }, stdoutResult, stderrResult, allResult] = await getSpawnedResult(spawned, parsed.options, processDone);
+			const stdout = handleOutput(parsed.options, stdoutResult);
+			const stderr = handleOutput(parsed.options, stderrResult);
+			const all = handleOutput(parsed.options, allResult);
+			if (error || exitCode !== 0 || signal !== null) {
+				const returnedError = makeError({
+					error,
+					exitCode,
+					signal,
+					stdout,
+					stderr,
+					all,
+					command,
+					escapedCommand,
+					parsed,
+					timedOut,
+					isCanceled: context.isCanceled,
+					killed: spawned.killed
+				});
+				if (!parsed.options.reject) return returnedError;
+				throw returnedError;
+			}
+			return {
+				command,
+				escapedCommand,
+				exitCode: 0,
+				stdout,
+				stderr,
+				all,
+				failed: false,
+				timedOut: false,
+				isCanceled: false,
+				killed: false
+			};
+		};
+		const handlePromiseOnce = onetime(handlePromise);
+		handleInput(spawned, parsed.options.input);
+		spawned.all = makeAllStream(spawned, parsed.options);
+		return mergePromise(spawned, handlePromiseOnce);
+	};
+	module.exports = execa;
+	module.exports.sync = (file, args, options) => {
+		const parsed = handleArguments(file, args, options);
+		const command = joinCommand(file, args);
+		const escapedCommand = getEscapedCommand(file, args);
+		validateInputSync(parsed.options);
+		let result;
+		try {
+			result = childProcess.spawnSync(parsed.file, parsed.args, parsed.options);
+		} catch (error) {
+			throw makeError({
+				error,
+				stdout: "",
+				stderr: "",
+				all: "",
+				command,
+				escapedCommand,
+				parsed,
+				timedOut: false,
+				isCanceled: false,
+				killed: false
+			});
+		}
+		const stdout = handleOutput(parsed.options, result.stdout, result.error);
+		const stderr = handleOutput(parsed.options, result.stderr, result.error);
+		if (result.error || result.status !== 0 || result.signal !== null) {
+			const error = makeError({
+				stdout,
+				stderr,
+				error: result.error,
+				signal: result.signal,
+				exitCode: result.status,
+				command,
+				escapedCommand,
+				parsed,
+				timedOut: result.error && result.error.code === "ETIMEDOUT",
+				isCanceled: false,
+				killed: result.signal !== null
+			});
+			if (!parsed.options.reject) return error;
+			throw error;
+		}
+		return {
+			command,
+			escapedCommand,
+			exitCode: 0,
+			stdout,
+			stderr,
+			failed: false,
+			timedOut: false,
+			isCanceled: false,
+			killed: false
+		};
+	};
+	module.exports.command = (command, options) => {
+		const [file, ...args] = parseCommand(command);
+		return execa(file, args, options);
+	};
+	module.exports.commandSync = (command, options) => {
+		const [file, ...args] = parseCommand(command);
+		return execa.sync(file, args, options);
+	};
+	module.exports.node = (scriptPath, args, options = {}) => {
+		if (args && !Array.isArray(args) && typeof args === "object") {
+			options = args;
+			args = [];
+		}
+		const stdio = normalizeStdio.node(options);
+		const defaultExecArgv = process.execArgv.filter((arg) => !arg.startsWith("--inspect"));
+		const { nodePath = process.execPath, nodeOptions = defaultExecArgv } = options;
+		return execa(nodePath, [
+			...nodeOptions,
+			scriptPath,
+			...Array.isArray(args) ? args : []
+		], {
+			...options,
+			stdin: void 0,
+			stdout: void 0,
+			stderr: void 0,
+			stdio,
+			shell: false
+		});
+	};
+}));
+// node_modules/@vercel/cli-exec/dist/envpath.js
+var require_envpath = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __create = Object.create;
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __getProtoOf = Object.getPrototypeOf;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", {
+		value: mod,
+		enumerable: true
+	}) : target, mod));
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var envpath_exports = {};
+	__export(envpath_exports, {
+		getEnvPath: () => getEnvPath,
+		prependPathEntries: () => prependPathEntries,
+		setEnvPath: () => setEnvPath,
+		splitPath: () => splitPath
+	});
+	module.exports = __toCommonJS(envpath_exports);
+	var import_node_path = __toESM(__require("node:path"));
+	function prependPathEntries(pathValue, directories) {
+		const pathParts = pathValue.split(import_node_path.default.delimiter).filter(Boolean);
+		const prepended = [];
+		for (const directory of directories) if (!pathParts.includes(directory) && !prepended.includes(directory)) prepended.push(directory);
+		if (prepended.length === 0) return pathValue;
+		return pathValue === "" || pathValue === import_node_path.default.delimiter ? `${prepended.join(import_node_path.default.delimiter)}${pathValue}` : [...prepended, pathValue].join(import_node_path.default.delimiter);
+	}
+	function splitPath(pathValue) {
+		return pathValue.split(import_node_path.default.delimiter).filter(Boolean);
+	}
+	function getEnvPath(env = process.env) {
+		if (process.platform !== "win32") return env.PATH ?? "";
+		const pathKeys = Object.keys(env).filter((key) => key.toLowerCase() === "path");
+		for (let index = pathKeys.length - 1; index >= 0; index--) {
+			const value = env[pathKeys[index]];
+			if (value !== void 0) return value;
+		}
+		return "";
+	}
+	function setEnvPath(env = process.env, pathValue) {
+		if (process.platform !== "win32") return {
+			...env,
+			PATH: pathValue
+		};
+		const normalizedEnv = { ...env };
+		for (const key of Object.keys(normalizedEnv)) if (key !== "PATH" && key.toLowerCase() === "path") delete normalizedEnv[key];
+		normalizedEnv.PATH = pathValue;
+		return normalizedEnv;
+	}
+	0 && (module.exports = {
+		getEnvPath,
+		prependPathEntries,
+		setEnvPath,
+		splitPath
+	});
+}));
+// node_modules/@vercel/cli-exec/dist/errutils.js
+var require_errutils = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var errutils_exports = {};
+	__export(errutils_exports, {
+		getErrorMessage: () => getErrorMessage,
+		isMissingPathError: () => isMissingPathError
+	});
+	module.exports = __toCommonJS(errutils_exports);
+	function getErrorMessage(error) {
+		if (error instanceof Error) return error.message;
+		return String(error);
+	}
+	function isMissingPathError(error) {
+		return typeof error === "object" && error !== null && "code" in error && (error.code === "ENOENT" || error.code === "ENOTDIR");
+	}
+	0 && (module.exports = {
+		getErrorMessage,
+		isMissingPathError
+	});
+}));
+// node_modules/@vercel/cli-exec/dist/fsutils.js
+var require_fsutils = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __create = Object.create;
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __getProtoOf = Object.getPrototypeOf;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", {
+		value: mod,
+		enumerable: true
+	}) : target, mod));
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var fsutils_exports = {};
+	__export(fsutils_exports, {
+		getCanonicalPath: () => getCanonicalPath,
+		getCommandBase: () => getCommandBase,
+		getDirectoriesBetween: () => getDirectoriesBetween,
+		isNodeScript: () => isNodeScript,
+		isSubpath: () => isSubpath,
+		statIfExists: () => statIfExists
+	});
+	module.exports = __toCommonJS(fsutils_exports);
+	var import_promises = __require("node:fs/promises");
+	var import_node_path = __toESM(__require("node:path"));
+	var import_errutils = require_errutils();
+	async function getCanonicalPath(filePath) {
+		try {
+			return await (0, import_promises.realpath)(filePath);
+		} catch {
+			return filePath;
+		}
+	}
+	function getDirectoriesBetween(parent, child) {
+		const directories = [];
+		let current = import_node_path.default.resolve(child);
+		const resolvedParent = import_node_path.default.resolve(parent);
+		while (true) {
+			directories.push(current);
+			if (current === resolvedParent) return directories.reverse();
+			const next = import_node_path.default.dirname(current);
+			if (next === current) return [];
+			current = next;
+		}
+	}
+	async function statIfExists(filePath) {
+		try {
+			return { stats: await (0, import_promises.stat)(filePath) };
+		} catch (error) {
+			if ((0, import_errutils.isMissingPathError)(error)) return { missing: true };
+			return { reason: `could not inspect: ${(0, import_errutils.getErrorMessage)(error)}` };
+		}
+	}
+	function isNodeScript(filePath) {
+		return [
+			".js",
+			".cjs",
+			".mjs"
+		].includes(import_node_path.default.extname(filePath));
+	}
+	function isSubpath(parent, child) {
+		const relativePath = import_node_path.default.relative(parent, child);
+		return relativePath === "" || relativePath !== "" && !relativePath.startsWith("..") && !import_node_path.default.isAbsolute(relativePath);
+	}
+	function getCommandBase(command) {
+		const extension = import_node_path.default.extname(command).toLowerCase();
+		if (process.platform === "win32" && [".cmd", ".exe"].includes(extension)) return import_node_path.default.basename(command, extension);
+		return import_node_path.default.basename(command);
+	}
+	0 && (module.exports = {
+		getCanonicalPath,
+		getCommandBase,
+		getDirectoriesBetween,
+		isNodeScript,
+		isSubpath,
+		statIfExists
+	});
+}));
+// node_modules/@vercel/cli-exec/dist/safety.js
+var require_safety = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __create = Object.create;
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __getProtoOf = Object.getPrototypeOf;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", {
+		value: mod,
+		enumerable: true
+	}) : target, mod));
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var safety_exports = {};
+	__export(safety_exports, {
+		getSkippedNodeModulesReason: () => getSkippedNodeModulesReason,
+		getUnsafeDirectoryReason: () => getUnsafeDirectoryReason,
+		getUnsafePackageBinReason: () => getUnsafePackageBinReason,
+		getUnsafePackageDirectoryReason: () => getUnsafePackageDirectoryReason,
+		getUnsafePackageFileReason: () => getUnsafePackageFileReason,
+		getUnsafeStatsReason: () => getUnsafeStatsReason
+	});
+	module.exports = __toCommonJS(safety_exports);
+	var import_promises = __require("node:fs/promises");
+	var import_node_path = __toESM(__require("node:path"));
+	var import_errutils = require_errutils();
+	var import_fsutils = require_fsutils();
+	async function getSkippedNodeModulesReason(nodeModulesDirectory, parentDirectories) {
+		const parentDirectory = import_node_path.default.dirname(nodeModulesDirectory);
+		parentDirectories ??= [parentDirectory];
+		for (const directory of parentDirectories) {
+			let unsafeParentReason;
+			try {
+				unsafeParentReason = await getUnsafeDirectoryReason(directory);
+			} catch (error) {
+				unsafeParentReason = `could not inspect: ${(0, import_errutils.getErrorMessage)(error)}`;
+			}
+			if (unsafeParentReason) return `${directory} is ${unsafeParentReason}`;
+		}
+		const result = await (0, import_fsutils.statIfExists)(nodeModulesDirectory);
+		if ("missing" in result) return null;
+		if ("reason" in result) return result.reason;
+		if (!result.stats.isDirectory()) return "not a directory";
+		const unsafeNodeModulesReason = getUnsafeStatsReason(result.stats);
+		if (unsafeNodeModulesReason) return unsafeNodeModulesReason;
+		return await getSkippedLocalBinDirectoryReason(import_node_path.default.join(nodeModulesDirectory, ".bin"));
+	}
+	async function getSkippedLocalBinDirectoryReason(localBinDirectory) {
+		const result = await (0, import_fsutils.statIfExists)(localBinDirectory);
+		if ("missing" in result) return null;
+		if ("reason" in result) return `${localBinDirectory} ${result.reason}`;
+		if (!result.stats.isDirectory()) return `${localBinDirectory} is not a directory`;
+		const unsafeLocalBinReason = getUnsafeStatsReason(result.stats);
+		return unsafeLocalBinReason ? `${localBinDirectory} is ${unsafeLocalBinReason}` : null;
+	}
+	async function getUnsafePackageBinReason(nodeModulesDirectory, packageDirectory, binPath) {
+		const unsafePackageDirectoryReason = await getUnsafePackageDirectoryReason(nodeModulesDirectory, packageDirectory);
+		if (unsafePackageDirectoryReason) return unsafePackageDirectoryReason;
+		return await getUnsafePackageFileReason(packageDirectory, binPath);
+	}
+	async function getUnsafePackageDirectoryReason(nodeModulesDirectory, packageDirectory) {
+		const directoriesToCheck = (0, import_fsutils.getDirectoriesBetween)(nodeModulesDirectory, packageDirectory);
+		if (directoriesToCheck.length === 0) return `${packageDirectory} resolves outside local node_modules`;
+		for (const directory of directoriesToCheck) {
+			const reason = await getUnsafeDirectoryReason(directory);
+			if (reason) return `${directory} is ${reason}`;
+		}
+		return null;
+	}
+	async function getUnsafePackageFileReason(packageDirectory, filePath) {
+		const directoriesToCheck = (0, import_fsutils.getDirectoriesBetween)(packageDirectory, import_node_path.default.dirname(filePath));
+		if (directoriesToCheck.length === 0) return `${filePath} resolves outside package`;
+		for (const directory of directoriesToCheck) {
+			const reason2 = await getUnsafeDirectoryReason(directory);
+			if (reason2) return `${directory} is ${reason2}`;
+		}
+		const reason = await getUnsafeFileReason(filePath);
+		return reason ? `${filePath} is ${reason}` : null;
+	}
+	async function getUnsafeDirectoryReason(directory) {
+		const stats = await (0, import_promises.stat)(directory);
+		if (!stats.isDirectory()) return "not a directory";
+		return getUnsafeStatsReason(stats);
+	}
+	async function getUnsafeFileReason(filePath) {
+		const stats = await (0, import_promises.stat)(filePath);
+		if (!stats.isFile()) return "not a file";
+		return getUnsafeStatsReason(stats);
+	}
+	function getUnsafeStatsReason(stats) {
+		const getuid = process.geteuid ?? process.getuid;
+		if (typeof getuid !== "function") return null;
+		const uid = getuid();
+		if ((stats.mode & 18) !== 0) {
+			if ((stats.mode & 2) !== 0) return "world-writable";
+			return "group-writable";
+		}
+		if (stats.uid !== uid) return `owned by uid ${stats.uid}, current uid is ${uid}`;
+		return null;
+	}
+	0 && (module.exports = {
+		getSkippedNodeModulesReason,
+		getUnsafeDirectoryReason,
+		getUnsafePackageBinReason,
+		getUnsafePackageDirectoryReason,
+		getUnsafePackageFileReason,
+		getUnsafeStatsReason
+	});
+}));
+// node_modules/@vercel/cli-exec/dist/lookup.js
+var require_lookup = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __create = Object.create;
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __getProtoOf = Object.getPrototypeOf;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", {
+		value: mod,
+		enumerable: true
+	}) : target, mod));
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var lookup_exports = {};
+	__export(lookup_exports, {
+		clearCachedCliInvocation: () => clearCachedCliInvocation,
+		clearVercelCliLookupCache: () => clearVercelCliLookupCache,
+		findVercelCli: () => findVercelCli,
+		getLocalBinSearch: () => getLocalBinSearch,
+		resolveCachedCliInvocation: () => resolveCachedCliInvocation,
+		toVercelCliInvocation: () => toVercelCliInvocation
+	});
+	module.exports = __toCommonJS(lookup_exports);
+	var import_promises = __require("node:fs/promises");
+	var import_node_path = __toESM(__require("node:path"));
+	var import_envpath = require_envpath();
+	var import_errutils = require_errutils();
+	var import_fsutils = require_fsutils();
+	var import_safety = require_safety();
+	var cliInvocationCache = /* @__PURE__ */ new Map();
+	async function findVercelCli(options = {}) {
+		const resolution = await resolveCachedCliInvocation(import_node_path.default.resolve(options.cwd ?? process.cwd()), options.path ?? (0, import_envpath.getEnvPath)(process.env));
+		return resolution.found ? toVercelCliInvocation(resolution) : null;
+	}
+	function resolveCachedCliInvocation(cwd, pathValue) {
+		const cacheKey = getCliInvocationCacheKey(cwd, pathValue);
+		if (cliInvocationCache.has(cacheKey)) return cliInvocationCache.get(cacheKey);
+		const resolution = resolveCliInvocation(cwd, pathValue).catch((error) => {
+			cliInvocationCache.delete(cacheKey);
+			throw error;
+		});
+		cliInvocationCache.set(cacheKey, resolution);
+		return resolution;
+	}
+	function toVercelCliInvocation(resolution) {
+		return {
+			command: resolution.command,
+			commandArgs: resolution.commandArgs,
+			source: resolution.source
+		};
+	}
+	function clearVercelCliLookupCache() {
+		cliInvocationCache.clear();
+	}
+	function clearCachedCliInvocation(cwd, pathValue) {
+		cliInvocationCache.delete(getCliInvocationCacheKey(cwd, pathValue));
+	}
+	async function resolveCliInvocation(cwd, pathValue) {
+		const localBinSearch = await getLocalBinSearch(cwd);
+		const diagnostics = {
+			localBinSearch: localBinSearch.diagnostics,
+			skippedLocalBins: []
+		};
+		const resolvedPath = (0, import_envpath.prependPathEntries)(pathValue, localBinSearch.directories);
+		for (const command of getVercelCommandNames()) {
+			const resolvedCommand = await findCommandInPath(command, resolvedPath, cwd, localBinSearch, diagnostics);
+			if (!resolvedCommand) continue;
+			if ((0, import_fsutils.isNodeScript)(resolvedCommand.realPath)) return {
+				found: true,
+				command: process.execPath,
+				commandArgs: [resolvedCommand.realPath],
+				source: resolvedCommand.source,
+				diagnostics
+			};
+			return {
+				found: true,
+				command: resolvedCommand.realPath,
+				commandArgs: [],
+				source: resolvedCommand.source,
+				diagnostics
+			};
+		}
+		return {
+			found: false,
+			diagnostics
+		};
+	}
+	async function findCommandInPath(command, pathValue, cwd, localBinSearch, diagnostics) {
+		for (const directory of (0, import_envpath.splitPath)(pathValue)) {
+			const candidate = getPathCommandCandidate(directory, command, cwd);
+			try {
+				if (await canAccessCommandCandidate(candidate, localBinSearch, diagnostics)) {
+					const resolvedCommand = await resolveCommandCandidate(command, candidate, localBinSearch, diagnostics);
+					if (resolvedCommand) return resolvedCommand;
+				}
+			} catch {}
+		}
+		return null;
+	}
+	function getPathCommandCandidate(directory, command, cwd) {
+		const candidateDirectory = import_node_path.default.isAbsolute(directory) ? directory : import_node_path.default.resolve(cwd, directory);
+		return import_node_path.default.join(candidateDirectory, command);
+	}
+	async function canAccessCommandCandidate(candidate, localBinSearch, diagnostics) {
+		try {
+			await (0, import_promises.access)(candidate, process.platform === "win32" ? import_promises.constants.F_OK : import_promises.constants.F_OK | import_promises.constants.X_OK);
+			return true;
+		} catch (error) {
+			if (!(0, import_errutils.isMissingPathError)(error)) await recordInaccessibleLocalBinCandidate(candidate, error, localBinSearch, diagnostics);
+			return false;
+		}
+	}
+	async function recordInaccessibleLocalBinCandidate(candidate, error, localBinSearch, diagnostics) {
+		const localBinCandidate = await classifyPathLocalBinCandidate(candidate, localBinSearch.directories);
+		if (!localBinCandidate) return;
+		recordSkippedLocalBin(diagnostics, candidate, "reason" in localBinCandidate ? localBinCandidate.reason : `local bin is not accessible: ${(0, import_errutils.getErrorMessage)(error)}`);
+	}
+	async function resolveCommandCandidate(command, candidate, localBinSearch, diagnostics) {
+		if (!(await (0, import_promises.stat)(candidate)).isFile()) return null;
+		const realPath = await (0, import_promises.realpath)(candidate);
+		const localBinCandidate = await classifyPathLocalBinCandidate(candidate, localBinSearch.directories);
+		if (!localBinCandidate) return {
+			realPath,
+			source: "path"
+		};
+		if ("reason" in localBinCandidate) {
+			recordSkippedLocalBin(diagnostics, candidate, localBinCandidate.reason);
+			return null;
+		}
+		const localPackageBinResult = await getLocalVercelPackageBin(command, localBinCandidate.directory);
+		if ("reason" in localPackageBinResult) {
+			recordSkippedLocalBin(diagnostics, candidate, localPackageBinResult.reason);
+			return null;
+		}
+		return {
+			realPath: localPackageBinResult.binPath,
+			source: "local-bin"
+		};
+	}
+	function recordSkippedLocalBin(diagnostics, candidate, reason) {
+		diagnostics.skippedLocalBins.push({
+			candidate,
+			reason
+		});
+	}
+	function getVercelCommandNames() {
+		const commandBases = ["vercel"];
+		if (process.platform !== "win32") return commandBases;
+		const extensions = [
+			".cmd",
+			".exe",
+			""
+		];
+		return commandBases.flatMap((command) => extensions.map((extension) => `${command}${extension}`));
+	}
+	async function getLocalBinSearch(cwd) {
+		const searchRoot = await (0, import_fsutils.getCanonicalPath)(import_node_path.default.resolve(cwd));
+		const ancestorSearch = await getAncestorDirectorySearch(searchRoot);
+		const skippedNodeModules = [];
+		const directories = [];
+		for (const directory of ancestorSearch.directories) {
+			const nodeModulesDirectory = import_node_path.default.join(directory, "node_modules");
+			const parentDirectories = ancestorSearch.stopReason === "project-root-marker" ? (0, import_fsutils.getDirectoriesBetween)(ancestorSearch.stoppedAt, directory) : (0, import_fsutils.getDirectoriesBetween)(directory, searchRoot);
+			const skippedReason = await (0, import_safety.getSkippedNodeModulesReason)(nodeModulesDirectory, parentDirectories);
+			if (skippedReason) {
+				skippedNodeModules.push({
+					directory: nodeModulesDirectory,
+					reason: skippedReason
+				});
+				continue;
+			}
+			directories.push(import_node_path.default.join(nodeModulesDirectory, ".bin"));
+		}
+		return {
+			directories,
+			diagnostics: {
+				searchRoot,
+				stoppedAt: ancestorSearch.stoppedAt,
+				stopReason: ancestorSearch.stopReason,
+				markerPath: ancestorSearch.markerPath,
+				skippedNodeModules
+			}
+		};
+	}
+	async function getAncestorDirectorySearch(cwd) {
+		const directories = [];
+		let current = import_node_path.default.resolve(cwd);
+		while (true) {
+			directories.push(current);
+			const marker = await getProjectRootMarker(current);
+			if (marker) return {
+				directories,
+				stoppedAt: current,
+				stopReason: "project-root-marker",
+				markerPath: marker.path
+			};
+			const parent = import_node_path.default.dirname(current);
+			if (parent === current) return {
+				directories,
+				stoppedAt: current,
+				stopReason: "filesystem-root"
+			};
+			current = parent;
+		}
+	}
+	async function getProjectRootMarker(directory) {
+		const gitPath = import_node_path.default.join(directory, ".git");
+		try {
+			await (0, import_promises.stat)(gitPath);
+			return { path: gitPath };
+		} catch {}
+		return null;
+	}
+	async function getLocalBinDirectory(filePath, localBinDirectories) {
+		const resolvedFilePath = import_node_path.default.resolve(filePath);
+		let canonicalFilePath = resolvedFilePath;
+		try {
+			canonicalFilePath = import_node_path.default.join(await (0, import_promises.realpath)(import_node_path.default.dirname(resolvedFilePath)), import_node_path.default.basename(resolvedFilePath));
+		} catch {}
+		for (let localBinDirectory of localBinDirectories) {
+			try {
+				localBinDirectory = await (0, import_promises.realpath)(localBinDirectory);
+			} catch {}
+			if (canonicalFilePath.startsWith(`${localBinDirectory}${import_node_path.default.sep}`)) return localBinDirectory;
+		}
+		return null;
+	}
+	async function getNodeModulesBinDirectory(filePath) {
+		const candidateDirectory = import_node_path.default.resolve(import_node_path.default.dirname(filePath));
+		const directories = [candidateDirectory];
+		try {
+			const canonicalDirectory = await (0, import_promises.realpath)(candidateDirectory);
+			if (!directories.includes(canonicalDirectory)) directories.push(canonicalDirectory);
+		} catch {}
+		for (const directory of directories) if (import_node_path.default.basename(directory) === ".bin" && import_node_path.default.basename(import_node_path.default.dirname(directory)) === "node_modules") return directory;
+		return null;
+	}
+	async function classifyPathLocalBinCandidate(filePath, localBinDirectories) {
+		const localBinDirectory = await getLocalBinDirectory(filePath, localBinDirectories);
+		if (localBinDirectory) return { directory: localBinDirectory };
+		const nodeModulesBinDirectory = await getNodeModulesBinDirectory(filePath);
+		if (!nodeModulesBinDirectory) return null;
+		const nodeModulesDirectory = import_node_path.default.dirname(nodeModulesBinDirectory);
+		const skippedReason = await (0, import_safety.getSkippedNodeModulesReason)(nodeModulesDirectory);
+		if (skippedReason) return { reason: `local node_modules is ${skippedReason}` };
+		return { reason: "local bin is outside project lookup boundary" };
+	}
+	async function getLocalVercelPackageBin(command, localBinDirectory) {
+		const commandBase = (0, import_fsutils.getCommandBase)(command);
+		const nodeModulesDirectory = import_node_path.default.dirname(localBinDirectory);
+		if (commandBase !== "vercel" || import_node_path.default.basename(nodeModulesDirectory) !== "node_modules") return { reason: "not a local vercel bin" };
+		try {
+			const localPackage = await getLocalVercelPackage(nodeModulesDirectory);
+			if ("reason" in localPackage) return localPackage;
+			const packageJsonResult = await readLocalVercelPackageJson(localPackage.realPackageDirectory);
+			if ("reason" in packageJsonResult) return packageJsonResult;
+			localPackage.packageJson = packageJsonResult.packageJson;
+			return await getDeclaredLocalVercelPackageBin(localPackage, commandBase);
+		} catch (error) {
+			return { reason: `could not validate local vercel package: ${(0, import_errutils.getErrorMessage)(error)}` };
+		}
+	}
+	async function getLocalVercelPackage(nodeModulesDirectory) {
+		const packageDirectory = import_node_path.default.join(nodeModulesDirectory, "vercel");
+		const realNodeModulesDirectory = await (0, import_promises.realpath)(nodeModulesDirectory);
+		const realPackageDirectory = await (0, import_promises.realpath)(packageDirectory);
+		if (!(0, import_fsutils.isSubpath)(realNodeModulesDirectory, realPackageDirectory)) return { reason: "local vercel package resolves outside local node_modules" };
+		const unsafePackageDirectoryReason = await (0, import_safety.getUnsafePackageDirectoryReason)(realNodeModulesDirectory, realPackageDirectory);
+		if (unsafePackageDirectoryReason) return { reason: `local vercel package is unsafe: ${unsafePackageDirectoryReason}` };
+		return {
+			realNodeModulesDirectory,
+			realPackageDirectory,
+			packageJson: {}
+		};
+	}
+	async function readLocalVercelPackageJson(realPackageDirectory) {
+		const packageJsonPath = import_node_path.default.join(realPackageDirectory, "package.json");
+		const realPackageJsonPath = await (0, import_promises.realpath)(packageJsonPath);
+		if (!(0, import_fsutils.isSubpath)(realPackageDirectory, realPackageJsonPath)) return { reason: "local vercel package.json resolves outside package" };
+		const unsafePackageJsonReason = await (0, import_safety.getUnsafePackageFileReason)(realPackageDirectory, realPackageJsonPath);
+		if (unsafePackageJsonReason) return { reason: `local vercel package.json is unsafe: ${unsafePackageJsonReason}` };
+		const packageJson = JSON.parse(await (0, import_promises.readFile)(realPackageJsonPath, "utf8"));
+		if (packageJson.name !== "vercel") return { reason: "local vercel package.json does not have name \"vercel\"" };
+		return { packageJson };
+	}
+	async function getDeclaredLocalVercelPackageBin(localPackage, commandBase) {
+		const { packageJson, realNodeModulesDirectory, realPackageDirectory } = localPackage;
+		const binTarget = getPackageBinTarget(packageJson, commandBase);
+		if (!binTarget) return { reason: "local vercel package does not declare bin.vercel" };
+		const declaredBinPath = import_node_path.default.resolve(realPackageDirectory, binTarget);
+		const realDeclaredBinPath = await (0, import_promises.realpath)(declaredBinPath);
+		if (!(0, import_fsutils.isSubpath)(realPackageDirectory, realDeclaredBinPath)) return { reason: "local vercel package bin resolves outside package" };
+		const unsafePackageBinReason = await (0, import_safety.getUnsafePackageBinReason)(realNodeModulesDirectory, realPackageDirectory, realDeclaredBinPath);
+		if (unsafePackageBinReason) return { reason: `local vercel package bin is unsafe: ${unsafePackageBinReason}` };
+		if (process.platform !== "win32" && !(0, import_fsutils.isNodeScript)(realDeclaredBinPath)) try {
+			await (0, import_promises.access)(realDeclaredBinPath, import_promises.constants.F_OK | import_promises.constants.X_OK);
+		} catch (error) {
+			return { reason: `local vercel package bin is not executable: ${(0, import_errutils.getErrorMessage)(error)}` };
+		}
+		return { binPath: realDeclaredBinPath };
+	}
+	function getPackageBinTarget(packageJson, command) {
+		const bin = packageJson.bin;
+		if (typeof bin === "string") return command === "vercel" ? bin : null;
+		if (bin && typeof bin === "object") {
+			const target = bin[command];
+			if (typeof target === "string") return target;
+		}
+		return null;
+	}
+	function getCliInvocationCacheKey(cwd, pathValue) {
+		return `${cwd}\0${pathValue}`;
+	}
+	0 && (module.exports = {
+		clearCachedCliInvocation,
+		clearVercelCliLookupCache,
+		findVercelCli,
+		getLocalBinSearch,
+		resolveCachedCliInvocation,
+		toVercelCliInvocation
+	});
+}));
+// node_modules/@vercel/cli-exec/dist/exec.js
+var require_exec = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __create = Object.create;
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __getProtoOf = Object.getPrototypeOf;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", {
+		value: mod,
+		enumerable: true
+	}) : target, mod));
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var exec_exports = {};
+	__export(exec_exports, { execVercelCli: () => execVercelCli });
+	module.exports = __toCommonJS(exec_exports);
+	var import_node_path = __toESM(__require("node:path"));
+	var import_execa = __toESM(require_execa());
+	var import_envpath = require_envpath();
+	var import_errors = require_errors$1();
+	var import_lookup = require_lookup();
+	async function execVercelCli(args, options = {}) {
+		const cwd = import_node_path.default.resolve(options.cwd ?? process.cwd());
+		await (0, import_errors.assertValidCwd)(cwd);
+		const env = mergeExecEnv(options.env);
+		const pathValue = (0, import_envpath.getEnvPath)(env);
+		try {
+			return await execResolvedVercelCli(args, options, cwd, env, pathValue);
+		} catch (error) {
+			if (error instanceof import_errors.VercelCliError && error.code === "VERCEL_CLI_NOT_FOUND") {
+				(0, import_lookup.clearCachedCliInvocation)(cwd, pathValue);
+				return await execResolvedVercelCli(args, options, cwd, env, pathValue);
+			}
+			throw error;
+		}
+	}
+	async function execResolvedVercelCli(args, options, cwd, env, pathValue) {
+		const invocation = await resolveInvocationOrThrow(cwd, pathValue);
+		try {
+			const execaOptions = {
+				input: options.input,
+				stdio: options.stdio,
+				stdin: options.stdin,
+				stdout: options.stdout,
+				stderr: options.stderr,
+				timeout: options.timeout,
+				cwd,
+				env: await prependLocalBinsToEnvPath(cwd, env),
+				windowsHide: true
+			};
+			if (options.signal) execaOptions.signal = options.signal;
+			const { stdout, stderr } = await (0, import_execa.default)(invocation.command, [...invocation.commandArgs, ...args], execaOptions);
+			return {
+				stdout,
+				stderr,
+				invocation
+			};
+		} catch (error) {
+			throw (0, import_errors.toVercelCliError)(invocation, error);
+		}
+	}
+	async function resolveInvocationOrThrow(cwd, pathValue) {
+		const resolution = await (0, import_lookup.resolveCachedCliInvocation)(cwd, pathValue);
+		if (!resolution.found) throw new import_errors.VercelCliError({
+			code: "VERCEL_CLI_NOT_FOUND",
+			message: (0, import_errors.getCliNotFoundMessage)(resolution.diagnostics)
+		});
+		return (0, import_lookup.toVercelCliInvocation)(resolution);
+	}
+	function mergeExecEnv(env) {
+		if (!env) return process.env;
+		return {
+			...process.env,
+			...env
+		};
+	}
+	async function prependLocalBinsToEnvPath(cwd, env = process.env) {
+		const localPath = await prependLocalBinsToPath(cwd, (0, import_envpath.getEnvPath)(env));
+		return (0, import_envpath.setEnvPath)(env, (0, import_envpath.prependPathEntries)(localPath, [import_node_path.default.dirname(process.execPath)]));
+	}
+	async function prependLocalBinsToPath(cwd, pathValue = "") {
+		return (0, import_envpath.prependPathEntries)(pathValue, (await (0, import_lookup.getLocalBinSearch)(cwd)).directories);
+	}
+	0 && (module.exports = { execVercelCli });
+}));
+// node_modules/@vercel/cli-exec/dist/index.js
+var require_dist$2 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var src_exports = {};
+	__export(src_exports, {
+		VercelCliError: () => import_errors.VercelCliError,
+		clearVercelCliLookupCache: () => import_lookup.clearVercelCliLookupCache,
+		execVercelCli: () => import_exec.execVercelCli,
+		findVercelCli: () => import_lookup.findVercelCli
+	});
+	module.exports = __toCommonJS(src_exports);
+	var import_errors = require_errors$1();
+	var import_exec = require_exec();
+	var import_lookup = require_lookup();
+	0 && (module.exports = {
+		VercelCliError,
+		clearVercelCliLookupCache,
+		execVercelCli,
+		findVercelCli
+	});
+}));
+// node_modules/@vercel/cli-config/dist/index.js
+var require_dist$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __create = Object.create;
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __getProtoOf = Object.getPrototypeOf;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __commonJS = (cb, mod) => function() {
+		return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+	};
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: !0
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from == "object" || typeof from == "function") for (let key of __getOwnPropNames(from)) !__hasOwnProp.call(to, key) && key !== except && __defProp(to, key, {
+			get: () => from[key],
+			enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+		});
+		return to;
+	};
+	var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", {
+		value: mod,
+		enumerable: !0
+	}) : target, mod));
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: !0 }), mod);
+	var require_lib = __commonJS({ "../../node_modules/.pnpm/os-paths@4.4.0/node_modules/os-paths/src/lib/index.js"(exports, module2) {
+		"use strict";
+		var os = __require("os"), paths = __require("path"), isWinOS = /^win/i.test(process.platform);
+		function normalize_path(path3) {
+			return paths.normalize(paths.join(path3, "."));
+		}
+		var base = () => {
+			let { env } = process, object2 = {};
+			return object2.home = () => normalize_path(os.homedir ? os.homedir() : env.HOME), object2.temp = () => normalize_path(os.tmpdir ? os.tmpdir() : env.TMPDIR || env.TEMP || env.TMP), object2;
+		}, windows = () => {
+			let { env } = process, object2 = {};
+			return object2.home = () => normalize_path(os.homedir ? os.homedir() : env.USERPROFILE || paths.join(env.HOMEDRIVE, env.HOMEPATH) || env.HOME), object2.temp = () => normalize_path(os.tmpdir ? os.tmpdir() : env.TEMP || env.TMP || paths.join(env.LOCALAPPDATA || env.SystemRoot || env.windir, "Temp")), object2;
+		};
+		module2.exports = new class __OSPaths {
+			constructor() {
+				let OSPaths = function() {
+					return new __OSPaths();
+				};
+				this._fn = OSPaths;
+				let extension = isWinOS ? windows() : base();
+				return Object.keys(extension).forEach((key) => {
+					this._fn[key] = extension[key];
+				}), this._fn;
+			}
+		}();
+	} });
+	var require_lib2 = __commonJS({ "../../node_modules/.pnpm/xdg-portable@7.3.0/node_modules/xdg-portable/src/lib/index.js"(exports, module2) {
+		"use strict";
+		var path3 = __require("path"), osPaths = require_lib(), linux = () => {
+			let object2 = {};
+			return object2.cache = () => process.env.XDG_CACHE_HOME || path3.join(osPaths.home() || osPaths.temp(), ".cache"), object2.config = () => process.env.XDG_CONFIG_HOME || path3.join(osPaths.home() || osPaths.temp(), ".config"), object2.data = () => process.env.XDG_DATA_HOME || path3.join(osPaths.home() || osPaths.temp(), ".local", "share"), object2.runtime = () => process.env.XDG_RUNTIME_DIR || void 0, object2.state = () => process.env.XDG_STATE_HOME || path3.join(osPaths.home() || osPaths.temp(), ".local", "state"), object2;
+		}, macos = () => {
+			let object2 = {};
+			return object2.cache = () => process.env.XDG_CACHE_HOME || path3.join(path3.join(osPaths.home() || osPaths.temp(), "Library"), "Caches"), object2.config = () => process.env.XDG_CONFIG_HOME || path3.join(path3.join(osPaths.home() || osPaths.temp(), "Library"), "Preferences"), object2.data = () => process.env.XDG_DATA_HOME || path3.join(path3.join(osPaths.home() || osPaths.temp(), "Library"), "Application Support"), object2.runtime = () => process.env.XDG_RUNTIME_DIR || void 0, object2.state = () => process.env.XDG_STATE_HOME || path3.join(path3.join(osPaths.home() || osPaths.temp(), "Library"), "State"), object2;
+		}, windows = () => {
+			let object2 = {};
+			return object2.cache = () => {
+				let localAppData = process.env.LOCALAPPDATA || path3.join(osPaths.home() || osPaths.temp(), "AppData", "Local");
+				return process.env.XDG_CACHE_HOME || path3.join(localAppData, "xdg.cache");
+			}, object2.config = () => {
+				let appData = process.env.APPDATA || path3.join(osPaths.home() || osPaths.temp(), "AppData", "Roaming");
+				return process.env.XDG_CONFIG_HOME || path3.join(appData, "xdg.config");
+			}, object2.data = () => {
+				let appData = process.env.APPDATA || path3.join(osPaths.home() || osPaths.temp(), "AppData", "Roaming");
+				return process.env.XDG_DATA_HOME || path3.join(appData, "xdg.data");
+			}, object2.runtime = () => process.env.XDG_RUNTIME_DIR || void 0, object2.state = () => {
+				let localAppData = process.env.LOCALAPPDATA || path3.join(osPaths.home() || osPaths.temp(), "AppData", "Local");
+				return process.env.XDG_STATE_HOME || path3.join(localAppData, "xdg.state");
+			}, object2;
+		}, _XDGPortable = () => {
+			let XDGPortable = function() {
+				return _XDGPortable();
+			}, extension = {};
+			return /^darwin$/i.test(process.platform) ? extension = macos() : /^win/i.test(process.platform) ? extension = windows() : extension = linux(), extension.configDirs = () => {
+				let dirs = [];
+				return dirs.push(extension.config()), process.env.XDG_CONFIG_DIRS && dirs.push(...process.env.XDG_CONFIG_DIRS.split(path3.delimiter)), dirs;
+			}, extension.dataDirs = () => {
+				let dirs = [];
+				return dirs.push(extension.data()), process.env.XDG_DATA_DIRS && dirs.push(...process.env.XDG_DATA_DIRS.split(path3.delimiter)), dirs;
+			}, Object.keys(extension).forEach((key) => {
+				XDGPortable[key] = extension[key];
+			}), XDGPortable;
+		};
+		module2.exports = _XDGPortable();
+	} });
+	var require_xdg_app_paths = __commonJS({ "../../node_modules/.pnpm/xdg-app-paths@5.1.0/node_modules/xdg-app-paths/index.js"(exports, module2) {
+		"use strict";
+		var path3 = __require("path"), os = __require("os"), xdg = require_lib2(), isWinOS = /^win/i.test(process.platform);
+		function _normalizeOptions(options, isolated) {
+			if (options = options || {}, typeof options != "object" && (options = { isolated: options }), options.isolated = options.isolated === void 0 || options.isolated === null ? isolated : options.isolated, typeof options.isolated != "boolean") throw new TypeError(`Expected boolean for "isolated" argument, got ${typeof options.isolated}`);
+			return options;
+		}
+		var base = (name, isolated) => {
+			let object2 = {};
+			return object2.cache = (options = { isolated: null }) => (options = _normalizeOptions(options, isolated), path3.join(xdg.cache(), options.isolated ? name : "")), object2.config = (options = { isolated: null }) => (options = _normalizeOptions(options, isolated), path3.join(xdg.config(), options.isolated ? name : "")), object2.data = (options = { isolated: null }) => (options = _normalizeOptions(options, isolated), path3.join(xdg.data(), options.isolated ? name : "")), object2.runtime = (options = { isolated: null }) => (options = _normalizeOptions(options, isolated), xdg.runtime() ? path3.join(xdg.runtime(), options.isolated ? name : "") : void 0), object2.state = (options = { isolated: null }) => (options = _normalizeOptions(options, isolated), path3.join(xdg.state(), options.isolated ? name : "")), object2.configDirs = (options = { isolated: null }) => (options = _normalizeOptions(options, isolated), xdg.configDirs().map((s) => path3.join(s, options.isolated ? name : ""))), object2.dataDirs = (options = { isolated: null }) => (options = _normalizeOptions(options, isolated), xdg.dataDirs().map((s) => path3.join(s, options.isolated ? name : ""))), object2;
+		}, windows = (name, isolated) => {
+			let { env } = process, homedir2 = os.homedir(), tmpdir = os.tmpdir(), appData = env.APPDATA || path3.join(homedir2 || tmpdir, "AppData", "Roaming"), localAppData = env.LOCALAPPDATA || path3.join(homedir2 || tmpdir, "AppData", "Local"), object2 = {};
+			return object2.cache = (options = { isolated: null }) => (options = _normalizeOptions(options, isolated), !options.isolated || env.XDG_CACHE_HOME ? path3.join(xdg.cache(), options.isolated ? name : "") : path3.join(localAppData, options.isolated ? name : "", "Cache")), object2.config = (options = { isolated: null }) => (options = _normalizeOptions(options, isolated), !options.isolated || env.XDG_CONFIG_HOME ? path3.join(xdg.config(), options.isolated ? name : "") : path3.join(appData, options.isolated ? name : "", "Config")), object2.data = (options = { isolated: null }) => (options = _normalizeOptions(options, isolated), !options.isolated || env.XDG_DATA_HOME ? path3.join(xdg.data(), options.isolated ? name : "") : path3.join(appData, options.isolated ? name : "", "Data")), object2.runtime = (options = { isolated: null }) => (options = _normalizeOptions(options, isolated), xdg.runtime() ? path3.join(xdg.runtime(), options.isolated ? name : "") : void 0), object2.state = (options = { isolated: null }) => (options = _normalizeOptions(options, isolated), !options.isolated || env.XDG_STATE_HOME ? path3.join(xdg.state(), options.isolated ? name : "") : path3.join(localAppData, options.isolated ? name : "", "State")), object2.configDirs = (options = { isolated: null }) => {
+				options = _normalizeOptions(options, isolated);
+				let dirs = [object2.config(options)];
+				return env.XDG_CONFIG_DIRS && dirs.push(...env.XDG_CONFIG_DIRS.split(path3.delimiter).map((s) => path3.join(s, options.isolated ? name : ""))), dirs;
+			}, object2.dataDirs = (options = { isolated: null }) => {
+				options = _normalizeOptions(options, isolated);
+				let dirs = [object2.data(options)];
+				return env.XDG_DATA_DIRS && dirs.push(...env.XDG_DATA_DIRS.split(path3.delimiter).map((s) => path3.join(s, options.isolated ? name : ""))), dirs;
+			}, object2;
+		};
+		module2.exports = new class __XDGAppPaths {
+			constructor(options = {
+				name: null,
+				suffix: null,
+				isolated: !0
+			}) {
+				let XDGAppPaths = function(options2 = {
+					name: null,
+					suffix: null,
+					isolated: !0
+				}) {
+					return new __XDGAppPaths(options2);
+				};
+				this._fn = XDGAppPaths, options = options || {}, typeof options != "object" && (options = { name: options });
+				let name = options.name || "";
+				if (typeof name != "string") throw new TypeError(`Expected string for "name" argument, got ${typeof name}`);
+				let suffix = options.suffix || "";
+				if (typeof suffix != "string") throw new TypeError(`Expected string for "suffix" argument, got ${typeof suffix}`);
+				let isolated = options.isolated === void 0 || options.isolated === null ? !0 : options.isolated;
+				if (typeof isolated != "boolean") throw new TypeError(`Expected boolean for "isolated" argument, got ${typeof isolated}`);
+				name || (name = path3.parse(process.pkg ? process.execPath : __require.main ? __require.main.filename : process.argv[0]).name), suffix && (name += suffix), this._fn.$name = () => name, this._fn.$isolated = () => isolated;
+				let extension = isWinOS ? windows(name, isolated) : base(name, isolated);
+				return Object.keys(extension).forEach((key) => {
+					this._fn[key] = extension[key];
+				}), this._fn;
+			}
+		}();
+	} });
+	var src_exports = {};
+	__export(src_exports, {
+		CRED_STORAGE_CONFIG_VALUES: () => CRED_STORAGE_CONFIG_VALUES,
+		CRED_STORAGE_VALUES: () => CRED_STORAGE_VALUES,
+		DEFAULT_CRED_STORAGE: () => DEFAULT_CRED_STORAGE,
+		authConfigHasUsableTokenData: () => authConfigHasUsableTokenData,
+		authConfigSchema: () => authConfigSchema2,
+		credStorageSchema: () => credStorageSchema2,
+		defaultAuthConfig: () => defaultAuthConfig,
+		defaultGlobalConfig: () => defaultGlobalConfig,
+		deleteAuthConfig: () => deleteAuthConfig,
+		deleteAuthConfigFile: () => deleteAuthConfigFile,
+		getAuthConfigFilePath: () => getAuthConfigFilePath,
+		getCachePath: () => getCachePath,
+		getConfigFilePath: () => getConfigFilePath,
+		getDataPath: () => getDataPath,
+		getDefaultAuthConfig: () => getDefaultAuthConfig,
+		getDpopAuthConfigFilePath: () => getDpopAuthConfigFilePath,
+		getGlobalPathConfig: () => getGlobalPathConfig,
+		getLikelyEffectiveCredStorage: () => getLikelyEffectiveCredStorage,
+		globalConfigSchema: () => globalConfigSchema2,
+		guidanceConfigSchema: () => guidanceConfigSchema2,
+		parseAuthConfig: () => parseAuthConfig,
+		parseAuthFileConfig: () => parseAuthFileConfig,
+		parseGlobalConfig: () => parseGlobalConfig,
+		readAuthConfig: () => readAuthConfig,
+		readAuthConfigFile: () => readAuthConfigFile,
+		readAuthFileConfig: () => readAuthFileConfig,
+		readConfigFile: () => readConfigFile,
+		readGlobalConfigFile: () => readGlobalConfigFile,
+		telemetryConfigSchema: () => telemetryConfigSchema2,
+		tryReadAuthConfig: () => tryReadAuthConfig,
+		updatesConfigSchema: () => updatesConfigSchema2,
+		writeAuthConfig: () => writeAuthConfig,
+		writeAuthConfigFile: () => writeAuthConfigFile,
+		writeConfigFile: () => writeConfigFile,
+		writeGlobalConfigFile: () => writeGlobalConfigFile
+	});
+	module.exports = __toCommonJS(src_exports);
+	var CRED_STORAGE_CONFIG_VALUES = [
+		"auto",
+		"file",
+		"keyring"
+	];
+	var CRED_STORAGE_VALUES = CRED_STORAGE_CONFIG_VALUES.filter((storage) => storage !== "auto");
+	var DEFAULT_CRED_STORAGE = "file";
+	var util_exports = {};
+	__export(util_exports, {
+		BIGINT_FORMAT_RANGES: () => BIGINT_FORMAT_RANGES,
+		CONSTANT_CATCH: () => CONSTANT_CATCH,
+		Class: () => Class,
+		NUMBER_FORMAT_RANGES: () => NUMBER_FORMAT_RANGES,
+		aborted: () => aborted,
+		allowsEval: () => allowsEval,
+		assert: () => assert,
+		assertEqual: () => assertEqual,
+		assertIs: () => assertIs,
+		assertNever: () => assertNever,
+		assertNotEqual: () => assertNotEqual,
+		assignProp: () => assignProp,
+		attachSchema: () => attachSchema,
+		base64ToUint8Array: () => base64ToUint8Array,
+		base64urlToUint8Array: () => base64urlToUint8Array,
+		cached: () => cached,
+		captureStackTrace: () => captureStackTrace,
+		cleanEnum: () => cleanEnum,
+		cleanRegex: () => cleanRegex,
+		clone: () => clone,
+		cloneDef: () => cloneDef,
+		codePointLength: () => codePointLength,
+		constantCatch: () => constantCatch,
+		createTransparentProxy: () => createTransparentProxy,
+		defineLazy: () => defineLazy,
+		defineLazyInternal: () => defineLazyInternal,
+		derived: () => derived,
+		esc: () => esc,
+		escapeRegex: () => escapeRegex,
+		explicitlyAborted: () => explicitlyAborted,
+		extend: () => extend,
+		finalizeIssue: () => finalizeIssue,
+		floatSafeRemainder: () => floatSafeRemainder,
+		getElementAtPath: () => getElementAtPath,
+		getEnumValues: () => getEnumValues,
+		getLengthableOrigin: () => getLengthableOrigin,
+		getParsedType: () => getParsedType,
+		getSizableOrigin: () => getSizableOrigin,
+		hexToUint8Array: () => hexToUint8Array,
+		hide: () => hide,
+		installLazyProp: () => installLazyProp,
+		isObject: () => isObject,
+		isPlainObject: () => isPlainObject,
+		issue: () => issue,
+		joinValues: () => joinValues,
+		jsonStringifyReplacer: () => jsonStringifyReplacer,
+		members: () => members,
+		merge: () => merge,
+		mergeDefs: () => mergeDefs,
+		normalizeParams: () => normalizeParams,
+		nullish: () => nullish,
+		numKeys: () => numKeys,
+		objectClone: () => objectClone,
+		omit: () => omit,
+		optionalKeys: () => optionalKeys,
+		own: () => own,
+		parsedType: () => parsedType,
+		partial: () => partial,
+		pick: () => pick,
+		prefixIssues: () => prefixIssues,
+		primitiveTypes: () => primitiveTypes,
+		promiseAllObject: () => promiseAllObject,
+		propertyKeyTypes: () => propertyKeyTypes,
+		randomString: () => randomString,
+		rawShape: () => rawShape,
+		required: () => required,
+		safeExtend: () => safeExtend,
+		shallowClone: () => shallowClone,
+		sizeCaps: () => sizeCaps,
+		slugify: () => slugify,
+		stringifyPrimitive: () => stringifyPrimitive,
+		toZod: () => toZod,
+		uint8ArrayToBase64: () => uint8ArrayToBase64,
+		uint8ArrayToBase64url: () => uint8ArrayToBase64url,
+		uint8ArrayToHex: () => uint8ArrayToHex,
+		unwrapMessage: () => unwrapMessage
+	});
+	function assertEqual(val) {
+		return val;
+	}
+	function assertNotEqual(val) {
+		return val;
+	}
+	function toZod() {
+		return (schema) => schema;
+	}
+	function assertIs(_arg) {}
+	function assertNever(_x) {
+		throw new Error("Unexpected value in exhaustive check");
+	}
+	function assert(_) {}
+	function getEnumValues(entries) {
+		let numericValues = Object.values(entries).filter((v) => typeof v == "number");
+		return Object.entries(entries).filter(([k, _]) => numericValues.indexOf(+k) === -1).map(([_, v]) => v);
+	}
+	function joinValues(array2, separator = "|") {
+		return array2.map((val) => stringifyPrimitive(val)).join(separator);
+	}
+	function jsonStringifyReplacer(_, value) {
+		return typeof value == "bigint" ? value.toString() : value;
+	}
+	var Cached = class {
+		constructor(getter) {
+			this._getter = getter, this._value = void 0;
+		}
+		get value() {
+			let getter = this._getter;
+			return getter !== void 0 && (this._value = getter(), this._getter = void 0), this._value;
+		}
+	};
+	function cached(getter) {
+		return new Cached(getter);
+	}
+	function nullish(input) {
+		return input == null;
+	}
+	function cleanRegex(source) {
+		let start = source.startsWith("^") ? 1 : 0, end = source.endsWith("$") ? source.length - 1 : source.length;
+		return source.slice(start, end);
+	}
+	function floatSafeRemainder(val, step) {
+		let ratio = val / step, roundedRatio = Math.round(ratio), tolerance = 4 * Number.EPSILON * Math.max(Math.abs(ratio), 1);
+		return Math.abs(ratio - roundedRatio) < tolerance ? 0 : ratio - roundedRatio;
+	}
+	var EVALUATING = Symbol("evaluating");
+	function defineLazy(object2, key, getter) {
+		let value;
+		Object.defineProperty(object2, key, {
+			get() {
+				if (value !== EVALUATING) return value === void 0 && (value = EVALUATING, value = getter()), value;
+			},
+			set(v) {
+				Object.defineProperty(object2, key, { value: v });
+			},
+			configurable: !0
+		});
+	}
+	function objectClone(obj) {
+		return Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj));
+	}
+	function assignProp(target, prop, value) {
+		Object.defineProperty(target, prop, {
+			value,
+			writable: !0,
+			enumerable: !0,
+			configurable: !0
+		});
+	}
+	function rawShape(def) {
+		let desc = Object.getOwnPropertyDescriptor(def, "shape");
+		return desc?.get ? desc.get.raw : desc?.value;
+	}
+	function sourceShape(schema) {
+		return rawShape(schema._zod.def) ?? schema._zod.def.shape;
+	}
+	function deferProp(target, key, getter) {
+		Object.defineProperty(target, key, {
+			get() {
+				let value = getter();
+				return assignProp(this, key, value), value;
+			},
+			enumerable: !0,
+			configurable: !0
+		});
+	}
+	function putProp(target, key, value) {
+		key in target ? assignProp(target, key, value) : target[key] = value;
+	}
+	function mirrorShape(target, source, keys, wrap) {
+		let raw = sourceShape(source);
+		for (let key of keys) {
+			let desc = Object.getOwnPropertyDescriptor(raw, key);
+			desc.enumerable && (desc.get ? deferProp(target, key, () => {
+				let value = source._zod.def.shape[key];
+				return wrap ? wrap(value, key) : value;
+			}) : putProp(target, key, wrap ? wrap(desc.value, key) : desc.value));
+		}
+	}
+	function mirrorProps(target, source) {
+		for (let key of Reflect.ownKeys(source)) {
+			let desc = Object.getOwnPropertyDescriptor(source, key);
+			desc.enumerable && (desc.get ? deferProp(target, key, () => source[key]) : putProp(target, key, desc.value));
+		}
+	}
+	function mergeDefs(...defs) {
+		let mergedDescriptors = {};
+		for (let def of defs) {
+			let descriptors = Object.getOwnPropertyDescriptors(def);
+			Object.assign(mergedDescriptors, descriptors);
+		}
+		return Object.defineProperties({}, mergedDescriptors);
+	}
+	function cloneDef(schema) {
+		return mergeDefs(schema._zod.def);
+	}
+	function getElementAtPath(obj, path3) {
+		return path3 ? path3.reduce((acc, key) => acc?.[key], obj) : obj;
+	}
+	function promiseAllObject(promisesObj) {
+		let keys = Object.keys(promisesObj), promises = keys.map((key) => promisesObj[key]);
+		return Promise.all(promises).then((results) => {
+			let resolvedObj = {};
+			for (let i = 0; i < keys.length; i++) resolvedObj[keys[i]] = results[i];
+			return resolvedObj;
+		});
+	}
+	function randomString(length = 10) {
+		let chars = "abcdefghijklmnopqrstuvwxyz", str = "";
+		for (let i = 0; i < length; i++) str += chars[Math.floor(Math.random() * 26)];
+		return str;
+	}
+	function esc(str) {
+		return JSON.stringify(str);
+	}
+	function slugify(input) {
+		return input.toLowerCase().trim().replace(/[^\w\s-]/g, "").replace(/[\s_-]+/g, "-").replace(/^-+|-+$/g, "");
+	}
+	var captureStackTrace = "captureStackTrace" in Error ? Error.captureStackTrace : (..._args) => {};
+	function isObject(data) {
+		return typeof data == "object" && data !== null && !Array.isArray(data);
+	}
+	var allowsEval = cached(() => {
+		if (globalConfig.jitless || typeof navigator < "u" && navigator?.userAgent?.includes("Cloudflare")) return !1;
+		try {
+			return new Function(""), !0;
+		} catch {
+			return !1;
+		}
+	});
+	function isPlainObject(o) {
+		if (isObject(o) === !1) return !1;
+		let ctor = o.constructor;
+		if (ctor === void 0 || typeof ctor != "function") return !0;
+		let prot = ctor.prototype;
+		return !(isObject(prot) === !1 || Object.prototype.hasOwnProperty.call(prot, "isPrototypeOf") === !1);
+	}
+	function shallowClone(o) {
+		return isPlainObject(o) ? { ...o } : Array.isArray(o) ? [...o] : o instanceof Map ? new Map(o) : o instanceof Set ? new Set(o) : o;
+	}
+	function numKeys(data) {
+		let keyCount = 0;
+		for (let key in data) Object.prototype.hasOwnProperty.call(data, key) && keyCount++;
+		return keyCount;
+	}
+	var getParsedType = (data) => {
+		let t = typeof data;
+		switch (t) {
+			case "undefined": return "undefined";
+			case "string": return "string";
+			case "number": return Number.isNaN(data) ? "nan" : "number";
+			case "boolean": return "boolean";
+			case "function": return "function";
+			case "bigint": return "bigint";
+			case "symbol": return "symbol";
+			case "object": return Array.isArray(data) ? "array" : data === null ? "null" : data.then && typeof data.then == "function" && data.catch && typeof data.catch == "function" ? "promise" : typeof Map < "u" && data instanceof Map ? "map" : typeof Set < "u" && data instanceof Set ? "set" : typeof Date < "u" && data instanceof Date ? "date" : typeof File < "u" && data instanceof File ? "file" : "object";
+			default: throw new Error(`Unknown data type: ${t}`);
+		}
+	};
+	var propertyKeyTypes = /* @__PURE__ */ new Set([
+		"string",
+		"number",
+		"symbol"
+	]);
+	var primitiveTypes = /* @__PURE__ */ new Set([
+		"string",
+		"number",
+		"bigint",
+		"boolean",
+		"symbol",
+		"undefined"
+	]);
+	function escapeRegex(str) {
+		return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	}
+	function clone(inst, def, params) {
+		let cl = new inst._zod.constr(def ?? inst._zod.def);
+		return (!def || params?.parent) && (cl._zod.parent = inst), cl;
+	}
+	function normalizeParams(_params) {
+		let params = _params;
+		if (!params) return {};
+		if (typeof params == "string") return { error: () => params };
+		if (params?.message !== void 0) {
+			if (params?.error !== void 0) throw new Error("Cannot specify both `message` and `error` params");
+			params.error = params.message;
+		}
+		return delete params.message, typeof params.error == "string" ? {
+			...params,
+			error: () => params.error
+		} : params;
+	}
+	function createTransparentProxy(getter) {
+		let target;
+		return new Proxy({}, {
+			get(_, prop, receiver) {
+				return target ?? (target = getter()), Reflect.get(target, prop, receiver);
+			},
+			set(_, prop, value, receiver) {
+				return target ?? (target = getter()), Reflect.set(target, prop, value, receiver);
+			},
+			has(_, prop) {
+				return target ?? (target = getter()), Reflect.has(target, prop);
+			},
+			deleteProperty(_, prop) {
+				return target ?? (target = getter()), Reflect.deleteProperty(target, prop);
+			},
+			ownKeys(_) {
+				return target ?? (target = getter()), Reflect.ownKeys(target);
+			},
+			getOwnPropertyDescriptor(_, prop) {
+				return target ?? (target = getter()), Reflect.getOwnPropertyDescriptor(target, prop);
+			},
+			defineProperty(_, prop, descriptor) {
+				return target ?? (target = getter()), Reflect.defineProperty(target, prop, descriptor);
+			}
+		});
+	}
+	function stringifyPrimitive(value) {
+		return typeof value == "bigint" ? value.toString() + "n" : typeof value == "string" ? `"${value}"` : `${value}`;
+	}
+	function optionalKeys(shape) {
+		return Object.keys(shape).filter((k) => shape[k]._zod.optin !== void 0 && shape[k]._zod.optout === "optional");
+	}
+	var NUMBER_FORMAT_RANGES = (() => ({
+		safeint: [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER],
+		int32: [-2147483648, 2147483647],
+		uint32: [0, 4294967295],
+		float32: [-34028234663852886e22, 34028234663852886e22],
+		float64: [-Number.MAX_VALUE, Number.MAX_VALUE]
+	}))();
+	var BIGINT_FORMAT_RANGES = {
+		int64: [BigInt("-9223372036854775808"), BigInt("9223372036854775807")],
+		uint64: [BigInt(0), BigInt("18446744073709551615")]
+	};
+	function pick(schema, mask) {
+		let currDef = schema._zod.def, checks = currDef.checks;
+		if (checks && checks.length > 0) throw new Error(".pick() cannot be used on object schemas containing refinements");
+		let newShape = {};
+		return mirrorShape(newShape, schema, maskedKeys(schema, mask)), clone(schema, mergeDefs(currDef, {
+			shape: newShape,
+			checks: []
+		}));
+	}
+	function maskedKeys(schema, mask) {
+		let raw = sourceShape(schema), keys = [];
+		for (let key of Reflect.ownKeys(mask)) {
+			if (!Object.getOwnPropertyDescriptor(raw, key)?.enumerable) throw new Error(`Unrecognized key: "${String(key)}"`);
+			mask[key] && keys.push(key);
+		}
+		return keys;
+	}
+	function omit(schema, mask) {
+		let currDef = schema._zod.def, checks = currDef.checks;
+		if (checks && checks.length > 0) throw new Error(".omit() cannot be used on object schemas containing refinements");
+		let omitted = new Set(maskedKeys(schema, mask)), newShape = {};
+		return mirrorShape(newShape, schema, Reflect.ownKeys(sourceShape(schema)).filter((key) => !omitted.has(key))), clone(schema, mergeDefs(currDef, {
+			shape: newShape,
+			checks: []
+		}));
+	}
+	function extend(schema, shape) {
+		if (!isPlainObject(shape)) throw new Error("Invalid input to extend: expected a plain object");
+		let checks = schema._zod.def.checks;
+		if (checks && checks.length > 0) {
+			let existingShape = sourceShape(schema);
+			for (let key of Reflect.ownKeys(shape)) if (Object.getOwnPropertyDescriptor(existingShape, key) !== void 0) throw new Error("Cannot overwrite keys on object schemas containing refinements. Use `.safeExtend()` instead.");
+		}
+		return clone(schema, mergeDefs(schema._zod.def, { shape: extended(schema, shape) }));
+	}
+	function extended(schema, shape) {
+		let newShape = {};
+		return mirrorShape(newShape, schema, Reflect.ownKeys(sourceShape(schema))), mirrorProps(newShape, shape), newShape;
+	}
+	function safeExtend(schema, shape) {
+		if (!isPlainObject(shape)) throw new Error("Invalid input to safeExtend: expected a plain object");
+		return clone(schema, mergeDefs(schema._zod.def, { shape: extended(schema, shape) }));
+	}
+	function merge(a, b) {
+		if (!b?._zod?.def) throw new Error("Invalid input to merge: expected an object schema. To merge a plain shape, use `.extend()`.");
+		if (a._zod.def.checks?.length) throw new Error(".merge() cannot be used on object schemas containing refinements. Use .safeExtend() instead.");
+		let newShape = {};
+		mirrorShape(newShape, a, Reflect.ownKeys(sourceShape(a))), mirrorShape(newShape, b, Reflect.ownKeys(sourceShape(b)));
+		return clone(a, mergeDefs(a._zod.def, {
+			shape: newShape,
+			get catchall() {
+				return b._zod.def.catchall;
+			},
+			checks: b._zod.def.checks ?? []
+		}));
+	}
+	function partial(Class2, schema, mask, name = "partial") {
+		let checks = schema._zod.def.checks;
+		if (checks && checks.length > 0) throw new Error(`.${name}() cannot be used on object schemas containing refinements`);
+		let selected = mask ? new Set(maskedKeys(schema, mask)) : void 0, newShape = {};
+		return mirrorShape(newShape, schema, Reflect.ownKeys(sourceShape(schema)), Class2 && ((value, key) => selected && !selected.has(key) ? value : new Class2({
+			type: "optional",
+			innerType: value
+		}))), clone(schema, mergeDefs(schema._zod.def, {
+			shape: newShape,
+			checks: []
+		}));
+	}
+	function required(Class2, schema, mask) {
+		let selected = mask ? new Set(maskedKeys(schema, mask)) : void 0, newShape = {};
+		return mirrorShape(newShape, schema, Reflect.ownKeys(sourceShape(schema)), (value, key) => selected && !selected.has(key) ? value : new Class2({
+			type: "nonoptional",
+			innerType: value
+		})), clone(schema, mergeDefs(schema._zod.def, { shape: newShape }));
+	}
+	function aborted(x, startIndex = 0) {
+		if (x.aborted === !0) return !0;
+		for (let i = startIndex; i < x.issues.length; i++) if (x.issues[i]?.continue !== !0) return !0;
+		return !1;
+	}
+	function explicitlyAborted(x, startIndex = 0) {
+		if (x.aborted === !0) return !0;
+		for (let i = startIndex; i < x.issues.length; i++) if (x.issues[i]?.continue === !1) return !0;
+		return !1;
+	}
+	function prefixIssues(path3, issues) {
+		return issues.map((iss) => {
+			var _a3;
+			return (_a3 = iss).path ?? (_a3.path = []), iss.path.unshift(path3), iss;
+		});
+	}
+	function unwrapMessage(message) {
+		return typeof message == "string" ? message : message?.message;
+	}
+	function sizeCaps(defChecks) {
+		let caps = [];
+		for (let ch of defChecks ?? []) {
+			let d = ch._zod.def;
+			if (!/_(length|size)$|_equals$/.test(d.check)) break;
+			let max = d.maximum ?? d.length ?? d.size;
+			max >= 0 && caps.push([max, ch]);
+		}
+		return caps;
+	}
+	function attachSchema(issues, start, inst) {
+		var _a3;
+		for (let i = start; i < issues.length; i++) (_a3 = issues[i]).schema ?? (_a3.schema = inst);
+	}
+	function finalizeIssue(iss, ctx, config2) {
+		var _a3;
+		let traits = iss.inst?._zod?.traits;
+		traits?.has("$ZodType") && (traits.has("$ZodCheck") ? (_a3 = iss).schema ?? (_a3.schema = iss.inst) : iss.schema = iss.inst);
+		let schemaError = iss.schema !== iss.inst ? iss.schema?._zod.def?.error : void 0, message = iss.message ? iss.message : unwrapMessage(iss.inst?._zod.def?.error?.(iss)) ?? unwrapMessage(schemaError?.(iss)) ?? unwrapMessage(ctx?.error?.(iss)) ?? unwrapMessage(config2.customError?.(iss)) ?? unwrapMessage(config2.localeError?.(iss)) ?? "Invalid input", full = {};
+		for (let k of Object.keys(iss)) k === "inst" || k === "schema" || k === "continue" || k === "input" || k === "__proto__" || (full[k] = iss[k]);
+		return full.path ?? (full.path = []), full.message = message, ctx?.reportInput && (full.input = iss.input), full;
+	}
+	function getSizableOrigin(input) {
+		return input instanceof Set ? "set" : input instanceof Map ? "map" : input instanceof File ? "file" : "unknown";
+	}
+	var highSurrogate = /[\uD800-\uDBFF]/;
+	function codePointLength(str) {
+		let units = str.length;
+		if (!highSurrogate.test(str)) return units;
+		let count = units;
+		for (let i = 0; i < units - 1; i++) (str.charCodeAt(i) & 64512) === 55296 && (str.charCodeAt(i + 1) & 64512) === 56320 && (count--, i++);
+		return count;
+	}
+	function getLengthableOrigin(input) {
+		return Array.isArray(input) ? "array" : typeof input == "string" ? "string" : "unknown";
+	}
+	function parsedType(data) {
+		let t = typeof data;
+		switch (t) {
+			case "number": return Number.isNaN(data) ? "nan" : "number";
+			case "object": {
+				if (data === null) return "null";
+				if (Array.isArray(data)) return "array";
+				let obj = data;
+				if (obj && Object.getPrototypeOf(obj) !== Object.prototype && "constructor" in obj && obj.constructor) return obj.constructor.name;
+			}
+		}
+		return t;
+	}
+	function issue(...args) {
+		let [iss, input, inst] = args;
+		return typeof iss == "string" ? {
+			message: iss,
+			code: "custom",
+			input,
+			inst
+		} : { ...iss };
+	}
+	function cleanEnum(obj) {
+		return Object.entries(obj).filter(([k, _]) => Number.isNaN(Number.parseInt(k, 10))).map((el) => el[1]);
+	}
+	function base64ToUint8Array(base642) {
+		let binaryString = atob(base642), bytes = new Uint8Array(binaryString.length);
+		for (let i = 0; i < binaryString.length; i++) bytes[i] = binaryString.charCodeAt(i);
+		return bytes;
+	}
+	function uint8ArrayToBase64(bytes) {
+		let binaryString = "";
+		for (let i = 0; i < bytes.length; i++) binaryString += String.fromCharCode(bytes[i]);
+		return btoa(binaryString);
+	}
+	function base64urlToUint8Array(base64url2) {
+		let base642 = base64url2.replace(/-/g, "+").replace(/_/g, "/");
+		return base64ToUint8Array(base642 + "=".repeat((4 - base642.length % 4) % 4));
+	}
+	function uint8ArrayToBase64url(bytes) {
+		return uint8ArrayToBase64(bytes).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
+	}
+	function hexToUint8Array(hex) {
+		let cleanHex = hex.replace(/^0x/, "");
+		if (cleanHex.length % 2 !== 0) throw new Error("Invalid hex string length");
+		let bytes = new Uint8Array(cleanHex.length / 2);
+		for (let i = 0; i < cleanHex.length; i += 2) bytes[i / 2] = Number.parseInt(cleanHex.slice(i, i + 2), 16);
+		return bytes;
+	}
+	function uint8ArrayToHex(bytes) {
+		return Array.from(bytes).map((b) => b.toString(16).padStart(2, "0")).join("");
+	}
+	var Class = class {
+		constructor(..._args) {}
+	};
+	function members(proto, table) {
+		for (let key in table) {
+			let desc = Object.getOwnPropertyDescriptor(table, key);
+			desc.get ? Object.defineProperty(proto, key, {
+				...desc,
+				enumerable: !1
+			}) : defineBound(proto, key, desc.value);
+		}
+	}
+	function own(inst, key, value, enumerable = !0) {
+		return Object.defineProperty(inst, key, {
+			configurable: !0,
+			writable: !0,
+			enumerable,
+			value
+		}), value;
+	}
+	function hide(inst, key, value) {
+		return own(inst, key, value, !1);
+	}
+	function derived(computes, table) {
+		for (let key in computes) {
+			let compute = computes[key];
+			Object.defineProperty(table, key, {
+				configurable: !0,
+				enumerable: !0,
+				get() {
+					return own(this, key, compute(this));
+				},
+				set(value) {
+					own(this, key, value);
+				}
+			});
+		}
+		return table;
+	}
+	function defineBound(proto, key, fn) {
+		Object.defineProperty(proto, key, {
+			configurable: !0,
+			get() {
+				return this == null ? fn : own(this, key, fn.bind(this));
+			},
+			set(value) {
+				own(this, key, value);
+			}
+		});
+	}
+	function claim(inst, sentinel) {
+		let proto = Object.getPrototypeOf(inst);
+		return sentinel in proto ? void 0 : proto;
+	}
+	var installing;
+	var broke = !1;
+	var breaker = {
+		configurable: !0,
+		get() {
+			broke = !0;
+		}
+	};
+	function defineLazyInternal(inst, key, compute) {
+		let proto = Object.getPrototypeOf(inst._zod);
+		if (key in proto && installing !== inst._zod) {
+			installing = void 0;
+			return;
+		}
+		installing = inst._zod, Object.defineProperty(proto, key, {
+			configurable: !0,
+			get() {
+				Object.defineProperty(this, key, breaker);
+				let outer = broke;
+				broke = !1;
+				try {
+					let value = compute(this);
+					return broke ? delete this[key] : Object.defineProperty(this, key, {
+						configurable: !0,
+						writable: !0,
+						value
+					}), broke = broke || outer, value;
+				} catch (err) {
+					throw delete this[key], broke = broke || outer, err;
+				}
+			},
+			set(value) {
+				Object.defineProperty(this, key, {
+					configurable: !0,
+					writable: !0,
+					value
+				});
+			}
+		});
+	}
+	function installLazyProp(inst, key, make, enumerable) {
+		let proto = claim(inst, key);
+		proto && Object.defineProperty(proto, key, {
+			configurable: !0,
+			get() {
+				let desc = {
+					configurable: !0,
+					writable: !0,
+					enumerable,
+					value: void 0
+				};
+				return Object.defineProperty(this, key, desc), desc.value = make(this), Object.defineProperty(this, key, desc), desc.value;
+			},
+			set(value) {
+				Object.defineProperty(this, key, {
+					configurable: !0,
+					writable: !0,
+					enumerable,
+					value
+				});
+			}
+		});
+	}
+	var CONSTANT_CATCH = "~constantCatch";
+	function constantCatch(value) {
+		let fn = () => value;
+		return fn[CONSTANT_CATCH] = !0, fn;
+	}
+	var _a;
+	var _zodDesc = {
+		value: void 0,
+		enumerable: !1
+	};
+	var _E = "captureStackTrace" in Error ? Error : null;
+	function newError(Definition) {
+		let E = _E;
+		if (E) {
+			let saved = E.stackTraceLimit;
+			if (typeof saved == "number") {
+				try {
+					E.stackTraceLimit = 0;
+				} catch {
+					return _E = null, new Definition();
+				}
+				try {
+					return new Definition();
+				} finally {
+					E.stackTraceLimit = saved;
+				}
+			}
+		}
+		return new Definition();
+	}
+	function $constructor(name, initializer3, proto, params) {
+		let zodProto = {};
+		function Internals(def) {
+			this.def = def, this.constr = _, this.traits = /* @__PURE__ */ new Set();
+		}
+		Internals.prototype = zodProto;
+		let protoMembers = proto, initialized = protoMembers && /* @__PURE__ */ new WeakSet();
+		function init(inst, def) {
+			if (inst._zod) {
+				if (inst._zod.traits.has(name)) return;
+			} else {
+				_zodDesc.value = new Internals(def);
+				try {
+					Object.defineProperty(inst, "_zod", _zodDesc);
+				} finally {
+					_zodDesc.value = void 0;
+				}
+			}
+			if (inst._zod.traits.add(name), initializer3(inst, def), initialized) {
+				let own2 = Object.getPrototypeOf(inst), ctorProto = inst._zod.constr.prototype, up = own2;
+				for (; up && up !== ctorProto;) up = Object.getPrototypeOf(up);
+				let target = up ?? own2;
+				initialized.has(target) || (initialized.add(target), members(target, protoMembers));
+			}
+			let proto2 = _.prototype;
+			for (let k in proto2) Object.prototype.hasOwnProperty.call(proto2, k) && (k in inst || (inst[k] = proto2[k].bind(inst)));
+		}
+		let Parent = params?.Parent ?? Object;
+		class Definition extends Parent {}
+		Object.defineProperty(Definition, "name", { value: name });
+		function _(def) {
+			let inst = params?.Parent ? newError(Definition) : this;
+			init(inst, def);
+			let deferred = inst._zod.deferred;
+			if (deferred) {
+				for (let fn of deferred) fn();
+				inst._zod.deferred = void 0;
+			}
+			let pp = globalThis.__zod_globalConfig?.postProcessor;
+			return pp && pp(inst), inst;
+		}
+		return Object.defineProperty(_, "init", { value: init }), Object.defineProperty(_, Symbol.hasInstance, { value: (inst) => params?.Parent && inst instanceof params.Parent ? !0 : inst?._zod?.traits?.has(name) }), Object.defineProperty(_, "name", { value: name }), _;
+	}
+	var $ZodAsyncError = class extends Error {
+		constructor() {
+			super("Encountered Promise during synchronous parse. Use .parseAsync() instead.");
+		}
+	};
+	var $ZodEncodeError = class extends Error {
+		constructor(name) {
+			super(`Encountered unidirectional transform during encode: ${name}`), this.name = "ZodEncodeError";
+		}
+	};
+	(_a = globalThis).__zod_globalConfig ?? (_a.__zod_globalConfig = {});
+	var globalConfig = globalThis.__zod_globalConfig;
+	function config(newConfig) {
+		return newConfig && Object.assign(globalConfig, newConfig), globalConfig;
+	}
+	function _getMessage() {
+		let internals = this._zod;
+		return internals.message ?? (internals.message = JSON.stringify(internals.def, jsonStringifyReplacer, 2)), internals.message;
+	}
+	function _setMessage(value) {
+		this._zod.message = value;
+	}
+	var _messageDesc = {
+		get: _getMessage,
+		set: _setMessage,
+		enumerable: !0,
+		configurable: !0
+	};
+	var _issuesDesc = {
+		value: void 0,
+		enumerable: !1
+	};
+	var _installedToString = new WeakSet([Object.prototype, Error.prototype]);
+	var initializer = (inst, def) => {
+		inst.name = "$ZodError", _issuesDesc.value = def, Object.defineProperty(inst, "issues", _issuesDesc), _issuesDesc.value = void 0, Object.defineProperty(inst, "message", _messageDesc);
+		let proto = Object.getPrototypeOf(inst);
+		_installedToString.has(proto) || (_installedToString.add(proto), Object.defineProperty(proto, "toString", {
+			configurable: !0,
+			enumerable: !1,
+			get() {
+				let value = () => this.message;
+				return Object.defineProperty(this, "toString", {
+					value,
+					configurable: !0,
+					writable: !0
+				}), value;
+			},
+			set(value) {
+				Object.defineProperty(this, "toString", {
+					value,
+					configurable: !0,
+					writable: !0
+				});
+			}
+		}));
+	};
+	var $ZodError = $constructor("$ZodError", initializer);
+	$constructor("$ZodError", initializer, void 0, { Parent: Error });
+	function node(obj, key, make) {
+		return Object.prototype.hasOwnProperty.call(obj, key) || (key === "__proto__" ? Object.defineProperty(obj, key, {
+			value: make(),
+			writable: !0,
+			enumerable: !0,
+			configurable: !0
+		}) : obj[key] = make()), obj[key];
+	}
+	function flattenError(error2, mapper = (issue2) => issue2.message) {
+		let fieldErrors = {}, formErrors = [];
+		for (let sub of error2.issues) sub.path.length > 0 ? node(fieldErrors, sub.path[0], () => []).push(mapper(sub)) : formErrors.push(mapper(sub));
+		return {
+			formErrors,
+			fieldErrors
+		};
+	}
+	function formatError(error2, mapper = (issue2) => issue2.message) {
+		let fieldErrors = { _errors: [] }, processError = (error3, path3 = []) => {
+			for (let issue2 of error3.issues) if (issue2.code === "invalid_union" && issue2.errors.length) issue2.errors.map((issues) => processError({ issues }, [...path3, ...issue2.path]));
+			else if (issue2.code === "invalid_key") processError({ issues: issue2.issues }, [...path3, ...issue2.path]);
+			else if (issue2.code === "invalid_element") processError({ issues: issue2.issues }, [...path3, ...issue2.path]);
+			else {
+				let fullpath = [...path3, ...issue2.path];
+				if (fullpath.length === 0) fieldErrors._errors.push(mapper(issue2));
+				else {
+					let curr = fieldErrors, i = 0;
+					for (; i < fullpath.length;) {
+						let el = fullpath[i], terminal = i === fullpath.length - 1;
+						if (el === "_errors") {
+							terminal && curr._errors.push(mapper(issue2)), i++;
+							continue;
+						}
+						Object.prototype.hasOwnProperty.call(curr, el) || Object.defineProperty(curr, el, {
+							value: { _errors: [] },
+							enumerable: !0,
+							writable: !0,
+							configurable: !0
+						});
+						let node2 = curr[el];
+						terminal && node2._errors.push(mapper(issue2)), curr = node2, i++;
+					}
+				}
+			}
+		};
+		return processError(error2), fieldErrors;
+	}
+	function finalizeParams(callee, params) {
+		return {
+			callee: params?.callee ?? callee,
+			Err: params?.Err
+		};
+	}
+	var _parse = (_Err) => {
+		let fn = (schema, value, _ctx, _params) => {
+			let ctx = _ctx ? {
+				..._ctx,
+				async: !1
+			} : { async: !1 }, result = schema._zod.run({
+				value,
+				issues: []
+			}, ctx);
+			if (result instanceof Promise) throw new $ZodAsyncError();
+			if (result.issues.length) {
+				let e = new ((_params?.Err) ?? _Err)(result.issues.map((iss) => finalizeIssue(iss, ctx, config())));
+				throw captureStackTrace(e, _params?.callee ?? fn), e;
+			}
+			return result.value;
+		};
+		return fn;
+	};
+	var _parseAsync = (_Err) => {
+		let fn = async (schema, value, _ctx, params) => {
+			let ctx = _ctx ? {
+				..._ctx,
+				async: !0
+			} : { async: !0 }, result = schema._zod.run({
+				value,
+				issues: []
+			}, ctx);
+			if (result instanceof Promise && (result = await result), result.issues.length) {
+				let e = new ((params?.Err) ?? _Err)(result.issues.map((iss) => finalizeIssue(iss, ctx, config())));
+				throw captureStackTrace(e, params?.callee ?? fn), e;
+			}
+			return result.value;
+		};
+		return fn;
+	};
+	var _safeParse = (_Err) => (schema, value, _ctx) => {
+		let ctx = _ctx ? {
+			..._ctx,
+			async: !1
+		} : { async: !1 }, result = schema._zod.run({
+			value,
+			issues: []
+		}, ctx);
+		if (result instanceof Promise) throw new $ZodAsyncError();
+		return result.issues.length ? failure(_Err, result.issues, ctx) : {
+			success: !0,
+			data: result.value
+		};
+	};
+	function failure(Err, issues, ctx) {
+		let error2;
+		return {
+			success: !1,
+			get error() {
+				return error2 || (error2 = new Err(issues.map((iss) => finalizeIssue(iss, ctx, config()))), issues = void 0, ctx = void 0), error2;
+			},
+			set error(e) {
+				error2 = e, issues = void 0, ctx = void 0;
+			}
+		};
+	}
+	var _safeParseAsync = (_Err) => async (schema, value, _ctx) => {
+		let ctx = _ctx ? {
+			..._ctx,
+			async: !0
+		} : { async: !0 }, result = schema._zod.run({
+			value,
+			issues: []
+		}, ctx);
+		return result instanceof Promise && (result = await result), result.issues.length ? failure(_Err, result.issues, ctx) : {
+			success: !0,
+			data: result.value
+		};
+	};
+	var COMPILE_INVALID = Symbol.for("zod.compile.invalid");
+	var COMPILE_FALLBACK = Symbol.for("zod.compile.fallback");
+	var validate = (schema, value, _ctx) => {
+		let validator = schema._zod.bag.validator;
+		if (validator !== void 0) {
+			if (validator(value) !== COMPILE_INVALID) return !0;
+			if (validator.definite === !0 && _ctx === void 0) return !1;
+		}
+		return validateFallback(schema, value, _ctx);
+	};
+	function validateFallback(schema, value, _ctx) {
+		let ctx = _ctx ? {
+			..._ctx,
+			async: !1,
+			abortEarly: !0
+		} : {
+			async: !1,
+			abortEarly: !0
+		}, fallbackRun = schema._zod.bag.fallbackRun, result;
+		if (fallbackRun ? (ctx[COMPILE_FALLBACK] = !0, result = fallbackRun({
+			value,
+			issues: []
+		}, ctx)) : result = schema._zod.run({
+			value,
+			issues: []
+		}, ctx), result instanceof Promise) throw new $ZodAsyncError();
+		return result.issues.length === 0;
+	}
+	var validateAsync = async (schema, value, _ctx) => {
+		let ctx = _ctx ? {
+			..._ctx,
+			async: !0,
+			abortEarly: !0
+		} : {
+			async: !0,
+			abortEarly: !0
+		}, result = schema._zod.run({
+			value,
+			issues: []
+		}, ctx);
+		return result instanceof Promise && (result = await result), result.issues.length === 0;
+	};
+	var _encode = (_Err) => {
+		let parse2 = _parse(_Err), fn = (schema, value, _ctx, _params) => {
+			let ctx = _ctx ? {
+				..._ctx,
+				direction: "backward"
+			} : { direction: "backward" };
+			return parse2(schema, value, ctx, finalizeParams(fn, _params));
+		};
+		return fn;
+	};
+	var _decode = (_Err) => {
+		let parse2 = _parse(_Err), fn = (schema, value, _ctx, _params) => parse2(schema, value, _ctx, finalizeParams(fn, _params));
+		return fn;
+	};
+	var _encodeAsync = (_Err) => {
+		let parseAsync2 = _parseAsync(_Err), fn = async (schema, value, _ctx, _params) => {
+			let ctx = _ctx ? {
+				..._ctx,
+				direction: "backward"
+			} : { direction: "backward" };
+			return await parseAsync2(schema, value, ctx, finalizeParams(fn, _params));
+		};
+		return fn;
+	};
+	var _decodeAsync = (_Err) => {
+		let parseAsync2 = _parseAsync(_Err), fn = async (schema, value, _ctx, _params) => await parseAsync2(schema, value, _ctx, finalizeParams(fn, _params));
+		return fn;
+	};
+	var _safeEncode = (_Err) => (schema, value, _ctx) => {
+		let ctx = _ctx ? {
+			..._ctx,
+			direction: "backward"
+		} : { direction: "backward" };
+		return _safeParse(_Err)(schema, value, ctx);
+	};
+	var _safeDecode = (_Err) => (schema, value, _ctx) => _safeParse(_Err)(schema, value, _ctx);
+	var _safeEncodeAsync = (_Err) => async (schema, value, _ctx) => {
+		let ctx = _ctx ? {
+			..._ctx,
+			direction: "backward"
+		} : { direction: "backward" };
+		return _safeParseAsync(_Err)(schema, value, ctx);
+	};
+	var _safeDecodeAsync = (_Err) => async (schema, value, _ctx) => _safeParseAsync(_Err)(schema, value, _ctx);
+	var cuid = /^[cC][0-9a-z]{6,}$/;
+	var cuid2 = /^[0-9a-z]+$/;
+	var ulid = /^[0-7][0-9A-HJKMNP-TV-Za-hjkmnp-tv-z]{25}$/;
+	var xid = /^[0-9a-vA-V]{20}$/;
+	var ksuid = /^[A-Za-z0-9]{27}$/;
+	var nanoid = /^[a-zA-Z0-9_-]{21}$/;
+	function nanoidOfLength(length) {
+		return new RegExp(`^[a-zA-Z0-9_-]{${length}}$`);
+	}
+	var duration = /^P(?:(\d+W)|(?!.*W)(?=\d|T\d)(\d+Y)?(\d+M)?(\d+D)?(T(?=\d)(\d+H)?(\d+M)?(\d+([.,]\d+)?S)?)?)$/;
+	var guid = /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/;
+	var uuid = (version2) => version2 ? new RegExp(`^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-${version2}[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$`) : /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/;
+	var email = /^(?:[A-Za-z0-9_'+\-]+\.)*[A-Za-z0-9_'+\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$/;
+	var _emoji = "^(?=[\\s\\S]*[\\p{Extended_Pictographic}\\p{Regional_Indicator}\\u20E3])[\\p{Extended_Pictographic}\\p{Emoji_Component}]+$";
+	function emoji() {
+		return new RegExp(_emoji, "u");
+	}
+	var ipv4 = /^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$/;
+	var ipv6 = /^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))$/;
+	var cidrv4 = /^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\/([0-9]|[1-2][0-9]|3[0-2])$/;
+	var cidrv6 = /^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))\/(12[0-8]|1[01][0-9]|[1-9]?[0-9])$/;
+	var base64 = /^$|^(?:[0-9a-zA-Z+/]{4})*(?:(?:[0-9a-zA-Z+/]{2}==)|(?:[0-9a-zA-Z+/]{3}=))?$/;
+	var base64url = /^(?:[A-Za-z0-9_-]{4})*(?:[A-Za-z0-9_-]{2,3})?$/;
+	var httpProtocol = /^https?$/;
+	var e164 = /^\+[1-9]\d{6,14}$/;
+	var dateSource = "(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))";
+	function anchor(source) {
+		return new RegExp(`^${source}$`);
+	}
+	var date = anchor(dateSource);
+	function timeSource(args) {
+		let hhmm = "(?:[01]\\d|2[0-3]):[0-5]\\d";
+		return typeof args.precision == "number" ? args.precision === -1 ? `${hhmm}` : args.precision === 0 ? `${hhmm}:[0-5]\\d` : `${hhmm}:[0-5]\\d\\.\\d{${args.precision}}` : args.seconds ? `${hhmm}:[0-5]\\d(?:\\.\\d+)?` : `${hhmm}(?::[0-5]\\d(?:\\.\\d+)?)?`;
+	}
+	function time(args) {
+		return new RegExp(`^${timeSource(args)}$`);
+	}
+	function datetime(args) {
+		let opts = ["Z"];
+		args.offset && opts.push("([+-](?:[01]\\d|2[0-3]):[0-5]\\d)");
+		let qualified = `${timeSource({
+			precision: args.precision,
+			seconds: !0
+		})}(?:${opts.join("|")})`, timeRegex = args.local ? `${qualified}|${timeSource({ precision: args.precision })}` : qualified;
+		return new RegExp(`^${dateSource}T(?:${timeRegex})$`);
+	}
+	var anyString = /^[\s\S]{0,}$/;
+	var number = /^-?\d+(?:\.\d+)?$/;
+	var boolean = /^(?:true|false)$/i;
+	var lowercase = /^[^A-Z]*$/;
+	var uppercase = /^[^a-z]*$/;
+	var $ZodCheck = $constructor("$ZodCheck", (inst, def) => {
+		var _a3;
+		inst._zod ?? (inst._zod = {}), inst._zod.def = def, (_a3 = inst._zod).onattach ?? (_a3.onattach = []);
+	});
+	var _whenHasLength = (payload) => {
+		let val = payload.value;
+		return !nullish(val) && val.length !== void 0;
+	};
+	var numericOriginMap = {
+		number: "number",
+		bigint: "bigint",
+		object: "date"
+	};
+	var $ZodCheckLessThan = $constructor("$ZodCheckLessThan", (inst, def) => {
+		$ZodCheck.init(inst, def);
+		let origin = numericOriginMap[typeof def.value];
+		inst._zod.check = (payload) => {
+			(def.inclusive ? payload.value <= def.value : payload.value < def.value) || payload.issues.push({
+				origin: numericOriginMap[typeof payload.value] ?? origin,
+				code: "too_big",
+				maximum: typeof def.value == "object" ? def.value.getTime() : def.value,
+				input: payload.value,
+				inclusive: def.inclusive,
+				inst,
+				continue: !def.abort
+			});
+		};
+	});
+	var $ZodCheckGreaterThan = $constructor("$ZodCheckGreaterThan", (inst, def) => {
+		$ZodCheck.init(inst, def);
+		let origin = numericOriginMap[typeof def.value];
+		inst._zod.check = (payload) => {
+			(def.inclusive ? payload.value >= def.value : payload.value > def.value) || payload.issues.push({
+				origin: numericOriginMap[typeof payload.value] ?? origin,
+				code: "too_small",
+				minimum: typeof def.value == "object" ? def.value.getTime() : def.value,
+				input: payload.value,
+				inclusive: def.inclusive,
+				inst,
+				continue: !def.abort
+			});
+		};
+	});
+	var $ZodCheckMultipleOf = $constructor("$ZodCheckMultipleOf", (inst, def) => {
+		$ZodCheck.init(inst, def), inst._zod.check = (payload) => {
+			if (typeof payload.value != typeof def.value) throw new Error("Cannot mix number and bigint in multiple_of check.");
+			(typeof payload.value == "bigint" ? def.value !== BigInt(0) && payload.value % def.value === BigInt(0) : floatSafeRemainder(payload.value, def.value) === 0) || payload.issues.push({
+				origin: typeof payload.value,
+				code: "not_multiple_of",
+				divisor: def.value,
+				input: payload.value,
+				inst,
+				continue: !def.abort
+			});
+		};
+	});
+	var $ZodCheckNumberFormat = $constructor("$ZodCheckNumberFormat", (inst, def) => {
+		$ZodCheck.init(inst, def), def.format = def.format || "float64";
+		let isInt = def.format?.includes("int"), origin = isInt ? "int" : "number", [minimum, maximum] = NUMBER_FORMAT_RANGES[def.format];
+		inst._zod.check = (payload) => {
+			let input = payload.value;
+			if (isInt) {
+				if (!Number.isInteger(input)) {
+					payload.issues.push({
+						expected: origin,
+						format: def.format,
+						code: "invalid_type",
+						continue: !1,
+						input,
+						inst
+					});
+					return;
+				}
+				if (!Number.isSafeInteger(input)) {
+					input > 0 ? payload.issues.push({
+						input,
+						code: "too_big",
+						maximum: Number.MAX_SAFE_INTEGER,
+						note: "Integers must be within the safe integer range.",
+						inst,
+						origin,
+						inclusive: !0,
+						continue: !def.abort
+					}) : payload.issues.push({
+						input,
+						code: "too_small",
+						minimum: Number.MIN_SAFE_INTEGER,
+						note: "Integers must be within the safe integer range.",
+						inst,
+						origin,
+						inclusive: !0,
+						continue: !def.abort
+					});
+					return;
+				}
+			}
+			input < minimum && payload.issues.push({
+				origin: "number",
+				input,
+				code: "too_small",
+				minimum,
+				inclusive: !0,
+				inst,
+				continue: !def.abort
+			}), input > maximum && payload.issues.push({
+				origin: "number",
+				input,
+				code: "too_big",
+				maximum,
+				inclusive: !0,
+				inst,
+				continue: !def.abort
+			});
+		};
+	});
+	var $ZodCheckMaxLength = $constructor("$ZodCheckMaxLength", (inst, def) => {
+		var _a3;
+		$ZodCheck.init(inst, def), (_a3 = inst._zod.def).when ?? (_a3.when = _whenHasLength), inst._zod.check = (payload) => {
+			let input = payload.value, units = input.length;
+			if ((typeof input == "string" && units > def.maximum ? codePointLength(input) : units) <= def.maximum) return;
+			let origin = getLengthableOrigin(input);
+			payload.issues.push({
+				origin,
+				code: "too_big",
+				maximum: def.maximum,
+				inclusive: !0,
+				input,
+				inst,
+				continue: !def.abort
+			});
+		};
+	});
+	var $ZodCheckMinLength = $constructor("$ZodCheckMinLength", (inst, def) => {
+		var _a3;
+		$ZodCheck.init(inst, def), (_a3 = inst._zod.def).when ?? (_a3.when = _whenHasLength), inst._zod.check = (payload) => {
+			let input = payload.value, units = input.length;
+			if ((typeof input == "string" && units >= def.minimum && units < def.minimum * 2 ? codePointLength(input) : units) >= def.minimum) return;
+			let origin = getLengthableOrigin(input);
+			payload.issues.push({
+				origin,
+				code: "too_small",
+				minimum: def.minimum,
+				inclusive: !0,
+				input,
+				inst,
+				continue: !def.abort
+			});
+		};
+	});
+	var $ZodCheckLengthEquals = $constructor("$ZodCheckLengthEquals", (inst, def) => {
+		var _a3;
+		$ZodCheck.init(inst, def), (_a3 = inst._zod.def).when ?? (_a3.when = _whenHasLength), inst._zod.check = (payload) => {
+			let input = payload.value, units = input.length, length = typeof input == "string" && units >= def.length && units <= def.length * 2 ? codePointLength(input) : units;
+			if (length === def.length) return;
+			let origin = getLengthableOrigin(input), tooBig = length > def.length;
+			payload.issues.push({
+				origin,
+				...tooBig ? {
+					code: "too_big",
+					maximum: def.length
+				} : {
+					code: "too_small",
+					minimum: def.length
+				},
+				inclusive: !0,
+				exact: !0,
+				input: payload.value,
+				inst,
+				continue: !def.abort
+			});
+		};
+	});
+	var $ZodCheckStringFormat = $constructor("$ZodCheckStringFormat", (inst, def) => {
+		var _a3, _b;
+		$ZodCheck.init(inst, def), def.pattern ? (_a3 = inst._zod).check ?? (_a3.check = (payload) => {
+			def.pattern.lastIndex = 0, !def.pattern.test(payload.value) && payload.issues.push({
+				origin: "string",
+				code: "invalid_format",
+				format: def.format,
+				input: payload.value,
+				...def.pattern ? { pattern: def.pattern.toString() } : {},
+				inst,
+				continue: !def.abort
+			});
+		}) : (_b = inst._zod).check ?? (_b.check = () => {});
+	});
+	var $ZodCheckRegex = $constructor("$ZodCheckRegex", (inst, def) => {
+		$ZodCheckStringFormat.init(inst, def), inst._zod.check = (payload) => {
+			def.pattern.lastIndex = 0, !def.pattern.test(payload.value) && payload.issues.push({
+				origin: "string",
+				code: "invalid_format",
+				format: "regex",
+				input: payload.value,
+				pattern: def.pattern.toString(),
+				inst,
+				continue: !def.abort
+			});
+		};
+	});
+	var $ZodCheckLowerCase = $constructor("$ZodCheckLowerCase", (inst, def) => {
+		def.pattern ?? (def.pattern = lowercase), $ZodCheckStringFormat.init(inst, def);
+	});
+	var $ZodCheckUpperCase = $constructor("$ZodCheckUpperCase", (inst, def) => {
+		def.pattern ?? (def.pattern = uppercase), $ZodCheckStringFormat.init(inst, def);
+	});
+	var $ZodCheckIncludes = $constructor("$ZodCheckIncludes", (inst, def) => {
+		$ZodCheck.init(inst, def);
+		let escapedRegex = escapeRegex(def.includes);
+		def.pattern = new RegExp(typeof def.position == "number" ? `^.{${def.position},}${escapedRegex}` : escapedRegex), inst._zod.check = (payload) => {
+			payload.value.includes(def.includes, def.position) || payload.issues.push({
+				origin: "string",
+				code: "invalid_format",
+				format: "includes",
+				includes: def.includes,
+				input: payload.value,
+				inst,
+				continue: !def.abort
+			});
+		};
+	});
+	var $ZodCheckStartsWith = $constructor("$ZodCheckStartsWith", (inst, def) => {
+		$ZodCheck.init(inst, def);
+		let pattern = new RegExp(`^${escapeRegex(def.prefix)}.*`);
+		def.pattern ?? (def.pattern = pattern), inst._zod.check = (payload) => {
+			payload.value.startsWith(def.prefix) || payload.issues.push({
+				origin: "string",
+				code: "invalid_format",
+				format: "starts_with",
+				prefix: def.prefix,
+				input: payload.value,
+				inst,
+				continue: !def.abort
+			});
+		};
+	});
+	var $ZodCheckEndsWith = $constructor("$ZodCheckEndsWith", (inst, def) => {
+		$ZodCheck.init(inst, def);
+		let pattern = new RegExp(`.*${escapeRegex(def.suffix)}$`);
+		def.pattern ?? (def.pattern = pattern), inst._zod.check = (payload) => {
+			payload.value.endsWith(def.suffix) || payload.issues.push({
+				origin: "string",
+				code: "invalid_format",
+				format: "ends_with",
+				suffix: def.suffix,
+				input: payload.value,
+				inst,
+				continue: !def.abort
+			});
+		};
+	});
+	var $ZodCheckOverwrite = $constructor("$ZodCheckOverwrite", (inst, def) => {
+		$ZodCheck.init(inst, def), inst._zod.check = (payload) => {
+			payload.value = def.tx(payload.value);
+		};
+	});
+	var Doc = class {
+		constructor(args = [], closed = {}) {
+			this.content = [], this.indent = 0, this.args = args, this.closed = closed;
+		}
+		indented(fn) {
+			this.indent += 1;
+			try {
+				fn(this);
+			} finally {
+				this.indent -= 1;
+			}
+		}
+		write(arg) {
+			if (typeof arg == "function") {
+				arg(this, { execution: "sync" }), arg(this, { execution: "async" });
+				return;
+			}
+			let lines = arg.split(`
+`).filter((x) => x), minIndent = Math.min(...lines.map((x) => x.length - x.trimStart().length)), dedented = lines.map((x) => x.slice(minIndent)).map((x) => " ".repeat(this.indent * 2) + x);
+			for (let line of dedented) this.content.push(line);
+		}
+		compile() {
+			let F = Function, content = this?.content ?? [""];
+			return new F(...Object.keys(this.closed), `return function (${this.args.join(", ")}) {
+${content.join(`
+`)}
+};`)(...Object.values(this.closed));
+		}
+	};
+	var version = {
+		major: 4,
+		minor: 6,
+		patch: 7
+	};
+	var $ZodType = $constructor("$ZodType", (inst, def) => {
+		var _a3;
+		inst ?? (inst = {}), inst._zod.def = def, inst._zod.bag = inst._zod.bag || {}, inst._zod.version = version;
+		let defChecks = inst._zod.def.checks, checks = inst._zod.traits.has("$ZodCheck") ? [inst, ...defChecks ?? []] : defChecks?.length ? [...defChecks] : [];
+		for (let ch of checks) for (let fn of ch._zod.onattach) fn(inst);
+		if (checks.length === 0) (_a3 = inst._zod).deferred ?? (_a3.deferred = []), inst._zod.deferred?.push(() => {
+			inst._zod.run = inst._zod.parse;
+		});
+		else {
+			let runChecks = (payload, checks2, ctx) => {
+				if (payload.memo) return payload;
+				let isAborted = aborted(payload), asyncResult;
+				for (let ch of checks2) {
+					if (ch._zod.def.when) {
+						if (explicitlyAborted(payload) || !ch._zod.def.when(payload)) continue;
+					} else if (isAborted) continue;
+					let currLen = payload.issues.length, _ = ch._zod.check(payload);
+					if (_ instanceof Promise && ctx?.async === !1) throw new $ZodAsyncError();
+					if (asyncResult || _ instanceof Promise) asyncResult = (asyncResult ?? Promise.resolve()).then(async () => {
+						await _, payload.issues.length !== currLen && (attachSchema(payload.issues, currLen, inst), isAborted || (isAborted = aborted(payload, currLen)));
+					});
+					else {
+						if (payload.issues.length === currLen) continue;
+						attachSchema(payload.issues, currLen, inst), isAborted || (isAborted = aborted(payload, currLen));
+					}
+				}
+				return asyncResult ? asyncResult.then(() => payload) : payload;
+			}, handleCanaryResult = (canary, payload, ctx) => {
+				if (aborted(canary)) return canary.aborted = !0, canary;
+				let checkResult = runChecks(payload, checks, ctx);
+				if (checkResult instanceof Promise) {
+					if (ctx.async === !1) throw new $ZodAsyncError();
+					return checkResult.then((checkResult2) => inst._zod.parse(checkResult2, ctx));
+				}
+				return inst._zod.parse(checkResult, ctx);
+			};
+			inst._zod.run = (payload, ctx) => {
+				if (ctx.skipChecks) return inst._zod.parse(payload, ctx);
+				if (ctx.direction === "backward") {
+					let canary = inst._zod.parse({
+						value: payload.value,
+						issues: []
+					}, {
+						...ctx,
+						skipChecks: !0
+					});
+					return canary instanceof Promise ? canary.then((canary2) => handleCanaryResult(canary2, payload, ctx)) : handleCanaryResult(canary, payload, ctx);
+				}
+				let result = inst._zod.parse(payload, ctx);
+				if (result instanceof Promise) {
+					if (ctx.async === !1) throw new $ZodAsyncError();
+					return result.then((result2) => runChecks(result2, checks, ctx));
+				}
+				return runChecks(result, checks, ctx);
+			};
+		}
+	}, {
+		get "~standard"() {
+			return hide(this, "~standard", standardProps(this));
+		},
+		set "~standard"(value) {
+			own(this, "~standard", value);
+		}
+	});
+	var toStandardResult = (r, ctx) => r.issues.length ? { issues: r.issues.map((iss) => finalizeIssue(iss, ctx, config())) } : { value: r.value };
+	async function validateAsync2(inst, value) {
+		let ctx = { async: !0 };
+		return toStandardResult(await inst._zod.run({
+			value,
+			issues: []
+		}, ctx), ctx);
+	}
+	function standardProps(inst) {
+		return {
+			validate: (value) => {
+				let ctx = { async: !1 };
+				try {
+					let r = inst._zod.run({
+						value,
+						issues: []
+					}, ctx);
+					if (!(r instanceof Promise)) return toStandardResult(r, ctx);
+				} catch {}
+				return validateAsync2(inst, value);
+			},
+			vendor: "zod",
+			version: 1
+		};
+	}
+	var $ZodString = $constructor("$ZodString", (inst, def) => {
+		$ZodType.init(inst, def), inst._zod.pattern = def.pattern ?? anyString, inst._zod.parse = (payload, _) => {
+			if (def.coerce) try {
+				payload.value = String(payload.value);
+			} catch {}
+			return typeof payload.value == "string" || payload.issues.push({
+				expected: "string",
+				code: "invalid_type",
+				input: payload.value,
+				inst
+			}), payload;
+		};
+	});
+	var $ZodStringFormat = $constructor("$ZodStringFormat", (inst, def) => {
+		$ZodCheckStringFormat.init(inst, def), $ZodString.init(inst, def);
+	});
+	var $ZodGUID = $constructor("$ZodGUID", (inst, def) => {
+		def.pattern ?? (def.pattern = guid), $ZodStringFormat.init(inst, def);
+	});
+	var $ZodUUID = $constructor("$ZodUUID", (inst, def) => {
+		if (def.version) {
+			let v = {
+				v1: 1,
+				v2: 2,
+				v3: 3,
+				v4: 4,
+				v5: 5,
+				v6: 6,
+				v7: 7,
+				v8: 8
+			}[def.version];
+			if (v === void 0) throw new Error(`Invalid UUID version: "${def.version}"`);
+			def.pattern ?? (def.pattern = uuid(v));
+		} else def.pattern ?? (def.pattern = uuid());
+		$ZodStringFormat.init(inst, def);
+	});
+	var $ZodEmail = $constructor("$ZodEmail", (inst, def) => {
+		def.pattern ?? (def.pattern = email), $ZodStringFormat.init(inst, def);
+	});
+	var URL_BAD_FORMAT = 1;
+	var URL_UNPARSEABLE = 2;
+	function canParseURL(input) {
+		try {
+			return typeof URL < "u" && typeof URL.canParse == "function" ? URL.canParse(input) : (new URL(input), !0);
+		} catch {
+			return !1;
+		}
+	}
+	function validateURL(trimmed, def) {
+		return !("normalize" in def) && !("hostname" in def) && !("protocol" in def) ? canParseURL(trimmed) || URL_UNPARSEABLE : parseURLObject(trimmed, def);
+	}
+	function parseURLObject(trimmed, def) {
+		if (!def.normalize && def.protocol?.source === httpProtocol.source && !/^https?:\/\//i.test(trimmed)) return URL_BAD_FORMAT;
+		try {
+			if (typeof URL < "u") {
+				let URLStatic = URL;
+				if (typeof URLStatic.parse == "function") return URLStatic.parse(trimmed) ?? URL_UNPARSEABLE;
+			}
+			return new URL(trimmed);
+		} catch {
+			return URL_UNPARSEABLE;
+		}
+	}
+	var asciiTabOrNewline = /[\t\n\r]/g;
+	function stripTabAndNewline(value) {
+		return value.replace(asciiTabOrNewline, "");
+	}
+	function urlHostnameOk(url, hostname) {
+		return hostname.lastIndex = 0, hostname.test(url.hostname);
+	}
+	function urlProtocolOk(url, protocol) {
+		return protocol.lastIndex = 0, protocol.test(url.protocol.endsWith(":") ? url.protocol.slice(0, -1) : url.protocol);
+	}
+	var $ZodURL = $constructor("$ZodURL", (inst, def) => {
+		$ZodStringFormat.init(inst, def), inst._zod.check = (payload) => {
+			try {
+				let trimmed = payload.value.trim(), url = validateURL(trimmed, def);
+				if (url === URL_BAD_FORMAT) {
+					payload.issues.push({
+						code: "invalid_format",
+						format: "url",
+						note: "Invalid URL format",
+						input: payload.value,
+						inst,
+						continue: !def.abort
+					});
+					return;
+				}
+				if (url === URL_UNPARSEABLE) {
+					payload.issues.push({
+						code: "invalid_format",
+						format: "url",
+						input: payload.value,
+						inst,
+						continue: !def.abort
+					});
+					return;
+				}
+				if (url === !0) {
+					payload.value = stripTabAndNewline(trimmed);
+					return;
+				}
+				def.hostname && !urlHostnameOk(url, def.hostname) && payload.issues.push({
+					code: "invalid_format",
+					format: "url",
+					note: "Invalid hostname",
+					pattern: def.hostname.source,
+					input: payload.value,
+					inst,
+					continue: !def.abort
+				}), def.protocol && !urlProtocolOk(url, def.protocol) && payload.issues.push({
+					code: "invalid_format",
+					format: "url",
+					note: "Invalid protocol",
+					pattern: def.protocol.source,
+					input: payload.value,
+					inst,
+					continue: !def.abort
+				}), payload.value = def.normalize ? url.href : stripTabAndNewline(trimmed);
+				return;
+			} catch {
+				payload.issues.push({
+					code: "invalid_format",
+					format: "url",
+					input: payload.value,
+					inst,
+					continue: !def.abort
+				});
+			}
+		};
+	});
+	var $ZodEmoji = $constructor("$ZodEmoji", (inst, def) => {
+		def.pattern ?? (def.pattern = emoji()), $ZodStringFormat.init(inst, def);
+	});
+	var $ZodNanoID = $constructor("$ZodNanoID", (inst, def) => {
+		if (def.length !== void 0 && (!Number.isInteger(def.length) || def.length < 1)) throw new Error(`Invalid nanoid length: ${def.length}`);
+		def.pattern ?? (def.pattern = def.length === void 0 ? nanoid : nanoidOfLength(def.length)), $ZodStringFormat.init(inst, def);
+	});
+	var $ZodCUID = $constructor("$ZodCUID", (inst, def) => {
+		def.pattern ?? (def.pattern = cuid), $ZodStringFormat.init(inst, def);
+	});
+	var $ZodCUID2 = $constructor("$ZodCUID2", (inst, def) => {
+		def.pattern ?? (def.pattern = cuid2), $ZodStringFormat.init(inst, def);
+	});
+	var $ZodULID = $constructor("$ZodULID", (inst, def) => {
+		def.pattern ?? (def.pattern = ulid), $ZodStringFormat.init(inst, def);
+	});
+	var $ZodXID = $constructor("$ZodXID", (inst, def) => {
+		def.pattern ?? (def.pattern = xid), $ZodStringFormat.init(inst, def);
+	});
+	var $ZodKSUID = $constructor("$ZodKSUID", (inst, def) => {
+		def.pattern ?? (def.pattern = ksuid), $ZodStringFormat.init(inst, def);
+	});
+	var $ZodISODateTime = $constructor("$ZodISODateTime", (inst, def) => {
+		def.pattern ?? (def.pattern = datetime(def)), $ZodStringFormat.init(inst, def);
+	});
+	var $ZodISODate = $constructor("$ZodISODate", (inst, def) => {
+		def.pattern ?? (def.pattern = date), $ZodStringFormat.init(inst, def);
+	});
+	var $ZodISOTime = $constructor("$ZodISOTime", (inst, def) => {
+		def.pattern ?? (def.pattern = time(def)), $ZodStringFormat.init(inst, def);
+	});
+	var $ZodISODuration = $constructor("$ZodISODuration", (inst, def) => {
+		def.pattern ?? (def.pattern = duration), $ZodStringFormat.init(inst, def);
+	});
+	var $ZodIPv4 = $constructor("$ZodIPv4", (inst, def) => {
+		def.pattern ?? (def.pattern = ipv4), $ZodStringFormat.init(inst, def);
+	});
+	var ipv6Alphabet = /^[0-9a-fA-F:.]+$/;
+	function isValidIPv6(value) {
+		return ipv6Alphabet.test(value) ? canParseURL(`http://[${value}]`) : !1;
+	}
+	var $ZodIPv6 = $constructor("$ZodIPv6", (inst, def) => {
+		def.pattern ?? (def.pattern = ipv6), $ZodStringFormat.init(inst, def), inst._zod.check = (payload) => {
+			isValidIPv6(payload.value) || payload.issues.push({
+				code: "invalid_format",
+				format: "ipv6",
+				input: payload.value,
+				inst,
+				continue: !def.abort
+			});
+		};
+	});
+	var $ZodCIDRv4 = $constructor("$ZodCIDRv4", (inst, def) => {
+		def.pattern ?? (def.pattern = cidrv4), $ZodStringFormat.init(inst, def);
+	});
+	function isValidCIDRv6(value) {
+		let parts = value.split("/");
+		if (parts.length !== 2) return !1;
+		let [address, prefix] = parts;
+		if (!prefix) return !1;
+		let prefixNum = Number(prefix);
+		return `${prefixNum}` !== prefix || prefixNum < 0 || prefixNum > 128 ? !1 : isValidIPv6(address);
+	}
+	var $ZodCIDRv6 = $constructor("$ZodCIDRv6", (inst, def) => {
+		def.pattern ?? (def.pattern = cidrv6), $ZodStringFormat.init(inst, def), inst._zod.check = (payload) => {
+			isValidCIDRv6(payload.value) || payload.issues.push({
+				code: "invalid_format",
+				format: "cidrv6",
+				input: payload.value,
+				inst,
+				continue: !def.abort
+			});
+		};
+	});
+	function isValidBase64(data) {
+		if (data === "") return !0;
+		if (/\s/.test(data) || data.length % 4 !== 0) return !1;
+		try {
+			return atob(data), !0;
+		} catch {
+			return !1;
+		}
+	}
+	var base64Charset = /^[0-9a-zA-Z+/]*={0,2}$/;
+	var $ZodBase64 = $constructor("$ZodBase64", (inst, def) => {
+		def.pattern ?? (def.pattern = base64Charset), $ZodStringFormat.init(inst, def), inst._zod.check = (payload) => {
+			isValidBase64(payload.value) || payload.issues.push({
+				code: "invalid_format",
+				format: "base64",
+				input: payload.value,
+				inst,
+				continue: !def.abort
+			});
+		};
+	});
+	var base64urlCharset = /^[A-Za-z0-9_-]*$/;
+	function isValidBase64URL(data) {
+		if (!base64urlCharset.test(data)) return !1;
+		let base642 = data.replace(/[-_]/g, (c) => c === "-" ? "+" : "/");
+		return isValidBase64(base642.padEnd(Math.ceil(base642.length / 4) * 4, "="));
+	}
+	var $ZodBase64URL = $constructor("$ZodBase64URL", (inst, def) => {
+		def.pattern ?? (def.pattern = base64urlCharset), $ZodStringFormat.init(inst, def), inst._zod.check = (payload) => {
+			isValidBase64URL(payload.value) || payload.issues.push({
+				code: "invalid_format",
+				format: "base64url",
+				input: payload.value,
+				inst,
+				continue: !def.abort
+			});
+		};
+	});
+	var $ZodE164 = $constructor("$ZodE164", (inst, def) => {
+		def.pattern ?? (def.pattern = e164), $ZodStringFormat.init(inst, def);
+	});
+	function isValidJWT(token, algorithm = null) {
+		try {
+			let tokensParts = token.split(".");
+			if (tokensParts.length !== 3) return !1;
+			let [header] = tokensParts;
+			if (!header) return !1;
+			let parsedHeader = JSON.parse(atob(header));
+			return !("typ" in parsedHeader && parsedHeader?.typ !== "JWT" || !parsedHeader.alg || algorithm && (!("alg" in parsedHeader) || parsedHeader.alg !== algorithm));
+		} catch {
+			return !1;
+		}
+	}
+	var $ZodJWT = $constructor("$ZodJWT", (inst, def) => {
+		$ZodStringFormat.init(inst, def), inst._zod.check = (payload) => {
+			isValidJWT(payload.value, def.alg) || payload.issues.push({
+				code: "invalid_format",
+				format: "jwt",
+				input: payload.value,
+				inst,
+				continue: !def.abort
+			});
+		};
+	});
+	var $ZodNumber = $constructor("$ZodNumber", (inst, def) => {
+		$ZodType.init(inst, def), inst._zod.pattern = number, inst._zod.parse = (payload, _ctx) => {
+			if (def.coerce) try {
+				payload.value = Number(payload.value);
+			} catch {}
+			let input = payload.value;
+			if (typeof input == "number" && !Number.isNaN(input) && Number.isFinite(input)) return payload;
+			let received = typeof input == "number" ? Number.isNaN(input) ? "NaN" : Number.isFinite(input) ? void 0 : String(input) : void 0;
+			return payload.issues.push({
+				expected: "number",
+				code: "invalid_type",
+				input,
+				inst,
+				...received ? { received } : {}
+			}), payload;
+		};
+	});
+	var $ZodNumberFormat = $constructor("$ZodNumberFormat", (inst, def) => {
+		$ZodCheckNumberFormat.init(inst, def), $ZodNumber.init(inst, def);
+	});
+	var $ZodBoolean = $constructor("$ZodBoolean", (inst, def) => {
+		$ZodType.init(inst, def), inst._zod.pattern = boolean, inst._zod.parse = (payload, _ctx) => {
+			if (def.coerce) try {
+				payload.value = !!payload.value;
+			} catch {}
+			let input = payload.value;
+			return typeof input == "boolean" || payload.issues.push({
+				expected: "boolean",
+				code: "invalid_type",
+				input,
+				inst
+			}), payload;
+		};
+	});
+	var $ZodUnknown = $constructor("$ZodUnknown", (inst, def) => {
+		$ZodType.init(inst, def), inst._zod.parse = (payload) => payload;
+	});
+	var $ZodNever = $constructor("$ZodNever", (inst, def) => {
+		$ZodType.init(inst, def), inst._zod.parse = (payload, _ctx) => (payload.issues.push({
+			expected: "never",
+			code: "invalid_type",
+			input: payload.value,
+			inst
+		}), payload);
+	});
+	function capSize(inst, size) {
+		let caps = sizeCaps(inst._zod.def.checks);
+		if (!caps.length) return;
+		let cap = Math.min(...caps.map((c) => c[0])), parse2 = inst._zod.parse;
+		inst._zod.parse = (payload, ctx) => {
+			let n = size(payload.value);
+			if (n > cap && !ctx?.skipChecks && ctx?.direction !== "backward") {
+				for (let [max, ch] of sizeCaps(inst._zod.def.checks)) if (n > max && ch._zod.def.when(payload)) {
+					let start = payload.issues.length;
+					return ch._zod.check(payload), payload.issues[start].continue = !1, attachSchema(payload.issues, start, inst), payload;
+				}
+			}
+			return parse2(payload, ctx);
+		};
+	}
+	var arraySize = (input) => Array.isArray(input) ? input.length : -1;
+	function handleArrayResult(result, final, index) {
+		result.issues.length && final.issues.push(...prefixIssues(index, result.issues)), final.value[index] = result.value;
+	}
+	var $ZodArray = $constructor("$ZodArray", (inst, def) => {
+		$ZodType.init(inst, def);
+		let memo2 = globalConfig.memoizer;
+		memo2?.attach(inst), inst._zod.parse = (payload, ctx) => {
+			let input = payload.value;
+			if (!Array.isArray(input)) return payload.issues.push({
+				expected: "array",
+				code: "invalid_type",
+				input,
+				inst
+			}), payload;
+			payload.value = memo2 ? memo2.alloc(inst, payload, Array(input.length), ctx) : Array(input.length);
+			let proms = [], abortEarly = ctx?.abortEarly;
+			for (let i = 0; i < input.length; i++) {
+				let item = input[i], result = def.element._zod.run({
+					value: item,
+					issues: []
+				}, ctx);
+				if (result instanceof Promise) proms.push(result.then((result2) => handleArrayResult(result2, payload, i)));
+				else if (handleArrayResult(result, payload, i), abortEarly && result.issues.length !== 0 && aborted(result)) break;
+			}
+			return proms.length ? Promise.all(proms).then(() => payload) : payload;
+		}, capSize(inst, arraySize);
+	});
+	function handlePropertyResult(result, final, key, input, optin, optout) {
+		let isPresent = key in input, isOptionalOut = optout === "optional";
+		if (!(!isPresent && isOptionalOut && optin === "optional")) {
+			if (result.issues.length) {
+				if (optin !== void 0 && isOptionalOut && !isPresent) return;
+				final.issues.push(...prefixIssues(key, result.issues));
+			}
+			if (!isPresent && optin === void 0) {
+				result.issues.length || final.issues.push({
+					code: "invalid_type",
+					expected: "nonoptional",
+					input: void 0,
+					path: [key]
+				});
+				return;
+			}
+			result.value === void 0 ? (isPresent || optin === "defaulted" && !isOptionalOut) && (final.value[key] = void 0) : final.value[key] = result.value;
+		}
+	}
+	var NO_SYMBOL_KEYS = [];
+	function normalizeDef(def) {
+		let keys = Object.keys(def.shape), ownSymbols = Object.getOwnPropertySymbols(def.shape), symbolKeys = ownSymbols.length ? ownSymbols : NO_SYMBOL_KEYS, allKeys = symbolKeys.length ? [...keys, ...symbolKeys] : keys;
+		for (let k of allKeys) if (!def.shape?.[k]?._zod?.traits?.has("$ZodType")) throw new Error(`Invalid element at key "${String(k)}": expected a Zod schema`);
+		let okeys = optionalKeys(def.shape);
+		return {
+			...def,
+			allKeys,
+			symbolKeys,
+			keySet: new Set(keys),
+			numKeys: keys.length,
+			optionalKeys: new Set(okeys)
+		};
+	}
+	function handleCatchall(proms, input, payload, ctx, def, inst, abortEarly) {
+		let unrecognized = [], keySet = def.keySet, _catchall = def.catchall._zod, t = _catchall.def.type, optin = _catchall.optin, optout = _catchall.optout, seen = 0;
+		for (let key in input) {
+			if (abortEarly && payload.issues.length !== seen) {
+				if (aborted(payload, seen)) break;
+				seen = payload.issues.length;
+			}
+			if (keySet.has(key)) continue;
+			if (key === "__proto__") {
+				t === "never" && unrecognized.push(key);
+				continue;
+			}
+			if (t === "never") {
+				unrecognized.push(key);
+				continue;
+			}
+			let r = _catchall.run({
+				value: input[key],
+				issues: []
+			}, ctx);
+			r instanceof Promise ? proms.push(r.then((r2) => handlePropertyResult(r2, payload, key, input, optin, optout))) : handlePropertyResult(r, payload, key, input, optin, optout);
+		}
+		return unrecognized.length && payload.issues.push({
+			code: "unrecognized_keys",
+			keys: unrecognized,
+			input,
+			inst,
+			continue: !0
+		}), proms.length ? Promise.all(proms).then(() => payload) : payload;
+	}
+	var $ZodObject = $constructor("$ZodObject", (inst, def) => {
+		$ZodType.init(inst, def);
+		let desc = Object.getOwnPropertyDescriptor(def, "shape"), sh = desc?.get ? desc.get.raw : def.shape ?? {};
+		if (sh) {
+			let get = () => {
+				let newSh = { ...sh };
+				return Object.defineProperty(def, "shape", { value: newSh }), get.raw = newSh, newSh;
+			};
+			get.raw = sh, Object.defineProperty(def, "shape", { get });
+		}
+		let _normalized = cached(() => normalizeDef(def));
+		defineLazyInternal(inst, "propValues", (zod) => {
+			let shape = zod.def.shape, propValues = {};
+			for (let key in shape) {
+				let field = shape[key]._zod;
+				if (field.values) {
+					Object.prototype.hasOwnProperty.call(propValues, key) || assignProp(propValues, key, /* @__PURE__ */ new Set());
+					for (let v of field.values) propValues[key].add(v);
+					field.optin !== void 0 && propValues[key].add(void 0);
+				}
+			}
+			return propValues;
+		});
+		let isObject2 = isObject, catchall = def.catchall, value, memo2 = globalConfig.memoizer;
+		memo2?.attach(inst), inst._zod.parse = (payload, ctx) => {
+			value ?? (value = _normalized.value);
+			let input = payload.value;
+			if (!isObject2(input)) return payload.issues.push({
+				expected: "object",
+				code: "invalid_type",
+				input,
+				inst
+			}), payload;
+			payload.value = memo2 ? memo2.alloc(inst, payload, {}, ctx) : {};
+			let proms = [], shape = value.shape, abortEarly = ctx?.abortEarly, seen = payload.issues.length;
+			for (let key of value.allKeys) {
+				if (abortEarly && payload.issues.length !== seen) {
+					if (aborted(payload, seen)) break;
+					seen = payload.issues.length;
+				}
+				if (key === "__proto__") continue;
+				let el = shape[key], optin = el._zod.optin, optout = el._zod.optout, r = el._zod.run({
+					value: input[key],
+					issues: []
+				}, ctx);
+				r instanceof Promise ? proms.push(r.then((r2) => handlePropertyResult(r2, payload, key, input, optin, optout))) : handlePropertyResult(r, payload, key, input, optin, optout);
+			}
+			return catchall ? handleCatchall(proms, input, payload, ctx, _normalized.value, inst, abortEarly === !0) : proms.length ? Promise.all(proms).then(() => payload) : payload;
+		};
+	});
+	var $ZodObjectJIT = $constructor("$ZodObjectJIT", (inst, def) => {
+		$ZodObject.init(inst, def);
+		let superParse = inst._zod.parse, _normalized = cached(() => normalizeDef(def)), memo2 = globalConfig.memoizer, generateFastpass = (shape) => {
+			let normalized = _normalized.value, syms = normalized.symbolKeys, doc = new Doc(["payload", "ctx"], {
+				shape,
+				inst,
+				memo: memo2,
+				syms
+			}), parseStr = (k) => `shape[${k}]._zod.run({ value: input[${k}], issues: [] }, ctx)`, prefixStr = (id, k) => `
+          let ${id}_ab = false;
+          for (let i = 0; i < ${id}.issues.length; i++) {
+            const iss = ${id}.issues[i];
+            iss.path = iss.path ? [${k}, ...iss.path] : [${k}];
+            payload.issues.push(iss);
+            if (iss.continue !== true) ${id}_ab = true;
+          }
+          if (${id}_ab && ctx && ctx.abortEarly) {
+            payload.value = newResult;
+            return payload;
+          }`;
+			doc.write("const input = payload.value;");
+			let ids = Object.create(null), counter = 0;
+			for (let key of normalized.allKeys) ids[key] = `key_${counter++}`;
+			doc.write(memo2 ? "const newResult = memo.alloc(inst, payload, {}, ctx);" : "const newResult = {};");
+			for (let key of normalized.allKeys) {
+				if (key === "__proto__") continue;
+				let id = ids[key], k = typeof key == "symbol" ? `syms[${syms.indexOf(key)}]` : esc(key), isPresent = `${k} in input`, schema = shape[key], optin = schema?._zod?.optin, isOptionalIn = optin !== void 0, isOptionalOut = schema?._zod?.optout === "optional";
+				if (doc.write(`const ${id} = ${parseStr(k)};`), isOptionalIn && isOptionalOut) {
+					let assign = optin === "optional" ? `${id}_present` : `${id}.value !== undefined || ${id}_present`;
+					doc.write(`
+        const ${id}_present = ${isPresent};
+        if (!${id}.issues.length || ${id}_present) {
+          if (${id}.issues.length) {${prefixStr(id, k)}
+          }
+
+          if (${assign}) {
+            newResult[${k}] = ${id}.value;
+          }
+        }
+
+      `);
+				} else isOptionalIn ? (doc.write(`
+        if (${id}.issues.length) {${prefixStr(id, k)}
+        }
+      `), optin === "defaulted" ? doc.write(`newResult[${k}] = ${id}.value;`) : doc.write(`
+        if (${id}.value !== undefined || ${isPresent}) {
+          newResult[${k}] = ${id}.value;
+        }
+      `)) : doc.write(`
+        const ${id}_present = ${isPresent};
+        if (${id}.issues.length) {${prefixStr(id, k)}
+        }
+        if (!${id}_present && !${id}.issues.length) {
+          payload.issues.push({
+            code: "invalid_type",
+            expected: "nonoptional",
+            input: undefined,
+            path: [${k}]
+          });
+          if (ctx && ctx.abortEarly) {
+            payload.value = newResult;
+            return payload;
+          }
+        }
+
+        if (${id}_present) {
+          newResult[${k}] = ${id}.value;
+        }
+
+      `);
+			}
+			return doc.write("payload.value = newResult;"), doc.write("return payload;"), doc.compile();
+		}, fastpass, isObject2 = isObject, jit = !globalConfig.jitless, fastEnabled = jit && allowsEval.value, catchall = def.catchall, value;
+		inst._zod.parse = (payload, ctx) => {
+			value ?? (value = _normalized.value);
+			let input = payload.value;
+			return isObject2(input) ? jit && fastEnabled && ctx?.async === !1 && ctx.jitless !== !0 ? (fastpass || (fastpass = generateFastpass(def.shape)), payload = fastpass(payload, ctx), catchall ? handleCatchall([], input, payload, ctx, value, inst, ctx?.abortEarly === !0) : payload) : superParse(payload, ctx) : (payload.issues.push({
+				expected: "object",
+				code: "invalid_type",
+				input,
+				inst
+			}), payload);
+		};
+	});
+	function handleUnionResults(results, final, inst, ctx) {
+		for (let result of results) if (result.issues.length === 0) return final.value = result.value, final;
+		let nonaborted = results.filter((r) => !aborted(r));
+		return nonaborted.length === 1 ? (final.value = nonaborted[0].value, nonaborted[0]) : (final.issues.push({
+			code: "invalid_union",
+			input: final.value,
+			inst,
+			errors: results.map((result) => result.issues.map((iss) => finalizeIssue(iss, ctx, config())))
+		}), final);
+	}
+	var $ZodUnion = $constructor("$ZodUnion", (inst, def) => {
+		$ZodType.init(inst, def), defineLazyInternal(inst, "optin", (zod) => zod.def.options.some((o) => o._zod.optin === "defaulted") ? "defaulted" : zod.def.options.some((o) => o._zod.optin !== void 0) ? "optional" : void 0), defineLazyInternal(inst, "optout", (zod) => zod.def.options.some((o) => o._zod.optout === "optional") ? "optional" : void 0), defineLazyInternal(inst, "values", (zod) => {
+			if (zod.def.options.every((o) => o._zod.values)) return new Set(zod.def.options.flatMap((option) => Array.from(option._zod.values)));
+		}), defineLazyInternal(inst, "pattern", (zod) => {
+			if (zod.def.options.every((o) => o._zod.pattern)) {
+				let patterns = zod.def.options.map((o) => o._zod.pattern);
+				return new RegExp(`^(${patterns.map((p) => cleanRegex(p.source)).join("|")})$`);
+			}
+		});
+		let first = def.options.length === 1 ? def.options[0]._zod.run : null;
+		inst._zod.parse = (payload, ctx) => {
+			if (first) return first(payload, ctx);
+			let async = !1, results = [];
+			for (let option of def.options) {
+				let result = option._zod.run({
+					value: payload.value,
+					issues: []
+				}, ctx);
+				if (result instanceof Promise) results.push(result), async = !0;
+				else {
+					if (result.issues.length === 0) return result;
+					results.push(result);
+				}
+			}
+			return async ? Promise.all(results).then((results2) => handleUnionResults(results2, payload, inst, ctx)) : handleUnionResults(results, payload, inst, ctx);
+		};
+	});
+	var $ZodIntersection = $constructor("$ZodIntersection", (inst, def) => {
+		$ZodType.init(inst, def), inst._zod.parse = (payload, ctx) => {
+			let input = payload.value, left = def.left._zod.run({
+				value: input,
+				issues: []
+			}, ctx), right = def.right._zod.run({
+				value: input,
+				issues: []
+			}, ctx);
+			return left instanceof Promise || right instanceof Promise ? Promise.all([left, right]).then(([left2, right2]) => handleIntersectionResults(payload, left2, right2)) : handleIntersectionResults(payload, left, right);
+		};
+	});
+	function mergeValues(a, b) {
+		if (a === b) return {
+			valid: !0,
+			data: a
+		};
+		if (a instanceof Date && b instanceof Date && +a == +b) return {
+			valid: !0,
+			data: a
+		};
+		if (isPlainObject(a) && isPlainObject(b)) {
+			let bKeys = Object.keys(b), sharedKeys = Object.keys(a).filter((key) => bKeys.indexOf(key) !== -1), newObj = {
+				...a,
+				...b
+			};
+			Object.prototype.hasOwnProperty.call(newObj, "__proto__") && delete newObj.__proto__;
+			for (let key of sharedKeys) {
+				if (key === "__proto__") continue;
+				let sharedValue = mergeValues(a[key], b[key]);
+				if (!sharedValue.valid) return {
+					valid: !1,
+					mergeErrorPath: [key, ...sharedValue.mergeErrorPath]
+				};
+				newObj[key] = sharedValue.data;
+			}
+			return {
+				valid: !0,
+				data: newObj
+			};
+		}
+		if (Array.isArray(a) && Array.isArray(b)) {
+			if (a.length !== b.length) return {
+				valid: !1,
+				mergeErrorPath: []
+			};
+			let newArray = [];
+			for (let index = 0; index < a.length; index++) {
+				let itemA = a[index], itemB = b[index], sharedValue = mergeValues(itemA, itemB);
+				if (!sharedValue.valid) return {
+					valid: !1,
+					mergeErrorPath: [index, ...sharedValue.mergeErrorPath]
+				};
+				newArray.push(sharedValue.data);
+			}
+			return {
+				valid: !0,
+				data: newArray
+			};
+		}
+		return {
+			valid: !1,
+			mergeErrorPath: []
+		};
+	}
+	function handleIntersectionResults(result, left, right) {
+		let unrecKeys = /* @__PURE__ */ new Map(), unrecIssue, keyIssues = /* @__PURE__ */ new Map(), collect = (iss, side) => {
+			let keys;
+			if (iss.code === "unrecognized_keys" && !iss.path?.length) unrecIssue ?? (unrecIssue = iss), keys = iss.keys;
+			else if (iss.code === "invalid_key" && iss.origin === "record" && iss.path?.length === 1) {
+				let k = String(iss.path[0]);
+				keyIssues.has(k) || keyIssues.set(k, iss), keys = [k];
+			} else return !1;
+			for (let k of keys) unrecKeys.has(k) || unrecKeys.set(k, {}), unrecKeys.get(k)[side] = !0;
+			return !0;
+		};
+		for (let iss of left.issues) collect(iss, "l") || result.issues.push(iss);
+		for (let iss of right.issues) collect(iss, "r") || result.issues.push(iss);
+		let bothKeys = [...unrecKeys].filter(([, f]) => f.l && f.r).map(([k]) => k);
+		if (bothKeys.length) {
+			let aggregated = unrecIssue ? bothKeys.filter((k) => unrecIssue.keys.includes(k)) : [];
+			aggregated.length && result.issues.push({
+				...unrecIssue,
+				keys: aggregated
+			});
+			for (let k of bothKeys) !aggregated.includes(k) && keyIssues.has(k) && result.issues.push(keyIssues.get(k));
+		}
+		let merged = mergeValues(left.value, right.value);
+		if (!merged.valid) {
+			if (aborted(result)) return result;
+			throw new Error(`Unmergable intersection. Error path: ${JSON.stringify(merged.mergeErrorPath)}`);
+		}
+		return result.value = merged.data, result;
+	}
+	var $ZodEnum = $constructor("$ZodEnum", (inst, def) => {
+		$ZodType.init(inst, def);
+		let values = getEnumValues(def.entries), valuesSet = new Set(values);
+		inst._zod.values = valuesSet, defineLazyInternal(inst, "pattern", (zod) => {
+			let patternValues = getEnumValues(zod.def.entries).filter((k) => propertyKeyTypes.has(typeof k));
+			return new RegExp(patternValues.length ? `^(${patternValues.map((o) => escapeRegex(o.toString())).join("|")})$` : "^[^\\s\\S]$");
+		}), inst._zod.parse = (payload, _ctx) => {
+			let input = payload.value;
+			return valuesSet.has(input) || payload.issues.push({
+				code: "invalid_value",
+				values,
+				input,
+				inst
+			}), payload;
+		};
+	});
+	var $ZodLiteral = $constructor("$ZodLiteral", (inst, def) => {
+		$ZodType.init(inst, def);
+		let values = new Set(def.values);
+		inst._zod.values = values, defineLazyInternal(inst, "pattern", (zod) => {
+			let vals = zod.def.values;
+			return new RegExp(vals.length ? `^(${vals.map((o) => typeof o == "string" ? escapeRegex(o) : o ? escapeRegex(o.toString()) : String(o)).join("|")})$` : "^[^\\s\\S]$");
+		}), inst._zod.parse = (payload, _ctx) => {
+			let input = payload.value;
+			return values.has(input) || payload.issues.push({
+				code: "invalid_value",
+				values: def.values,
+				input,
+				inst
+			}), payload;
+		};
+	});
+	var $ZodTransform = $constructor("$ZodTransform", (inst, def) => {
+		$ZodType.init(inst, def), inst._zod.optin = "optional", globalConfig.memoizer?.guard(inst), inst._zod.parse = (payload, ctx) => {
+			if (ctx.direction === "backward") throw new $ZodEncodeError(inst.constructor.name);
+			let _out = def.transform(payload.value, payload);
+			if (ctx.async) return (_out instanceof Promise ? _out : Promise.resolve(_out)).then((output2) => (payload.value = output2, payload));
+			if (_out instanceof Promise) throw new $ZodAsyncError();
+			return payload.value = _out, payload;
+		};
+	});
+	function handleOptionalResult(payload, result) {
+		return payload.value = result.issues.length ? void 0 : result.value, payload;
+	}
+	var $ZodOptional = $constructor("$ZodOptional", (inst, def) => {
+		$ZodType.init(inst, def), defineLazyInternal(inst, "optin", (zod) => zod.def.innerType._zod.optin === "defaulted" ? "defaulted" : "optional"), inst._zod.optout = "optional", defineLazyInternal(inst, "values", (zod) => {
+			let values = zod.def.innerType._zod.values;
+			return values ? /* @__PURE__ */ new Set([...values, void 0]) : void 0;
+		}), defineLazyInternal(inst, "pattern", (zod) => {
+			let pattern = zod.def.innerType._zod.pattern;
+			return pattern ? new RegExp(`^(${cleanRegex(pattern.source)})?$`) : void 0;
+		}), inst._zod.parse = (payload, ctx) => {
+			if (payload.value === void 0) {
+				if (def.innerType._zod.optin !== "defaulted") return payload;
+				let result = def.innerType._zod.run({
+					value: payload.value,
+					issues: []
+				}, ctx);
+				return result instanceof Promise ? result.then((result2) => handleOptionalResult(payload, result2)) : handleOptionalResult(payload, result);
+			}
+			return def.innerType._zod.run(payload, ctx);
+		};
+	});
+	var $ZodExactOptional = $constructor("$ZodExactOptional", (inst, def) => {
+		$ZodOptional.init(inst, def), defineLazyInternal(inst, "values", (zod) => zod.def.innerType._zod.values), defineLazyInternal(inst, "pattern", (zod) => zod.def.innerType._zod.pattern), inst._zod.parse = (payload, ctx) => def.innerType._zod.run(payload, ctx);
+	});
+	var $ZodNullable = $constructor("$ZodNullable", (inst, def) => {
+		$ZodType.init(inst, def), defineLazyInternal(inst, "optin", (zod) => zod.def.innerType._zod.optin), defineLazyInternal(inst, "optout", (zod) => zod.def.innerType._zod.optout), defineLazyInternal(inst, "pattern", (zod) => {
+			let pattern = zod.def.innerType._zod.pattern;
+			return pattern ? new RegExp(`^(${cleanRegex(pattern.source)}|null)$`) : void 0;
+		}), defineLazyInternal(inst, "values", (zod) => zod.def.innerType._zod.values ? /* @__PURE__ */ new Set([...zod.def.innerType._zod.values, null]) : void 0), inst._zod.parse = (payload, ctx) => payload.value === null ? payload : def.innerType._zod.run(payload, ctx);
+	});
+	var $ZodDefault = $constructor("$ZodDefault", (inst, def) => {
+		$ZodType.init(inst, def), inst._zod.optin = "defaulted", defineLazyInternal(inst, "values", (zod) => zod.def.innerType._zod.values), inst._zod.parse = (payload, ctx) => {
+			if (ctx.direction === "backward") return def.innerType._zod.run(payload, ctx);
+			if (payload.value === void 0) return payload.value = def.defaultValue, payload;
+			let result = def.innerType._zod.run(payload, ctx);
+			return result instanceof Promise ? result.then((result2) => handleDefaultResult(result2, def)) : handleDefaultResult(result, def);
+		};
+	});
+	function handleDefaultResult(payload, def) {
+		return payload.value === void 0 && (payload.value = def.defaultValue), payload;
+	}
+	var $ZodPrefault = $constructor("$ZodPrefault", (inst, def) => {
+		$ZodType.init(inst, def), inst._zod.optin = "defaulted", defineLazyInternal(inst, "values", (zod) => zod.def.innerType._zod.values), inst._zod.parse = (payload, ctx) => (ctx.direction === "backward" || payload.value === void 0 && (payload.value = def.defaultValue), def.innerType._zod.run(payload, ctx));
+	});
+	var $ZodNonOptional = $constructor("$ZodNonOptional", (inst, def) => {
+		$ZodType.init(inst, def), defineLazyInternal(inst, "values", (zod) => {
+			let v = zod.def.innerType._zod.values;
+			return v ? new Set([...v].filter((x) => x !== void 0)) : void 0;
+		}), inst._zod.parse = (payload, ctx) => {
+			let result = def.innerType._zod.run(payload, ctx);
+			return result instanceof Promise ? result.then((result2) => handleNonOptionalResult(result2, inst)) : handleNonOptionalResult(result, inst);
+		};
+	});
+	function handleNonOptionalResult(payload, inst) {
+		return !payload.issues.length && payload.value === void 0 && payload.issues.push({
+			code: "invalid_type",
+			expected: "nonoptional",
+			input: payload.value,
+			inst
+		}), payload;
+	}
+	function handleCatchResult(payload, result, def, ctx) {
+		return result.issues.length ? (payload.value = def.catchValue({
+			...result,
+			value: payload.value,
+			error: { issues: result.issues.map((iss) => finalizeIssue(iss, ctx, config())) },
+			input: payload.value
+		}), payload) : (payload.value = result.value, result.memo && (payload.memo = !0), payload);
+	}
+	var $ZodCatch = $constructor("$ZodCatch", (inst, def) => {
+		$ZodType.init(inst, def), defineLazyInternal(inst, "optin", (zod) => zod.def.innerType._zod.optin === "defaulted" ? "defaulted" : "optional"), defineLazyInternal(inst, "optout", (zod) => zod.def.innerType._zod.optout), defineLazyInternal(inst, "values", (zod) => zod.def.innerType._zod.values), inst._zod.parse = (payload, ctx) => {
+			if (ctx.direction === "backward") return def.innerType._zod.run(payload, ctx);
+			let result = def.innerType._zod.run({
+				value: payload.value,
+				issues: []
+			}, ctx);
+			return result instanceof Promise ? result.then((result2) => handleCatchResult(payload, result2, def, ctx)) : handleCatchResult(payload, result, def, ctx);
+		};
+	});
+	var $ZodPipe = $constructor("$ZodPipe", (inst, def) => {
+		$ZodType.init(inst, def), defineLazyInternal(inst, "values", (zod) => zod.def.in._zod.values), defineLazyInternal(inst, "optin", (zod) => zod.def.in._zod.optin), defineLazyInternal(inst, "optout", (zod) => zod.def.out._zod.optout), defineLazyInternal(inst, "propValues", (zod) => zod.def.in._zod.propValues), inst._zod.parse = (payload, ctx) => {
+			if (ctx.direction === "backward") {
+				let right = def.out._zod.run(payload, ctx);
+				return right instanceof Promise ? right.then((right2) => handlePipeResult(right2, def.in, ctx)) : handlePipeResult(right, def.in, ctx);
+			}
+			let left = def.in._zod.run(payload, ctx);
+			return left instanceof Promise ? left.then((left2) => handlePipeResult(left2, def.out, ctx)) : handlePipeResult(left, def.out, ctx);
+		};
+	});
+	function handlePipeResult(left, next, ctx) {
+		return left.issues.some((iss) => iss.code !== "unrecognized_keys") ? (left.aborted = !0, left) : next._zod.run({
+			value: left.value,
+			issues: left.issues
+		}, ctx);
+	}
+	var $ZodReadonly = $constructor("$ZodReadonly", (inst, def) => {
+		$ZodType.init(inst, def), defineLazyInternal(inst, "propValues", (zod) => zod.def.innerType._zod.propValues), defineLazyInternal(inst, "values", (zod) => zod.def.innerType._zod.values), defineLazyInternal(inst, "optin", (zod) => zod.def.innerType?._zod?.optin), defineLazyInternal(inst, "optout", (zod) => zod.def.innerType?._zod?.optout), inst._zod.parse = (payload, ctx) => {
+			if (ctx.direction === "backward") return def.innerType._zod.run(payload, ctx);
+			let result = def.innerType._zod.run(payload, ctx);
+			return result instanceof Promise ? result.then(handleReadonlyResult) : handleReadonlyResult(result);
+		};
+	});
+	function handleReadonlyResult(payload) {
+		return payload.memo || (payload.value = Object.freeze(payload.value)), payload;
+	}
+	var $ZodCustom = $constructor("$ZodCustom", (inst, def) => {
+		$ZodCheck.init(inst, def), $ZodType.init(inst, def), inst._zod.parse = (payload, _) => payload, inst._zod.check = (payload) => {
+			let input = payload.value, r = def.fn(input);
+			if (r instanceof Promise) return r.then((r2) => handleRefineResult(r2, payload, input, inst));
+			handleRefineResult(r, payload, input, inst);
+		};
+	});
+	function handleRefineResult(result, payload, input, inst) {
+		if (!result) {
+			let _iss = {
+				code: "custom",
+				input,
+				inst,
+				path: [...inst._zod.def.path ?? []],
+				continue: !inst._zod.def.abort
+			};
+			inst._zod.def.params && (_iss.params = inst._zod.def.params), payload.issues.push(issue(_iss));
+		}
+	}
+	var $ZodCyclicError = class extends Error {
+		constructor() {
+			super("Cannot parse a reference cycle that closes through a transform"), this.name = "ZodCyclicError";
+		}
+	};
+	var STATE = "~memo";
+	var NO_ISSUES = [];
+	function isRef(value) {
+		return value !== null && typeof value == "object";
+	}
+	function cloneIssues(issues) {
+		return issues.map((iss) => iss.path ? {
+			...iss,
+			path: iss.path.slice()
+		} : { ...iss });
+	}
+	var recursive = /* @__PURE__ */ new WeakMap();
+	var NONE = 0;
+	var ASSUMED = 1;
+	var PROVEN = 2;
+	function isRecursive(inst, stack, resolve) {
+		let cached2 = recursive.get(inst);
+		if (cached2 !== void 0) return cached2 ? PROVEN : NONE;
+		if (stack.has(inst)) return PROVEN;
+		stack.add(inst);
+		let result = NONE, check = (child) => {
+			if (result !== PROVEN && child?._zod) {
+				let answer = isRecursive(child, stack, resolve);
+				answer > result && (result = answer);
+			}
+		}, shape = (sh, spread) => {
+			let answer = NONE;
+			for (let key of Reflect.ownKeys(sh)) {
+				let desc = Object.getOwnPropertyDescriptor(sh, key);
+				if (spread && !desc.enumerable) continue;
+				let child = desc.get ? ASSUMED : desc.value?._zod ? isRecursive(desc.value, stack, resolve) : NONE;
+				child > answer && (answer = child);
+			}
+			return answer;
+		}, merge2 = (answer) => {
+			answer > result && (result = answer);
+		}, def = inst._zod.def;
+		switch (def.type) {
+			case "object": {
+				let raw = rawShape(def);
+				merge2(raw ? shape(raw, !0) : ASSUMED), check(def.catchall);
+				break;
+			}
+			case "array":
+				check(def.element);
+				break;
+			case "tuple":
+				for (let el of def.items) check(el);
+				check(def.rest);
+				break;
+			case "record":
+			case "map":
+				check(def.keyType), check(def.valueType);
+				break;
+			case "set":
+				check(def.valueType);
+				break;
+			case "union":
+				for (let el of def.options) check(el);
+				break;
+			case "intersection":
+				check(def.left), check(def.right);
+				break;
+			case "optional":
+			case "nullable":
+			case "default":
+			case "prefault":
+			case "catch":
+			case "readonly":
+			case "nonoptional":
+			case "promise":
+			case "success":
+				check(def.innerType);
+				break;
+			case "pipe":
+				check(def.in), check(def.out);
+				break;
+			case "function":
+				check(def.input), check(def.output);
+				break;
+			case "lazy": {
+				let inner = def._cachedInner ?? (resolve ? inst._zod.innerType : void 0);
+				merge2(inner ? isRecursive(inner, stack, !1) : ASSUMED);
+				break;
+			}
+			case "template_literal":
+			case "string":
+			case "number":
+			case "int":
+			case "boolean":
+			case "bigint":
+			case "symbol":
+			case "undefined":
+			case "null":
+			case "void":
+			case "never":
+			case "any":
+			case "unknown":
+			case "date":
+			case "nan":
+			case "enum":
+			case "literal":
+			case "file":
+			case "transform":
+			case "custom": break;
+			default: for (let key in def) {
+				let desc = Object.getOwnPropertyDescriptor(def, key);
+				if (!desc || desc.get) continue;
+				let value = desc.value;
+				if (!(!value || typeof value != "object")) {
+					if (value._zod) check(value);
+					else if (Array.isArray(value)) for (let el of value) check(el);
+				}
+			}
+		}
+		return stack.delete(inst), settle(inst, result);
+	}
+	function settle(inst, answer) {
+		return answer !== ASSUMED && recursive.set(inst, answer === PROVEN), answer;
+	}
+	function bucketFor(state, inst) {
+		let bucket = state.buckets.get(inst);
+		return bucket || (bucket = /* @__PURE__ */ new WeakMap(), state.buckets.set(inst, bucket)), bucket;
+	}
+	var handoff;
+	var open = [];
+	var memo = {
+		alloc(_inst, payload, empty) {
+			let bucket = handoff;
+			if (!bucket) return empty;
+			handoff = void 0;
+			let entry = {
+				value: empty,
+				issues: null
+			};
+			return bucket.set(payload.value, entry), open.push(entry), empty;
+		},
+		guard(inst) {
+			var _a3;
+			(_a3 = inst._zod).deferred ?? (_a3.deferred = []), inst._zod.deferred.push(() => {
+				let base = inst._zod.parse, wrapped = (payload, ctx) => {
+					if (ctx.direction !== "backward" && isBackEdge(ctx, payload.value)) throw new $ZodCyclicError();
+					return base(payload, ctx);
+				};
+				inst._zod.parse = wrapped, inst._zod.run === base && (inst._zod.run = wrapped);
+			});
+		},
+		attach(inst) {
+			var _a3;
+			let isRecursiveInst, rechecked = !1, lastCtx, lastBucket;
+			(_a3 = inst._zod).deferred ?? (_a3.deferred = []), inst._zod.deferred.push(() => {
+				let base = inst._zod.parse, wrapped = (payload, ctx) => {
+					if (isRecursiveInst === void 0) {
+						let walked = isRecursive(inst, /* @__PURE__ */ new Set(), !1);
+						if (walked === NONE) return inst._zod.parse = base, inst._zod.run === wrapped && (inst._zod.run = base), base(payload, ctx);
+						walked === PROVEN || rechecked ? isRecursiveInst = !0 : rechecked = !0;
+					}
+					let input = payload.value;
+					if (!isRef(input)) return base(payload, ctx);
+					let state = ctx[STATE];
+					state || (state = {
+						buckets: /* @__PURE__ */ new WeakMap(),
+						backEdges: void 0
+					}, ctx[STATE] = state);
+					let bucket;
+					lastCtx === ctx ? bucket = lastBucket : (bucket = bucketFor(state, inst), lastCtx = ctx, lastBucket = bucket);
+					let hit = bucket.get(input);
+					if (hit) return payload.value = hit.value, hit.issues ? hit.issues.length && payload.issues.push(...cloneIssues(hit.issues)) : (payload.memo = !0, state.backEdges ?? (state.backEdges = /* @__PURE__ */ new WeakSet()), state.backEdges.add(hit.value)), payload;
+					handoff = bucket;
+					let depth = open.length, result = base(payload, ctx);
+					handoff = void 0;
+					let entry = open.length > depth ? open.pop() : void 0;
+					return result instanceof Promise ? result.then((r) => (entry && (entry.issues = r.issues.length ? cloneIssues(r.issues) : NO_ISSUES), r)) : (entry && (entry.issues = result.issues.length ? cloneIssues(result.issues) : NO_ISSUES), result);
+				};
+				inst._zod.parse = wrapped, inst._zod.run === base && (inst._zod.run = wrapped);
+			});
+		}
+	};
+	function memoizer() {
+		return memo;
+	}
+	function isBackEdge(ctx, value) {
+		let backEdges = ctx[STATE]?.backEdges;
+		return backEdges !== void 0 && isRef(value) && backEdges.has(value);
+	}
+	var error = () => {
+		let Sizable = {
+			string: {
+				unit: "characters",
+				verb: "to have"
+			},
+			file: {
+				unit: "bytes",
+				verb: "to have"
+			},
+			array: {
+				unit: "items",
+				verb: "to have"
+			},
+			set: {
+				unit: "items",
+				verb: "to have"
+			},
+			map: {
+				unit: "entries",
+				verb: "to have"
+			}
+		};
+		function getSizing(origin) {
+			return Sizable[origin] ?? null;
+		}
+		let FormatDictionary = {
+			regex: "input",
+			email: "email address",
+			url: "URL",
+			emoji: "emoji",
+			uuid: "UUID",
+			uuidv4: "UUIDv4",
+			uuidv6: "UUIDv6",
+			nanoid: "nanoid",
+			guid: "GUID",
+			cuid: "cuid",
+			cuid2: "cuid2",
+			ulid: "ULID",
+			xid: "XID",
+			ksuid: "KSUID",
+			datetime: "ISO datetime",
+			date: "ISO date",
+			time: "ISO time",
+			duration: "ISO duration",
+			ipv4: "IPv4 address",
+			ipv6: "IPv6 address",
+			mac: "MAC address",
+			cidrv4: "IPv4 range",
+			cidrv6: "IPv6 range",
+			base64: "base64-encoded string",
+			base64url: "base64url-encoded string",
+			json_string: "JSON string",
+			e164: "E.164 number",
+			currency_code: "currency code",
+			credit_card: "credit card number",
+			iban: "IBAN",
+			jwt: "JWT",
+			template_literal: "input"
+		}, TypeDictionary = { nan: "NaN" };
+		function getTypeName(type, input) {
+			return type === "number" && typeof input == "number" && !Number.isFinite(input) ? String(input) : TypeDictionary[type] ?? type;
+		}
+		return (issue2) => {
+			switch (issue2.code) {
+				case "invalid_type": return `Invalid input: expected ${getTypeName(issue2.expected)}, received ${getTypeName(parsedType(issue2.input), issue2.input)}`;
+				case "invalid_value": return issue2.values.length === 1 ? `Invalid input: expected ${stringifyPrimitive(issue2.values[0])}` : `Invalid option: expected one of ${joinValues(issue2.values, "|")}`;
+				case "too_big": {
+					let adj = issue2.exact ? "exactly " : issue2.inclusive ? "<=" : "<", sizing = getSizing(issue2.origin);
+					return sizing ? `Too big: expected ${issue2.origin ?? "value"} to have ${adj}${issue2.maximum.toString()} ${sizing.unit ?? "elements"}` : `Too big: expected ${issue2.origin ?? "value"} to be ${adj}${issue2.maximum.toString()}`;
+				}
+				case "too_small": {
+					let adj = issue2.exact ? "exactly " : issue2.inclusive ? ">=" : ">", sizing = getSizing(issue2.origin);
+					return sizing ? `Too small: expected ${issue2.origin} to have ${adj}${issue2.minimum.toString()} ${sizing.unit}` : `Too small: expected ${issue2.origin} to be ${adj}${issue2.minimum.toString()}`;
+				}
+				case "invalid_format": {
+					let _issue = issue2;
+					return _issue.format === "starts_with" ? `Invalid string: must start with "${_issue.prefix}"` : _issue.format === "ends_with" ? `Invalid string: must end with "${_issue.suffix}"` : _issue.format === "includes" ? `Invalid string: must include "${_issue.includes}"` : _issue.format === "regex" ? `Invalid string: must match pattern ${_issue.pattern}` : `Invalid ${FormatDictionary[_issue.format] ?? issue2.format}`;
+				}
+				case "not_multiple_of": return `Invalid number: must be a multiple of ${issue2.divisor}`;
+				case "unrecognized_keys": return `Unrecognized key${issue2.keys.length > 1 ? "s" : ""}: ${joinValues(issue2.keys, ", ")}`;
+				case "invalid_key": return `Invalid key in ${issue2.origin}`;
+				case "invalid_union": return issue2.options && Array.isArray(issue2.options) && issue2.options.length > 0 ? `Invalid discriminator value. Expected ${issue2.options.map((o) => `'${o}'`).join(" | ")}` : issue2.inclusive === !1 ? "Invalid input: more than one option matched" : "Invalid input";
+				case "invalid_element": return `Invalid value in ${issue2.origin}`;
+				default: return "Invalid input";
+			}
+		};
+	};
+	function en_default() {
+		return { localeError: error() };
+	}
+	var _a2;
+	var $ZodRegistry = class {
+		constructor() {
+			this._map = /* @__PURE__ */ new WeakMap(), this._idmap = /* @__PURE__ */ new Map();
+		}
+		add(schema, ..._meta) {
+			let meta2 = _meta[0];
+			return this._map.set(schema, meta2), meta2 && typeof meta2 == "object" && "id" in meta2 && this._idmap.set(meta2.id, schema), this;
+		}
+		clear() {
+			return this._map = /* @__PURE__ */ new WeakMap(), this._idmap = /* @__PURE__ */ new Map(), this;
+		}
+		remove(schema) {
+			let meta2 = this._map.get(schema);
+			return meta2 && typeof meta2 == "object" && "id" in meta2 && this._idmap.delete(meta2.id), this._map.delete(schema), this;
+		}
+		get(schema) {
+			let p = schema._zod.parent;
+			if (p) {
+				let pm = { ...this.get(p) ?? {} };
+				delete pm.id;
+				let f = {
+					...pm,
+					...this._map.get(schema)
+				};
+				return Object.keys(f).length ? f : void 0;
+			}
+			return this._map.get(schema);
+		}
+		has(schema) {
+			return this._map.has(schema);
+		}
+	};
+	function registry() {
+		return new $ZodRegistry();
+	}
+	(_a2 = globalThis).__zod_globalRegistry ?? (_a2.__zod_globalRegistry = registry());
+	var globalRegistry = globalThis.__zod_globalRegistry;
+	function snapshotChecks(def) {
+		return def.checks && (def.checks = [...def.checks]), def;
+	}
+	function _string(Class2, params) {
+		return new Class2(snapshotChecks({
+			type: "string",
+			...normalizeParams(params)
+		}));
+	}
+	function _email(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "email",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _guid(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "guid",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _uuid(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "uuid",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _uuidv4(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "uuid",
+			check: "string_format",
+			abort: !1,
+			version: "v4",
+			...normalizeParams(params)
+		});
+	}
+	function _uuidv6(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "uuid",
+			check: "string_format",
+			abort: !1,
+			version: "v6",
+			...normalizeParams(params)
+		});
+	}
+	function _uuidv7(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "uuid",
+			check: "string_format",
+			abort: !1,
+			version: "v7",
+			...normalizeParams(params)
+		});
+	}
+	function _url(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "url",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _emoji2(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "emoji",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _nanoid(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "nanoid",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _cuid(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "cuid",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _cuid2(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "cuid2",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _ulid(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "ulid",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _xid(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "xid",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _ksuid(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "ksuid",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _ipv4(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "ipv4",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _ipv6(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "ipv6",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _cidrv4(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "cidrv4",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _cidrv6(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "cidrv6",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _base64(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "base64",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _base64url(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "base64url",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _e164(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "e164",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _jwt(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "jwt",
+			check: "string_format",
+			abort: !1,
+			...normalizeParams(params)
+		});
+	}
+	function _isoDateTime(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "datetime",
+			check: "string_format",
+			offset: !1,
+			local: !1,
+			precision: null,
+			...normalizeParams(params)
+		});
+	}
+	function _isoDate(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "date",
+			check: "string_format",
+			...normalizeParams(params)
+		});
+	}
+	function _isoTime(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "time",
+			check: "string_format",
+			precision: null,
+			...normalizeParams(params)
+		});
+	}
+	function _isoDuration(Class2, params) {
+		return new Class2({
+			type: "string",
+			format: "duration",
+			check: "string_format",
+			...normalizeParams(params)
+		});
+	}
+	function _number(Class2, params) {
+		return new Class2(snapshotChecks({
+			type: "number",
+			checks: [],
+			...normalizeParams(params)
+		}));
+	}
+	function _int(Class2, params) {
+		return new Class2({
+			type: "number",
+			check: "number_format",
+			abort: !1,
+			format: "safeint",
+			...normalizeParams(params)
+		});
+	}
+	function _boolean(Class2, params) {
+		return new Class2({
+			type: "boolean",
+			...normalizeParams(params)
+		});
+	}
+	function _unknown(Class2) {
+		return new Class2({ type: "unknown" });
+	}
+	function _never(Class2, params) {
+		return new Class2({
+			type: "never",
+			...normalizeParams(params)
+		});
+	}
+	function _lt(value, params) {
+		return new $ZodCheckLessThan({
+			check: "less_than",
+			...normalizeParams(params),
+			value,
+			inclusive: !1
+		});
+	}
+	function _lte(value, params) {
+		return new $ZodCheckLessThan({
+			check: "less_than",
+			...normalizeParams(params),
+			value,
+			inclusive: !0
+		});
+	}
+	function _gt(value, params) {
+		return new $ZodCheckGreaterThan({
+			check: "greater_than",
+			...normalizeParams(params),
+			value,
+			inclusive: !1
+		});
+	}
+	function _gte(value, params) {
+		return new $ZodCheckGreaterThan({
+			check: "greater_than",
+			...normalizeParams(params),
+			value,
+			inclusive: !0
+		});
+	}
+	function _multipleOf(value, params) {
+		return new $ZodCheckMultipleOf({
+			check: "multiple_of",
+			...normalizeParams(params),
+			value
+		});
+	}
+	function _maxLength(maximum, params) {
+		return new $ZodCheckMaxLength({
+			check: "max_length",
+			...normalizeParams(params),
+			maximum
+		});
+	}
+	function _minLength(minimum, params) {
+		return new $ZodCheckMinLength({
+			check: "min_length",
+			...normalizeParams(params),
+			minimum
+		});
+	}
+	function _length(length, params) {
+		return new $ZodCheckLengthEquals({
+			check: "length_equals",
+			...normalizeParams(params),
+			length
+		});
+	}
+	function _regex(pattern, params) {
+		return new $ZodCheckRegex({
+			check: "string_format",
+			format: "regex",
+			...normalizeParams(params),
+			pattern
+		});
+	}
+	function _lowercase(params) {
+		return new $ZodCheckLowerCase({
+			check: "string_format",
+			format: "lowercase",
+			...normalizeParams(params)
+		});
+	}
+	function _uppercase(params) {
+		return new $ZodCheckUpperCase({
+			check: "string_format",
+			format: "uppercase",
+			...normalizeParams(params)
+		});
+	}
+	function _includes(includes, params) {
+		return new $ZodCheckIncludes({
+			check: "string_format",
+			format: "includes",
+			...normalizeParams(params),
+			includes
+		});
+	}
+	function _startsWith(prefix, params) {
+		return new $ZodCheckStartsWith({
+			check: "string_format",
+			format: "starts_with",
+			...normalizeParams(params),
+			prefix
+		});
+	}
+	function _endsWith(suffix, params) {
+		return new $ZodCheckEndsWith({
+			check: "string_format",
+			format: "ends_with",
+			...normalizeParams(params),
+			suffix
+		});
+	}
+	function _overwrite(tx) {
+		return new $ZodCheckOverwrite({
+			check: "overwrite",
+			tx
+		});
+	}
+	function _normalize(form) {
+		return _overwrite((input) => input.normalize(form));
+	}
+	function _trim() {
+		return _overwrite((input) => input.trim());
+	}
+	function _toLowerCase() {
+		return _overwrite((input) => input.toLowerCase());
+	}
+	function _toUpperCase() {
+		return _overwrite((input) => input.toUpperCase());
+	}
+	function _slugify() {
+		return _overwrite((input) => slugify(input));
+	}
+	function _array(Class2, element, params) {
+		return new Class2({
+			type: "array",
+			element,
+			...normalizeParams(params)
+		});
+	}
+	function _refine(Class2, fn, _params) {
+		return new Class2({
+			type: "custom",
+			check: "custom",
+			fn,
+			...normalizeParams(_params)
+		});
+	}
+	function _superRefine(fn, params) {
+		let ch = _check((payload) => (payload.addIssue = (issue2) => {
+			if (typeof issue2 == "string") payload.issues.push(issue(issue2, payload.value, ch._zod.def));
+			else {
+				let _issue = issue2;
+				_issue.fatal && (_issue.continue = !1), _issue.code ?? (_issue.code = "custom"), "input" in _issue || (_issue.input = payload.value), _issue.inst ?? (_issue.inst = ch), _issue.continue ?? (_issue.continue = !ch._zod.def.abort), payload.issues.push(issue(_issue));
+			}
+		}, fn(payload.value, payload)), params);
+		return ch;
+	}
+	function _check(fn, params) {
+		let ch = new $ZodCheck({
+			check: "custom",
+			...normalizeParams(params)
+		});
+		return ch._zod.check = fn, ch;
+	}
+	function assignProps(target, ...sources) {
+		for (let source of sources) for (let key of Reflect.ownKeys(source)) Object.prototype.propertyIsEnumerable.call(source, key) && assignProp(target, key, source[key]);
+		return target;
+	}
+	function initializeContext(params) {
+		let target = params?.target ?? "draft-2020-12";
+		return target === "draft-4" && (target = "draft-04"), target === "draft-7" && (target = "draft-07"), {
+			processors: params.processors ?? {},
+			metadataRegistry: params?.metadata ?? globalRegistry,
+			target,
+			unrepresentable: params?.unrepresentable ?? "throw",
+			override: params?.override ?? (() => {}),
+			io: params?.io ?? "output",
+			counter: 0,
+			seen: /* @__PURE__ */ new Map(),
+			sharedDefsExtractedFor: void 0,
+			sharedEmitDoneFor: void 0,
+			cycles: params?.cycles ?? "ref",
+			reused: params?.reused ?? "inline",
+			intersections: [],
+			deferred: [],
+			external: params?.external ?? void 0
+		};
+	}
+	function handleUnrepresentable(schema, ctx, json, params, message) {
+		let result = typeof ctx.unrepresentable == "function" ? ctx.unrepresentable({
+			zodSchema: schema,
+			path: params.path,
+			message
+		}) : ctx.unrepresentable;
+		if (result === "any") return !1;
+		if (result === void 0 || result === "throw") throw new Error(message);
+		return Object.assign(json, result), !0;
+	}
+	function processSchema(schema, ctx, _params = {
+		path: [],
+		schemaPath: []
+	}) {
+		var _a3;
+		let def = schema._zod.def, seen = ctx.seen.get(schema);
+		if (seen) return seen.count++, _params.schemaPath.includes(schema) && (seen.cycle = _params.path), seen.schema;
+		let result = {
+			schema: {},
+			count: 1,
+			cycle: void 0,
+			path: _params.path
+		};
+		ctx.seen.set(schema, result), ctx.sharedDefsExtractedFor = void 0, ctx.sharedEmitDoneFor = void 0;
+		let overrideSchema = schema._zod.toJSONSchema?.();
+		if (overrideSchema) result.schema = overrideSchema;
+		else {
+			let params = {
+				..._params,
+				schemaPath: [..._params.schemaPath, schema],
+				path: _params.path
+			};
+			if (schema._zod.processJSONSchema) schema._zod.processJSONSchema(ctx, result.schema, params);
+			else {
+				let _json = result.schema, processor = ctx.processors[def.type];
+				if (!processor) throw new Error(`[toJSONSchema]: Non-representable type encountered: ${def.type}`);
+				processor(schema, ctx, _json, params);
+			}
+			let parent = schema._zod.parent;
+			parent && (result.ref || (result.ref = parent), processSchema(parent, ctx, params), ctx.seen.get(parent).isParent = !0);
+		}
+		let meta2 = ctx.metadataRegistry.get(schema);
+		return meta2 && assignProps(result.schema, meta2), ctx.io === "input" && isTransforming(schema) && (delete result.schema.examples, delete result.schema.default), ctx.io === "input" && "_prefault" in result.schema && ((_a3 = result.schema).default ?? (_a3.default = result.schema._prefault)), delete result.schema._prefault, ctx.seen.get(schema).schema;
+	}
+	function encodeJSONPointerSegment(segment) {
+		return segment.replace(/~/g, "~0").replace(/\//g, "~1");
+	}
+	function extractDefs(ctx, schema) {
+		let root = ctx.seen.get(schema);
+		if (!root) throw new Error("Unprocessed schema. This is a bug in Zod.");
+		if (ctx.external && ctx.sharedDefsExtractedFor === ctx.external) return;
+		let idToSchema = /* @__PURE__ */ new Map();
+		for (let entry of ctx.seen.entries()) {
+			let id = ctx.metadataRegistry.get(entry[0])?.id;
+			if (id) {
+				let existing = idToSchema.get(id);
+				if (existing && existing !== entry[0]) throw new Error(`Duplicate schema id "${id}" detected during JSON Schema conversion. Two different schemas cannot share the same id when converted together.`);
+				idToSchema.set(id, entry[0]);
+			}
+		}
+		let makeURI = (entry) => {
+			let defsSegment = ctx.target === "draft-2020-12" ? "$defs" : "definitions";
+			if (ctx.external) {
+				let externalId = ctx.external.registry.get(entry[0])?.id, uriGenerator = ctx.external.uri ?? ((id2) => id2);
+				if (externalId) return { ref: uriGenerator(externalId) };
+				let id = entry[1].defId ?? entry[1].schema.id ?? `schema${ctx.counter++}`;
+				return entry[1].defId = id, {
+					defId: id,
+					ref: `${uriGenerator("__shared")}#/${defsSegment}/${encodeJSONPointerSegment(id)}`
+				};
+			}
+			let uriPrefix = "#", defUriPrefix = `${uriPrefix}/${defsSegment}/`;
+			if (entry[1] === root && !entry[1].schema.id) return { ref: uriPrefix };
+			let defId = entry[1].schema.id ?? `__schema${ctx.counter++}`;
+			return {
+				defId,
+				ref: defUriPrefix + encodeJSONPointerSegment(defId)
+			};
+		}, extractToDef = (entry) => {
+			if (entry[1].schema.$ref) return;
+			let seen = entry[1], { ref, defId } = makeURI(entry);
+			seen.def = { ...seen.schema }, defId && (seen.defId = defId);
+			let schema2 = seen.schema;
+			for (let key in schema2) delete schema2[key];
+			schema2.$ref = ref;
+		};
+		if (ctx.cycles === "throw") for (let entry of ctx.seen.entries()) {
+			let seen = entry[1];
+			if (seen.cycle) throw new Error(`Cycle detected: #/${seen.cycle?.join("/")}/<root>
+
+Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.`);
+		}
+		for (let entry of ctx.seen.entries()) {
+			let seen = entry[1];
+			if (schema === entry[0]) {
+				extractToDef(entry);
+				continue;
+			}
+			if (ctx.external) {
+				let ext = ctx.external.registry.get(entry[0])?.id;
+				if (schema !== entry[0] && ext) {
+					extractToDef(entry);
+					continue;
+				}
+			}
+			if (ctx.metadataRegistry.get(entry[0])?.id) {
+				extractToDef(entry);
+				continue;
+			}
+			if (seen.cycle) {
+				extractToDef(entry);
+				continue;
+			}
+			seen.count > 1 && ctx.reused === "ref" && extractToDef(entry);
+		}
+		ctx.external && (ctx.sharedDefsExtractedFor = ctx.external);
+	}
+	function compactTypeUnion(schema) {
+		let options = schema.anyOf;
+		if (!Array.isArray(options) || options.length === 0 || schema.type !== void 0) return;
+		let types = [];
+		for (let option of options) {
+			if (!option || typeof option != "object") return;
+			compactTypeUnion(option);
+			let keys = Object.keys(option);
+			if (keys.length !== 1 || keys[0] !== "type") return;
+			let type = option.type;
+			for (let member of Array.isArray(type) ? type : [type]) {
+				if (typeof member != "string") return;
+				types.includes(member) || types.push(member);
+			}
+		}
+		delete schema.anyOf, schema.type = types.length === 1 ? types[0] : types;
+	}
+	var FOLDABLE_KEYS = /* @__PURE__ */ new Set([
+		"type",
+		"properties",
+		"required",
+		"additionalProperties"
+	]);
+	var UNION_KEYS = ["oneOf", "anyOf"];
+	function undeclaredConstraint(member) {
+		let extra = member.additionalProperties;
+		return extra === void 0 || extra === !1 || typeof extra != "object" || extra === null ? null : Object.keys(extra).length ? extra : null;
+	}
+	function foldObjects(members2) {
+		let objects = [];
+		for (let member of members2) {
+			if (typeof member != "object" || member.type !== "object") return null;
+			for (let key in member) if (!FOLDABLE_KEYS.has(key)) return null;
+			objects.push(member);
+		}
+		let properties = {}, required2 = /* @__PURE__ */ new Set();
+		for (let object2 of objects) {
+			for (let key in object2.properties) {
+				if (Object.prototype.hasOwnProperty.call(properties, key)) continue;
+				let parts = [];
+				for (let other of objects) {
+					let part = other.properties?.[key] ?? undeclaredConstraint(other);
+					part != null && (parts.some((seen) => JSON.stringify(seen) === JSON.stringify(part)) || parts.push(part));
+				}
+				assignProp(properties, key, parts.length === 1 ? parts[0] : foldObjects(parts) ?? { allOf: parts });
+			}
+			for (let key of object2.required ?? []) required2.add(key);
+		}
+		let folded = {
+			type: "object",
+			properties
+		};
+		if (required2.size && (folded.required = [...required2]), objects.every((object2) => object2.additionalProperties === !1)) folded.additionalProperties = !1;
+		else {
+			let constraints = [];
+			for (let object2 of objects) {
+				let constraint = undeclaredConstraint(object2);
+				constraint && !constraints.some((seen) => JSON.stringify(seen) === JSON.stringify(constraint)) && constraints.push(constraint);
+			}
+			constraints.length === 1 ? folded.additionalProperties = constraints[0] : constraints.length > 1 && (folded.additionalProperties = { allOf: constraints });
+		}
+		return folded;
+	}
+	function foldIntersection(json) {
+		let allOf = json.allOf;
+		if (!Array.isArray(allOf) || allOf.length < 2) return;
+		for (let key of FOLDABLE_KEYS) if (key in json) return;
+		let unions = allOf.filter((m) => UNION_KEYS.some((k) => Array.isArray(m[k]))), folded = null;
+		if (!unions.length) folded = foldObjects(allOf);
+		else {
+			let union2 = unions[0], keyword = UNION_KEYS.find((k) => Array.isArray(union2[k]));
+			if (Object.keys(union2).length !== 1) return;
+			let rest = allOf.filter((m) => m !== union2), branches = union2[keyword].map((branch) => foldObjects([...rest, branch]));
+			if (branches.some((b) => !b)) return;
+			folded = { [keyword]: branches };
+		}
+		folded && (delete json.allOf, assignProps(json, folded));
+	}
+	function finalize(ctx, schema) {
+		let root = ctx.seen.get(schema);
+		if (!root) throw new Error("Unprocessed schema. This is a bug in Zod.");
+		let flattenRef = (zodSchema) => {
+			let seen = ctx.seen.get(zodSchema);
+			if (seen.ref === null) return;
+			let schema2 = seen.def ?? seen.schema, _cached = { ...schema2 }, ref = seen.ref;
+			if (seen.ref = null, ref) {
+				flattenRef(ref);
+				let refSeen = ctx.seen.get(ref), refSchema = refSeen.schema;
+				if (refSchema.$ref && (ctx.target === "draft-07" || ctx.target === "draft-04" || ctx.target === "openapi-3.0") ? (schema2.allOf = schema2.allOf ?? [], schema2.allOf.push(refSchema)) : assignProps(schema2, refSchema), assignProps(schema2, _cached), zodSchema._zod.parent === ref) for (let key in schema2) key === "$ref" || key === "allOf" || key in _cached || delete schema2[key];
+				if (refSchema.$ref && refSeen.def) for (let key in schema2) key === "$ref" || key === "allOf" || key in refSeen.def && JSON.stringify(schema2[key]) === JSON.stringify(refSeen.def[key]) && delete schema2[key];
+			}
+			let parent = zodSchema._zod.parent;
+			if (parent && parent !== ref) {
+				flattenRef(parent);
+				let parentSeen = ctx.seen.get(parent);
+				if (parentSeen?.schema.$ref && (schema2.$ref = parentSeen.schema.$ref, parentSeen.def)) for (let key in schema2) key === "$ref" || key === "allOf" || key in parentSeen.def && JSON.stringify(schema2[key]) === JSON.stringify(parentSeen.def[key]) && delete schema2[key];
+			}
+			ctx.override({
+				zodSchema,
+				jsonSchema: schema2,
+				path: seen.path ?? []
+			});
+		};
+		if (!ctx.external || ctx.sharedEmitDoneFor !== ctx.external) {
+			for (let entry of [...ctx.seen.entries()].reverse()) flattenRef(entry[0]);
+			if (ctx.target !== "openapi-3.0") for (let entry of ctx.seen.entries()) compactTypeUnion(entry[1].def ?? entry[1].schema);
+			for (let rewrite of ctx.deferred) rewrite();
+			if (ctx.intersections.length) {
+				let carriers = /* @__PURE__ */ new Map();
+				for (let seen of ctx.seen.values()) for (let json of [seen.schema, seen.def]) {
+					let allOf = json?.allOf;
+					if (!Array.isArray(allOf)) continue;
+					let existing = carriers.get(allOf);
+					existing ? existing.push(json) : carriers.set(allOf, [json]);
+				}
+				for (let allOf of ctx.intersections) for (let json of carriers.get(allOf) ?? []) foldIntersection(json);
+			}
+		}
+		let result = {};
+		if (ctx.target === "draft-2020-12" ? result.$schema = "https://json-schema.org/draft/2020-12/schema" : ctx.target === "draft-07" ? result.$schema = "http://json-schema.org/draft-07/schema#" : ctx.target === "draft-04" ? result.$schema = "http://json-schema.org/draft-04/schema#" : ctx.target, ctx.external?.uri) {
+			let id = ctx.external.registry.get(schema)?.id;
+			if (!id) throw new Error("Schema is missing an `id` property");
+			result.$id = ctx.external.uri(id);
+		}
+		assignProps(result, root.defId ? root.schema : root.def ?? root.schema);
+		let rootMetaId = ctx.metadataRegistry.get(schema)?.id;
+		rootMetaId !== void 0 && result.id === rootMetaId && delete result.id;
+		let defs = ctx.external?.defs ?? {};
+		if (!ctx.external || ctx.sharedEmitDoneFor !== ctx.external) for (let entry of ctx.seen.entries()) {
+			let seen = entry[1];
+			seen.def && seen.defId && (seen.def.id === seen.defId && delete seen.def.id, assignProp(defs, seen.defId, seen.def));
+		}
+		ctx.external && (ctx.sharedEmitDoneFor = ctx.external), ctx.external || Object.keys(defs).length > 0 && (ctx.target === "draft-2020-12" ? result.$defs = defs : result.definitions = defs);
+		try {
+			let finalized = JSON.parse(JSON.stringify(result));
+			return Object.defineProperty(finalized, "~standard", {
+				value: {
+					...schema["~standard"],
+					jsonSchema: {
+						input: createStandardJSONSchemaMethod(schema, "input", ctx.processors),
+						output: createStandardJSONSchemaMethod(schema, "output", ctx.processors)
+					}
+				},
+				enumerable: !1,
+				writable: !1
+			}), finalized;
+		} catch {
+			throw new Error("Error converting schema to JSON.");
+		}
+	}
+	function isTransforming(_schema, _ctx) {
+		let ctx = _ctx ?? { seen: /* @__PURE__ */ new Set() };
+		if (ctx.seen.has(_schema)) return !1;
+		ctx.seen.add(_schema);
+		let def = _schema._zod.def;
+		if (def.type === "transform") return !0;
+		if (def.type === "array") return isTransforming(def.element, ctx);
+		if (def.type === "set") return isTransforming(def.valueType, ctx);
+		if (def.type === "lazy") return isTransforming(def.getter(), ctx);
+		if (def.type === "promise" || def.type === "optional" || def.type === "nonoptional" || def.type === "nullable" || def.type === "readonly" || def.type === "default" || def.type === "prefault" || def.type === "catch") return isTransforming(def.innerType, ctx);
+		if (def.type === "intersection") return isTransforming(def.left, ctx) || isTransforming(def.right, ctx);
+		if (def.type === "record" || def.type === "map") return isTransforming(def.keyType, ctx) || isTransforming(def.valueType, ctx);
+		if (def.type === "pipe") return _schema._zod.traits.has("$ZodCodec") ? !0 : isTransforming(def.in, ctx) || isTransforming(def.out, ctx);
+		if (def.type === "object") {
+			for (let key in def.shape) if (isTransforming(def.shape[key], ctx)) return !0;
+			return !1;
+		}
+		if (def.type === "union") {
+			for (let option of def.options) if (isTransforming(option, ctx)) return !0;
+			return !1;
+		}
+		if (def.type === "tuple") {
+			for (let item of def.items) if (isTransforming(item, ctx)) return !0;
+			return !!(def.rest && isTransforming(def.rest, ctx));
+		}
+		return !1;
+	}
+	var createToJSONSchemaMethod = (schema, processors = {}) => (params) => {
+		let ctx = initializeContext({
+			...params,
+			processors
+		});
+		return processSchema(schema, ctx), extractDefs(ctx, schema), finalize(ctx, schema);
+	};
+	var createStandardJSONSchemaMethod = (schema, io, processors = {}) => (params) => {
+		let { libraryOptions, target } = params ?? {}, ctx = initializeContext({
+			...libraryOptions ?? {},
+			target,
+			io,
+			processors
+		});
+		return processSchema(schema, ctx), extractDefs(ctx, schema), finalize(ctx, schema);
+	};
+	var narrowMin = (agg, key, value) => {
+		(agg[key] === void 0 || value > agg[key]) && (agg[key] = value);
+	};
+	var narrowMax = (agg, key, value) => {
+		(agg[key] === void 0 || value < agg[key]) && (agg[key] = value);
+	};
+	var narrowBoth = (agg, value) => {
+		narrowMin(agg, "minimum", value), narrowMax(agg, "maximum", value);
+	};
+	var addDivisor = (agg, value) => {
+		agg.multipleOf ?? (agg.multipleOf = []), agg.multipleOf.includes(value) || agg.multipleOf.push(value);
+	};
+	var addPattern = (agg, pattern) => {
+		agg.patterns ?? (agg.patterns = /* @__PURE__ */ new Set()), agg.patterns.add(pattern);
+	};
+	var intersectMime = (agg, mime) => {
+		agg.mime = agg.mime ? agg.mime.filter((m) => mime.includes(m)) : [...mime];
+	};
+	var setFormat = (agg, format) => {
+		agg.format = format, format.includes("int") && (agg.isInt = !0);
+	};
+	var minContributor = (agg, def) => narrowMin(agg, "minimum", def.minimum);
+	var maxContributor = (agg, def) => narrowMax(agg, "maximum", def.maximum);
+	var formatContributor = (ranges) => (agg, def) => {
+		setFormat(agg, def.format);
+		let [minimum, maximum] = ranges[def.format];
+		narrowMin(agg, "minimum", minimum), narrowMax(agg, "maximum", maximum);
+	};
+	var contributors = {
+		greater_than: (agg, def) => narrowMin(agg, def.inclusive ? "minimum" : "exclusiveMinimum", def.value),
+		less_than: (agg, def) => narrowMax(agg, def.inclusive ? "maximum" : "exclusiveMaximum", def.value),
+		multiple_of: (agg, def) => addDivisor(agg, def.value),
+		number_format: formatContributor(NUMBER_FORMAT_RANGES),
+		bigint_format: formatContributor(BIGINT_FORMAT_RANGES),
+		min_length: minContributor,
+		max_length: maxContributor,
+		length_equals: (agg, def) => narrowBoth(agg, def.length),
+		min_size: minContributor,
+		max_size: maxContributor,
+		size_equals: (agg, def) => narrowBoth(agg, def.size),
+		string_format: (agg, def) => {
+			setFormat(agg, def.format), def.pattern && addPattern(agg, def.pattern), (def.format === "base64" || def.format === "base64url") && (agg.contentEncoding = def.format), (def.local || def.precision === -1) && (agg.laxFormat = !0);
+		},
+		mime_type: (agg, def) => intersectMime(agg, def.mime)
+	};
+	function aggregateChecks(schema) {
+		let agg = {}, def = schema._zod.def, list = schema._zod.traits.has("$ZodCheck") ? [schema, ...def.checks ?? []] : def.checks ?? [];
+		for (let ch of list) contributors[ch._zod.def.check]?.(agg, ch._zod.def);
+		let bag = schema._zod.bag;
+		bag.minimum !== void 0 && narrowMin(agg, "minimum", bag.minimum), bag.exclusiveMinimum !== void 0 && narrowMin(agg, "exclusiveMinimum", bag.exclusiveMinimum), bag.maximum !== void 0 && narrowMax(agg, "maximum", bag.maximum), bag.exclusiveMaximum !== void 0 && narrowMax(agg, "exclusiveMaximum", bag.exclusiveMaximum), bag.multipleOf !== void 0 && addDivisor(agg, bag.multipleOf), bag.format !== void 0 && (agg.format ?? (agg.format = bag.format), bag.format.includes("int") && (agg.isInt = !0)), bag.mime && intersectMime(agg, bag.mime);
+		for (let pattern of bag.patterns ?? []) addPattern(agg, pattern);
+		return agg;
+	}
+	var formatMap = {
+		guid: "uuid",
+		url: "uri",
+		datetime: "date-time",
+		json_string: "json-string",
+		regex: ""
+	};
+	var exactPatterns = /* @__PURE__ */ new Map([[base64Charset, base64], [base64urlCharset, base64url]]);
+	var exactPattern = (p) => exactPatterns.get(p) ?? p;
+	var stringProcessor = (schema, ctx, _json, _params) => {
+		let json = _json;
+		json.type = "string";
+		let { minimum, maximum, format, patterns, contentEncoding, laxFormat } = aggregateChecks(schema);
+		if (typeof minimum == "number" && (json.minLength = minimum), typeof maximum == "number" && (json.maxLength = maximum), format && (json.format = formatMap[format] ?? format, json.format === "" && delete json.format, (format === "time" || laxFormat) && delete json.format), contentEncoding && (json.contentEncoding = contentEncoding), patterns && patterns.size > 0) {
+			let patternList = [...patterns].map(exactPattern);
+			patternList.length === 1 ? json.pattern = patternList[0].source : patternList.length > 1 && (json.allOf = [...patternList.map((regex) => ({
+				...ctx.target === "draft-07" || ctx.target === "draft-04" || ctx.target === "openapi-3.0" ? { type: "string" } : {},
+				pattern: regex.source
+			}))]);
+		}
+	};
+	var numberProcessor = (schema, ctx, _json, params) => {
+		let json = _json, { minimum, maximum, multipleOf, exclusiveMaximum, exclusiveMinimum, isInt } = aggregateChecks(schema);
+		json.type = isInt ? "integer" : "number";
+		let exMin = typeof exclusiveMinimum == "number" && exclusiveMinimum >= (minimum ?? Number.NEGATIVE_INFINITY), exMax = typeof exclusiveMaximum == "number" && exclusiveMaximum <= (maximum ?? Number.POSITIVE_INFINITY), legacy = ctx.target === "draft-04" || ctx.target === "openapi-3.0";
+		if (exMin ? legacy ? (json.minimum = exclusiveMinimum, json.exclusiveMinimum = !0) : json.exclusiveMinimum = exclusiveMinimum : typeof minimum == "number" && (json.minimum = minimum), exMax ? legacy ? (json.maximum = exclusiveMaximum, json.exclusiveMaximum = !0) : json.exclusiveMaximum = exclusiveMaximum : typeof maximum == "number" && (json.maximum = maximum), multipleOf) {
+			let divisors = /* @__PURE__ */ new Set();
+			for (let divisor of multipleOf) Number.isFinite(divisor) && divisor !== 0 ? divisors.add(Math.abs(divisor)) : handleUnrepresentable(schema, ctx, json, params, `A multipleOf divisor of ${divisor} cannot be represented in JSON Schema`);
+			let [first, ...rest] = divisors;
+			first !== void 0 && (json.multipleOf = first), rest.length && (json.allOf = [...json.allOf ?? [], ...rest.map((m) => ({ multipleOf: m }))]);
+		}
+	};
+	var booleanProcessor = (_schema, _ctx, json, _params) => {
+		json.type = "boolean";
+	};
+	var neverProcessor = (_schema, _ctx, json, _params) => {
+		json.not = {};
+	};
+	var enumProcessor = (schema, _ctx, json, _params) => {
+		let def = schema._zod.def, values = getEnumValues(def.entries);
+		if (values.length === 0) {
+			json.not = {};
+			return;
+		}
+		values.every((v) => typeof v == "number") && (json.type = "number"), values.every((v) => typeof v == "string") && (json.type = "string"), json.enum = values;
+	};
+	var literalProcessor = (schema, ctx, json, params) => {
+		let def = schema._zod.def;
+		if (def.values.length === 0) {
+			json.not = {};
+			return;
+		}
+		let vals = [];
+		for (let val of def.values) if (val === void 0) {
+			if (handleUnrepresentable(schema, ctx, json, params, "Literal `undefined` cannot be represented in JSON Schema")) return;
+		} else if (typeof val == "bigint") {
+			if (handleUnrepresentable(schema, ctx, json, params, "BigInt literals cannot be represented in JSON Schema")) return;
+			vals.push(Number(val));
+		} else vals.push(val);
+		if (vals.length !== 0) if (vals.length === 1) {
+			let val = vals[0];
+			json.type = val === null ? "null" : typeof val, ctx.target === "draft-04" || ctx.target === "openapi-3.0" ? json.enum = [val] : json.const = val;
+		} else vals.every((v) => typeof v == "number") && (json.type = "number"), vals.every((v) => typeof v == "string") && (json.type = "string"), vals.every((v) => typeof v == "boolean") && (json.type = "boolean"), vals.every((v) => v === null) && (json.type = "null"), json.enum = vals;
+	};
+	var customProcessor = (schema, ctx, json, params) => {
+		handleUnrepresentable(schema, ctx, json, params, "Custom types cannot be represented in JSON Schema");
+	};
+	var transformProcessor = (schema, ctx, json, params) => {
+		handleUnrepresentable(schema, ctx, json, params, "Transforms cannot be represented in JSON Schema");
+	};
+	var arrayProcessor = (schema, ctx, _json, params) => {
+		let json = _json, def = schema._zod.def, { minimum, maximum } = aggregateChecks(schema);
+		typeof minimum == "number" && (json.minItems = minimum), typeof maximum == "number" && (json.maxItems = maximum), json.type = "array", json.items = processSchema(def.element, ctx, {
+			...params,
+			path: [...params.path, "items"]
+		});
+	};
+	function inputOptin(schema) {
+		let def = schema._zod.def;
+		return def.type === "pipe" && def.in._zod.traits.has("$ZodTransform") ? inputOptin(def.out) : def.type === "catch" ? inputOptin(def.innerType) : schema._zod.optin;
+	}
+	var objectProcessor = (schema, ctx, _json, params) => {
+		let json = _json, def = schema._zod.def, shape = def.shape;
+		if (Object.getOwnPropertySymbols(shape).length && handleUnrepresentable(schema, ctx, json, params, "Symbol keys cannot be represented in JSON Schema")) return;
+		json.type = "object", json.properties = {};
+		for (let key in shape) assignProp(json.properties, key, processSchema(shape[key], ctx, {
+			...params,
+			path: [
+				...params.path,
+				"properties",
+				key
+			]
+		}));
+		let requiredKeys = [];
+		for (let key of Object.keys(shape)) {
+			let field = def.shape[key];
+			(ctx.io === "input" ? inputOptin(field) === void 0 : field._zod.optout === void 0) && requiredKeys.push(key);
+		}
+		requiredKeys.length > 0 && (json.required = requiredKeys), def.catchall?._zod.def.type === "never" ? json.additionalProperties = !1 : def.catchall ? def.catchall && (json.additionalProperties = processSchema(def.catchall, ctx, {
+			...params,
+			path: [...params.path, "additionalProperties"]
+		})) : ctx.io === "output" && (json.additionalProperties = !1);
+	};
+	var unionProcessor = (schema, ctx, json, params) => {
+		let def = schema._zod.def, isExclusive = def.inclusive === !1, options = def.options.map((x, i) => processSchema(x, ctx, {
+			...params,
+			path: [
+				...params.path,
+				isExclusive ? "oneOf" : "anyOf",
+				i
+			]
+		}));
+		isExclusive ? json.oneOf = options : json.anyOf = options;
+	};
+	var intersectionProcessor = (schema, ctx, json, params) => {
+		let def = schema._zod.def, a = processSchema(def.left, ctx, {
+			...params,
+			path: [
+				...params.path,
+				"allOf",
+				0
+			]
+		}), b = processSchema(def.right, ctx, {
+			...params,
+			path: [
+				...params.path,
+				"allOf",
+				1
+			]
+		}), isSimpleIntersection = (val) => "allOf" in val && Object.keys(val).length === 1, allOf = [...isSimpleIntersection(a) ? a.allOf : [a], ...isSimpleIntersection(b) ? b.allOf : [b]];
+		json.allOf = allOf, ctx.intersections.push(allOf);
+	};
+	var nullableProcessor = (schema, ctx, json, params) => {
+		let def = schema._zod.def, inner = processSchema(def.innerType, ctx, params), seen = ctx.seen.get(schema);
+		ctx.target === "openapi-3.0" ? (seen.ref = def.innerType, json.nullable = !0) : json.anyOf = [inner, { type: "null" }];
+	};
+	var nonoptionalProcessor = (schema, ctx, _json, params) => {
+		let def = schema._zod.def;
+		processSchema(def.innerType, ctx, params);
+		let seen = ctx.seen.get(schema);
+		seen.ref = def.innerType;
+	};
+	var UNREPRESENTABLE_DEFAULT = Symbol();
+	function serializeDefaultValue(value, schema, ctx, json, params) {
+		let unrepresentable = !1, serialized = JSON.stringify(value, (_, val) => typeof val != "bigint" ? val : (unrepresentable = !0, null));
+		return unrepresentable ? (handleUnrepresentable(schema, ctx, json, params, "BigInt defaults cannot be represented in JSON Schema"), UNREPRESENTABLE_DEFAULT) : JSON.parse(serialized);
+	}
+	var defaultProcessor = (schema, ctx, json, params) => {
+		let def = schema._zod.def;
+		processSchema(def.innerType, ctx, params);
+		let seen = ctx.seen.get(schema);
+		seen.ref = def.innerType;
+		let value = serializeDefaultValue(def.defaultValue, schema, ctx, json, params);
+		value !== UNREPRESENTABLE_DEFAULT && (json.default = value);
+	};
+	var prefaultProcessor = (schema, ctx, json, params) => {
+		let def = schema._zod.def;
+		processSchema(def.innerType, ctx, params);
+		let seen = ctx.seen.get(schema);
+		if (seen.ref = def.innerType, ctx.io !== "input") return;
+		let value = serializeDefaultValue(def.defaultValue, schema, ctx, json, params);
+		value !== UNREPRESENTABLE_DEFAULT && (json._prefault = value);
+	};
+	var catchProcessor = (schema, ctx, json, params) => {
+		let def = schema._zod.def;
+		processSchema(def.innerType, ctx, params);
+		let seen = ctx.seen.get(schema);
+		seen.ref = def.innerType;
+		let catchValue;
+		try {
+			catchValue = def.catchValue(void 0);
+		} catch {
+			handleUnrepresentable(schema, ctx, json, params, "Dynamic catch values are not supported in JSON Schema");
+			return;
+		}
+		json.default = catchValue;
+	};
+	var pipeProcessor = (schema, ctx, _json, params) => {
+		let def = schema._zod.def, inIsTransform = def.in._zod.traits.has("$ZodTransform"), innerType = ctx.io === "input" ? inIsTransform ? def.out : def.in : def.out;
+		processSchema(innerType, ctx, params);
+		let seen = ctx.seen.get(schema);
+		seen.ref = innerType;
+	};
+	var readonlyProcessor = (schema, ctx, json, params) => {
+		let def = schema._zod.def;
+		processSchema(def.innerType, ctx, params);
+		let seen = ctx.seen.get(schema);
+		seen.ref = def.innerType, json.readOnly = !0;
+	};
+	var optionalProcessor = (schema, ctx, _json, params) => {
+		let def = schema._zod.def;
+		processSchema(def.innerType, ctx, params);
+		let seen = ctx.seen.get(schema);
+		seen.ref = def.innerType;
+	};
+	var _installedErrorProtos = new WeakSet([Object.prototype, Error.prototype]);
+	function _lazyMethod(proto, key, make) {
+		Object.defineProperty(proto, key, {
+			configurable: !0,
+			enumerable: !1,
+			get() {
+				let value = make(this);
+				return Object.defineProperty(this, key, {
+					value,
+					configurable: !0,
+					writable: !0
+				}), value;
+			},
+			set(value) {
+				Object.defineProperty(this, key, {
+					value,
+					configurable: !0,
+					writable: !0
+				});
+			}
+		});
+	}
+	var initializer2 = (inst, issues) => {
+		$ZodError.init(inst, issues), inst.name = "ZodError";
+		let proto = Object.getPrototypeOf(inst);
+		_installedErrorProtos.has(proto) || (_installedErrorProtos.add(proto), _lazyMethod(proto, "format", (self) => (mapper) => formatError(self, mapper)), _lazyMethod(proto, "flatten", (self) => (mapper) => flattenError(self, mapper)), _lazyMethod(proto, "addIssue", (self) => (issue2) => {
+			self.issues.push(issue2), self.message = JSON.stringify(self.issues, jsonStringifyReplacer, 2);
+		}), _lazyMethod(proto, "addIssues", (self) => (issues2) => {
+			self.issues.push(...issues2), self.message = JSON.stringify(self.issues, jsonStringifyReplacer, 2);
+		}), Object.defineProperty(proto, "isEmpty", {
+			configurable: !0,
+			enumerable: !1,
+			get() {
+				return this.issues.length === 0;
+			}
+		}));
+	};
+	var ZodError = $constructor("ZodError", initializer2);
+	var ZodRealError = $constructor("ZodError", initializer2, void 0, { Parent: Error });
+	var parse = _parse(ZodRealError);
+	var parseAsync = _parseAsync(ZodRealError);
+	var safeParse = _safeParse(ZodRealError);
+	var safeParseAsync = _safeParseAsync(ZodRealError);
+	var encode = _encode(ZodRealError);
+	var decode = _decode(ZodRealError);
+	var encodeAsync = _encodeAsync(ZodRealError);
+	var decodeAsync = _decodeAsync(ZodRealError);
+	var safeEncode = _safeEncode(ZodRealError);
+	var safeDecode = _safeDecode(ZodRealError);
+	var safeEncodeAsync = _safeEncodeAsync(ZodRealError);
+	var safeDecodeAsync = _safeDecodeAsync(ZodRealError);
+	function _ensureDefaultLocale() {
+		globalConfig.localeError || config(en_default());
+	}
+	function _ensureDefaultMemoizer() {
+		globalConfig.memoizer || config({ memoizer: memoizer() });
+	}
+	var ZodType = $constructor("ZodType", (inst, def) => (_ensureDefaultLocale(), $ZodType.init(inst, def), inst.def = def, inst.type = def.type, inst), {
+		check(...chks) {
+			let def = this.def;
+			return this.clone(util_exports.mergeDefs(def, { checks: [...def.checks ?? [], ...chks.map((ch) => typeof ch == "function" ? { _zod: {
+				check: ch,
+				def: { check: "custom" },
+				onattach: []
+			} } : ch)] }), { parent: !0 });
+		},
+		with(...chks) {
+			return this.check(...chks);
+		},
+		clone(def, params) {
+			return clone(this, def, params);
+		},
+		brand() {
+			return this;
+		},
+		register(reg, meta2) {
+			return reg.add(this, meta2), this;
+		},
+		refine(check, params) {
+			return this.check(refine(check, params));
+		},
+		superRefine(refinement, params) {
+			return this.check(superRefine(refinement, params));
+		},
+		overwrite(fn) {
+			return this.check(_overwrite(fn));
+		},
+		optional() {
+			return optional(this);
+		},
+		exactOptional() {
+			return exactOptional(this);
+		},
+		nullable() {
+			return nullable(this);
+		},
+		nullish() {
+			return optional(nullable(this));
+		},
+		nonoptional(params) {
+			return nonoptional(this, params);
+		},
+		array() {
+			return array(this);
+		},
+		or(arg) {
+			return union([this, arg]);
+		},
+		and(arg) {
+			return intersection(this, arg);
+		},
+		transform(tx) {
+			return pipe(this, transform(tx));
+		},
+		default(d) {
+			return _default(this, d);
+		},
+		prefault(d) {
+			return prefault(this, d);
+		},
+		catch(params) {
+			return _catch(this, params);
+		},
+		pipe(target) {
+			return pipe(this, target);
+		},
+		readonly() {
+			return readonly(this);
+		},
+		describe(description) {
+			let cl = this.clone();
+			return globalRegistry.add(cl, { description }), cl;
+		},
+		meta(...args) {
+			if (args.length === 0) return globalRegistry.get(this);
+			let cl = this.clone();
+			return globalRegistry.add(cl, args[0]), cl;
+		},
+		isOptional() {
+			return this.safeParse(void 0).success;
+		},
+		isNullable() {
+			return this.safeParse(null).success;
+		},
+		apply(fn, ...args) {
+			return args.length === 0 ? fn(this) : fn(this, ...args);
+		},
+		get "~standard"() {
+			return util_exports.hide(this, "~standard", {
+				...standardProps(this),
+				jsonSchema: {
+					input: createStandardJSONSchemaMethod(this, "input"),
+					output: createStandardJSONSchemaMethod(this, "output")
+				}
+			});
+		},
+		set "~standard"(value) {
+			util_exports.own(this, "~standard", value);
+		},
+		parse: function _parse2(data, params) {
+			return parse(this, data, params, { callee: _parse2 });
+		},
+		parseAsync: async function _parseAsync2(data, params) {
+			return await parseAsync(this, data, params, { callee: _parseAsync2 });
+		},
+		safeParse(data, params) {
+			return safeParse(this, data, params);
+		},
+		async safeParseAsync(data, params) {
+			return safeParseAsync(this, data, params);
+		},
+		get spa() {
+			return this?.safeParseAsync;
+		},
+		set spa(value) {
+			util_exports.own(this, "spa", value);
+		},
+		validate(data, params) {
+			return validate(this, data, params);
+		},
+		validateAsync(data, params) {
+			return validateAsync(this, data, params);
+		},
+		encode: function _encode2(data, params) {
+			return encode(this, data, params, { callee: _encode2 });
+		},
+		decode: function _decode2(data, params) {
+			return decode(this, data, params, { callee: _decode2 });
+		},
+		encodeAsync: async function _encodeAsync2(data, params) {
+			return await encodeAsync(this, data, params, { callee: _encodeAsync2 });
+		},
+		decodeAsync: async function _decodeAsync2(data, params) {
+			return await decodeAsync(this, data, params, { callee: _decodeAsync2 });
+		},
+		safeEncode(data, params) {
+			return safeEncode(this, data, params);
+		},
+		safeDecode(data, params) {
+			return safeDecode(this, data, params);
+		},
+		async safeEncodeAsync(data, params) {
+			return safeEncodeAsync(this, data, params);
+		},
+		async safeDecodeAsync(data, params) {
+			return safeDecodeAsync(this, data, params);
+		},
+		toJSONSchema(params) {
+			return createToJSONSchemaMethod(this, {})(params);
+		},
+		get description() {
+			return globalRegistry.get(this)?.description;
+		},
+		get _def() {
+			return this._zod.def;
+		}
+	});
+	var _ZodString = $constructor("_ZodString", (inst, def) => {
+		$ZodString.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => stringProcessor(inst, ctx, json, params);
+	}, util_exports.derived({
+		format: (inst) => aggregateChecks(inst).format ?? null,
+		minLength: (inst) => aggregateChecks(inst).minimum ?? null,
+		maxLength: (inst) => aggregateChecks(inst).maximum ?? null
+	}, {
+		regex(...args) {
+			return this.check(_regex(...args));
+		},
+		includes(...args) {
+			return this.check(_includes(...args));
+		},
+		startsWith(...args) {
+			return this.check(_startsWith(...args));
+		},
+		endsWith(...args) {
+			return this.check(_endsWith(...args));
+		},
+		min(...args) {
+			return this.check(_minLength(...args));
+		},
+		max(...args) {
+			return this.check(_maxLength(...args));
+		},
+		length(...args) {
+			return this.check(_length(...args));
+		},
+		nonempty(...args) {
+			return this.check(_minLength(1, ...args));
+		},
+		lowercase(params) {
+			return this.check(_lowercase(params));
+		},
+		uppercase(params) {
+			return this.check(_uppercase(params));
+		},
+		trim() {
+			return this.check(_trim());
+		},
+		normalize(...args) {
+			return this.check(_normalize(...args));
+		},
+		toLowerCase() {
+			return this.check(_toLowerCase());
+		},
+		toUpperCase() {
+			return this.check(_toUpperCase());
+		},
+		slugify() {
+			return this.check(_slugify());
+		}
+	}));
+	var ZodString = $constructor("ZodString", (inst, def) => {
+		$ZodString.init(inst, def), _ZodString.init(inst, def);
+	}, {
+		email(params) {
+			return this.check(_email(ZodEmail, params));
+		},
+		url(params) {
+			return this.check(_url(ZodURL, params));
+		},
+		jwt(params) {
+			return this.check(_jwt(ZodJWT, params));
+		},
+		emoji(params) {
+			return this.check(_emoji2(ZodEmoji, params));
+		},
+		guid(params) {
+			return this.check(_guid(ZodGUID, params));
+		},
+		uuid(params) {
+			return this.check(_uuid(ZodUUID, params));
+		},
+		uuidv4(params) {
+			return this.check(_uuidv4(ZodUUID, params));
+		},
+		uuidv6(params) {
+			return this.check(_uuidv6(ZodUUID, params));
+		},
+		uuidv7(params) {
+			return this.check(_uuidv7(ZodUUID, params));
+		},
+		nanoid(params) {
+			return this.check(_nanoid(ZodNanoID, params));
+		},
+		cuid(params) {
+			return this.check(_cuid(ZodCUID, params));
+		},
+		cuid2(params) {
+			return this.check(_cuid2(ZodCUID2, params));
+		},
+		ulid(params) {
+			return this.check(_ulid(ZodULID, params));
+		},
+		base64(params) {
+			return this.check(_base64(ZodBase64, params));
+		},
+		base64url(params) {
+			return this.check(_base64url(ZodBase64URL, params));
+		},
+		xid(params) {
+			return this.check(_xid(ZodXID, params));
+		},
+		ksuid(params) {
+			return this.check(_ksuid(ZodKSUID, params));
+		},
+		ipv4(params) {
+			return this.check(_ipv4(ZodIPv4, params));
+		},
+		ipv6(params) {
+			return this.check(_ipv6(ZodIPv6, params));
+		},
+		cidrv4(params) {
+			return this.check(_cidrv4(ZodCIDRv4, params));
+		},
+		cidrv6(params) {
+			return this.check(_cidrv6(ZodCIDRv6, params));
+		},
+		e164(params) {
+			return this.check(_e164(ZodE164, params));
+		},
+		datetime(params) {
+			return this.check(_isoDateTime(ZodISODateTime, params));
+		},
+		date(params) {
+			return this.check(_isoDate(ZodISODate, params));
+		},
+		time(params) {
+			return this.check(_isoTime(ZodISOTime, params));
+		},
+		duration(params) {
+			return this.check(_isoDuration(ZodISODuration, params));
+		}
+	});
+	function string2(params) {
+		return _string(ZodString, params);
+	}
+	var ZodStringFormat = $constructor("ZodStringFormat", (inst, def) => {
+		$ZodStringFormat.init(inst, def), _ZodString.init(inst, def);
+	});
+	var ZodISODateTime = $constructor("ZodISODateTime", (inst, def) => {
+		$ZodISODateTime.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodISODate = $constructor("ZodISODate", (inst, def) => {
+		$ZodISODate.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodISOTime = $constructor("ZodISOTime", (inst, def) => {
+		$ZodISOTime.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodISODuration = $constructor("ZodISODuration", (inst, def) => {
+		$ZodISODuration.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodEmail = $constructor("ZodEmail", (inst, def) => {
+		$ZodEmail.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodGUID = $constructor("ZodGUID", (inst, def) => {
+		$ZodGUID.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodUUID = $constructor("ZodUUID", (inst, def) => {
+		$ZodUUID.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodURL = $constructor("ZodURL", (inst, def) => {
+		$ZodURL.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodEmoji = $constructor("ZodEmoji", (inst, def) => {
+		$ZodEmoji.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodNanoID = $constructor("ZodNanoID", (inst, def) => {
+		$ZodNanoID.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodCUID = $constructor("ZodCUID", (inst, def) => {
+		$ZodCUID.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodCUID2 = $constructor("ZodCUID2", (inst, def) => {
+		$ZodCUID2.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodULID = $constructor("ZodULID", (inst, def) => {
+		$ZodULID.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodXID = $constructor("ZodXID", (inst, def) => {
+		$ZodXID.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodKSUID = $constructor("ZodKSUID", (inst, def) => {
+		$ZodKSUID.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodIPv4 = $constructor("ZodIPv4", (inst, def) => {
+		$ZodIPv4.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodIPv6 = $constructor("ZodIPv6", (inst, def) => {
+		$ZodIPv6.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodCIDRv4 = $constructor("ZodCIDRv4", (inst, def) => {
+		$ZodCIDRv4.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodCIDRv6 = $constructor("ZodCIDRv6", (inst, def) => {
+		$ZodCIDRv6.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodBase64 = $constructor("ZodBase64", (inst, def) => {
+		$ZodBase64.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodBase64URL = $constructor("ZodBase64URL", (inst, def) => {
+		$ZodBase64URL.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodE164 = $constructor("ZodE164", (inst, def) => {
+		$ZodE164.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodJWT = $constructor("ZodJWT", (inst, def) => {
+		$ZodJWT.init(inst, def), ZodStringFormat.init(inst, def);
+	});
+	var ZodNumber = $constructor("ZodNumber", (inst, def) => {
+		$ZodNumber.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => numberProcessor(inst, ctx, json, params), inst.isFinite = !0;
+	}, util_exports.derived({
+		minValue: (inst) => {
+			let { minimum, exclusiveMinimum } = aggregateChecks(inst);
+			return Math.max(minimum ?? Number.NEGATIVE_INFINITY, exclusiveMinimum ?? Number.NEGATIVE_INFINITY);
+		},
+		maxValue: (inst) => {
+			let { maximum, exclusiveMaximum } = aggregateChecks(inst);
+			return Math.min(maximum ?? Number.POSITIVE_INFINITY, exclusiveMaximum ?? Number.POSITIVE_INFINITY);
+		},
+		isInt: (inst) => {
+			let { isInt, multipleOf } = aggregateChecks(inst);
+			return !!isInt || !!multipleOf?.some(Number.isSafeInteger);
+		},
+		format: (inst) => aggregateChecks(inst).format ?? null
+	}, {
+		gt(value, params) {
+			return this.check(_gt(value, params));
+		},
+		gte(value, params) {
+			return this.check(_gte(value, params));
+		},
+		min(value, params) {
+			return this.check(_gte(value, params));
+		},
+		lt(value, params) {
+			return this.check(_lt(value, params));
+		},
+		lte(value, params) {
+			return this.check(_lte(value, params));
+		},
+		max(value, params) {
+			return this.check(_lte(value, params));
+		},
+		int(params) {
+			return this.check(int(params));
+		},
+		safe(params) {
+			return this.check(int(params));
+		},
+		positive(params) {
+			return this.check(_gt(0, params));
+		},
+		nonnegative(params) {
+			return this.check(_gte(0, params));
+		},
+		negative(params) {
+			return this.check(_lt(0, params));
+		},
+		nonpositive(params) {
+			return this.check(_lte(0, params));
+		},
+		multipleOf(value, params) {
+			return this.check(_multipleOf(value, params));
+		},
+		step(value, params) {
+			return this.check(_multipleOf(value, params));
+		},
+		finite() {
+			return this;
+		}
+	}));
+	function number2(params) {
+		return _number(ZodNumber, params);
+	}
+	var ZodNumberFormat = $constructor("ZodNumberFormat", (inst, def) => {
+		$ZodNumberFormat.init(inst, def), ZodNumber.init(inst, def);
+	});
+	function int(params) {
+		return _int(ZodNumberFormat, params);
+	}
+	var ZodBoolean = $constructor("ZodBoolean", (inst, def) => {
+		$ZodBoolean.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => booleanProcessor(inst, ctx, json, params);
+	});
+	function boolean2(params) {
+		return _boolean(ZodBoolean, params);
+	}
+	var ZodUnknown = $constructor("ZodUnknown", (inst, def) => {
+		$ZodUnknown.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => void 0;
+	});
+	function unknown() {
+		return _unknown(ZodUnknown);
+	}
+	var ZodNever = $constructor("ZodNever", (inst, def) => {
+		$ZodNever.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => neverProcessor(inst, ctx, json, params);
+	});
+	function never(params) {
+		return _never(ZodNever, params);
+	}
+	var ZodArray = $constructor("ZodArray", (inst, def) => {
+		_ensureDefaultMemoizer(), $ZodArray.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => arrayProcessor(inst, ctx, json, params), inst.element = def.element;
+	}, {
+		min(n, params) {
+			return this.check(_minLength(n, params));
+		},
+		nonempty(params) {
+			return this.check(_minLength(1, params));
+		},
+		max(n, params) {
+			return this.check(_maxLength(n, params));
+		},
+		length(n, params) {
+			return this.check(_length(n, params));
+		},
+		unwrap() {
+			return this.element;
+		}
+	});
+	function array(element, params) {
+		return _array(ZodArray, element, params);
+	}
+	var ZodObject = $constructor("ZodObject", (inst, def) => {
+		_ensureDefaultMemoizer(), $ZodObjectJIT.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => objectProcessor(inst, ctx, json, params), util_exports.installLazyProp(inst, "shape", (self) => self._zod.def.shape, !1);
+	}, {
+		keyof() {
+			return _enum(Object.keys(this._zod.def.shape));
+		},
+		catchall(catchall) {
+			return this.clone(util_exports.mergeDefs(this._zod.def, { catchall }));
+		},
+		passthrough() {
+			return this.clone(util_exports.mergeDefs(this._zod.def, { catchall: unknown() }));
+		},
+		loose() {
+			return this.clone(util_exports.mergeDefs(this._zod.def, { catchall: unknown() }));
+		},
+		strict() {
+			return this.clone(util_exports.mergeDefs(this._zod.def, { catchall: never() }));
+		},
+		strip() {
+			return this.clone(util_exports.mergeDefs(this._zod.def, { catchall: void 0 }));
+		},
+		extend(incoming) {
+			return util_exports.extend(this, incoming);
+		},
+		safeExtend(incoming) {
+			return util_exports.safeExtend(this, incoming);
+		},
+		merge(other) {
+			return util_exports.merge(this, other);
+		},
+		pick(mask) {
+			return util_exports.pick(this, mask);
+		},
+		omit(mask) {
+			return util_exports.omit(this, mask);
+		},
+		partial(...args) {
+			return util_exports.partial(ZodOptional, this, args[0]);
+		},
+		exactPartial(...args) {
+			return util_exports.partial(ZodExactOptional, this, args[0], "exactPartial");
+		},
+		required(...args) {
+			return util_exports.required(ZodNonOptional, this, args[0]);
+		}
+	});
+	function object(shape, params) {
+		return new ZodObject({
+			type: "object",
+			shape: shape ?? {},
+			...util_exports.normalizeParams(params)
+		});
+	}
+	var ZodUnion = $constructor("ZodUnion", (inst, def) => {
+		$ZodUnion.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => unionProcessor(inst, ctx, json, params), inst.options = def.options;
+	});
+	function union(options, params) {
+		return new ZodUnion({
+			type: "union",
+			options,
+			...util_exports.normalizeParams(params)
+		});
+	}
+	var ZodIntersection = $constructor("ZodIntersection", (inst, def) => {
+		$ZodIntersection.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => intersectionProcessor(inst, ctx, json, params);
+	});
+	function intersection(left, right) {
+		return new ZodIntersection({
+			type: "intersection",
+			left,
+			right
+		});
+	}
+	var ZodEnum = $constructor("ZodEnum", (inst, def) => {
+		$ZodEnum.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => enumProcessor(inst, ctx, json, params), inst.enum = def.entries, inst.options = [...inst._zod.values];
+		let keys = new Set(Object.keys(def.entries));
+		inst.extract = (values, params) => {
+			let newEntries = {};
+			for (let value of values) if (keys.has(value)) newEntries[value] = def.entries[value];
+			else throw new Error(`Key ${value} not found in enum`);
+			return new ZodEnum({
+				...def,
+				checks: [],
+				...util_exports.normalizeParams(params),
+				entries: newEntries
+			});
+		}, inst.exclude = (values, params) => {
+			let newEntries = { ...def.entries };
+			for (let value of values) if (keys.has(value)) delete newEntries[value];
+			else throw new Error(`Key ${value} not found in enum`);
+			return new ZodEnum({
+				...def,
+				checks: [],
+				...util_exports.normalizeParams(params),
+				entries: newEntries
+			});
+		};
+	});
+	function _enum(values, params) {
+		return new ZodEnum({
+			type: "enum",
+			entries: Array.isArray(values) ? Object.fromEntries(values.map((v) => [v, v])) : values,
+			...util_exports.normalizeParams(params)
+		});
+	}
+	var ZodLiteral = $constructor("ZodLiteral", (inst, def) => {
+		$ZodLiteral.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => literalProcessor(inst, ctx, json, params), inst.values = new Set(def.values), Object.defineProperty(inst, "value", { get() {
+			if (def.values.length > 1) throw new Error("This schema contains multiple valid literal values. Use `.values` instead.");
+			return def.values[0];
+		} });
+	});
+	function literal(value, params) {
+		return new ZodLiteral({
+			type: "literal",
+			values: Array.isArray(value) ? value : [value],
+			...util_exports.normalizeParams(params)
+		});
+	}
+	var ZodTransform = $constructor("ZodTransform", (inst, def) => {
+		_ensureDefaultMemoizer(), $ZodTransform.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => transformProcessor(inst, ctx, json, params), inst._zod.parse = (payload, _ctx) => {
+			if (_ctx.direction === "backward") throw new $ZodEncodeError(inst.constructor.name);
+			payload.addIssue = (issue2) => {
+				if (typeof issue2 == "string") payload.issues.push(util_exports.issue(issue2, payload.value, def));
+				else {
+					let _issue = issue2;
+					_issue.fatal && (_issue.continue = !1), _issue.code ?? (_issue.code = "custom"), "input" in _issue || (_issue.input = payload.value), _issue.inst ?? (_issue.inst = inst), payload.issues.push(util_exports.issue(_issue));
+				}
+			};
+			let output = def.transform(payload.value, payload);
+			return output instanceof Promise ? output.then((output2) => (payload.value = output2, payload)) : (payload.value = output, payload);
+		};
+	});
+	function transform(fn) {
+		return new ZodTransform({
+			type: "transform",
+			transform: fn
+		});
+	}
+	var ZodOptional = $constructor("ZodOptional", (inst, def) => {
+		$ZodOptional.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => optionalProcessor(inst, ctx, json, params), inst.unwrap = () => inst._zod.def.innerType;
+	});
+	function optional(innerType) {
+		return new ZodOptional({
+			type: "optional",
+			innerType
+		});
+	}
+	var ZodExactOptional = $constructor("ZodExactOptional", (inst, def) => {
+		$ZodExactOptional.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => optionalProcessor(inst, ctx, json, params), inst.unwrap = () => inst._zod.def.innerType;
+	});
+	function exactOptional(innerType) {
+		return new ZodExactOptional({
+			type: "optional",
+			innerType
+		});
+	}
+	var ZodNullable = $constructor("ZodNullable", (inst, def) => {
+		$ZodNullable.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => nullableProcessor(inst, ctx, json, params), inst.unwrap = () => inst._zod.def.innerType;
+	});
+	function nullable(innerType) {
+		return new ZodNullable({
+			type: "nullable",
+			innerType
+		});
+	}
+	var ZodDefault = $constructor("ZodDefault", (inst, def) => {
+		$ZodDefault.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => defaultProcessor(inst, ctx, json, params), inst.unwrap = () => inst._zod.def.innerType, inst.removeDefault = inst.unwrap;
+	});
+	function _default(innerType, defaultValue) {
+		return new ZodDefault({
+			type: "default",
+			innerType,
+			get defaultValue() {
+				return typeof defaultValue == "function" ? defaultValue() : util_exports.shallowClone(defaultValue);
+			}
+		});
+	}
+	var ZodPrefault = $constructor("ZodPrefault", (inst, def) => {
+		$ZodPrefault.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => prefaultProcessor(inst, ctx, json, params), inst.unwrap = () => inst._zod.def.innerType;
+	});
+	function prefault(innerType, defaultValue) {
+		return new ZodPrefault({
+			type: "prefault",
+			innerType,
+			get defaultValue() {
+				return typeof defaultValue == "function" ? defaultValue() : util_exports.shallowClone(defaultValue);
+			}
+		});
+	}
+	var ZodNonOptional = $constructor("ZodNonOptional", (inst, def) => {
+		$ZodNonOptional.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => nonoptionalProcessor(inst, ctx, json, params), inst.unwrap = () => inst._zod.def.innerType;
+	});
+	function nonoptional(innerType, params) {
+		return new ZodNonOptional({
+			type: "nonoptional",
+			innerType,
+			...util_exports.normalizeParams(params)
+		});
+	}
+	var ZodCatch = $constructor("ZodCatch", (inst, def) => {
+		$ZodCatch.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => catchProcessor(inst, ctx, json, params), inst.unwrap = () => inst._zod.def.innerType, inst.removeCatch = inst.unwrap;
+	});
+	function _catch(innerType, catchValue) {
+		return new ZodCatch({
+			type: "catch",
+			innerType,
+			catchValue: typeof catchValue == "function" ? catchValue : util_exports.constantCatch(catchValue)
+		});
+	}
+	var ZodPipe = $constructor("ZodPipe", (inst, def) => {
+		$ZodPipe.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => pipeProcessor(inst, ctx, json, params), inst.in = def.in, inst.out = def.out;
+	});
+	function pipe(in_, out) {
+		return new ZodPipe({
+			type: "pipe",
+			in: in_,
+			out
+		});
+	}
+	var ZodReadonly = $constructor("ZodReadonly", (inst, def) => {
+		$ZodReadonly.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => readonlyProcessor(inst, ctx, json, params), inst.unwrap = () => inst._zod.def.innerType;
+	});
+	function readonly(innerType) {
+		return new ZodReadonly({
+			type: "readonly",
+			innerType
+		});
+	}
+	var ZodCustom = $constructor("ZodCustom", (inst, def) => {
+		$ZodCustom.init(inst, def), ZodType.init(inst, def), inst._zod.processJSONSchema = (ctx, json, params) => customProcessor(inst, ctx, json, params);
+	});
+	function refine(fn, _params = {}) {
+		return _refine(ZodCustom, fn, _params);
+	}
+	function superRefine(fn, params) {
+		return _superRefine(fn, params);
+	}
+	var telemetryConfigSchema = object({ enabled: boolean2().optional() });
+	var guidanceConfigSchema = object({ enabled: boolean2().optional() });
+	var updatesConfigSchema = object({
+		auto: boolean2().optional(),
+		bypassMinReleaseAge: boolean2().optional()
+	});
+	var credStorageSchema = union([
+		literal("auto"),
+		literal("file"),
+		literal("keyring")
+	]);
+	var dpopPrivateKeySchema = object({
+		kty: literal("EC"),
+		crv: literal("P-256"),
+		x: string2(),
+		y: string2()
+	}).and(union([
+		object({ d: string2() }),
+		object({
+			secureEnclave: string2(),
+			sealed: string2()
+		}),
+		object({
+			tpm: string2(),
+			sealed: string2()
+		}),
+		object({
+			tpmPublic: string2(),
+			sealed: string2()
+		})
+	]));
+	var authConfigSchema = object({
+		"// Note": string2().optional(),
+		"// Docs": string2().optional(),
+		skipWrite: boolean2().optional(),
+		token: string2().optional(),
+		userId: string2().optional(),
+		cachedUser: object({
+			id: string2(),
+			username: string2()
+		}).optional(),
+		refreshToken: string2().optional(),
+		expiresAt: number2().optional(),
+		tokenSource: union([literal("flag"), literal("env")]).optional(),
+		dpop: object({ key: dpopPrivateKeySchema }).optional()
+	});
+	authConfigSchema.omit({ tokenSource: !0 });
+	var globalConfigSchema = object({
+		"// Note": string2().optional(),
+		"// Docs": string2().optional(),
+		credStorage: credStorageSchema.optional(),
+		currentTeam: string2().optional(),
+		api: string2().optional(),
+		telemetry: telemetryConfigSchema.optional(),
+		guidance: guidanceConfigSchema.optional(),
+		updates: updatesConfigSchema.optional(),
+		useNativeBinary: boolean2().optional(),
+		nativeBinaryAutoOptIn: boolean2().optional(),
+		usedBefore: boolean2().optional(),
+		loginWelcomeSeen: boolean2().optional(),
+		loginIntroductionSeen: boolean2().optional(),
+		mfaReminderCheckedAt: number2().optional()
+	});
+	function formatCredStorageError(value) {
+		return `Invalid value for \`credStorage\`: ${JSON.stringify(value)}. Expected one of: ${CRED_STORAGE_CONFIG_VALUES.map((storage) => JSON.stringify(storage)).join(", ")}.`;
+	}
+	var telemetryConfigSchema2 = telemetryConfigSchema.passthrough();
+	var guidanceConfigSchema2 = guidanceConfigSchema.passthrough();
+	var updatesConfigSchema2 = updatesConfigSchema.passthrough();
+	var credStorageSchema2 = _enum(CRED_STORAGE_CONFIG_VALUES, { error: (issue2) => formatCredStorageError(issue2.input) }).optional();
+	var globalConfigSchema2 = globalConfigSchema.extend({
+		credStorage: credStorageSchema2,
+		telemetry: telemetryConfigSchema2.optional(),
+		guidance: guidanceConfigSchema2.optional(),
+		updates: updatesConfigSchema2.optional()
+	}).passthrough();
+	var authConfigSchema2 = authConfigSchema.passthrough();
+	var import_node_fs2 = __toESM(__require("fs"));
+	var import_node_path2 = __toESM(__require("path"));
+	var import_node_fs = __toESM(__require("fs"));
+	var import_node_path = __toESM(__require("path"));
+	var import_node_os = __require("os");
+	function isReadableDirectory(targetPath) {
+		try {
+			return import_node_fs.default.lstatSync(targetPath).isDirectory();
+		} catch {
+			return !1;
+		}
+	}
+	function getAppPaths(appName) {
+		return require_xdg_app_paths()(appName);
+	}
+	function getDataDirectories(appName) {
+		return getAppPaths(appName).dataDirs();
+	}
+	function getDataPath() {
+		return getDataDirectories("com.vercel.cli")[0];
+	}
+	function getCachePath() {
+		let xdgCacheHome = process.env.XDG_CACHE_HOME;
+		return xdgCacheHome ? import_node_path.default.join(xdgCacheHome, "com.vercel.cli") : getAppPaths("com.vercel.cli").cache();
+	}
+	function getLegacyWindowsDataDirectory() {
+		if (process.platform !== "win32" || process.env.XDG_DATA_HOME) return;
+		let appData = process.env.APPDATA || import_node_path.default.join((0, import_node_os.homedir)(), "AppData", "Roaming");
+		return import_node_path.default.join(appData, "xdg.data", "com.vercel.cli");
+	}
+	function getGlobalPathConfig() {
+		let vercelDirectories = getDataDirectories("com.vercel.cli"), legacyWindowsDirectory = getLegacyWindowsDataDirectory();
+		return [
+			...vercelDirectories,
+			...legacyWindowsDirectory ? [legacyWindowsDirectory] : [],
+			import_node_path.default.join((0, import_node_os.homedir)(), ".now"),
+			...getDataDirectories("now")
+		].find((configPath) => isReadableDirectory(configPath)) || vercelDirectories[0];
+	}
+	function getConfigFilePath(configDir) {
+		return import_node_path.default.join(configDir, "config.json");
+	}
+	function getAuthConfigFilePath(configDir) {
+		return import_node_path.default.join(configDir, "auth.json");
+	}
+	function getDpopAuthConfigFilePath(configDir) {
+		return import_node_path.default.join(configDir, "credentials.json");
+	}
+	var DOCS_URL = "https://vercel.com/docs/projects/project-configuration/global-configuration";
+	var defaultGlobalConfig = {
+		"// Note": "This is your Vercel config file. For more information see the global configuration documentation.",
+		"// Docs": `${DOCS_URL}#config.json`,
+		usedBefore: !1
+	};
+	function getDefaultAuthConfig() {
+		return {
+			"// Note": "This is your Vercel credentials file. DO NOT SHARE!",
+			"// Docs": `${DOCS_URL}#auth.json`
+		};
+	}
+	var defaultAuthConfig = getDefaultAuthConfig();
+	function normalizeConfigError(error2) {
+		if (error2 instanceof ZodError) {
+			let credStorageIssue = error2.issues.find((issue2) => issue2.path[0] === "credStorage");
+			if (credStorageIssue) throw new Error(credStorageIssue.message);
+		}
+		throw error2;
+	}
+	function parseGlobalConfig(value) {
+		try {
+			return globalConfigSchema2.parse(value);
+		} catch (error2) {
+			normalizeConfigError(error2);
+		}
+	}
+	function parseAuthConfig(value) {
+		return authConfigSchema2.parse(value);
+	}
+	function parseAuthFileConfig(value) {
+		let { tokenSource, ...authConfig } = parseAuthConfig(value);
+		return authConfig;
+	}
+	function readJsonFileSync(filePath) {
+		let content = import_node_fs2.default.readFileSync(filePath, "utf8").replace(/^\uFEFF/, "");
+		return JSON.parse(content);
+	}
+	function writeJsonFileSync(filePath, value, options = {}) {
+		let directory = import_node_path2.default.dirname(filePath), tempFilePath = import_node_path2.default.join(directory, `.${import_node_path2.default.basename(filePath)}.${process.pid}.${Date.now()}.tmp`), content = `${JSON.stringify(value, null, options.indent ?? 2)}
+`;
+		import_node_fs2.default.mkdirSync(directory, { recursive: !0 });
+		try {
+			import_node_fs2.default.writeFileSync(tempFilePath, content, {
+				encoding: "utf8",
+				mode: options.mode
+			}), import_node_fs2.default.renameSync(tempFilePath, filePath);
+		} catch (error2) {
+			try {
+				import_node_fs2.default.rmSync(tempFilePath, { force: !0 });
+			} catch {}
+			throw error2;
+		}
+	}
+	function readConfigFile(configPath, schema) {
+		return schema.parse(readJsonFileSync(configPath));
+	}
+	function writeConfigFile(configPath, schema, config2, options) {
+		writeJsonFileSync(configPath, encode(schema, config2), {
+			indent: 2,
+			...options
+		});
+	}
+	function readGlobalConfigFile(configPath) {
+		try {
+			return readConfigFile(configPath, globalConfigSchema2);
+		} catch (error2) {
+			normalizeConfigError(error2);
+		}
+	}
+	function writeGlobalConfigFile(configPath, config2) {
+		writeConfigFile(configPath, globalConfigSchema2, config2);
+	}
+	function readAuthConfigFile(configPath) {
+		return readConfigFile(configPath, authConfigSchema2);
+	}
+	function readAuthFileConfig(configPath) {
+		return parseAuthFileConfig(readJsonFileSync(configPath));
+	}
+	function readAuthConfig(configDir) {
+		return readAuthConfigFile(getAuthConfigFilePath(configDir));
+	}
+	function tryReadAuthConfig(configDir) {
+		try {
+			return readAuthConfig(configDir);
+		} catch {
+			return null;
+		}
+	}
+	function writeAuthConfigFile(configPath, authConfig) {
+		authConfig.skipWrite || writeConfigFile(configPath, authConfigSchema2, authConfig, { mode: 384 });
+	}
+	function writeAuthConfig(configDir, authConfig) {
+		writeAuthConfigFile(getAuthConfigFilePath(configDir), authConfig);
+	}
+	function deleteAuthConfigFile(configPath) {
+		import_node_fs2.default.rmSync(configPath, { force: !0 });
+	}
+	function deleteAuthConfig(configDir) {
+		deleteAuthConfigFile(getAuthConfigFilePath(configDir));
+	}
+	var TOKEN_STORAGE_ENV = "VERCEL_TOKEN_STORAGE";
+	function isErrnoException(error2) {
+		return typeof error2 == "object" && error2 !== null && "code" in error2;
+	}
+	function isCredStorage(value) {
+		return CRED_STORAGE_CONFIG_VALUES.includes(value);
+	}
+	function formatCredStorageError2(value, source) {
+		return `Invalid value for \`${source}\`: ${JSON.stringify(value)}. Expected one of: ${CRED_STORAGE_CONFIG_VALUES.map((storage) => JSON.stringify(storage)).join(", ")}.`;
+	}
+	function parseCredStorage(value, source = "credStorage") {
+		if (!(typeof value > "u")) {
+			if (isCredStorage(value)) return value;
+			throw new Error(formatCredStorageError2(value, source));
+		}
+	}
+	function authConfigHasUsableTokenData(value) {
+		if (!value || typeof value != "object") return !1;
+		let authConfig = value;
+		return typeof authConfig.token == "string" && authConfig.token.length > 0 || typeof authConfig.refreshToken == "string" && authConfig.refreshToken.length > 0;
+	}
+	function getLikelyAutoCredStorage(configDir) {
+		try {
+			return authConfigHasUsableTokenData(readAuthConfigFile(getAuthConfigFilePath(configDir))) ? "file" : "keyring";
+		} catch {
+			return "keyring";
+		}
+	}
+	function getLikelyConfiguredCredStorage(configDir, credStorage) {
+		return credStorage === "keyring" ? "keyring" : credStorage !== "auto" ? DEFAULT_CRED_STORAGE : getLikelyAutoCredStorage(configDir);
+	}
+	function getLikelyEffectiveCredStorage(configDir) {
+		let config2 = {}, credStorageOverride = process.env[TOKEN_STORAGE_ENV];
+		if (typeof credStorageOverride < "u") return getLikelyConfiguredCredStorage(configDir, parseCredStorage(credStorageOverride, TOKEN_STORAGE_ENV));
+		try {
+			let parsed = readGlobalConfigFile(getConfigFilePath(configDir));
+			config2 = {
+				...parsed,
+				credStorage: parseCredStorage(parsed.credStorage)
+			};
+		} catch (error2) {
+			if (!(isErrnoException(error2) && error2.code === "ENOENT")) throw error2;
+		}
+		return getLikelyConfiguredCredStorage(configDir, config2.credStorage);
+	}
+	0 && (module.exports = {
+		CRED_STORAGE_CONFIG_VALUES,
+		CRED_STORAGE_VALUES,
+		DEFAULT_CRED_STORAGE,
+		authConfigHasUsableTokenData,
+		authConfigSchema,
+		credStorageSchema,
+		defaultAuthConfig,
+		defaultGlobalConfig,
+		deleteAuthConfig,
+		deleteAuthConfigFile,
+		getAuthConfigFilePath,
+		getCachePath,
+		getConfigFilePath,
+		getDataPath,
+		getDefaultAuthConfig,
+		getDpopAuthConfigFilePath,
+		getGlobalPathConfig,
+		getLikelyEffectiveCredStorage,
+		globalConfigSchema,
+		guidanceConfigSchema,
+		parseAuthConfig,
+		parseAuthFileConfig,
+		parseGlobalConfig,
+		readAuthConfig,
+		readAuthConfigFile,
+		readAuthFileConfig,
+		readConfigFile,
+		readGlobalConfigFile,
+		telemetryConfigSchema,
+		tryReadAuthConfig,
+		updatesConfigSchema,
+		writeAuthConfig,
+		writeAuthConfigFile,
+		writeConfigFile,
+		writeGlobalConfigFile
+	});
+}));
+// node_modules/@vercel/oidc/dist/token-io.js
+var require_token_io = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __create = Object.create;
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __getProtoOf = Object.getPrototypeOf;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", {
+		value: mod,
+		enumerable: true
+	}) : target, mod));
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var token_io_exports = {};
+	__export(token_io_exports, {
+		findRootDir: () => findRootDir,
+		getUserDataDir: () => getUserDataDir
+	});
+	module.exports = __toCommonJS(token_io_exports);
+	var import_path = __toESM(__require("path"));
+	var import_fs = __toESM(__require("fs"));
+	var import_os = __toESM(__require("os"));
+	var import_token_error = require_token_error();
+	function findRootDir() {
+		try {
+			let dir = process.cwd();
+			while (dir !== import_path.default.dirname(dir)) {
+				const pkgPath = import_path.default.join(dir, ".vercel");
+				if (import_fs.default.existsSync(pkgPath)) return dir;
+				dir = import_path.default.dirname(dir);
+			}
+		} catch (_e) {
+			throw new import_token_error.VercelOidcTokenError("Token refresh only supported in node server environments");
+		}
+		return null;
+	}
+	function getUserDataDir() {
+		if (process.env.XDG_DATA_HOME) return process.env.XDG_DATA_HOME;
+		switch (import_os.default.platform()) {
+			case "darwin": return import_path.default.join(import_os.default.homedir(), "Library/Application Support");
+			case "linux": return import_path.default.join(import_os.default.homedir(), ".local/share");
+			case "win32":
+				if (process.env.LOCALAPPDATA) return process.env.LOCALAPPDATA;
+				return null;
+			default: return null;
+		}
+	}
+	0 && (module.exports = {
+		findRootDir,
+		getUserDataDir
+	});
+}));
+// node_modules/@vercel/oidc/dist/oauth.js
+var require_oauth = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var oauth_exports = {};
+	__export(oauth_exports, {
+		processTokenResponse: () => processTokenResponse,
+		refreshTokenRequest: () => refreshTokenRequest
+	});
+	module.exports = __toCommonJS(oauth_exports);
+	var import_os = __require("os");
+	var VERCEL_ISSUER = "https://vercel.com";
+	var VERCEL_CLI_CLIENT_ID = "cl_HYyOPBNtFMfHhaUn9L4QPfTZz6TP47bp";
+	var userAgent = `@vercel/oidc node-${process.version} ${(0, import_os.platform)()} (${(0, import_os.arch)()}) ${(0, import_os.hostname)()}`;
+	var _tokenEndpoint = null;
+	async function getTokenEndpoint() {
+		if (_tokenEndpoint) return _tokenEndpoint;
+		const response = await fetch(`${VERCEL_ISSUER}/.well-known/openid-configuration`, { headers: { "user-agent": userAgent } });
+		if (!response.ok) throw new Error("Failed to discover OAuth endpoints");
+		const metadata = await response.json();
+		if (!metadata || typeof metadata.token_endpoint !== "string") throw new Error("Invalid OAuth discovery response");
+		const endpoint = metadata.token_endpoint;
+		_tokenEndpoint = endpoint;
+		return endpoint;
+	}
+	async function refreshTokenRequest(options) {
+		const tokenEndpoint = await getTokenEndpoint();
+		return await fetch(tokenEndpoint, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+				"user-agent": userAgent
+			},
+			body: new URLSearchParams({
+				client_id: VERCEL_CLI_CLIENT_ID,
+				grant_type: "refresh_token",
+				...options
+			})
+		});
+	}
+	async function processTokenResponse(response) {
+		const json = await response.json();
+		if (!response.ok) {
+			const errorMsg = typeof json === "object" && json && "error" in json ? String(json.error) : "Token refresh failed";
+			return [new Error(errorMsg)];
+		}
+		if (typeof json !== "object" || json === null) return [/* @__PURE__ */ new Error("Invalid token response")];
+		if (typeof json.access_token !== "string") return [/* @__PURE__ */ new Error("Missing access_token in response")];
+		if (json.token_type !== "Bearer") return [/* @__PURE__ */ new Error("Invalid token_type in response")];
+		if (typeof json.expires_in !== "number") return [/* @__PURE__ */ new Error("Missing expires_in in response")];
+		return [null, json];
+	}
+	0 && (module.exports = {
+		processTokenResponse,
+		refreshTokenRequest
+	});
+}));
+// node_modules/@vercel/oidc/dist/auth-errors.js
+var require_auth_errors = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var auth_errors_exports = {};
+	__export(auth_errors_exports, {
+		AccessTokenMissingError: () => AccessTokenMissingError,
+		RefreshAccessTokenFailedError: () => RefreshAccessTokenFailedError
+	});
+	module.exports = __toCommonJS(auth_errors_exports);
+	var AccessTokenMissingError = class extends Error {
+		constructor() {
+			super("No authentication found. Please log in with the Vercel CLI (vercel login).");
+			this.name = "AccessTokenMissingError";
+		}
+	};
+	var RefreshAccessTokenFailedError = class extends Error {
+		constructor(cause) {
+			super("Failed to refresh authentication token.");
+			this.name = "RefreshAccessTokenFailedError";
+			if (cause !== void 0) this.cause = cause;
+		}
+	};
+	0 && (module.exports = {
+		AccessTokenMissingError,
+		RefreshAccessTokenFailedError
+	});
+}));
+// node_modules/@vercel/oidc/dist/token-util.js
+var require_token_util = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __create = Object.create;
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __getProtoOf = Object.getPrototypeOf;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", {
+		value: mod,
+		enumerable: true
+	}) : target, mod));
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var token_util_exports = {};
+	__export(token_util_exports, {
+		assertVercelOidcTokenResponse: () => assertVercelOidcTokenResponse,
+		findProjectInfo: () => findProjectInfo,
+		getTokenPayload: () => getTokenPayload,
+		getVercelOidcToken: () => getVercelOidcToken,
+		getVercelOidcTokenFromCli: () => getVercelOidcTokenFromCli,
+		getVercelToken: () => getVercelToken,
+		isExpired: () => isExpired,
+		loadToken: () => loadToken,
+		saveToken: () => saveToken
+	});
+	module.exports = __toCommonJS(token_util_exports);
+	var path = __toESM(__require("path"));
+	var fs = __toESM(__require("fs"));
+	var import_cli_exec = require_dist$2();
+	var import_cli_config = require_dist$1();
+	var import_token_error = require_token_error();
+	var import_token_io = require_token_io();
+	var import_oauth = require_oauth();
+	var import_auth_errors = require_auth_errors();
+	async function getVercelToken(options) {
+		const configDir = (0, import_cli_config.getGlobalPathConfig)();
+		const authConfig = (0, import_cli_config.tryReadAuthConfig)(configDir);
+		if (!authConfig || !authConfig.token && !authConfig.refreshToken) throw new import_auth_errors.AccessTokenMissingError();
+		if (isValidAccessToken(authConfig, options?.expirationBufferMs)) return authConfig.token;
+		if (!authConfig.refreshToken) {
+			(0, import_cli_config.writeAuthConfig)(configDir, {});
+			throw new import_auth_errors.RefreshAccessTokenFailedError("No refresh token available");
+		}
+		try {
+			const tokenResponse = await (0, import_oauth.refreshTokenRequest)({ refresh_token: authConfig.refreshToken });
+			const [tokensError, tokens] = await (0, import_oauth.processTokenResponse)(tokenResponse);
+			if (tokensError || !tokens) {
+				(0, import_cli_config.writeAuthConfig)(configDir, {});
+				throw new import_auth_errors.RefreshAccessTokenFailedError(tokensError);
+			}
+			const updatedConfig = {
+				token: tokens.access_token,
+				expiresAt: Math.floor(Date.now() / 1e3) + tokens.expires_in,
+				refreshToken: tokens.refresh_token
+			};
+			(0, import_cli_config.writeAuthConfig)(configDir, updatedConfig);
+			return updatedConfig.token;
+		} catch (error) {
+			(0, import_cli_config.writeAuthConfig)(configDir, {});
+			if (error instanceof import_auth_errors.AccessTokenMissingError || error instanceof import_auth_errors.RefreshAccessTokenFailedError) throw error;
+			throw new import_auth_errors.RefreshAccessTokenFailedError(error);
+		}
+	}
+	function isValidAccessToken(authConfig, expirationBufferMs = 0) {
+		if (!authConfig.token) return false;
+		if (typeof authConfig.expiresAt !== "number") return true;
+		const nowInSeconds = Math.floor(Date.now() / 1e3);
+		const bufferInSeconds = expirationBufferMs / 1e3;
+		return authConfig.expiresAt >= nowInSeconds + bufferInSeconds;
+	}
+	var CLI_ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
+	function assertCliId(value, kind) {
+		if (!CLI_ID_PATTERN.test(value)) throw new import_token_error.VercelOidcTokenError(`Failed to refresh OIDC token: ${JSON.stringify(value)} is not a valid ${kind} ID or name. Try re-linking your project with \`vc link\``);
+	}
+	async function getVercelOidcTokenFromCli(projectId, teamId) {
+		assertCliId(projectId, "project");
+		if (teamId) assertCliId(teamId, "team");
+		const args = [
+			"project",
+			"token",
+			projectId,
+			"--format=json"
+		];
+		if (teamId) args.push("--scope", teamId);
+		try {
+			const { stdout } = await (0, import_cli_exec.execVercelCli)(args);
+			let parsedOutput;
+			if (typeof stdout !== "string") throw new import_token_error.VercelOidcTokenError("Failed to refresh OIDC token: `vercel project token` did not return stdout");
+			try {
+				parsedOutput = JSON.parse(stdout);
+			} catch {
+				throw new import_token_error.VercelOidcTokenError("Failed to refresh OIDC token: `vercel project token` returned invalid JSON: " + stdout);
+			}
+			assertVercelOidcTokenResponse(parsedOutput);
+			return parsedOutput;
+		} catch (error) {
+			if (error instanceof import_token_error.VercelOidcTokenError) throw error;
+			let message = error instanceof Error ? error.message : "";
+			const stderr = error instanceof import_cli_exec.VercelCliError ? error.stderr?.trim() : void 0;
+			if (stderr && !message.includes(stderr)) message = `${message}
+${stderr}`.trim();
+			throw new import_token_error.VercelOidcTokenError(message ? `Failed to refresh OIDC token with the Vercel CLI: ${message}` : "Failed to refresh OIDC token with the Vercel CLI");
+		}
+	}
+	async function getVercelOidcToken(authToken, projectId, teamId) {
+		const url = `https://api.vercel.com/v1/projects/${projectId}/token?source=vercel-oidc-refresh${teamId ? `&teamId=${teamId}` : ""}`;
+		const res = await fetch(url, {
+			method: "POST",
+			headers: { Authorization: `Bearer ${authToken}` }
+		});
+		if (!res.ok) throw new import_token_error.VercelOidcTokenError(`Failed to refresh OIDC token: ${res.statusText}`);
+		const tokenRes = await res.json();
+		assertVercelOidcTokenResponse(tokenRes);
+		return tokenRes;
+	}
+	function assertVercelOidcTokenResponse(res) {
+		if (!res || typeof res !== "object") throw new TypeError("Vercel OIDC token is malformed. Expected an object.");
+		if (!("token" in res) || typeof res.token !== "string") throw new TypeError("Vercel OIDC token is malformed. Expected a string-valued token property.");
+	}
+	function findProjectInfo() {
+		const dir = (0, import_token_io.findRootDir)();
+		if (!dir) throw new import_token_error.VercelOidcTokenError("Unable to find project root directory. Have you linked your project with `vc link?`");
+		const prjPath = path.join(dir, ".vercel", "project.json");
+		if (!fs.existsSync(prjPath)) throw new import_token_error.VercelOidcTokenError("project.json not found, have you linked your project with `vc link?`");
+		const prj = JSON.parse(fs.readFileSync(prjPath, "utf8"));
+		if (typeof prj.projectId !== "string" && typeof prj.orgId !== "string") throw new TypeError("Expected a string-valued projectId property. Try running `vc link` to re-link your project.");
+		return {
+			projectId: prj.projectId,
+			teamId: prj.orgId
+		};
+	}
+	function saveToken(token, projectId) {
+		const dir = (0, import_token_io.getUserDataDir)();
+		if (!dir) throw new import_token_error.VercelOidcTokenError("Unable to find user data directory. Please reach out to Vercel support.");
+		const tokenPath = path.join(dir, "com.vercel.token", `${projectId}.json`);
+		const tokenJson = JSON.stringify(token);
+		fs.mkdirSync(path.dirname(tokenPath), {
+			mode: 504,
+			recursive: true
+		});
+		fs.writeFileSync(tokenPath, tokenJson);
+		fs.chmodSync(tokenPath, 432);
+	}
+	function loadToken(projectId) {
+		const dir = (0, import_token_io.getUserDataDir)();
+		if (!dir) throw new import_token_error.VercelOidcTokenError("Unable to find user data directory. Please reach out to Vercel support.");
+		const tokenPath = path.join(dir, "com.vercel.token", `${projectId}.json`);
+		if (!fs.existsSync(tokenPath)) return null;
+		const token = JSON.parse(fs.readFileSync(tokenPath, "utf8"));
+		assertVercelOidcTokenResponse(token);
+		return token;
+	}
+	function getTokenPayload(token) {
+		const tokenParts = token.split(".");
+		if (tokenParts.length !== 3) throw new import_token_error.VercelOidcTokenError("Invalid token.");
+		const base64 = tokenParts[1].replace(/-/g, "+").replace(/_/g, "/");
+		const padded = base64.padEnd(base64.length + (4 - base64.length % 4) % 4, "=");
+		return JSON.parse(Buffer.from(padded, "base64").toString("utf8"));
+	}
+	function isExpired(token, bufferMs = 0) {
+		return token.exp * 1e3 < Date.now() + bufferMs;
+	}
+	0 && (module.exports = {
+		assertVercelOidcTokenResponse,
+		findProjectInfo,
+		getTokenPayload,
+		getVercelOidcToken,
+		getVercelOidcTokenFromCli,
+		getVercelToken,
+		isExpired,
+		loadToken,
+		saveToken
+	});
+}));
+// node_modules/@vercel/oidc/dist/token.js
+var require_token = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var token_exports = {};
+	__export(token_exports, { refreshToken: () => refreshToken });
+	module.exports = __toCommonJS(token_exports);
+	var import_cli_config = require_dist$1();
+	var import_token_error = require_token_error();
+	var import_token_util = require_token_util();
+	async function refreshToken(options) {
+		let projectId = options?.project;
+		let teamId = options?.team;
+		if (!projectId && !teamId) {
+			const projectInfo = (0, import_token_util.findProjectInfo)();
+			projectId = projectInfo.projectId;
+			teamId = projectInfo.teamId;
+		} else if (!projectId || !teamId) {
+			const projectInfo = (0, import_token_util.findProjectInfo)();
+			projectId = projectId ?? projectInfo.projectId;
+			teamId = teamId ?? projectInfo.teamId;
+		}
+		if (!projectId) throw new import_token_error.VercelOidcTokenError("Failed to refresh OIDC token: No project specified. Try re-linking your project with `vc link`");
+		let maybeToken = (0, import_token_util.loadToken)(projectId);
+		if (!maybeToken || (0, import_token_util.isExpired)((0, import_token_util.getTokenPayload)(maybeToken.token), options?.expirationBufferMs)) {
+			const configDir = (0, import_cli_config.getGlobalPathConfig)();
+			if ((0, import_cli_config.getLikelyEffectiveCredStorage)(configDir) === "keyring" || isDpopLoginEnabled()) maybeToken = await (0, import_token_util.getVercelOidcTokenFromCli)(projectId, teamId);
+			else {
+				const authToken = await (0, import_token_util.getVercelToken)({ expirationBufferMs: options?.expirationBufferMs });
+				maybeToken = await (0, import_token_util.getVercelOidcToken)(authToken, projectId, teamId);
+			}
+			if (!maybeToken) throw new import_token_error.VercelOidcTokenError("Failed to refresh OIDC token");
+			(0, import_token_util.saveToken)(maybeToken, projectId);
+		}
+		process.env.VERCEL_OIDC_TOKEN = maybeToken.token;
+	}
+	function isDpopLoginEnabled() {
+		return process.env.__VERCEL_FF_DPOP === "1";
+	}
+	0 && (module.exports = { refreshToken });
+}));
+// node_modules/@vercel/oidc/dist/get-vercel-oidc-token-with-refresh.js
+var require_get_vercel_oidc_token_with_refresh = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var get_vercel_oidc_token_with_refresh_exports = {};
+	__export(get_vercel_oidc_token_with_refresh_exports, { getVercelOidcToken: () => getVercelOidcToken });
+	module.exports = __toCommonJS(get_vercel_oidc_token_with_refresh_exports);
+	var import_promises = __require("node:fs/promises");
+	var import_exchange_vercel_oidc_token = require_exchange_vercel_oidc_token();
+	var import_get_context = require_get_context();
+	var import_get_vercel_oidc_token_sync = require_get_vercel_oidc_token_sync();
+	var import_token_error = require_token_error();
+	async function getVercelOidcToken(options) {
+		let token = "";
+		let err;
+		const tokenFromFile = (0, import_get_context.getContext)().headers?.["x-vercel-oidc-token"] ? null : await tryOidcTokenFromFile();
+		try {
+			token = tokenFromFile ?? (0, import_get_vercel_oidc_token_sync.getVercelOidcTokenSync)();
+		} catch (error) {
+			err = error;
+		}
+		try {
+			const [{ getTokenPayload, isExpired }, { refreshToken }] = await Promise.all([await Promise.resolve().then(() => /* @__PURE__ */ __toESM$1(require_token_util())), await Promise.resolve().then(() => /* @__PURE__ */ __toESM$1(require_token()))]);
+			if (!token || isExpired(getTokenPayload(token), options?.expirationBufferMs)) {
+				await refreshToken(options);
+				token = (0, import_get_vercel_oidc_token_sync.getVercelOidcTokenSync)();
+			}
+		} catch (error) {
+			let message = err instanceof Error ? err.message : "";
+			if (error instanceof Error) message = `${message}
+${error.message}`;
+			if (message) throw new import_token_error.VercelOidcTokenError(message);
+			throw error;
+		}
+		if (options?.audience) token = await (0, import_exchange_vercel_oidc_token.exchangeVercelOidcToken)({
+			token,
+			audience: options.audience,
+			jti: options.jti,
+			skipCache: options.skipCache
+		});
+		return token;
+	}
+	async function tryOidcTokenFromFile() {
+		const tokenFile = process.env.VERCEL_OIDC_TOKEN_FILE;
+		if (!tokenFile) return null;
+		const token = (await (0, import_promises.readFile)(tokenFile, "utf8")).trim();
+		if (!token) throw new import_token_error.VercelOidcTokenError(`The Vercel OIDC token file is empty: ${tokenFile}`);
+		return token;
+	}
+	0 && (module.exports = { getVercelOidcToken });
+}));
+// node_modules/jose/dist/node/cjs/runtime/digest.js
+var require_digest = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var node_crypto_1 = __require("node:crypto");
+	var digest = (algorithm, data) => (0, node_crypto_1.createHash)(algorithm).update(data).digest();
+	exports.default = digest;
+}));
+// node_modules/jose/dist/node/cjs/lib/buffer_utils.js
+var require_buffer_utils = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.decoder = exports.encoder = void 0;
+	exports.concat = concat;
+	exports.p2s = p2s;
+	exports.uint64be = uint64be;
+	exports.uint32be = uint32be;
+	exports.lengthAndInput = lengthAndInput;
+	exports.concatKdf = concatKdf;
+	var digest_js_1 = require_digest();
+	exports.encoder = new TextEncoder();
+	exports.decoder = new TextDecoder();
+	var MAX_INT32 = 2 ** 32;
+	function concat(...buffers) {
+		const size = buffers.reduce((acc, { length }) => acc + length, 0);
+		const buf = new Uint8Array(size);
+		let i = 0;
+		for (const buffer of buffers) {
+			buf.set(buffer, i);
+			i += buffer.length;
+		}
+		return buf;
+	}
+	function p2s(alg, p2sInput) {
+		return concat(exports.encoder.encode(alg), new Uint8Array([0]), p2sInput);
+	}
+	function writeUInt32BE(buf, value, offset) {
+		if (value < 0 || value >= MAX_INT32) throw new RangeError(`value must be >= 0 and <= ${MAX_INT32 - 1}. Received ${value}`);
+		buf.set([
+			value >>> 24,
+			value >>> 16,
+			value >>> 8,
+			value & 255
+		], offset);
+	}
+	function uint64be(value) {
+		const high = Math.floor(value / MAX_INT32);
+		const low = value % MAX_INT32;
+		const buf = /* @__PURE__ */ new Uint8Array(8);
+		writeUInt32BE(buf, high, 0);
+		writeUInt32BE(buf, low, 4);
+		return buf;
+	}
+	function uint32be(value) {
+		const buf = /* @__PURE__ */ new Uint8Array(4);
+		writeUInt32BE(buf, value);
+		return buf;
+	}
+	function lengthAndInput(input) {
+		return concat(uint32be(input.length), input);
+	}
+	async function concatKdf(secret, bits, value) {
+		const iterations = Math.ceil((bits >> 3) / 32);
+		const res = new Uint8Array(iterations * 32);
+		for (let iter = 0; iter < iterations; iter++) {
+			const buf = new Uint8Array(4 + secret.length + value.length);
+			buf.set(uint32be(iter + 1));
+			buf.set(secret, 4);
+			buf.set(value, 4 + secret.length);
+			res.set(await (0, digest_js_1.default)("sha256", buf), iter * 32);
+		}
+		return res.slice(0, bits >> 3);
+	}
+}));
+// node_modules/jose/dist/node/cjs/runtime/base64url.js
+var require_base64url$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.decode = exports.encode = exports.encodeBase64 = exports.decodeBase64 = void 0;
+	var node_buffer_1 = __require("node:buffer");
+	var buffer_utils_js_1 = require_buffer_utils();
+	function normalize(input) {
+		let encoded = input;
+		if (encoded instanceof Uint8Array) encoded = buffer_utils_js_1.decoder.decode(encoded);
+		return encoded;
+	}
+	var encode = (input) => node_buffer_1.Buffer.from(input).toString("base64url");
+	exports.encode = encode;
+	var decodeBase64 = (input) => new Uint8Array(node_buffer_1.Buffer.from(input, "base64"));
+	exports.decodeBase64 = decodeBase64;
+	var encodeBase64 = (input) => node_buffer_1.Buffer.from(input).toString("base64");
+	exports.encodeBase64 = encodeBase64;
+	var decode = (input) => new Uint8Array(node_buffer_1.Buffer.from(normalize(input), "base64url"));
+	exports.decode = decode;
+}));
+// node_modules/jose/dist/node/cjs/util/errors.js
+var require_errors = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.JWSSignatureVerificationFailed = exports.JWKSTimeout = exports.JWKSMultipleMatchingKeys = exports.JWKSNoMatchingKey = exports.JWKSInvalid = exports.JWKInvalid = exports.JWTInvalid = exports.JWSInvalid = exports.JWEInvalid = exports.JWEDecryptionFailed = exports.JOSENotSupported = exports.JOSEAlgNotAllowed = exports.JWTExpired = exports.JWTClaimValidationFailed = exports.JOSEError = void 0;
+	var JOSEError = class extends Error {
+		static code = "ERR_JOSE_GENERIC";
+		code = "ERR_JOSE_GENERIC";
+		constructor(message, options) {
+			super(message, options);
+			this.name = this.constructor.name;
+			Error.captureStackTrace?.(this, this.constructor);
+		}
+	};
+	exports.JOSEError = JOSEError;
+	var JWTClaimValidationFailed = class extends JOSEError {
+		static code = "ERR_JWT_CLAIM_VALIDATION_FAILED";
+		code = "ERR_JWT_CLAIM_VALIDATION_FAILED";
+		claim;
+		reason;
+		payload;
+		constructor(message, payload, claim = "unspecified", reason = "unspecified") {
+			super(message, { cause: {
+				claim,
+				reason,
+				payload
+			} });
+			this.claim = claim;
+			this.reason = reason;
+			this.payload = payload;
+		}
+	};
+	exports.JWTClaimValidationFailed = JWTClaimValidationFailed;
+	var JWTExpired = class extends JOSEError {
+		static code = "ERR_JWT_EXPIRED";
+		code = "ERR_JWT_EXPIRED";
+		claim;
+		reason;
+		payload;
+		constructor(message, payload, claim = "unspecified", reason = "unspecified") {
+			super(message, { cause: {
+				claim,
+				reason,
+				payload
+			} });
+			this.claim = claim;
+			this.reason = reason;
+			this.payload = payload;
+		}
+	};
+	exports.JWTExpired = JWTExpired;
+	var JOSEAlgNotAllowed = class extends JOSEError {
+		static code = "ERR_JOSE_ALG_NOT_ALLOWED";
+		code = "ERR_JOSE_ALG_NOT_ALLOWED";
+	};
+	exports.JOSEAlgNotAllowed = JOSEAlgNotAllowed;
+	var JOSENotSupported = class extends JOSEError {
+		static code = "ERR_JOSE_NOT_SUPPORTED";
+		code = "ERR_JOSE_NOT_SUPPORTED";
+	};
+	exports.JOSENotSupported = JOSENotSupported;
+	var JWEDecryptionFailed = class extends JOSEError {
+		static code = "ERR_JWE_DECRYPTION_FAILED";
+		code = "ERR_JWE_DECRYPTION_FAILED";
+		constructor(message = "decryption operation failed", options) {
+			super(message, options);
+		}
+	};
+	exports.JWEDecryptionFailed = JWEDecryptionFailed;
+	var JWEInvalid = class extends JOSEError {
+		static code = "ERR_JWE_INVALID";
+		code = "ERR_JWE_INVALID";
+	};
+	exports.JWEInvalid = JWEInvalid;
+	var JWSInvalid = class extends JOSEError {
+		static code = "ERR_JWS_INVALID";
+		code = "ERR_JWS_INVALID";
+	};
+	exports.JWSInvalid = JWSInvalid;
+	var JWTInvalid = class extends JOSEError {
+		static code = "ERR_JWT_INVALID";
+		code = "ERR_JWT_INVALID";
+	};
+	exports.JWTInvalid = JWTInvalid;
+	var JWKInvalid = class extends JOSEError {
+		static code = "ERR_JWK_INVALID";
+		code = "ERR_JWK_INVALID";
+	};
+	exports.JWKInvalid = JWKInvalid;
+	var JWKSInvalid = class extends JOSEError {
+		static code = "ERR_JWKS_INVALID";
+		code = "ERR_JWKS_INVALID";
+	};
+	exports.JWKSInvalid = JWKSInvalid;
+	var JWKSNoMatchingKey = class extends JOSEError {
+		static code = "ERR_JWKS_NO_MATCHING_KEY";
+		code = "ERR_JWKS_NO_MATCHING_KEY";
+		constructor(message = "no applicable key found in the JSON Web Key Set", options) {
+			super(message, options);
+		}
+	};
+	exports.JWKSNoMatchingKey = JWKSNoMatchingKey;
+	var JWKSMultipleMatchingKeys = class extends JOSEError {
+		[Symbol.asyncIterator];
+		static code = "ERR_JWKS_MULTIPLE_MATCHING_KEYS";
+		code = "ERR_JWKS_MULTIPLE_MATCHING_KEYS";
+		constructor(message = "multiple matching keys found in the JSON Web Key Set", options) {
+			super(message, options);
+		}
+	};
+	exports.JWKSMultipleMatchingKeys = JWKSMultipleMatchingKeys;
+	var JWKSTimeout = class extends JOSEError {
+		static code = "ERR_JWKS_TIMEOUT";
+		code = "ERR_JWKS_TIMEOUT";
+		constructor(message = "request timed out", options) {
+			super(message, options);
+		}
+	};
+	exports.JWKSTimeout = JWKSTimeout;
+	var JWSSignatureVerificationFailed = class extends JOSEError {
+		static code = "ERR_JWS_SIGNATURE_VERIFICATION_FAILED";
+		code = "ERR_JWS_SIGNATURE_VERIFICATION_FAILED";
+		constructor(message = "signature verification failed", options) {
+			super(message, options);
+		}
+	};
+	exports.JWSSignatureVerificationFailed = JWSSignatureVerificationFailed;
+}));
+// node_modules/jose/dist/node/cjs/runtime/random.js
+var require_random = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = void 0;
+	var node_crypto_1 = __require("node:crypto");
+	Object.defineProperty(exports, "default", {
+		enumerable: true,
+		get: function() {
+			return node_crypto_1.randomFillSync;
+		}
+	});
+}));
+// node_modules/jose/dist/node/cjs/lib/iv.js
+var require_iv = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.bitLength = bitLength;
+	var errors_js_1 = require_errors();
+	var random_js_1 = require_random();
+	function bitLength(alg) {
+		switch (alg) {
+			case "A128GCM":
+			case "A128GCMKW":
+			case "A192GCM":
+			case "A192GCMKW":
+			case "A256GCM":
+			case "A256GCMKW": return 96;
+			case "A128CBC-HS256":
+			case "A192CBC-HS384":
+			case "A256CBC-HS512": return 128;
+			default: throw new errors_js_1.JOSENotSupported(`Unsupported JWE Algorithm: ${alg}`);
+		}
+	}
+	exports.default = (alg) => (0, random_js_1.default)(new Uint8Array(bitLength(alg) >> 3));
+}));
+// node_modules/jose/dist/node/cjs/lib/check_iv_length.js
+var require_check_iv_length = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var errors_js_1 = require_errors();
+	var iv_js_1 = require_iv();
+	var checkIvLength = (enc, iv) => {
+		if (iv.length << 3 !== (0, iv_js_1.bitLength)(enc)) throw new errors_js_1.JWEInvalid("Invalid Initialization Vector length");
+	};
+	exports.default = checkIvLength;
+}));
+// node_modules/jose/dist/node/cjs/runtime/is_key_object.js
+var require_is_key_object = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var util = __require("node:util");
+	exports.default = (obj) => util.types.isKeyObject(obj);
+}));
+// node_modules/jose/dist/node/cjs/runtime/check_cek_length.js
+var require_check_cek_length = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var errors_js_1 = require_errors();
+	var is_key_object_js_1 = require_is_key_object();
+	var checkCekLength = (enc, cek) => {
+		let expected;
+		switch (enc) {
+			case "A128CBC-HS256":
+			case "A192CBC-HS384":
+			case "A256CBC-HS512":
+				expected = parseInt(enc.slice(-3), 10);
+				break;
+			case "A128GCM":
+			case "A192GCM":
+			case "A256GCM":
+				expected = parseInt(enc.slice(1, 4), 10);
+				break;
+			default: throw new errors_js_1.JOSENotSupported(`Content Encryption Algorithm ${enc} is not supported either by JOSE or your javascript runtime`);
+		}
+		if (cek instanceof Uint8Array) {
+			const actual = cek.byteLength << 3;
+			if (actual !== expected) throw new errors_js_1.JWEInvalid(`Invalid Content Encryption Key length. Expected ${expected} bits, got ${actual} bits`);
+			return;
+		}
+		if ((0, is_key_object_js_1.default)(cek) && cek.type === "secret") {
+			const actual = cek.symmetricKeySize << 3;
+			if (actual !== expected) throw new errors_js_1.JWEInvalid(`Invalid Content Encryption Key length. Expected ${expected} bits, got ${actual} bits`);
+			return;
+		}
+		throw new TypeError("Invalid Content Encryption Key type");
+	};
+	exports.default = checkCekLength;
+}));
+// node_modules/jose/dist/node/cjs/runtime/timing_safe_equal.js
+var require_timing_safe_equal = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = __require("node:crypto").timingSafeEqual;
+}));
+// node_modules/jose/dist/node/cjs/runtime/cbc_tag.js
+var require_cbc_tag = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = cbcTag;
+	var node_crypto_1 = __require("node:crypto");
+	var buffer_utils_js_1 = require_buffer_utils();
+	function cbcTag(aad, iv, ciphertext, macSize, macKey, keySize) {
+		const macData = (0, buffer_utils_js_1.concat)(aad, iv, ciphertext, (0, buffer_utils_js_1.uint64be)(aad.length << 3));
+		const hmac = (0, node_crypto_1.createHmac)(`sha${macSize}`, macKey);
+		hmac.update(macData);
+		return hmac.digest().slice(0, keySize >> 3);
+	}
+}));
+// node_modules/jose/dist/node/cjs/runtime/webcrypto.js
+var require_webcrypto = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.isCryptoKey = void 0;
+	var crypto = __require("node:crypto");
+	var util = __require("node:util");
+	exports.default = crypto.webcrypto;
+	var isCryptoKey = (key) => util.types.isCryptoKey(key);
+	exports.isCryptoKey = isCryptoKey;
+}));
+// node_modules/jose/dist/node/cjs/lib/crypto_key.js
+var require_crypto_key = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.checkSigCryptoKey = checkSigCryptoKey;
+	exports.checkEncCryptoKey = checkEncCryptoKey;
+	function unusable(name, prop = "algorithm.name") {
+		return /* @__PURE__ */ new TypeError(`CryptoKey does not support this operation, its ${prop} must be ${name}`);
+	}
+	function isAlgorithm(algorithm, name) {
+		return algorithm.name === name;
+	}
+	function getHashLength(hash) {
+		return parseInt(hash.name.slice(4), 10);
+	}
+	function getNamedCurve(alg) {
+		switch (alg) {
+			case "ES256": return "P-256";
+			case "ES384": return "P-384";
+			case "ES512": return "P-521";
+			default: throw new Error("unreachable");
+		}
+	}
+	function checkUsage(key, usages) {
+		if (usages.length && !usages.some((expected) => key.usages.includes(expected))) {
+			let msg = "CryptoKey does not support this operation, its usages must include ";
+			if (usages.length > 2) {
+				const last = usages.pop();
+				msg += `one of ${usages.join(", ")}, or ${last}.`;
+			} else if (usages.length === 2) msg += `one of ${usages[0]} or ${usages[1]}.`;
+			else msg += `${usages[0]}.`;
+			throw new TypeError(msg);
+		}
+	}
+	function checkSigCryptoKey(key, alg, ...usages) {
+		switch (alg) {
+			case "HS256":
+			case "HS384":
+			case "HS512": {
+				if (!isAlgorithm(key.algorithm, "HMAC")) throw unusable("HMAC");
+				const expected = parseInt(alg.slice(2), 10);
+				if (getHashLength(key.algorithm.hash) !== expected) throw unusable(`SHA-${expected}`, "algorithm.hash");
+				break;
+			}
+			case "RS256":
+			case "RS384":
+			case "RS512": {
+				if (!isAlgorithm(key.algorithm, "RSASSA-PKCS1-v1_5")) throw unusable("RSASSA-PKCS1-v1_5");
+				const expected = parseInt(alg.slice(2), 10);
+				if (getHashLength(key.algorithm.hash) !== expected) throw unusable(`SHA-${expected}`, "algorithm.hash");
+				break;
+			}
+			case "PS256":
+			case "PS384":
+			case "PS512": {
+				if (!isAlgorithm(key.algorithm, "RSA-PSS")) throw unusable("RSA-PSS");
+				const expected = parseInt(alg.slice(2), 10);
+				if (getHashLength(key.algorithm.hash) !== expected) throw unusable(`SHA-${expected}`, "algorithm.hash");
+				break;
+			}
+			case "EdDSA":
+				if (key.algorithm.name !== "Ed25519" && key.algorithm.name !== "Ed448") throw unusable("Ed25519 or Ed448");
+				break;
+			case "Ed25519":
+				if (!isAlgorithm(key.algorithm, "Ed25519")) throw unusable("Ed25519");
+				break;
+			case "ES256":
+			case "ES384":
+			case "ES512": {
+				if (!isAlgorithm(key.algorithm, "ECDSA")) throw unusable("ECDSA");
+				const expected = getNamedCurve(alg);
+				if (key.algorithm.namedCurve !== expected) throw unusable(expected, "algorithm.namedCurve");
+				break;
+			}
+			default: throw new TypeError("CryptoKey does not support this operation");
+		}
+		checkUsage(key, usages);
+	}
+	function checkEncCryptoKey(key, alg, ...usages) {
+		switch (alg) {
+			case "A128GCM":
+			case "A192GCM":
+			case "A256GCM": {
+				if (!isAlgorithm(key.algorithm, "AES-GCM")) throw unusable("AES-GCM");
+				const expected = parseInt(alg.slice(1, 4), 10);
+				if (key.algorithm.length !== expected) throw unusable(expected, "algorithm.length");
+				break;
+			}
+			case "A128KW":
+			case "A192KW":
+			case "A256KW": {
+				if (!isAlgorithm(key.algorithm, "AES-KW")) throw unusable("AES-KW");
+				const expected = parseInt(alg.slice(1, 4), 10);
+				if (key.algorithm.length !== expected) throw unusable(expected, "algorithm.length");
+				break;
+			}
+			case "ECDH":
+				switch (key.algorithm.name) {
+					case "ECDH":
+					case "X25519":
+					case "X448": break;
+					default: throw unusable("ECDH, X25519, or X448");
+				}
+				break;
+			case "PBES2-HS256+A128KW":
+			case "PBES2-HS384+A192KW":
+			case "PBES2-HS512+A256KW":
+				if (!isAlgorithm(key.algorithm, "PBKDF2")) throw unusable("PBKDF2");
+				break;
+			case "RSA-OAEP":
+			case "RSA-OAEP-256":
+			case "RSA-OAEP-384":
+			case "RSA-OAEP-512": {
+				if (!isAlgorithm(key.algorithm, "RSA-OAEP")) throw unusable("RSA-OAEP");
+				const expected = parseInt(alg.slice(9), 10) || 1;
+				if (getHashLength(key.algorithm.hash) !== expected) throw unusable(`SHA-${expected}`, "algorithm.hash");
+				break;
+			}
+			default: throw new TypeError("CryptoKey does not support this operation");
+		}
+		checkUsage(key, usages);
+	}
+}));
+// node_modules/jose/dist/node/cjs/lib/invalid_key_input.js
+var require_invalid_key_input = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.withAlg = withAlg;
+	function message(msg, actual, ...types) {
+		types = types.filter(Boolean);
+		if (types.length > 2) {
+			const last = types.pop();
+			msg += `one of type ${types.join(", ")}, or ${last}.`;
+		} else if (types.length === 2) msg += `one of type ${types[0]} or ${types[1]}.`;
+		else msg += `of type ${types[0]}.`;
+		if (actual == null) msg += ` Received ${actual}`;
+		else if (typeof actual === "function" && actual.name) msg += ` Received function ${actual.name}`;
+		else if (typeof actual === "object" && actual != null) {
+			if (actual.constructor?.name) msg += ` Received an instance of ${actual.constructor.name}`;
+		}
+		return msg;
+	}
+	exports.default = (actual, ...types) => {
+		return message("Key must be ", actual, ...types);
+	};
+	function withAlg(alg, actual, ...types) {
+		return message(`Key for the ${alg} algorithm must be `, actual, ...types);
+	}
+}));
+// node_modules/jose/dist/node/cjs/runtime/ciphers.js
+var require_ciphers = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var node_crypto_1 = __require("node:crypto");
+	var ciphers;
+	exports.default = (algorithm) => {
+		ciphers ||= new Set((0, node_crypto_1.getCiphers)());
+		return ciphers.has(algorithm);
+	};
+}));
+// node_modules/jose/dist/node/cjs/runtime/is_key_like.js
+var require_is_key_like = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.types = void 0;
+	var webcrypto_js_1 = require_webcrypto();
+	var is_key_object_js_1 = require_is_key_object();
+	exports.default = (key) => (0, is_key_object_js_1.default)(key) || (0, webcrypto_js_1.isCryptoKey)(key);
+	var types = ["KeyObject"];
+	exports.types = types;
+	if (globalThis.CryptoKey || webcrypto_js_1.default?.CryptoKey) types.push("CryptoKey");
+}));
+// node_modules/jose/dist/node/cjs/runtime/decrypt.js
+var require_decrypt$4 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var node_crypto_1 = __require("node:crypto");
+	var check_iv_length_js_1 = require_check_iv_length();
+	var check_cek_length_js_1 = require_check_cek_length();
+	var buffer_utils_js_1 = require_buffer_utils();
+	var errors_js_1 = require_errors();
+	var timing_safe_equal_js_1 = require_timing_safe_equal();
+	var cbc_tag_js_1 = require_cbc_tag();
+	var webcrypto_js_1 = require_webcrypto();
+	var crypto_key_js_1 = require_crypto_key();
+	var is_key_object_js_1 = require_is_key_object();
+	var invalid_key_input_js_1 = require_invalid_key_input();
+	var ciphers_js_1 = require_ciphers();
+	var is_key_like_js_1 = require_is_key_like();
+	function cbcDecrypt(enc, cek, ciphertext, iv, tag, aad) {
+		const keySize = parseInt(enc.slice(1, 4), 10);
+		if ((0, is_key_object_js_1.default)(cek)) cek = cek.export();
+		const encKey = cek.subarray(keySize >> 3);
+		const macKey = cek.subarray(0, keySize >> 3);
+		const macSize = parseInt(enc.slice(-3), 10);
+		const algorithm = `aes-${keySize}-cbc`;
+		if (!(0, ciphers_js_1.default)(algorithm)) throw new errors_js_1.JOSENotSupported(`alg ${enc} is not supported by your javascript runtime`);
+		const expectedTag = (0, cbc_tag_js_1.default)(aad, iv, ciphertext, macSize, macKey, keySize);
+		let macCheckPassed;
+		try {
+			macCheckPassed = (0, timing_safe_equal_js_1.default)(tag, expectedTag);
+		} catch {}
+		if (!macCheckPassed) throw new errors_js_1.JWEDecryptionFailed();
+		let plaintext;
+		try {
+			const decipher = (0, node_crypto_1.createDecipheriv)(algorithm, encKey, iv);
+			plaintext = (0, buffer_utils_js_1.concat)(decipher.update(ciphertext), decipher.final());
+		} catch {}
+		if (!plaintext) throw new errors_js_1.JWEDecryptionFailed();
+		return plaintext;
+	}
+	function gcmDecrypt(enc, cek, ciphertext, iv, tag, aad) {
+		const algorithm = `aes-${parseInt(enc.slice(1, 4), 10)}-gcm`;
+		if (!(0, ciphers_js_1.default)(algorithm)) throw new errors_js_1.JOSENotSupported(`alg ${enc} is not supported by your javascript runtime`);
+		try {
+			const decipher = (0, node_crypto_1.createDecipheriv)(algorithm, cek, iv, { authTagLength: 16 });
+			decipher.setAuthTag(tag);
+			if (aad.byteLength) decipher.setAAD(aad, { plaintextLength: ciphertext.length });
+			const plaintext = decipher.update(ciphertext);
+			decipher.final();
+			return plaintext;
+		} catch {
+			throw new errors_js_1.JWEDecryptionFailed();
+		}
+	}
+	var decrypt = (enc, cek, ciphertext, iv, tag, aad) => {
+		let key;
+		if ((0, webcrypto_js_1.isCryptoKey)(cek)) {
+			(0, crypto_key_js_1.checkEncCryptoKey)(cek, enc, "decrypt");
+			key = node_crypto_1.KeyObject.from(cek);
+		} else if (cek instanceof Uint8Array || (0, is_key_object_js_1.default)(cek)) key = cek;
+		else throw new TypeError((0, invalid_key_input_js_1.default)(cek, ...is_key_like_js_1.types, "Uint8Array"));
+		if (!iv) throw new errors_js_1.JWEInvalid("JWE Initialization Vector missing");
+		if (!tag) throw new errors_js_1.JWEInvalid("JWE Authentication Tag missing");
+		(0, check_cek_length_js_1.default)(enc, key);
+		(0, check_iv_length_js_1.default)(enc, iv);
+		switch (enc) {
+			case "A128CBC-HS256":
+			case "A192CBC-HS384":
+			case "A256CBC-HS512": return cbcDecrypt(enc, key, ciphertext, iv, tag, aad);
+			case "A128GCM":
+			case "A192GCM":
+			case "A256GCM": return gcmDecrypt(enc, key, ciphertext, iv, tag, aad);
+			default: throw new errors_js_1.JOSENotSupported("Unsupported JWE Content Encryption Algorithm");
+		}
+	};
+	exports.default = decrypt;
+}));
+// node_modules/jose/dist/node/cjs/lib/is_disjoint.js
+var require_is_disjoint = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var isDisjoint = (...headers) => {
+		const sources = headers.filter(Boolean);
+		if (sources.length === 0 || sources.length === 1) return true;
+		let acc;
+		for (const header of sources) {
+			const parameters = Object.keys(header);
+			if (!acc || acc.size === 0) {
+				acc = new Set(parameters);
+				continue;
+			}
+			for (const parameter of parameters) {
+				if (acc.has(parameter)) return false;
+				acc.add(parameter);
+			}
+		}
+		return true;
+	};
+	exports.default = isDisjoint;
+}));
+// node_modules/jose/dist/node/cjs/lib/is_object.js
+var require_is_object = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = isObject;
+	function isObjectLike(value) {
+		return typeof value === "object" && value !== null;
+	}
+	function isObject(input) {
+		if (!isObjectLike(input) || Object.prototype.toString.call(input) !== "[object Object]") return false;
+		if (Object.getPrototypeOf(input) === null) return true;
+		let proto = input;
+		while (Object.getPrototypeOf(proto) !== null) proto = Object.getPrototypeOf(proto);
+		return Object.getPrototypeOf(input) === proto;
+	}
+}));
+// node_modules/jose/dist/node/cjs/runtime/aeskw.js
+var require_aeskw = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.unwrap = exports.wrap = void 0;
+	var node_buffer_1 = __require("node:buffer");
+	var node_crypto_1 = __require("node:crypto");
+	var errors_js_1 = require_errors();
+	var buffer_utils_js_1 = require_buffer_utils();
+	var webcrypto_js_1 = require_webcrypto();
+	var crypto_key_js_1 = require_crypto_key();
+	var is_key_object_js_1 = require_is_key_object();
+	var invalid_key_input_js_1 = require_invalid_key_input();
+	var ciphers_js_1 = require_ciphers();
+	var is_key_like_js_1 = require_is_key_like();
+	function checkKeySize(key, alg) {
+		if (key.symmetricKeySize << 3 !== parseInt(alg.slice(1, 4), 10)) throw new TypeError(`Invalid key size for alg: ${alg}`);
+	}
+	function ensureKeyObject(key, alg, usage) {
+		if ((0, is_key_object_js_1.default)(key)) return key;
+		if (key instanceof Uint8Array) return (0, node_crypto_1.createSecretKey)(key);
+		if ((0, webcrypto_js_1.isCryptoKey)(key)) {
+			(0, crypto_key_js_1.checkEncCryptoKey)(key, alg, usage);
+			return node_crypto_1.KeyObject.from(key);
+		}
+		throw new TypeError((0, invalid_key_input_js_1.default)(key, ...is_key_like_js_1.types, "Uint8Array"));
+	}
+	var wrap = (alg, key, cek) => {
+		const algorithm = `aes${parseInt(alg.slice(1, 4), 10)}-wrap`;
+		if (!(0, ciphers_js_1.default)(algorithm)) throw new errors_js_1.JOSENotSupported(`alg ${alg} is not supported either by JOSE or your javascript runtime`);
+		const keyObject = ensureKeyObject(key, alg, "wrapKey");
+		checkKeySize(keyObject, alg);
+		const cipher = (0, node_crypto_1.createCipheriv)(algorithm, keyObject, node_buffer_1.Buffer.alloc(8, 166));
+		return (0, buffer_utils_js_1.concat)(cipher.update(cek), cipher.final());
+	};
+	exports.wrap = wrap;
+	var unwrap = (alg, key, encryptedKey) => {
+		const algorithm = `aes${parseInt(alg.slice(1, 4), 10)}-wrap`;
+		if (!(0, ciphers_js_1.default)(algorithm)) throw new errors_js_1.JOSENotSupported(`alg ${alg} is not supported either by JOSE or your javascript runtime`);
+		const keyObject = ensureKeyObject(key, alg, "unwrapKey");
+		checkKeySize(keyObject, alg);
+		const cipher = (0, node_crypto_1.createDecipheriv)(algorithm, keyObject, node_buffer_1.Buffer.alloc(8, 166));
+		return (0, buffer_utils_js_1.concat)(cipher.update(encryptedKey), cipher.final());
+	};
+	exports.unwrap = unwrap;
+}));
+// node_modules/jose/dist/node/cjs/lib/is_jwk.js
+var require_is_jwk = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.isJWK = isJWK;
+	exports.isPrivateJWK = isPrivateJWK;
+	exports.isPublicJWK = isPublicJWK;
+	exports.isSecretJWK = isSecretJWK;
+	var is_object_js_1 = require_is_object();
+	function isJWK(key) {
+		return (0, is_object_js_1.default)(key) && typeof key.kty === "string";
+	}
+	function isPrivateJWK(key) {
+		return key.kty !== "oct" && typeof key.d === "string";
+	}
+	function isPublicJWK(key) {
+		return key.kty !== "oct" && typeof key.d === "undefined";
+	}
+	function isSecretJWK(key) {
+		return isJWK(key) && key.kty === "oct" && typeof key.k === "string";
+	}
+}));
+// node_modules/jose/dist/node/cjs/runtime/get_named_curve.js
+var require_get_named_curve = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.weakMap = void 0;
+	var node_crypto_1 = __require("node:crypto");
+	var errors_js_1 = require_errors();
+	var webcrypto_js_1 = require_webcrypto();
+	var is_key_object_js_1 = require_is_key_object();
+	var invalid_key_input_js_1 = require_invalid_key_input();
+	var is_key_like_js_1 = require_is_key_like();
+	var is_jwk_js_1 = require_is_jwk();
+	exports.weakMap = /* @__PURE__ */ new WeakMap();
+	var namedCurveToJOSE = (namedCurve) => {
+		switch (namedCurve) {
+			case "prime256v1": return "P-256";
+			case "secp384r1": return "P-384";
+			case "secp521r1": return "P-521";
+			case "secp256k1": return "secp256k1";
+			default: throw new errors_js_1.JOSENotSupported("Unsupported key curve for this operation");
+		}
+	};
+	var getNamedCurve = (kee, raw) => {
+		let key;
+		if ((0, webcrypto_js_1.isCryptoKey)(kee)) key = node_crypto_1.KeyObject.from(kee);
+		else if ((0, is_key_object_js_1.default)(kee)) key = kee;
+		else if ((0, is_jwk_js_1.isJWK)(kee)) return kee.crv;
+		else throw new TypeError((0, invalid_key_input_js_1.default)(kee, ...is_key_like_js_1.types));
+		if (key.type === "secret") throw new TypeError("only \"private\" or \"public\" type keys can be used for this operation");
+		switch (key.asymmetricKeyType) {
+			case "ed25519":
+			case "ed448": return `Ed${key.asymmetricKeyType.slice(2)}`;
+			case "x25519":
+			case "x448": return `X${key.asymmetricKeyType.slice(1)}`;
+			case "ec": {
+				const namedCurve = key.asymmetricKeyDetails.namedCurve;
+				if (raw) return namedCurve;
+				return namedCurveToJOSE(namedCurve);
+			}
+			default: throw new TypeError("Invalid asymmetric key type for this operation");
+		}
+	};
+	exports.default = getNamedCurve;
+}));
+// node_modules/jose/dist/node/cjs/runtime/ecdhes.js
+var require_ecdhes = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.ecdhAllowed = void 0;
+	exports.deriveKey = deriveKey;
+	exports.generateEpk = generateEpk;
+	var node_crypto_1 = __require("node:crypto");
+	var node_util_1 = __require("node:util");
+	var get_named_curve_js_1 = require_get_named_curve();
+	var buffer_utils_js_1 = require_buffer_utils();
+	var errors_js_1 = require_errors();
+	var webcrypto_js_1 = require_webcrypto();
+	var crypto_key_js_1 = require_crypto_key();
+	var is_key_object_js_1 = require_is_key_object();
+	var invalid_key_input_js_1 = require_invalid_key_input();
+	var is_key_like_js_1 = require_is_key_like();
+	var generateKeyPair = (0, node_util_1.promisify)(node_crypto_1.generateKeyPair);
+	async function deriveKey(publicKee, privateKee, algorithm, keyLength, apu = /* @__PURE__ */ new Uint8Array(0), apv = /* @__PURE__ */ new Uint8Array(0)) {
+		let publicKey;
+		if ((0, webcrypto_js_1.isCryptoKey)(publicKee)) {
+			(0, crypto_key_js_1.checkEncCryptoKey)(publicKee, "ECDH");
+			publicKey = node_crypto_1.KeyObject.from(publicKee);
+		} else if ((0, is_key_object_js_1.default)(publicKee)) publicKey = publicKee;
+		else throw new TypeError((0, invalid_key_input_js_1.default)(publicKee, ...is_key_like_js_1.types));
+		let privateKey;
+		if ((0, webcrypto_js_1.isCryptoKey)(privateKee)) {
+			(0, crypto_key_js_1.checkEncCryptoKey)(privateKee, "ECDH", "deriveBits");
+			privateKey = node_crypto_1.KeyObject.from(privateKee);
+		} else if ((0, is_key_object_js_1.default)(privateKee)) privateKey = privateKee;
+		else throw new TypeError((0, invalid_key_input_js_1.default)(privateKee, ...is_key_like_js_1.types));
+		const value = (0, buffer_utils_js_1.concat)((0, buffer_utils_js_1.lengthAndInput)(buffer_utils_js_1.encoder.encode(algorithm)), (0, buffer_utils_js_1.lengthAndInput)(apu), (0, buffer_utils_js_1.lengthAndInput)(apv), (0, buffer_utils_js_1.uint32be)(keyLength));
+		const sharedSecret = (0, node_crypto_1.diffieHellman)({
+			privateKey,
+			publicKey
+		});
+		return (0, buffer_utils_js_1.concatKdf)(sharedSecret, keyLength, value);
+	}
+	async function generateEpk(kee) {
+		let key;
+		if ((0, webcrypto_js_1.isCryptoKey)(kee)) key = node_crypto_1.KeyObject.from(kee);
+		else if ((0, is_key_object_js_1.default)(kee)) key = kee;
+		else throw new TypeError((0, invalid_key_input_js_1.default)(kee, ...is_key_like_js_1.types));
+		switch (key.asymmetricKeyType) {
+			case "x25519": return generateKeyPair("x25519");
+			case "x448": return generateKeyPair("x448");
+			case "ec": return generateKeyPair("ec", { namedCurve: (0, get_named_curve_js_1.default)(key) });
+			default: throw new errors_js_1.JOSENotSupported("Invalid or unsupported EPK");
+		}
+	}
+	var ecdhAllowed = (key) => [
+		"P-256",
+		"P-384",
+		"P-521",
+		"X25519",
+		"X448"
+	].includes((0, get_named_curve_js_1.default)(key));
+	exports.ecdhAllowed = ecdhAllowed;
+}));
+// node_modules/jose/dist/node/cjs/lib/check_p2s.js
+var require_check_p2s = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = checkP2s;
+	var errors_js_1 = require_errors();
+	function checkP2s(p2s) {
+		if (!(p2s instanceof Uint8Array) || p2s.length < 8) throw new errors_js_1.JWEInvalid("PBES2 Salt Input must be 8 or more octets");
+	}
+}));
+// node_modules/jose/dist/node/cjs/runtime/pbes2kw.js
+var require_pbes2kw = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.decrypt = exports.encrypt = void 0;
+	var node_util_1 = __require("node:util");
+	var node_crypto_1 = __require("node:crypto");
+	var random_js_1 = require_random();
+	var buffer_utils_js_1 = require_buffer_utils();
+	var base64url_js_1 = require_base64url$1();
+	var aeskw_js_1 = require_aeskw();
+	var check_p2s_js_1 = require_check_p2s();
+	var webcrypto_js_1 = require_webcrypto();
+	var crypto_key_js_1 = require_crypto_key();
+	var is_key_object_js_1 = require_is_key_object();
+	var invalid_key_input_js_1 = require_invalid_key_input();
+	var is_key_like_js_1 = require_is_key_like();
+	var pbkdf2 = (0, node_util_1.promisify)(node_crypto_1.pbkdf2);
+	function getPassword(key, alg) {
+		if ((0, is_key_object_js_1.default)(key)) return key.export();
+		if (key instanceof Uint8Array) return key;
+		if ((0, webcrypto_js_1.isCryptoKey)(key)) {
+			(0, crypto_key_js_1.checkEncCryptoKey)(key, alg, "deriveBits", "deriveKey");
+			return node_crypto_1.KeyObject.from(key).export();
+		}
+		throw new TypeError((0, invalid_key_input_js_1.default)(key, ...is_key_like_js_1.types, "Uint8Array"));
+	}
+	var encrypt = async (alg, key, cek, p2c = 2048, p2s = (0, random_js_1.default)(/* @__PURE__ */ new Uint8Array(16))) => {
+		(0, check_p2s_js_1.default)(p2s);
+		const salt = (0, buffer_utils_js_1.p2s)(alg, p2s);
+		const keylen = parseInt(alg.slice(13, 16), 10) >> 3;
+		const derivedKey = await pbkdf2(getPassword(key, alg), salt, p2c, keylen, `sha${alg.slice(8, 11)}`);
+		return {
+			encryptedKey: await (0, aeskw_js_1.wrap)(alg.slice(-6), derivedKey, cek),
+			p2c,
+			p2s: (0, base64url_js_1.encode)(p2s)
+		};
+	};
+	exports.encrypt = encrypt;
+	var decrypt = async (alg, key, encryptedKey, p2c, p2s) => {
+		(0, check_p2s_js_1.default)(p2s);
+		const salt = (0, buffer_utils_js_1.p2s)(alg, p2s);
+		const keylen = parseInt(alg.slice(13, 16), 10) >> 3;
+		const derivedKey = await pbkdf2(getPassword(key, alg), salt, p2c, keylen, `sha${alg.slice(8, 11)}`);
+		return (0, aeskw_js_1.unwrap)(alg.slice(-6), derivedKey, encryptedKey);
+	};
+	exports.decrypt = decrypt;
+}));
+// node_modules/jose/dist/node/cjs/runtime/check_key_length.js
+var require_check_key_length = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var node_crypto_1 = __require("node:crypto");
+	exports.default = (key, alg) => {
+		let modulusLength;
+		try {
+			if (key instanceof node_crypto_1.KeyObject) modulusLength = key.asymmetricKeyDetails?.modulusLength;
+			else modulusLength = Buffer.from(key.n, "base64url").byteLength << 3;
+		} catch {}
+		if (typeof modulusLength !== "number" || modulusLength < 2048) throw new TypeError(`${alg} requires key modulusLength to be 2048 bits or larger`);
+	};
+}));
+// node_modules/jose/dist/node/cjs/runtime/rsaes.js
+var require_rsaes = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.decrypt = exports.encrypt = void 0;
+	var node_crypto_1 = __require("node:crypto");
+	var node_util_1 = __require("node:util");
+	var check_key_length_js_1 = require_check_key_length();
+	var webcrypto_js_1 = require_webcrypto();
+	var crypto_key_js_1 = require_crypto_key();
+	var is_key_object_js_1 = require_is_key_object();
+	var invalid_key_input_js_1 = require_invalid_key_input();
+	var is_key_like_js_1 = require_is_key_like();
+	var checkKey = (key, alg) => {
+		if (key.asymmetricKeyType !== "rsa") throw new TypeError("Invalid key for this operation, its asymmetricKeyType must be rsa");
+		(0, check_key_length_js_1.default)(key, alg);
+	};
+	var RSA1_5 = (0, node_util_1.deprecate)(() => node_crypto_1.constants.RSA_PKCS1_PADDING, "The RSA1_5 \"alg\" (JWE Algorithm) is deprecated and will be removed in the next major revision.");
+	var resolvePadding = (alg) => {
+		switch (alg) {
+			case "RSA-OAEP":
+			case "RSA-OAEP-256":
+			case "RSA-OAEP-384":
+			case "RSA-OAEP-512": return node_crypto_1.constants.RSA_PKCS1_OAEP_PADDING;
+			case "RSA1_5": return RSA1_5();
+			default: return;
+		}
+	};
+	var resolveOaepHash = (alg) => {
+		switch (alg) {
+			case "RSA-OAEP": return "sha1";
+			case "RSA-OAEP-256": return "sha256";
+			case "RSA-OAEP-384": return "sha384";
+			case "RSA-OAEP-512": return "sha512";
+			default: return;
+		}
+	};
+	function ensureKeyObject(key, alg, ...usages) {
+		if ((0, is_key_object_js_1.default)(key)) return key;
+		if ((0, webcrypto_js_1.isCryptoKey)(key)) {
+			(0, crypto_key_js_1.checkEncCryptoKey)(key, alg, ...usages);
+			return node_crypto_1.KeyObject.from(key);
+		}
+		throw new TypeError((0, invalid_key_input_js_1.default)(key, ...is_key_like_js_1.types));
+	}
+	var encrypt = (alg, key, cek) => {
+		const padding = resolvePadding(alg);
+		const oaepHash = resolveOaepHash(alg);
+		const keyObject = ensureKeyObject(key, alg, "wrapKey", "encrypt");
+		checkKey(keyObject, alg);
+		return (0, node_crypto_1.publicEncrypt)({
+			key: keyObject,
+			oaepHash,
+			padding
+		}, cek);
+	};
+	exports.encrypt = encrypt;
+	var decrypt = (alg, key, encryptedKey) => {
+		const padding = resolvePadding(alg);
+		const oaepHash = resolveOaepHash(alg);
+		const keyObject = ensureKeyObject(key, alg, "unwrapKey", "decrypt");
+		checkKey(keyObject, alg);
+		return (0, node_crypto_1.privateDecrypt)({
+			key: keyObject,
+			oaepHash,
+			padding
+		}, encryptedKey);
+	};
+	exports.decrypt = decrypt;
+}));
+// node_modules/jose/dist/node/cjs/runtime/normalize_key.js
+var require_normalize_key = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = {};
+}));
+// node_modules/jose/dist/node/cjs/lib/cek.js
+var require_cek = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.bitLength = bitLength;
+	var errors_js_1 = require_errors();
+	var random_js_1 = require_random();
+	function bitLength(alg) {
+		switch (alg) {
+			case "A128GCM": return 128;
+			case "A192GCM": return 192;
+			case "A256GCM":
+			case "A128CBC-HS256": return 256;
+			case "A192CBC-HS384": return 384;
+			case "A256CBC-HS512": return 512;
+			default: throw new errors_js_1.JOSENotSupported(`Unsupported JWE Algorithm: ${alg}`);
+		}
+	}
+	exports.default = (alg) => (0, random_js_1.default)(new Uint8Array(bitLength(alg) >> 3));
+}));
+// node_modules/jose/dist/node/cjs/runtime/asn1.js
+var require_asn1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.fromX509 = exports.fromSPKI = exports.fromPKCS8 = exports.toPKCS8 = exports.toSPKI = void 0;
+	var node_crypto_1 = __require("node:crypto");
+	var node_buffer_1 = __require("node:buffer");
+	var webcrypto_js_1 = require_webcrypto();
+	var is_key_object_js_1 = require_is_key_object();
+	var invalid_key_input_js_1 = require_invalid_key_input();
+	var is_key_like_js_1 = require_is_key_like();
+	var genericExport = (keyType, keyFormat, key) => {
+		let keyObject;
+		if ((0, webcrypto_js_1.isCryptoKey)(key)) {
+			if (!key.extractable) throw new TypeError("CryptoKey is not extractable");
+			keyObject = node_crypto_1.KeyObject.from(key);
+		} else if ((0, is_key_object_js_1.default)(key)) keyObject = key;
+		else throw new TypeError((0, invalid_key_input_js_1.default)(key, ...is_key_like_js_1.types));
+		if (keyObject.type !== keyType) throw new TypeError(`key is not a ${keyType} key`);
+		return keyObject.export({
+			format: "pem",
+			type: keyFormat
+		});
+	};
+	var toSPKI = (key) => {
+		return genericExport("public", "spki", key);
+	};
+	exports.toSPKI = toSPKI;
+	var toPKCS8 = (key) => {
+		return genericExport("private", "pkcs8", key);
+	};
+	exports.toPKCS8 = toPKCS8;
+	var fromPKCS8 = (pem) => (0, node_crypto_1.createPrivateKey)({
+		key: node_buffer_1.Buffer.from(pem.replace(/(?:-----(?:BEGIN|END) PRIVATE KEY-----|\s)/g, ""), "base64"),
+		type: "pkcs8",
+		format: "der"
+	});
+	exports.fromPKCS8 = fromPKCS8;
+	var fromSPKI = (pem) => (0, node_crypto_1.createPublicKey)({
+		key: node_buffer_1.Buffer.from(pem.replace(/(?:-----(?:BEGIN|END) PUBLIC KEY-----|\s)/g, ""), "base64"),
+		type: "spki",
+		format: "der"
+	});
+	exports.fromSPKI = fromSPKI;
+	var fromX509 = (pem) => (0, node_crypto_1.createPublicKey)({
+		key: pem,
+		type: "spki",
+		format: "pem"
+	});
+	exports.fromX509 = fromX509;
+}));
+// node_modules/jose/dist/node/cjs/runtime/jwk_to_key.js
+var require_jwk_to_key = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var node_crypto_1 = __require("node:crypto");
+	var parse = (key) => {
+		if (key.d) return (0, node_crypto_1.createPrivateKey)({
+			format: "jwk",
+			key
+		});
+		return (0, node_crypto_1.createPublicKey)({
+			format: "jwk",
+			key
+		});
+	};
+	exports.default = parse;
+}));
+// node_modules/jose/dist/node/cjs/key/import.js
+var require_import = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.importSPKI = importSPKI;
+	exports.importX509 = importX509;
+	exports.importPKCS8 = importPKCS8;
+	exports.importJWK = importJWK;
+	var base64url_js_1 = require_base64url$1();
+	var asn1_js_1 = require_asn1();
+	var jwk_to_key_js_1 = require_jwk_to_key();
+	var errors_js_1 = require_errors();
+	var is_object_js_1 = require_is_object();
+	async function importSPKI(spki, alg, options) {
+		if (typeof spki !== "string" || spki.indexOf("-----BEGIN PUBLIC KEY-----") !== 0) throw new TypeError("\"spki\" must be SPKI formatted string");
+		return (0, asn1_js_1.fromSPKI)(spki, alg, options);
+	}
+	async function importX509(x509, alg, options) {
+		if (typeof x509 !== "string" || x509.indexOf("-----BEGIN CERTIFICATE-----") !== 0) throw new TypeError("\"x509\" must be X.509 formatted string");
+		return (0, asn1_js_1.fromX509)(x509, alg, options);
+	}
+	async function importPKCS8(pkcs8, alg, options) {
+		if (typeof pkcs8 !== "string" || pkcs8.indexOf("-----BEGIN PRIVATE KEY-----") !== 0) throw new TypeError("\"pkcs8\" must be PKCS#8 formatted string");
+		return (0, asn1_js_1.fromPKCS8)(pkcs8, alg, options);
+	}
+	async function importJWK(jwk, alg) {
+		if (!(0, is_object_js_1.default)(jwk)) throw new TypeError("JWK must be an object");
+		alg ||= jwk.alg;
+		switch (jwk.kty) {
+			case "oct":
+				if (typeof jwk.k !== "string" || !jwk.k) throw new TypeError("missing \"k\" (Key Value) Parameter value");
+				return (0, base64url_js_1.decode)(jwk.k);
+			case "RSA": if ("oth" in jwk && jwk.oth !== void 0) throw new errors_js_1.JOSENotSupported("RSA JWK \"oth\" (Other Primes Info) Parameter value is not supported");
+			case "EC":
+			case "OKP": return (0, jwk_to_key_js_1.default)({
+				...jwk,
+				alg
+			});
+			default: throw new errors_js_1.JOSENotSupported("Unsupported \"kty\" (Key Type) Parameter value");
+		}
+	}
+}));
+// node_modules/jose/dist/node/cjs/lib/check_key_type.js
+var require_check_key_type = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.checkKeyTypeWithJwk = void 0;
+	var invalid_key_input_js_1 = require_invalid_key_input();
+	var is_key_like_js_1 = require_is_key_like();
+	var jwk = require_is_jwk();
+	var tag = (key) => key?.[Symbol.toStringTag];
+	var jwkMatchesOp = (alg, key, usage) => {
+		if (key.use !== void 0 && key.use !== "sig") throw new TypeError("Invalid key for this operation, when present its use must be sig");
+		if (key.key_ops !== void 0 && key.key_ops.includes?.(usage) !== true) throw new TypeError(`Invalid key for this operation, when present its key_ops must include ${usage}`);
+		if (key.alg !== void 0 && key.alg !== alg) throw new TypeError(`Invalid key for this operation, when present its alg must be ${alg}`);
+		return true;
+	};
+	var symmetricTypeCheck = (alg, key, usage, allowJwk) => {
+		if (key instanceof Uint8Array) return;
+		if (allowJwk && jwk.isJWK(key)) {
+			if (jwk.isSecretJWK(key) && jwkMatchesOp(alg, key, usage)) return;
+			throw new TypeError(`JSON Web Key for symmetric algorithms must have JWK "kty" (Key Type) equal to "oct" and the JWK "k" (Key Value) present`);
+		}
+		if (!(0, is_key_like_js_1.default)(key)) throw new TypeError((0, invalid_key_input_js_1.withAlg)(alg, key, ...is_key_like_js_1.types, "Uint8Array", allowJwk ? "JSON Web Key" : null));
+		if (key.type !== "secret") throw new TypeError(`${tag(key)} instances for symmetric algorithms must be of type "secret"`);
+	};
+	var asymmetricTypeCheck = (alg, key, usage, allowJwk) => {
+		if (allowJwk && jwk.isJWK(key)) switch (usage) {
+			case "sign":
+				if (jwk.isPrivateJWK(key) && jwkMatchesOp(alg, key, usage)) return;
+				throw new TypeError(`JSON Web Key for this operation be a private JWK`);
+			case "verify":
+				if (jwk.isPublicJWK(key) && jwkMatchesOp(alg, key, usage)) return;
+				throw new TypeError(`JSON Web Key for this operation be a public JWK`);
+		}
+		if (!(0, is_key_like_js_1.default)(key)) throw new TypeError((0, invalid_key_input_js_1.withAlg)(alg, key, ...is_key_like_js_1.types, allowJwk ? "JSON Web Key" : null));
+		if (key.type === "secret") throw new TypeError(`${tag(key)} instances for asymmetric algorithms must not be of type "secret"`);
+		if (usage === "sign" && key.type === "public") throw new TypeError(`${tag(key)} instances for asymmetric algorithm signing must be of type "private"`);
+		if (usage === "decrypt" && key.type === "public") throw new TypeError(`${tag(key)} instances for asymmetric algorithm decryption must be of type "private"`);
+		if (key.algorithm && usage === "verify" && key.type === "private") throw new TypeError(`${tag(key)} instances for asymmetric algorithm verifying must be of type "public"`);
+		if (key.algorithm && usage === "encrypt" && key.type === "private") throw new TypeError(`${tag(key)} instances for asymmetric algorithm encryption must be of type "public"`);
+	};
+	function checkKeyType(allowJwk, alg, key, usage) {
+		if (alg.startsWith("HS") || alg === "dir" || alg.startsWith("PBES2") || /^A\d{3}(?:GCM)?KW$/.test(alg)) symmetricTypeCheck(alg, key, usage, allowJwk);
+		else asymmetricTypeCheck(alg, key, usage, allowJwk);
+	}
+	exports.default = checkKeyType.bind(void 0, false);
+	exports.checkKeyTypeWithJwk = checkKeyType.bind(void 0, true);
+}));
+// node_modules/jose/dist/node/cjs/runtime/encrypt.js
+var require_encrypt$4 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var node_crypto_1 = __require("node:crypto");
+	var check_iv_length_js_1 = require_check_iv_length();
+	var check_cek_length_js_1 = require_check_cek_length();
+	var buffer_utils_js_1 = require_buffer_utils();
+	var cbc_tag_js_1 = require_cbc_tag();
+	var webcrypto_js_1 = require_webcrypto();
+	var crypto_key_js_1 = require_crypto_key();
+	var is_key_object_js_1 = require_is_key_object();
+	var invalid_key_input_js_1 = require_invalid_key_input();
+	var iv_js_1 = require_iv();
+	var errors_js_1 = require_errors();
+	var ciphers_js_1 = require_ciphers();
+	var is_key_like_js_1 = require_is_key_like();
+	function cbcEncrypt(enc, plaintext, cek, iv, aad) {
+		const keySize = parseInt(enc.slice(1, 4), 10);
+		if ((0, is_key_object_js_1.default)(cek)) cek = cek.export();
+		const encKey = cek.subarray(keySize >> 3);
+		const macKey = cek.subarray(0, keySize >> 3);
+		const algorithm = `aes-${keySize}-cbc`;
+		if (!(0, ciphers_js_1.default)(algorithm)) throw new errors_js_1.JOSENotSupported(`alg ${enc} is not supported by your javascript runtime`);
+		const cipher = (0, node_crypto_1.createCipheriv)(algorithm, encKey, iv);
+		const ciphertext = (0, buffer_utils_js_1.concat)(cipher.update(plaintext), cipher.final());
+		const macSize = parseInt(enc.slice(-3), 10);
+		return {
+			ciphertext,
+			tag: (0, cbc_tag_js_1.default)(aad, iv, ciphertext, macSize, macKey, keySize),
+			iv
+		};
+	}
+	function gcmEncrypt(enc, plaintext, cek, iv, aad) {
+		const algorithm = `aes-${parseInt(enc.slice(1, 4), 10)}-gcm`;
+		if (!(0, ciphers_js_1.default)(algorithm)) throw new errors_js_1.JOSENotSupported(`alg ${enc} is not supported by your javascript runtime`);
+		const cipher = (0, node_crypto_1.createCipheriv)(algorithm, cek, iv, { authTagLength: 16 });
+		if (aad.byteLength) cipher.setAAD(aad, { plaintextLength: plaintext.length });
+		const ciphertext = cipher.update(plaintext);
+		cipher.final();
+		return {
+			ciphertext,
+			tag: cipher.getAuthTag(),
+			iv
+		};
+	}
+	var encrypt = (enc, plaintext, cek, iv, aad) => {
+		let key;
+		if ((0, webcrypto_js_1.isCryptoKey)(cek)) {
+			(0, crypto_key_js_1.checkEncCryptoKey)(cek, enc, "encrypt");
+			key = node_crypto_1.KeyObject.from(cek);
+		} else if (cek instanceof Uint8Array || (0, is_key_object_js_1.default)(cek)) key = cek;
+		else throw new TypeError((0, invalid_key_input_js_1.default)(cek, ...is_key_like_js_1.types, "Uint8Array"));
+		(0, check_cek_length_js_1.default)(enc, key);
+		if (iv) (0, check_iv_length_js_1.default)(enc, iv);
+		else iv = (0, iv_js_1.default)(enc);
+		switch (enc) {
+			case "A128CBC-HS256":
+			case "A192CBC-HS384":
+			case "A256CBC-HS512": return cbcEncrypt(enc, plaintext, key, iv, aad);
+			case "A128GCM":
+			case "A192GCM":
+			case "A256GCM": return gcmEncrypt(enc, plaintext, key, iv, aad);
+			default: throw new errors_js_1.JOSENotSupported("Unsupported JWE Content Encryption Algorithm");
+		}
+	};
+	exports.default = encrypt;
+}));
+// node_modules/jose/dist/node/cjs/lib/aesgcmkw.js
+var require_aesgcmkw = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.wrap = wrap;
+	exports.unwrap = unwrap;
+	var encrypt_js_1 = require_encrypt$4();
+	var decrypt_js_1 = require_decrypt$4();
+	var base64url_js_1 = require_base64url$1();
+	async function wrap(alg, key, cek, iv) {
+		const jweAlgorithm = alg.slice(0, 7);
+		const wrapped = await (0, encrypt_js_1.default)(jweAlgorithm, cek, key, iv, /* @__PURE__ */ new Uint8Array(0));
+		return {
+			encryptedKey: wrapped.ciphertext,
+			iv: (0, base64url_js_1.encode)(wrapped.iv),
+			tag: (0, base64url_js_1.encode)(wrapped.tag)
+		};
+	}
+	async function unwrap(alg, key, encryptedKey, iv, tag) {
+		const jweAlgorithm = alg.slice(0, 7);
+		return (0, decrypt_js_1.default)(jweAlgorithm, key, encryptedKey, iv, tag, /* @__PURE__ */ new Uint8Array(0));
+	}
+}));
+// node_modules/jose/dist/node/cjs/lib/decrypt_key_management.js
+var require_decrypt_key_management = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var aeskw_js_1 = require_aeskw();
+	var ECDH = require_ecdhes();
+	var pbes2kw_js_1 = require_pbes2kw();
+	var rsaes_js_1 = require_rsaes();
+	var base64url_js_1 = require_base64url$1();
+	var normalize_key_js_1 = require_normalize_key();
+	var errors_js_1 = require_errors();
+	var cek_js_1 = require_cek();
+	var import_js_1 = require_import();
+	var check_key_type_js_1 = require_check_key_type();
+	var is_object_js_1 = require_is_object();
+	var aesgcmkw_js_1 = require_aesgcmkw();
+	async function decryptKeyManagement(alg, key, encryptedKey, joseHeader, options) {
+		(0, check_key_type_js_1.default)(alg, key, "decrypt");
+		key = await normalize_key_js_1.default.normalizePrivateKey?.(key, alg) || key;
+		switch (alg) {
+			case "dir":
+				if (encryptedKey !== void 0) throw new errors_js_1.JWEInvalid("Encountered unexpected JWE Encrypted Key");
+				return key;
+			case "ECDH-ES": if (encryptedKey !== void 0) throw new errors_js_1.JWEInvalid("Encountered unexpected JWE Encrypted Key");
+			case "ECDH-ES+A128KW":
+			case "ECDH-ES+A192KW":
+			case "ECDH-ES+A256KW": {
+				if (!(0, is_object_js_1.default)(joseHeader.epk)) throw new errors_js_1.JWEInvalid(`JOSE Header "epk" (Ephemeral Public Key) missing or invalid`);
+				if (!ECDH.ecdhAllowed(key)) throw new errors_js_1.JOSENotSupported("ECDH with the provided key is not allowed or not supported by your javascript runtime");
+				const epk = await (0, import_js_1.importJWK)(joseHeader.epk, alg);
+				let partyUInfo;
+				let partyVInfo;
+				if (joseHeader.apu !== void 0) {
+					if (typeof joseHeader.apu !== "string") throw new errors_js_1.JWEInvalid(`JOSE Header "apu" (Agreement PartyUInfo) invalid`);
+					try {
+						partyUInfo = (0, base64url_js_1.decode)(joseHeader.apu);
+					} catch {
+						throw new errors_js_1.JWEInvalid("Failed to base64url decode the apu");
+					}
+				}
+				if (joseHeader.apv !== void 0) {
+					if (typeof joseHeader.apv !== "string") throw new errors_js_1.JWEInvalid(`JOSE Header "apv" (Agreement PartyVInfo) invalid`);
+					try {
+						partyVInfo = (0, base64url_js_1.decode)(joseHeader.apv);
+					} catch {
+						throw new errors_js_1.JWEInvalid("Failed to base64url decode the apv");
+					}
+				}
+				const sharedSecret = await ECDH.deriveKey(epk, key, alg === "ECDH-ES" ? joseHeader.enc : alg, alg === "ECDH-ES" ? (0, cek_js_1.bitLength)(joseHeader.enc) : parseInt(alg.slice(-5, -2), 10), partyUInfo, partyVInfo);
+				if (alg === "ECDH-ES") return sharedSecret;
+				if (encryptedKey === void 0) throw new errors_js_1.JWEInvalid("JWE Encrypted Key missing");
+				return (0, aeskw_js_1.unwrap)(alg.slice(-6), sharedSecret, encryptedKey);
+			}
+			case "RSA1_5":
+			case "RSA-OAEP":
+			case "RSA-OAEP-256":
+			case "RSA-OAEP-384":
+			case "RSA-OAEP-512":
+				if (encryptedKey === void 0) throw new errors_js_1.JWEInvalid("JWE Encrypted Key missing");
+				return (0, rsaes_js_1.decrypt)(alg, key, encryptedKey);
+			case "PBES2-HS256+A128KW":
+			case "PBES2-HS384+A192KW":
+			case "PBES2-HS512+A256KW": {
+				if (encryptedKey === void 0) throw new errors_js_1.JWEInvalid("JWE Encrypted Key missing");
+				if (typeof joseHeader.p2c !== "number") throw new errors_js_1.JWEInvalid(`JOSE Header "p2c" (PBES2 Count) missing or invalid`);
+				const p2cLimit = options?.maxPBES2Count || 1e4;
+				if (joseHeader.p2c > p2cLimit) throw new errors_js_1.JWEInvalid(`JOSE Header "p2c" (PBES2 Count) out is of acceptable bounds`);
+				if (typeof joseHeader.p2s !== "string") throw new errors_js_1.JWEInvalid(`JOSE Header "p2s" (PBES2 Salt) missing or invalid`);
+				let p2s;
+				try {
+					p2s = (0, base64url_js_1.decode)(joseHeader.p2s);
+				} catch {
+					throw new errors_js_1.JWEInvalid("Failed to base64url decode the p2s");
+				}
+				return (0, pbes2kw_js_1.decrypt)(alg, key, encryptedKey, joseHeader.p2c, p2s);
+			}
+			case "A128KW":
+			case "A192KW":
+			case "A256KW":
+				if (encryptedKey === void 0) throw new errors_js_1.JWEInvalid("JWE Encrypted Key missing");
+				return (0, aeskw_js_1.unwrap)(alg, key, encryptedKey);
+			case "A128GCMKW":
+			case "A192GCMKW":
+			case "A256GCMKW": {
+				if (encryptedKey === void 0) throw new errors_js_1.JWEInvalid("JWE Encrypted Key missing");
+				if (typeof joseHeader.iv !== "string") throw new errors_js_1.JWEInvalid(`JOSE Header "iv" (Initialization Vector) missing or invalid`);
+				if (typeof joseHeader.tag !== "string") throw new errors_js_1.JWEInvalid(`JOSE Header "tag" (Authentication Tag) missing or invalid`);
+				let iv;
+				try {
+					iv = (0, base64url_js_1.decode)(joseHeader.iv);
+				} catch {
+					throw new errors_js_1.JWEInvalid("Failed to base64url decode the iv");
+				}
+				let tag;
+				try {
+					tag = (0, base64url_js_1.decode)(joseHeader.tag);
+				} catch {
+					throw new errors_js_1.JWEInvalid("Failed to base64url decode the tag");
+				}
+				return (0, aesgcmkw_js_1.unwrap)(alg, key, encryptedKey, iv, tag);
+			}
+			default: throw new errors_js_1.JOSENotSupported("Invalid or unsupported \"alg\" (JWE Algorithm) header value");
+		}
+	}
+	exports.default = decryptKeyManagement;
+}));
+// node_modules/jose/dist/node/cjs/lib/validate_crit.js
+var require_validate_crit = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var errors_js_1 = require_errors();
+	function validateCrit(Err, recognizedDefault, recognizedOption, protectedHeader, joseHeader) {
+		if (joseHeader.crit !== void 0 && protectedHeader?.crit === void 0) throw new Err("\"crit\" (Critical) Header Parameter MUST be integrity protected");
+		if (!protectedHeader || protectedHeader.crit === void 0) return /* @__PURE__ */ new Set();
+		if (!Array.isArray(protectedHeader.crit) || protectedHeader.crit.length === 0 || protectedHeader.crit.some((input) => typeof input !== "string" || input.length === 0)) throw new Err("\"crit\" (Critical) Header Parameter MUST be an array of non-empty strings when present");
+		let recognized;
+		if (recognizedOption !== void 0) recognized = new Map([...Object.entries(recognizedOption), ...recognizedDefault.entries()]);
+		else recognized = recognizedDefault;
+		for (const parameter of protectedHeader.crit) {
+			if (!recognized.has(parameter)) throw new errors_js_1.JOSENotSupported(`Extension Header Parameter "${parameter}" is not recognized`);
+			if (joseHeader[parameter] === void 0) throw new Err(`Extension Header Parameter "${parameter}" is missing`);
+			if (recognized.get(parameter) && protectedHeader[parameter] === void 0) throw new Err(`Extension Header Parameter "${parameter}" MUST be integrity protected`);
+		}
+		return new Set(protectedHeader.crit);
+	}
+	exports.default = validateCrit;
+}));
+// node_modules/jose/dist/node/cjs/lib/validate_algorithms.js
+var require_validate_algorithms = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var validateAlgorithms = (option, algorithms) => {
+		if (algorithms !== void 0 && (!Array.isArray(algorithms) || algorithms.some((s) => typeof s !== "string"))) throw new TypeError(`"${option}" option must be an array of strings`);
+		if (!algorithms) return;
+		return new Set(algorithms);
+	};
+	exports.default = validateAlgorithms;
+}));
+// node_modules/jose/dist/node/cjs/jwe/flattened/decrypt.js
+var require_decrypt$3 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.flattenedDecrypt = flattenedDecrypt;
+	var base64url_js_1 = require_base64url$1();
+	var decrypt_js_1 = require_decrypt$4();
+	var errors_js_1 = require_errors();
+	var is_disjoint_js_1 = require_is_disjoint();
+	var is_object_js_1 = require_is_object();
+	var decrypt_key_management_js_1 = require_decrypt_key_management();
+	var buffer_utils_js_1 = require_buffer_utils();
+	var cek_js_1 = require_cek();
+	var validate_crit_js_1 = require_validate_crit();
+	var validate_algorithms_js_1 = require_validate_algorithms();
+	async function flattenedDecrypt(jwe, key, options) {
+		if (!(0, is_object_js_1.default)(jwe)) throw new errors_js_1.JWEInvalid("Flattened JWE must be an object");
+		if (jwe.protected === void 0 && jwe.header === void 0 && jwe.unprotected === void 0) throw new errors_js_1.JWEInvalid("JOSE Header missing");
+		if (jwe.iv !== void 0 && typeof jwe.iv !== "string") throw new errors_js_1.JWEInvalid("JWE Initialization Vector incorrect type");
+		if (typeof jwe.ciphertext !== "string") throw new errors_js_1.JWEInvalid("JWE Ciphertext missing or incorrect type");
+		if (jwe.tag !== void 0 && typeof jwe.tag !== "string") throw new errors_js_1.JWEInvalid("JWE Authentication Tag incorrect type");
+		if (jwe.protected !== void 0 && typeof jwe.protected !== "string") throw new errors_js_1.JWEInvalid("JWE Protected Header incorrect type");
+		if (jwe.encrypted_key !== void 0 && typeof jwe.encrypted_key !== "string") throw new errors_js_1.JWEInvalid("JWE Encrypted Key incorrect type");
+		if (jwe.aad !== void 0 && typeof jwe.aad !== "string") throw new errors_js_1.JWEInvalid("JWE AAD incorrect type");
+		if (jwe.header !== void 0 && !(0, is_object_js_1.default)(jwe.header)) throw new errors_js_1.JWEInvalid("JWE Shared Unprotected Header incorrect type");
+		if (jwe.unprotected !== void 0 && !(0, is_object_js_1.default)(jwe.unprotected)) throw new errors_js_1.JWEInvalid("JWE Per-Recipient Unprotected Header incorrect type");
+		let parsedProt;
+		if (jwe.protected) try {
+			const protectedHeader = (0, base64url_js_1.decode)(jwe.protected);
+			parsedProt = JSON.parse(buffer_utils_js_1.decoder.decode(protectedHeader));
+		} catch {
+			throw new errors_js_1.JWEInvalid("JWE Protected Header is invalid");
+		}
+		if (!(0, is_disjoint_js_1.default)(parsedProt, jwe.header, jwe.unprotected)) throw new errors_js_1.JWEInvalid("JWE Protected, JWE Unprotected Header, and JWE Per-Recipient Unprotected Header Parameter names must be disjoint");
+		const joseHeader = {
+			...parsedProt,
+			...jwe.header,
+			...jwe.unprotected
+		};
+		(0, validate_crit_js_1.default)(errors_js_1.JWEInvalid, /* @__PURE__ */ new Map(), options?.crit, parsedProt, joseHeader);
+		if (joseHeader.zip !== void 0) throw new errors_js_1.JOSENotSupported("JWE \"zip\" (Compression Algorithm) Header Parameter is not supported.");
+		const { alg, enc } = joseHeader;
+		if (typeof alg !== "string" || !alg) throw new errors_js_1.JWEInvalid("missing JWE Algorithm (alg) in JWE Header");
+		if (typeof enc !== "string" || !enc) throw new errors_js_1.JWEInvalid("missing JWE Encryption Algorithm (enc) in JWE Header");
+		const keyManagementAlgorithms = options && (0, validate_algorithms_js_1.default)("keyManagementAlgorithms", options.keyManagementAlgorithms);
+		const contentEncryptionAlgorithms = options && (0, validate_algorithms_js_1.default)("contentEncryptionAlgorithms", options.contentEncryptionAlgorithms);
+		if (keyManagementAlgorithms && !keyManagementAlgorithms.has(alg) || !keyManagementAlgorithms && alg.startsWith("PBES2")) throw new errors_js_1.JOSEAlgNotAllowed("\"alg\" (Algorithm) Header Parameter value not allowed");
+		if (contentEncryptionAlgorithms && !contentEncryptionAlgorithms.has(enc)) throw new errors_js_1.JOSEAlgNotAllowed("\"enc\" (Encryption Algorithm) Header Parameter value not allowed");
+		let encryptedKey;
+		if (jwe.encrypted_key !== void 0) try {
+			encryptedKey = (0, base64url_js_1.decode)(jwe.encrypted_key);
+		} catch {
+			throw new errors_js_1.JWEInvalid("Failed to base64url decode the encrypted_key");
+		}
+		let resolvedKey = false;
+		if (typeof key === "function") {
+			key = await key(parsedProt, jwe);
+			resolvedKey = true;
+		}
+		let cek;
+		try {
+			cek = await (0, decrypt_key_management_js_1.default)(alg, key, encryptedKey, joseHeader, options);
+		} catch (err) {
+			if (err instanceof TypeError || err instanceof errors_js_1.JWEInvalid || err instanceof errors_js_1.JOSENotSupported) throw err;
+			cek = (0, cek_js_1.default)(enc);
+		}
+		let iv;
+		let tag;
+		if (jwe.iv !== void 0) try {
+			iv = (0, base64url_js_1.decode)(jwe.iv);
+		} catch {
+			throw new errors_js_1.JWEInvalid("Failed to base64url decode the iv");
+		}
+		if (jwe.tag !== void 0) try {
+			tag = (0, base64url_js_1.decode)(jwe.tag);
+		} catch {
+			throw new errors_js_1.JWEInvalid("Failed to base64url decode the tag");
+		}
+		const protectedHeader = buffer_utils_js_1.encoder.encode(jwe.protected ?? "");
+		let additionalData;
+		if (jwe.aad !== void 0) additionalData = (0, buffer_utils_js_1.concat)(protectedHeader, buffer_utils_js_1.encoder.encode("."), buffer_utils_js_1.encoder.encode(jwe.aad));
+		else additionalData = protectedHeader;
+		let ciphertext;
+		try {
+			ciphertext = (0, base64url_js_1.decode)(jwe.ciphertext);
+		} catch {
+			throw new errors_js_1.JWEInvalid("Failed to base64url decode the ciphertext");
+		}
+		const result = { plaintext: await (0, decrypt_js_1.default)(enc, cek, ciphertext, iv, tag, additionalData) };
+		if (jwe.protected !== void 0) result.protectedHeader = parsedProt;
+		if (jwe.aad !== void 0) try {
+			result.additionalAuthenticatedData = (0, base64url_js_1.decode)(jwe.aad);
+		} catch {
+			throw new errors_js_1.JWEInvalid("Failed to base64url decode the aad");
+		}
+		if (jwe.unprotected !== void 0) result.sharedUnprotectedHeader = jwe.unprotected;
+		if (jwe.header !== void 0) result.unprotectedHeader = jwe.header;
+		if (resolvedKey) return {
+			...result,
+			key
+		};
+		return result;
+	}
+}));
+// node_modules/jose/dist/node/cjs/jwe/compact/decrypt.js
+var require_decrypt$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.compactDecrypt = compactDecrypt;
+	var decrypt_js_1 = require_decrypt$3();
+	var errors_js_1 = require_errors();
+	var buffer_utils_js_1 = require_buffer_utils();
+	async function compactDecrypt(jwe, key, options) {
+		if (jwe instanceof Uint8Array) jwe = buffer_utils_js_1.decoder.decode(jwe);
+		if (typeof jwe !== "string") throw new errors_js_1.JWEInvalid("Compact JWE must be a string or Uint8Array");
+		const { 0: protectedHeader, 1: encryptedKey, 2: iv, 3: ciphertext, 4: tag, length } = jwe.split(".");
+		if (length !== 5) throw new errors_js_1.JWEInvalid("Invalid Compact JWE");
+		const decrypted = await (0, decrypt_js_1.flattenedDecrypt)({
+			ciphertext,
+			iv: iv || void 0,
+			protected: protectedHeader,
+			tag: tag || void 0,
+			encrypted_key: encryptedKey || void 0
+		}, key, options);
+		const result = {
+			plaintext: decrypted.plaintext,
+			protectedHeader: decrypted.protectedHeader
+		};
+		if (typeof key === "function") return {
+			...result,
+			key: decrypted.key
+		};
+		return result;
+	}
+}));
+// node_modules/jose/dist/node/cjs/jwe/general/decrypt.js
+var require_decrypt$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.generalDecrypt = generalDecrypt;
+	var decrypt_js_1 = require_decrypt$3();
+	var errors_js_1 = require_errors();
+	var is_object_js_1 = require_is_object();
+	async function generalDecrypt(jwe, key, options) {
+		if (!(0, is_object_js_1.default)(jwe)) throw new errors_js_1.JWEInvalid("General JWE must be an object");
+		if (!Array.isArray(jwe.recipients) || !jwe.recipients.every(is_object_js_1.default)) throw new errors_js_1.JWEInvalid("JWE Recipients missing or incorrect type");
+		if (!jwe.recipients.length) throw new errors_js_1.JWEInvalid("JWE Recipients has no members");
+		for (const recipient of jwe.recipients) try {
+			return await (0, decrypt_js_1.flattenedDecrypt)({
+				aad: jwe.aad,
+				ciphertext: jwe.ciphertext,
+				encrypted_key: recipient.encrypted_key,
+				header: recipient.header,
+				iv: jwe.iv,
+				protected: jwe.protected,
+				tag: jwe.tag,
+				unprotected: jwe.unprotected
+			}, key, options);
+		} catch {}
+		throw new errors_js_1.JWEDecryptionFailed();
+	}
+}));
+// node_modules/jose/dist/node/cjs/lib/private_symbols.js
+var require_private_symbols = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.unprotected = void 0;
+	exports.unprotected = Symbol();
+}));
+// node_modules/jose/dist/node/cjs/runtime/key_to_jwk.js
+var require_key_to_jwk = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var node_crypto_1 = __require("node:crypto");
+	var base64url_js_1 = require_base64url$1();
+	var errors_js_1 = require_errors();
+	var webcrypto_js_1 = require_webcrypto();
+	var is_key_object_js_1 = require_is_key_object();
+	var invalid_key_input_js_1 = require_invalid_key_input();
+	var is_key_like_js_1 = require_is_key_like();
+	var keyToJWK = (key) => {
+		let keyObject;
+		if ((0, webcrypto_js_1.isCryptoKey)(key)) {
+			if (!key.extractable) throw new TypeError("CryptoKey is not extractable");
+			keyObject = node_crypto_1.KeyObject.from(key);
+		} else if ((0, is_key_object_js_1.default)(key)) keyObject = key;
+		else if (key instanceof Uint8Array) return {
+			kty: "oct",
+			k: (0, base64url_js_1.encode)(key)
+		};
+		else throw new TypeError((0, invalid_key_input_js_1.default)(key, ...is_key_like_js_1.types, "Uint8Array"));
+		if (keyObject.type !== "secret" && ![
+			"rsa",
+			"ec",
+			"ed25519",
+			"x25519",
+			"ed448",
+			"x448"
+		].includes(keyObject.asymmetricKeyType)) throw new errors_js_1.JOSENotSupported("Unsupported key asymmetricKeyType");
+		return keyObject.export({ format: "jwk" });
+	};
+	exports.default = keyToJWK;
+}));
+// node_modules/jose/dist/node/cjs/key/export.js
+var require_export = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.exportSPKI = exportSPKI;
+	exports.exportPKCS8 = exportPKCS8;
+	exports.exportJWK = exportJWK;
+	var asn1_js_1 = require_asn1();
+	var asn1_js_2 = require_asn1();
+	var key_to_jwk_js_1 = require_key_to_jwk();
+	async function exportSPKI(key) {
+		return (0, asn1_js_1.toSPKI)(key);
+	}
+	async function exportPKCS8(key) {
+		return (0, asn1_js_2.toPKCS8)(key);
+	}
+	async function exportJWK(key) {
+		return (0, key_to_jwk_js_1.default)(key);
+	}
+}));
+// node_modules/jose/dist/node/cjs/lib/encrypt_key_management.js
+var require_encrypt_key_management = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var aeskw_js_1 = require_aeskw();
+	var ECDH = require_ecdhes();
+	var pbes2kw_js_1 = require_pbes2kw();
+	var rsaes_js_1 = require_rsaes();
+	var base64url_js_1 = require_base64url$1();
+	var normalize_key_js_1 = require_normalize_key();
+	var cek_js_1 = require_cek();
+	var errors_js_1 = require_errors();
+	var export_js_1 = require_export();
+	var check_key_type_js_1 = require_check_key_type();
+	var aesgcmkw_js_1 = require_aesgcmkw();
+	async function encryptKeyManagement(alg, enc, key, providedCek, providedParameters = {}) {
+		let encryptedKey;
+		let parameters;
+		let cek;
+		(0, check_key_type_js_1.default)(alg, key, "encrypt");
+		key = await normalize_key_js_1.default.normalizePublicKey?.(key, alg) || key;
+		switch (alg) {
+			case "dir":
+				cek = key;
+				break;
+			case "ECDH-ES":
+			case "ECDH-ES+A128KW":
+			case "ECDH-ES+A192KW":
+			case "ECDH-ES+A256KW": {
+				if (!ECDH.ecdhAllowed(key)) throw new errors_js_1.JOSENotSupported("ECDH with the provided key is not allowed or not supported by your javascript runtime");
+				const { apu, apv } = providedParameters;
+				let { epk: ephemeralKey } = providedParameters;
+				ephemeralKey ||= (await ECDH.generateEpk(key)).privateKey;
+				const { x, y, crv, kty } = await (0, export_js_1.exportJWK)(ephemeralKey);
+				const sharedSecret = await ECDH.deriveKey(key, ephemeralKey, alg === "ECDH-ES" ? enc : alg, alg === "ECDH-ES" ? (0, cek_js_1.bitLength)(enc) : parseInt(alg.slice(-5, -2), 10), apu, apv);
+				parameters = { epk: {
+					x,
+					crv,
+					kty
+				} };
+				if (kty === "EC") parameters.epk.y = y;
+				if (apu) parameters.apu = (0, base64url_js_1.encode)(apu);
+				if (apv) parameters.apv = (0, base64url_js_1.encode)(apv);
+				if (alg === "ECDH-ES") {
+					cek = sharedSecret;
+					break;
+				}
+				cek = providedCek || (0, cek_js_1.default)(enc);
+				const kwAlg = alg.slice(-6);
+				encryptedKey = await (0, aeskw_js_1.wrap)(kwAlg, sharedSecret, cek);
+				break;
+			}
+			case "RSA1_5":
+			case "RSA-OAEP":
+			case "RSA-OAEP-256":
+			case "RSA-OAEP-384":
+			case "RSA-OAEP-512":
+				cek = providedCek || (0, cek_js_1.default)(enc);
+				encryptedKey = await (0, rsaes_js_1.encrypt)(alg, key, cek);
+				break;
+			case "PBES2-HS256+A128KW":
+			case "PBES2-HS384+A192KW":
+			case "PBES2-HS512+A256KW": {
+				cek = providedCek || (0, cek_js_1.default)(enc);
+				const { p2c, p2s } = providedParameters;
+				({encryptedKey, ...parameters} = await (0, pbes2kw_js_1.encrypt)(alg, key, cek, p2c, p2s));
+				break;
+			}
+			case "A128KW":
+			case "A192KW":
+			case "A256KW":
+				cek = providedCek || (0, cek_js_1.default)(enc);
+				encryptedKey = await (0, aeskw_js_1.wrap)(alg, key, cek);
+				break;
+			case "A128GCMKW":
+			case "A192GCMKW":
+			case "A256GCMKW": {
+				cek = providedCek || (0, cek_js_1.default)(enc);
+				const { iv } = providedParameters;
+				({encryptedKey, ...parameters} = await (0, aesgcmkw_js_1.wrap)(alg, key, cek, iv));
+				break;
+			}
+			default: throw new errors_js_1.JOSENotSupported("Invalid or unsupported \"alg\" (JWE Algorithm) header value");
+		}
+		return {
+			cek,
+			encryptedKey,
+			parameters
+		};
+	}
+	exports.default = encryptKeyManagement;
+}));
+// node_modules/jose/dist/node/cjs/jwe/flattened/encrypt.js
+var require_encrypt$3 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.FlattenedEncrypt = void 0;
+	var base64url_js_1 = require_base64url$1();
+	var private_symbols_js_1 = require_private_symbols();
+	var encrypt_js_1 = require_encrypt$4();
+	var encrypt_key_management_js_1 = require_encrypt_key_management();
+	var errors_js_1 = require_errors();
+	var is_disjoint_js_1 = require_is_disjoint();
+	var buffer_utils_js_1 = require_buffer_utils();
+	var validate_crit_js_1 = require_validate_crit();
+	var FlattenedEncrypt = class {
+		_plaintext;
+		_protectedHeader;
+		_sharedUnprotectedHeader;
+		_unprotectedHeader;
+		_aad;
+		_cek;
+		_iv;
+		_keyManagementParameters;
+		constructor(plaintext) {
+			if (!(plaintext instanceof Uint8Array)) throw new TypeError("plaintext must be an instance of Uint8Array");
+			this._plaintext = plaintext;
+		}
+		setKeyManagementParameters(parameters) {
+			if (this._keyManagementParameters) throw new TypeError("setKeyManagementParameters can only be called once");
+			this._keyManagementParameters = parameters;
+			return this;
+		}
+		setProtectedHeader(protectedHeader) {
+			if (this._protectedHeader) throw new TypeError("setProtectedHeader can only be called once");
+			this._protectedHeader = protectedHeader;
+			return this;
+		}
+		setSharedUnprotectedHeader(sharedUnprotectedHeader) {
+			if (this._sharedUnprotectedHeader) throw new TypeError("setSharedUnprotectedHeader can only be called once");
+			this._sharedUnprotectedHeader = sharedUnprotectedHeader;
+			return this;
+		}
+		setUnprotectedHeader(unprotectedHeader) {
+			if (this._unprotectedHeader) throw new TypeError("setUnprotectedHeader can only be called once");
+			this._unprotectedHeader = unprotectedHeader;
+			return this;
+		}
+		setAdditionalAuthenticatedData(aad) {
+			this._aad = aad;
+			return this;
+		}
+		setContentEncryptionKey(cek) {
+			if (this._cek) throw new TypeError("setContentEncryptionKey can only be called once");
+			this._cek = cek;
+			return this;
+		}
+		setInitializationVector(iv) {
+			if (this._iv) throw new TypeError("setInitializationVector can only be called once");
+			this._iv = iv;
+			return this;
+		}
+		async encrypt(key, options) {
+			if (!this._protectedHeader && !this._unprotectedHeader && !this._sharedUnprotectedHeader) throw new errors_js_1.JWEInvalid("either setProtectedHeader, setUnprotectedHeader, or sharedUnprotectedHeader must be called before #encrypt()");
+			if (!(0, is_disjoint_js_1.default)(this._protectedHeader, this._unprotectedHeader, this._sharedUnprotectedHeader)) throw new errors_js_1.JWEInvalid("JWE Protected, JWE Shared Unprotected and JWE Per-Recipient Header Parameter names must be disjoint");
+			const joseHeader = {
+				...this._protectedHeader,
+				...this._unprotectedHeader,
+				...this._sharedUnprotectedHeader
+			};
+			(0, validate_crit_js_1.default)(errors_js_1.JWEInvalid, /* @__PURE__ */ new Map(), options?.crit, this._protectedHeader, joseHeader);
+			if (joseHeader.zip !== void 0) throw new errors_js_1.JOSENotSupported("JWE \"zip\" (Compression Algorithm) Header Parameter is not supported.");
+			const { alg, enc } = joseHeader;
+			if (typeof alg !== "string" || !alg) throw new errors_js_1.JWEInvalid("JWE \"alg\" (Algorithm) Header Parameter missing or invalid");
+			if (typeof enc !== "string" || !enc) throw new errors_js_1.JWEInvalid("JWE \"enc\" (Encryption Algorithm) Header Parameter missing or invalid");
+			let encryptedKey;
+			if (this._cek && (alg === "dir" || alg === "ECDH-ES")) throw new TypeError(`setContentEncryptionKey cannot be called with JWE "alg" (Algorithm) Header ${alg}`);
+			let cek;
+			{
+				let parameters;
+				({cek, encryptedKey, parameters} = await (0, encrypt_key_management_js_1.default)(alg, enc, key, this._cek, this._keyManagementParameters));
+				if (parameters) {
+					if (options && private_symbols_js_1.unprotected in options) {
+						if (!this._unprotectedHeader) this.setUnprotectedHeader(parameters);
+						else this._unprotectedHeader = {
+							...this._unprotectedHeader,
+							...parameters
+						};
+					} else if (!this._protectedHeader) this.setProtectedHeader(parameters);
+					else this._protectedHeader = {
+						...this._protectedHeader,
+						...parameters
+					};
+				}
+			}
+			let additionalData;
+			let protectedHeader;
+			let aadMember;
+			if (this._protectedHeader) protectedHeader = buffer_utils_js_1.encoder.encode((0, base64url_js_1.encode)(JSON.stringify(this._protectedHeader)));
+			else protectedHeader = buffer_utils_js_1.encoder.encode("");
+			if (this._aad) {
+				aadMember = (0, base64url_js_1.encode)(this._aad);
+				additionalData = (0, buffer_utils_js_1.concat)(protectedHeader, buffer_utils_js_1.encoder.encode("."), buffer_utils_js_1.encoder.encode(aadMember));
+			} else additionalData = protectedHeader;
+			const { ciphertext, tag, iv } = await (0, encrypt_js_1.default)(enc, this._plaintext, cek, this._iv, additionalData);
+			const jwe = { ciphertext: (0, base64url_js_1.encode)(ciphertext) };
+			if (iv) jwe.iv = (0, base64url_js_1.encode)(iv);
+			if (tag) jwe.tag = (0, base64url_js_1.encode)(tag);
+			if (encryptedKey) jwe.encrypted_key = (0, base64url_js_1.encode)(encryptedKey);
+			if (aadMember) jwe.aad = aadMember;
+			if (this._protectedHeader) jwe.protected = buffer_utils_js_1.decoder.decode(protectedHeader);
+			if (this._sharedUnprotectedHeader) jwe.unprotected = this._sharedUnprotectedHeader;
+			if (this._unprotectedHeader) jwe.header = this._unprotectedHeader;
+			return jwe;
+		}
+	};
+	exports.FlattenedEncrypt = FlattenedEncrypt;
+}));
+// node_modules/jose/dist/node/cjs/jwe/general/encrypt.js
+var require_encrypt$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.GeneralEncrypt = void 0;
+	var encrypt_js_1 = require_encrypt$3();
+	var private_symbols_js_1 = require_private_symbols();
+	var errors_js_1 = require_errors();
+	var cek_js_1 = require_cek();
+	var is_disjoint_js_1 = require_is_disjoint();
+	var encrypt_key_management_js_1 = require_encrypt_key_management();
+	var base64url_js_1 = require_base64url$1();
+	var validate_crit_js_1 = require_validate_crit();
+	var IndividualRecipient = class {
+		parent;
+		unprotectedHeader;
+		key;
+		options;
+		constructor(enc, key, options) {
+			this.parent = enc;
+			this.key = key;
+			this.options = options;
+		}
+		setUnprotectedHeader(unprotectedHeader) {
+			if (this.unprotectedHeader) throw new TypeError("setUnprotectedHeader can only be called once");
+			this.unprotectedHeader = unprotectedHeader;
+			return this;
+		}
+		addRecipient(...args) {
+			return this.parent.addRecipient(...args);
+		}
+		encrypt(...args) {
+			return this.parent.encrypt(...args);
+		}
+		done() {
+			return this.parent;
+		}
+	};
+	var GeneralEncrypt = class {
+		_plaintext;
+		_recipients = [];
+		_protectedHeader;
+		_unprotectedHeader;
+		_aad;
+		constructor(plaintext) {
+			this._plaintext = plaintext;
+		}
+		addRecipient(key, options) {
+			const recipient = new IndividualRecipient(this, key, { crit: options?.crit });
+			this._recipients.push(recipient);
+			return recipient;
+		}
+		setProtectedHeader(protectedHeader) {
+			if (this._protectedHeader) throw new TypeError("setProtectedHeader can only be called once");
+			this._protectedHeader = protectedHeader;
+			return this;
+		}
+		setSharedUnprotectedHeader(sharedUnprotectedHeader) {
+			if (this._unprotectedHeader) throw new TypeError("setSharedUnprotectedHeader can only be called once");
+			this._unprotectedHeader = sharedUnprotectedHeader;
+			return this;
+		}
+		setAdditionalAuthenticatedData(aad) {
+			this._aad = aad;
+			return this;
+		}
+		async encrypt() {
+			if (!this._recipients.length) throw new errors_js_1.JWEInvalid("at least one recipient must be added");
+			if (this._recipients.length === 1) {
+				const [recipient] = this._recipients;
+				const flattened = await new encrypt_js_1.FlattenedEncrypt(this._plaintext).setAdditionalAuthenticatedData(this._aad).setProtectedHeader(this._protectedHeader).setSharedUnprotectedHeader(this._unprotectedHeader).setUnprotectedHeader(recipient.unprotectedHeader).encrypt(recipient.key, { ...recipient.options });
+				const jwe = {
+					ciphertext: flattened.ciphertext,
+					iv: flattened.iv,
+					recipients: [{}],
+					tag: flattened.tag
+				};
+				if (flattened.aad) jwe.aad = flattened.aad;
+				if (flattened.protected) jwe.protected = flattened.protected;
+				if (flattened.unprotected) jwe.unprotected = flattened.unprotected;
+				if (flattened.encrypted_key) jwe.recipients[0].encrypted_key = flattened.encrypted_key;
+				if (flattened.header) jwe.recipients[0].header = flattened.header;
+				return jwe;
+			}
+			let enc;
+			for (let i = 0; i < this._recipients.length; i++) {
+				const recipient = this._recipients[i];
+				if (!(0, is_disjoint_js_1.default)(this._protectedHeader, this._unprotectedHeader, recipient.unprotectedHeader)) throw new errors_js_1.JWEInvalid("JWE Protected, JWE Shared Unprotected and JWE Per-Recipient Header Parameter names must be disjoint");
+				const joseHeader = {
+					...this._protectedHeader,
+					...this._unprotectedHeader,
+					...recipient.unprotectedHeader
+				};
+				const { alg } = joseHeader;
+				if (typeof alg !== "string" || !alg) throw new errors_js_1.JWEInvalid("JWE \"alg\" (Algorithm) Header Parameter missing or invalid");
+				if (alg === "dir" || alg === "ECDH-ES") throw new errors_js_1.JWEInvalid("\"dir\" and \"ECDH-ES\" alg may only be used with a single recipient");
+				if (typeof joseHeader.enc !== "string" || !joseHeader.enc) throw new errors_js_1.JWEInvalid("JWE \"enc\" (Encryption Algorithm) Header Parameter missing or invalid");
+				if (!enc) enc = joseHeader.enc;
+				else if (enc !== joseHeader.enc) throw new errors_js_1.JWEInvalid("JWE \"enc\" (Encryption Algorithm) Header Parameter must be the same for all recipients");
+				(0, validate_crit_js_1.default)(errors_js_1.JWEInvalid, /* @__PURE__ */ new Map(), recipient.options.crit, this._protectedHeader, joseHeader);
+				if (joseHeader.zip !== void 0) throw new errors_js_1.JOSENotSupported("JWE \"zip\" (Compression Algorithm) Header Parameter is not supported.");
+			}
+			const cek = (0, cek_js_1.default)(enc);
+			const jwe = {
+				ciphertext: "",
+				iv: "",
+				recipients: [],
+				tag: ""
+			};
+			for (let i = 0; i < this._recipients.length; i++) {
+				const recipient = this._recipients[i];
+				const target = {};
+				jwe.recipients.push(target);
+				const p2c = {
+					...this._protectedHeader,
+					...this._unprotectedHeader,
+					...recipient.unprotectedHeader
+				}.alg.startsWith("PBES2") ? 2048 + i : void 0;
+				if (i === 0) {
+					const flattened = await new encrypt_js_1.FlattenedEncrypt(this._plaintext).setAdditionalAuthenticatedData(this._aad).setContentEncryptionKey(cek).setProtectedHeader(this._protectedHeader).setSharedUnprotectedHeader(this._unprotectedHeader).setUnprotectedHeader(recipient.unprotectedHeader).setKeyManagementParameters({ p2c }).encrypt(recipient.key, {
+						...recipient.options,
+						[private_symbols_js_1.unprotected]: true
+					});
+					jwe.ciphertext = flattened.ciphertext;
+					jwe.iv = flattened.iv;
+					jwe.tag = flattened.tag;
+					if (flattened.aad) jwe.aad = flattened.aad;
+					if (flattened.protected) jwe.protected = flattened.protected;
+					if (flattened.unprotected) jwe.unprotected = flattened.unprotected;
+					target.encrypted_key = flattened.encrypted_key;
+					if (flattened.header) target.header = flattened.header;
+					continue;
+				}
+				const { encryptedKey, parameters } = await (0, encrypt_key_management_js_1.default)(recipient.unprotectedHeader?.alg || this._protectedHeader?.alg || this._unprotectedHeader?.alg, enc, recipient.key, cek, { p2c });
+				target.encrypted_key = (0, base64url_js_1.encode)(encryptedKey);
+				if (recipient.unprotectedHeader || parameters) target.header = {
+					...recipient.unprotectedHeader,
+					...parameters
+				};
+			}
+			return jwe;
+		}
+	};
+	exports.GeneralEncrypt = GeneralEncrypt;
+}));
+// node_modules/jose/dist/node/cjs/runtime/dsa_digest.js
+var require_dsa_digest = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = dsaDigest;
+	var errors_js_1 = require_errors();
+	function dsaDigest(alg) {
+		switch (alg) {
+			case "PS256":
+			case "RS256":
+			case "ES256":
+			case "ES256K": return "sha256";
+			case "PS384":
+			case "RS384":
+			case "ES384": return "sha384";
+			case "PS512":
+			case "RS512":
+			case "ES512": return "sha512";
+			case "Ed25519":
+			case "EdDSA": return;
+			default: throw new errors_js_1.JOSENotSupported(`alg ${alg} is not supported either by JOSE or your javascript runtime`);
+		}
+	}
+}));
+// node_modules/jose/dist/node/cjs/runtime/node_key.js
+var require_node_key = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = keyForCrypto;
+	var node_crypto_1 = __require("node:crypto");
+	var get_named_curve_js_1 = require_get_named_curve();
+	var errors_js_1 = require_errors();
+	var check_key_length_js_1 = require_check_key_length();
+	var ecCurveAlgMap = /* @__PURE__ */ new Map([
+		["ES256", "P-256"],
+		["ES256K", "secp256k1"],
+		["ES384", "P-384"],
+		["ES512", "P-521"]
+	]);
+	function keyForCrypto(alg, key) {
+		let asymmetricKeyType;
+		let asymmetricKeyDetails;
+		let isJWK;
+		if (key instanceof node_crypto_1.KeyObject) {
+			asymmetricKeyType = key.asymmetricKeyType;
+			asymmetricKeyDetails = key.asymmetricKeyDetails;
+		} else {
+			isJWK = true;
+			switch (key.kty) {
+				case "RSA":
+					asymmetricKeyType = "rsa";
+					break;
+				case "EC":
+					asymmetricKeyType = "ec";
+					break;
+				case "OKP":
+					if (key.crv === "Ed25519") {
+						asymmetricKeyType = "ed25519";
+						break;
+					}
+					if (key.crv === "Ed448") {
+						asymmetricKeyType = "ed448";
+						break;
+					}
+					throw new TypeError("Invalid key for this operation, its crv must be Ed25519 or Ed448");
+				default: throw new TypeError("Invalid key for this operation, its kty must be RSA, OKP, or EC");
+			}
+		}
+		let options;
+		switch (alg) {
+			case "Ed25519":
+				if (asymmetricKeyType !== "ed25519") throw new TypeError(`Invalid key for this operation, its asymmetricKeyType must be ed25519`);
+				break;
+			case "EdDSA":
+				if (!["ed25519", "ed448"].includes(asymmetricKeyType)) throw new TypeError("Invalid key for this operation, its asymmetricKeyType must be ed25519 or ed448");
+				break;
+			case "RS256":
+			case "RS384":
+			case "RS512":
+				if (asymmetricKeyType !== "rsa") throw new TypeError("Invalid key for this operation, its asymmetricKeyType must be rsa");
+				(0, check_key_length_js_1.default)(key, alg);
+				break;
+			case "PS256":
+			case "PS384":
+			case "PS512":
+				if (asymmetricKeyType === "rsa-pss") {
+					const { hashAlgorithm, mgf1HashAlgorithm, saltLength } = asymmetricKeyDetails;
+					const length = parseInt(alg.slice(-3), 10);
+					if (hashAlgorithm !== void 0 && (hashAlgorithm !== `sha${length}` || mgf1HashAlgorithm !== hashAlgorithm)) throw new TypeError(`Invalid key for this operation, its RSA-PSS parameters do not meet the requirements of "alg" ${alg}`);
+					if (saltLength !== void 0 && saltLength > length >> 3) throw new TypeError(`Invalid key for this operation, its RSA-PSS parameter saltLength does not meet the requirements of "alg" ${alg}`);
+				} else if (asymmetricKeyType !== "rsa") throw new TypeError("Invalid key for this operation, its asymmetricKeyType must be rsa or rsa-pss");
+				(0, check_key_length_js_1.default)(key, alg);
+				options = {
+					padding: node_crypto_1.constants.RSA_PKCS1_PSS_PADDING,
+					saltLength: node_crypto_1.constants.RSA_PSS_SALTLEN_DIGEST
+				};
+				break;
+			case "ES256":
+			case "ES256K":
+			case "ES384":
+			case "ES512": {
+				if (asymmetricKeyType !== "ec") throw new TypeError("Invalid key for this operation, its asymmetricKeyType must be ec");
+				const actual = (0, get_named_curve_js_1.default)(key);
+				const expected = ecCurveAlgMap.get(alg);
+				if (actual !== expected) throw new TypeError(`Invalid key curve for the algorithm, its curve must be ${expected}, got ${actual}`);
+				options = { dsaEncoding: "ieee-p1363" };
+				break;
+			}
+			default: throw new errors_js_1.JOSENotSupported(`alg ${alg} is not supported either by JOSE or your javascript runtime`);
+		}
+		if (isJWK) return {
+			format: "jwk",
+			key,
+			...options
+		};
+		return options ? {
+			...options,
+			key
+		} : key;
+	}
+}));
+// node_modules/jose/dist/node/cjs/runtime/hmac_digest.js
+var require_hmac_digest = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = hmacDigest;
+	var errors_js_1 = require_errors();
+	function hmacDigest(alg) {
+		switch (alg) {
+			case "HS256": return "sha256";
+			case "HS384": return "sha384";
+			case "HS512": return "sha512";
+			default: throw new errors_js_1.JOSENotSupported(`alg ${alg} is not supported either by JOSE or your javascript runtime`);
+		}
+	}
+}));
+// node_modules/jose/dist/node/cjs/runtime/get_sign_verify_key.js
+var require_get_sign_verify_key = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = getSignVerifyKey;
+	var node_crypto_1 = __require("node:crypto");
+	var webcrypto_js_1 = require_webcrypto();
+	var crypto_key_js_1 = require_crypto_key();
+	var invalid_key_input_js_1 = require_invalid_key_input();
+	var is_key_like_js_1 = require_is_key_like();
+	var jwk = require_is_jwk();
+	function getSignVerifyKey(alg, key, usage) {
+		if (key instanceof Uint8Array) {
+			if (!alg.startsWith("HS")) throw new TypeError((0, invalid_key_input_js_1.default)(key, ...is_key_like_js_1.types));
+			return (0, node_crypto_1.createSecretKey)(key);
+		}
+		if (key instanceof node_crypto_1.KeyObject) return key;
+		if ((0, webcrypto_js_1.isCryptoKey)(key)) {
+			(0, crypto_key_js_1.checkSigCryptoKey)(key, alg, usage);
+			return node_crypto_1.KeyObject.from(key);
+		}
+		if (jwk.isJWK(key)) {
+			if (alg.startsWith("HS")) return (0, node_crypto_1.createSecretKey)(Buffer.from(key.k, "base64url"));
+			return key;
+		}
+		throw new TypeError((0, invalid_key_input_js_1.default)(key, ...is_key_like_js_1.types, "Uint8Array", "JSON Web Key"));
+	}
+}));
+// node_modules/jose/dist/node/cjs/runtime/sign.js
+var require_sign$4 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var crypto = __require("node:crypto");
+	var node_util_1 = __require("node:util");
+	var dsa_digest_js_1 = require_dsa_digest();
+	var hmac_digest_js_1 = require_hmac_digest();
+	var node_key_js_1 = require_node_key();
+	var get_sign_verify_key_js_1 = require_get_sign_verify_key();
+	var oneShotSign = (0, node_util_1.promisify)(crypto.sign);
+	var sign = async (alg, key, data) => {
+		const k = (0, get_sign_verify_key_js_1.default)(alg, key, "sign");
+		if (alg.startsWith("HS")) {
+			const hmac = crypto.createHmac((0, hmac_digest_js_1.default)(alg), k);
+			hmac.update(data);
+			return hmac.digest();
+		}
+		return oneShotSign((0, dsa_digest_js_1.default)(alg), data, (0, node_key_js_1.default)(alg, k));
+	};
+	exports.default = sign;
+}));
+// node_modules/jose/dist/node/cjs/runtime/verify.js
+var require_verify$4 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var crypto = __require("node:crypto");
+	var node_util_1 = __require("node:util");
+	var dsa_digest_js_1 = require_dsa_digest();
+	var node_key_js_1 = require_node_key();
+	var sign_js_1 = require_sign$4();
+	var get_sign_verify_key_js_1 = require_get_sign_verify_key();
+	var oneShotVerify = (0, node_util_1.promisify)(crypto.verify);
+	var verify = async (alg, key, signature, data) => {
+		const k = (0, get_sign_verify_key_js_1.default)(alg, key, "verify");
+		if (alg.startsWith("HS")) {
+			const expected = await (0, sign_js_1.default)(alg, k, data);
+			const actual = signature;
+			try {
+				return crypto.timingSafeEqual(actual, expected);
+			} catch {
+				return false;
+			}
+		}
+		const algorithm = (0, dsa_digest_js_1.default)(alg);
+		const keyInput = (0, node_key_js_1.default)(alg, k);
+		try {
+			return await oneShotVerify(algorithm, data, keyInput, signature);
+		} catch {
+			return false;
+		}
+	};
+	exports.default = verify;
+}));
+// node_modules/jose/dist/node/cjs/jws/flattened/verify.js
+var require_verify$3 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.flattenedVerify = flattenedVerify;
+	var base64url_js_1 = require_base64url$1();
+	var verify_js_1 = require_verify$4();
+	var errors_js_1 = require_errors();
+	var buffer_utils_js_1 = require_buffer_utils();
+	var is_disjoint_js_1 = require_is_disjoint();
+	var is_object_js_1 = require_is_object();
+	var check_key_type_js_1 = require_check_key_type();
+	var validate_crit_js_1 = require_validate_crit();
+	var validate_algorithms_js_1 = require_validate_algorithms();
+	var is_jwk_js_1 = require_is_jwk();
+	var import_js_1 = require_import();
+	async function flattenedVerify(jws, key, options) {
+		if (!(0, is_object_js_1.default)(jws)) throw new errors_js_1.JWSInvalid("Flattened JWS must be an object");
+		if (jws.protected === void 0 && jws.header === void 0) throw new errors_js_1.JWSInvalid("Flattened JWS must have either of the \"protected\" or \"header\" members");
+		if (jws.protected !== void 0 && typeof jws.protected !== "string") throw new errors_js_1.JWSInvalid("JWS Protected Header incorrect type");
+		if (jws.payload === void 0) throw new errors_js_1.JWSInvalid("JWS Payload missing");
+		if (typeof jws.signature !== "string") throw new errors_js_1.JWSInvalid("JWS Signature missing or incorrect type");
+		if (jws.header !== void 0 && !(0, is_object_js_1.default)(jws.header)) throw new errors_js_1.JWSInvalid("JWS Unprotected Header incorrect type");
+		let parsedProt = {};
+		if (jws.protected) try {
+			const protectedHeader = (0, base64url_js_1.decode)(jws.protected);
+			parsedProt = JSON.parse(buffer_utils_js_1.decoder.decode(protectedHeader));
+		} catch {
+			throw new errors_js_1.JWSInvalid("JWS Protected Header is invalid");
+		}
+		if (!(0, is_disjoint_js_1.default)(parsedProt, jws.header)) throw new errors_js_1.JWSInvalid("JWS Protected and JWS Unprotected Header Parameter names must be disjoint");
+		const joseHeader = {
+			...parsedProt,
+			...jws.header
+		};
+		const extensions = (0, validate_crit_js_1.default)(errors_js_1.JWSInvalid, /* @__PURE__ */ new Map([["b64", true]]), options?.crit, parsedProt, joseHeader);
+		let b64 = true;
+		if (extensions.has("b64")) {
+			b64 = parsedProt.b64;
+			if (typeof b64 !== "boolean") throw new errors_js_1.JWSInvalid("The \"b64\" (base64url-encode payload) Header Parameter must be a boolean");
+		}
+		const { alg } = joseHeader;
+		if (typeof alg !== "string" || !alg) throw new errors_js_1.JWSInvalid("JWS \"alg\" (Algorithm) Header Parameter missing or invalid");
+		const algorithms = options && (0, validate_algorithms_js_1.default)("algorithms", options.algorithms);
+		if (algorithms && !algorithms.has(alg)) throw new errors_js_1.JOSEAlgNotAllowed("\"alg\" (Algorithm) Header Parameter value not allowed");
+		if (b64) {
+			if (typeof jws.payload !== "string") throw new errors_js_1.JWSInvalid("JWS Payload must be a string");
+		} else if (typeof jws.payload !== "string" && !(jws.payload instanceof Uint8Array)) throw new errors_js_1.JWSInvalid("JWS Payload must be a string or an Uint8Array instance");
+		let resolvedKey = false;
+		if (typeof key === "function") {
+			key = await key(parsedProt, jws);
+			resolvedKey = true;
+			(0, check_key_type_js_1.checkKeyTypeWithJwk)(alg, key, "verify");
+			if ((0, is_jwk_js_1.isJWK)(key)) key = await (0, import_js_1.importJWK)(key, alg);
+		} else (0, check_key_type_js_1.checkKeyTypeWithJwk)(alg, key, "verify");
+		const data = (0, buffer_utils_js_1.concat)(buffer_utils_js_1.encoder.encode(jws.protected ?? ""), buffer_utils_js_1.encoder.encode("."), typeof jws.payload === "string" ? buffer_utils_js_1.encoder.encode(jws.payload) : jws.payload);
+		let signature;
+		try {
+			signature = (0, base64url_js_1.decode)(jws.signature);
+		} catch {
+			throw new errors_js_1.JWSInvalid("Failed to base64url decode the signature");
+		}
+		if (!await (0, verify_js_1.default)(alg, key, signature, data)) throw new errors_js_1.JWSSignatureVerificationFailed();
+		let payload;
+		if (b64) try {
+			payload = (0, base64url_js_1.decode)(jws.payload);
+		} catch {
+			throw new errors_js_1.JWSInvalid("Failed to base64url decode the payload");
+		}
+		else if (typeof jws.payload === "string") payload = buffer_utils_js_1.encoder.encode(jws.payload);
+		else payload = jws.payload;
+		const result = { payload };
+		if (jws.protected !== void 0) result.protectedHeader = parsedProt;
+		if (jws.header !== void 0) result.unprotectedHeader = jws.header;
+		if (resolvedKey) return {
+			...result,
+			key
+		};
+		return result;
+	}
+}));
+// node_modules/jose/dist/node/cjs/jws/compact/verify.js
+var require_verify$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.compactVerify = compactVerify;
+	var verify_js_1 = require_verify$3();
+	var errors_js_1 = require_errors();
+	var buffer_utils_js_1 = require_buffer_utils();
+	async function compactVerify(jws, key, options) {
+		if (jws instanceof Uint8Array) jws = buffer_utils_js_1.decoder.decode(jws);
+		if (typeof jws !== "string") throw new errors_js_1.JWSInvalid("Compact JWS must be a string or Uint8Array");
+		const { 0: protectedHeader, 1: payload, 2: signature, length } = jws.split(".");
+		if (length !== 3) throw new errors_js_1.JWSInvalid("Invalid Compact JWS");
+		const verified = await (0, verify_js_1.flattenedVerify)({
+			payload,
+			protected: protectedHeader,
+			signature
+		}, key, options);
+		const result = {
+			payload: verified.payload,
+			protectedHeader: verified.protectedHeader
+		};
+		if (typeof key === "function") return {
+			...result,
+			key: verified.key
+		};
+		return result;
+	}
+}));
+// node_modules/jose/dist/node/cjs/jws/general/verify.js
+var require_verify$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.generalVerify = generalVerify;
+	var verify_js_1 = require_verify$3();
+	var errors_js_1 = require_errors();
+	var is_object_js_1 = require_is_object();
+	async function generalVerify(jws, key, options) {
+		if (!(0, is_object_js_1.default)(jws)) throw new errors_js_1.JWSInvalid("General JWS must be an object");
+		if (!Array.isArray(jws.signatures) || !jws.signatures.every(is_object_js_1.default)) throw new errors_js_1.JWSInvalid("JWS Signatures missing or incorrect type");
+		for (const signature of jws.signatures) try {
+			return await (0, verify_js_1.flattenedVerify)({
+				header: signature.header,
+				payload: jws.payload,
+				protected: signature.protected,
+				signature: signature.signature
+			}, key, options);
+		} catch {}
+		throw new errors_js_1.JWSSignatureVerificationFailed();
+	}
+}));
+// node_modules/jose/dist/node/cjs/lib/epoch.js
+var require_epoch = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = (date) => Math.floor(date.getTime() / 1e3);
+}));
+// node_modules/jose/dist/node/cjs/lib/secs.js
+var require_secs = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var minute = 60;
+	var hour = 3600;
+	var day = hour * 24;
+	var week = day * 7;
+	var year = day * 365.25;
+	var REGEX = /^(\+|\-)? ?(\d+|\d+\.\d+) ?(seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)(?: (ago|from now))?$/i;
+	exports.default = (str) => {
+		const matched = REGEX.exec(str);
+		if (!matched || matched[4] && matched[1]) throw new TypeError("Invalid time period format");
+		const value = parseFloat(matched[2]);
+		const unit = matched[3].toLowerCase();
+		let numericDate;
+		switch (unit) {
+			case "sec":
+			case "secs":
+			case "second":
+			case "seconds":
+			case "s":
+				numericDate = Math.round(value);
+				break;
+			case "minute":
+			case "minutes":
+			case "min":
+			case "mins":
+			case "m":
+				numericDate = Math.round(value * minute);
+				break;
+			case "hour":
+			case "hours":
+			case "hr":
+			case "hrs":
+			case "h":
+				numericDate = Math.round(value * hour);
+				break;
+			case "day":
+			case "days":
+			case "d":
+				numericDate = Math.round(value * day);
+				break;
+			case "week":
+			case "weeks":
+			case "w":
+				numericDate = Math.round(value * week);
+				break;
+			default: numericDate = Math.round(value * year);
+		}
+		if (matched[1] === "-" || matched[4] === "ago") return -numericDate;
+		return numericDate;
+	};
+}));
+// node_modules/jose/dist/node/cjs/lib/jwt_claims_set.js
+var require_jwt_claims_set = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var errors_js_1 = require_errors();
+	var buffer_utils_js_1 = require_buffer_utils();
+	var epoch_js_1 = require_epoch();
+	var secs_js_1 = require_secs();
+	var is_object_js_1 = require_is_object();
+	var normalizeTyp = (value) => value.toLowerCase().replace(/^application\//, "");
+	var checkAudiencePresence = (audPayload, audOption) => {
+		if (typeof audPayload === "string") return audOption.includes(audPayload);
+		if (Array.isArray(audPayload)) return audOption.some(Set.prototype.has.bind(new Set(audPayload)));
+		return false;
+	};
+	exports.default = (protectedHeader, encodedPayload, options = {}) => {
+		let payload;
+		try {
+			payload = JSON.parse(buffer_utils_js_1.decoder.decode(encodedPayload));
+		} catch {}
+		if (!(0, is_object_js_1.default)(payload)) throw new errors_js_1.JWTInvalid("JWT Claims Set must be a top-level JSON object");
+		const { typ } = options;
+		if (typ && (typeof protectedHeader.typ !== "string" || normalizeTyp(protectedHeader.typ) !== normalizeTyp(typ))) throw new errors_js_1.JWTClaimValidationFailed("unexpected \"typ\" JWT header value", payload, "typ", "check_failed");
+		const { requiredClaims = [], issuer, subject, audience, maxTokenAge } = options;
+		const presenceCheck = [...requiredClaims];
+		if (maxTokenAge !== void 0) presenceCheck.push("iat");
+		if (audience !== void 0) presenceCheck.push("aud");
+		if (subject !== void 0) presenceCheck.push("sub");
+		if (issuer !== void 0) presenceCheck.push("iss");
+		for (const claim of new Set(presenceCheck.reverse())) if (!(claim in payload)) throw new errors_js_1.JWTClaimValidationFailed(`missing required "${claim}" claim`, payload, claim, "missing");
+		if (issuer && !(Array.isArray(issuer) ? issuer : [issuer]).includes(payload.iss)) throw new errors_js_1.JWTClaimValidationFailed("unexpected \"iss\" claim value", payload, "iss", "check_failed");
+		if (subject && payload.sub !== subject) throw new errors_js_1.JWTClaimValidationFailed("unexpected \"sub\" claim value", payload, "sub", "check_failed");
+		if (audience && !checkAudiencePresence(payload.aud, typeof audience === "string" ? [audience] : audience)) throw new errors_js_1.JWTClaimValidationFailed("unexpected \"aud\" claim value", payload, "aud", "check_failed");
+		let tolerance;
+		switch (typeof options.clockTolerance) {
+			case "string":
+				tolerance = (0, secs_js_1.default)(options.clockTolerance);
+				break;
+			case "number":
+				tolerance = options.clockTolerance;
+				break;
+			case "undefined":
+				tolerance = 0;
+				break;
+			default: throw new TypeError("Invalid clockTolerance option type");
+		}
+		const { currentDate } = options;
+		const now = (0, epoch_js_1.default)(currentDate || /* @__PURE__ */ new Date());
+		if ((payload.iat !== void 0 || maxTokenAge) && typeof payload.iat !== "number") throw new errors_js_1.JWTClaimValidationFailed("\"iat\" claim must be a number", payload, "iat", "invalid");
+		if (payload.nbf !== void 0) {
+			if (typeof payload.nbf !== "number") throw new errors_js_1.JWTClaimValidationFailed("\"nbf\" claim must be a number", payload, "nbf", "invalid");
+			if (payload.nbf > now + tolerance) throw new errors_js_1.JWTClaimValidationFailed("\"nbf\" claim timestamp check failed", payload, "nbf", "check_failed");
+		}
+		if (payload.exp !== void 0) {
+			if (typeof payload.exp !== "number") throw new errors_js_1.JWTClaimValidationFailed("\"exp\" claim must be a number", payload, "exp", "invalid");
+			if (payload.exp <= now - tolerance) throw new errors_js_1.JWTExpired("\"exp\" claim timestamp check failed", payload, "exp", "check_failed");
+		}
+		if (maxTokenAge) {
+			const age = now - payload.iat;
+			const max = typeof maxTokenAge === "number" ? maxTokenAge : (0, secs_js_1.default)(maxTokenAge);
+			if (age - tolerance > max) throw new errors_js_1.JWTExpired("\"iat\" claim timestamp check failed (too far in the past)", payload, "iat", "check_failed");
+			if (age < 0 - tolerance) throw new errors_js_1.JWTClaimValidationFailed("\"iat\" claim timestamp check failed (it should be in the past)", payload, "iat", "check_failed");
+		}
+		return payload;
+	};
+}));
+// node_modules/jose/dist/node/cjs/jwt/verify.js
+var require_verify = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.jwtVerify = jwtVerify;
+	var verify_js_1 = require_verify$2();
+	var jwt_claims_set_js_1 = require_jwt_claims_set();
+	var errors_js_1 = require_errors();
+	async function jwtVerify(jwt, key, options) {
+		const verified = await (0, verify_js_1.compactVerify)(jwt, key, options);
+		if (verified.protectedHeader.crit?.includes("b64") && verified.protectedHeader.b64 === false) throw new errors_js_1.JWTInvalid("JWTs MUST NOT use unencoded payload");
+		const result = {
+			payload: (0, jwt_claims_set_js_1.default)(verified.protectedHeader, verified.payload, options),
+			protectedHeader: verified.protectedHeader
+		};
+		if (typeof key === "function") return {
+			...result,
+			key: verified.key
+		};
+		return result;
+	}
+}));
+// node_modules/jose/dist/node/cjs/jwt/decrypt.js
+var require_decrypt = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.jwtDecrypt = jwtDecrypt;
+	var decrypt_js_1 = require_decrypt$2();
+	var jwt_claims_set_js_1 = require_jwt_claims_set();
+	var errors_js_1 = require_errors();
+	async function jwtDecrypt(jwt, key, options) {
+		const decrypted = await (0, decrypt_js_1.compactDecrypt)(jwt, key, options);
+		const payload = (0, jwt_claims_set_js_1.default)(decrypted.protectedHeader, decrypted.plaintext, options);
+		const { protectedHeader } = decrypted;
+		if (protectedHeader.iss !== void 0 && protectedHeader.iss !== payload.iss) throw new errors_js_1.JWTClaimValidationFailed("replicated \"iss\" claim header parameter mismatch", payload, "iss", "mismatch");
+		if (protectedHeader.sub !== void 0 && protectedHeader.sub !== payload.sub) throw new errors_js_1.JWTClaimValidationFailed("replicated \"sub\" claim header parameter mismatch", payload, "sub", "mismatch");
+		if (protectedHeader.aud !== void 0 && JSON.stringify(protectedHeader.aud) !== JSON.stringify(payload.aud)) throw new errors_js_1.JWTClaimValidationFailed("replicated \"aud\" claim header parameter mismatch", payload, "aud", "mismatch");
+		const result = {
+			payload,
+			protectedHeader
+		};
+		if (typeof key === "function") return {
+			...result,
+			key: decrypted.key
+		};
+		return result;
+	}
+}));
+// node_modules/jose/dist/node/cjs/jwe/compact/encrypt.js
+var require_encrypt$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.CompactEncrypt = void 0;
+	var encrypt_js_1 = require_encrypt$3();
+	var CompactEncrypt = class {
+		_flattened;
+		constructor(plaintext) {
+			this._flattened = new encrypt_js_1.FlattenedEncrypt(plaintext);
+		}
+		setContentEncryptionKey(cek) {
+			this._flattened.setContentEncryptionKey(cek);
+			return this;
+		}
+		setInitializationVector(iv) {
+			this._flattened.setInitializationVector(iv);
+			return this;
+		}
+		setProtectedHeader(protectedHeader) {
+			this._flattened.setProtectedHeader(protectedHeader);
+			return this;
+		}
+		setKeyManagementParameters(parameters) {
+			this._flattened.setKeyManagementParameters(parameters);
+			return this;
+		}
+		async encrypt(key, options) {
+			const jwe = await this._flattened.encrypt(key, options);
+			return [
+				jwe.protected,
+				jwe.encrypted_key,
+				jwe.iv,
+				jwe.ciphertext,
+				jwe.tag
+			].join(".");
+		}
+	};
+	exports.CompactEncrypt = CompactEncrypt;
+}));
+// node_modules/jose/dist/node/cjs/jws/flattened/sign.js
+var require_sign$3 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.FlattenedSign = void 0;
+	var base64url_js_1 = require_base64url$1();
+	var sign_js_1 = require_sign$4();
+	var is_disjoint_js_1 = require_is_disjoint();
+	var errors_js_1 = require_errors();
+	var buffer_utils_js_1 = require_buffer_utils();
+	var check_key_type_js_1 = require_check_key_type();
+	var validate_crit_js_1 = require_validate_crit();
+	var FlattenedSign = class {
+		_payload;
+		_protectedHeader;
+		_unprotectedHeader;
+		constructor(payload) {
+			if (!(payload instanceof Uint8Array)) throw new TypeError("payload must be an instance of Uint8Array");
+			this._payload = payload;
+		}
+		setProtectedHeader(protectedHeader) {
+			if (this._protectedHeader) throw new TypeError("setProtectedHeader can only be called once");
+			this._protectedHeader = protectedHeader;
+			return this;
+		}
+		setUnprotectedHeader(unprotectedHeader) {
+			if (this._unprotectedHeader) throw new TypeError("setUnprotectedHeader can only be called once");
+			this._unprotectedHeader = unprotectedHeader;
+			return this;
+		}
+		async sign(key, options) {
+			if (!this._protectedHeader && !this._unprotectedHeader) throw new errors_js_1.JWSInvalid("either setProtectedHeader or setUnprotectedHeader must be called before #sign()");
+			if (!(0, is_disjoint_js_1.default)(this._protectedHeader, this._unprotectedHeader)) throw new errors_js_1.JWSInvalid("JWS Protected and JWS Unprotected Header Parameter names must be disjoint");
+			const joseHeader = {
+				...this._protectedHeader,
+				...this._unprotectedHeader
+			};
+			const extensions = (0, validate_crit_js_1.default)(errors_js_1.JWSInvalid, /* @__PURE__ */ new Map([["b64", true]]), options?.crit, this._protectedHeader, joseHeader);
+			let b64 = true;
+			if (extensions.has("b64")) {
+				b64 = this._protectedHeader.b64;
+				if (typeof b64 !== "boolean") throw new errors_js_1.JWSInvalid("The \"b64\" (base64url-encode payload) Header Parameter must be a boolean");
+			}
+			const { alg } = joseHeader;
+			if (typeof alg !== "string" || !alg) throw new errors_js_1.JWSInvalid("JWS \"alg\" (Algorithm) Header Parameter missing or invalid");
+			(0, check_key_type_js_1.checkKeyTypeWithJwk)(alg, key, "sign");
+			let payload = this._payload;
+			if (b64) payload = buffer_utils_js_1.encoder.encode((0, base64url_js_1.encode)(payload));
+			let protectedHeader;
+			if (this._protectedHeader) protectedHeader = buffer_utils_js_1.encoder.encode((0, base64url_js_1.encode)(JSON.stringify(this._protectedHeader)));
+			else protectedHeader = buffer_utils_js_1.encoder.encode("");
+			const data = (0, buffer_utils_js_1.concat)(protectedHeader, buffer_utils_js_1.encoder.encode("."), payload);
+			const signature = await (0, sign_js_1.default)(alg, key, data);
+			const jws = {
+				signature: (0, base64url_js_1.encode)(signature),
+				payload: ""
+			};
+			if (b64) jws.payload = buffer_utils_js_1.decoder.decode(payload);
+			if (this._unprotectedHeader) jws.header = this._unprotectedHeader;
+			if (this._protectedHeader) jws.protected = buffer_utils_js_1.decoder.decode(protectedHeader);
+			return jws;
+		}
+	};
+	exports.FlattenedSign = FlattenedSign;
+}));
+// node_modules/jose/dist/node/cjs/jws/compact/sign.js
+var require_sign$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.CompactSign = void 0;
+	var sign_js_1 = require_sign$3();
+	var CompactSign = class {
+		_flattened;
+		constructor(payload) {
+			this._flattened = new sign_js_1.FlattenedSign(payload);
+		}
+		setProtectedHeader(protectedHeader) {
+			this._flattened.setProtectedHeader(protectedHeader);
+			return this;
+		}
+		async sign(key, options) {
+			const jws = await this._flattened.sign(key, options);
+			if (jws.payload === void 0) throw new TypeError("use the flattened module for creating JWS with b64: false");
+			return `${jws.protected}.${jws.payload}.${jws.signature}`;
+		}
+	};
+	exports.CompactSign = CompactSign;
+}));
+// node_modules/jose/dist/node/cjs/jws/general/sign.js
+var require_sign$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.GeneralSign = void 0;
+	var sign_js_1 = require_sign$3();
+	var errors_js_1 = require_errors();
+	var IndividualSignature = class {
+		parent;
+		protectedHeader;
+		unprotectedHeader;
+		options;
+		key;
+		constructor(sig, key, options) {
+			this.parent = sig;
+			this.key = key;
+			this.options = options;
+		}
+		setProtectedHeader(protectedHeader) {
+			if (this.protectedHeader) throw new TypeError("setProtectedHeader can only be called once");
+			this.protectedHeader = protectedHeader;
+			return this;
+		}
+		setUnprotectedHeader(unprotectedHeader) {
+			if (this.unprotectedHeader) throw new TypeError("setUnprotectedHeader can only be called once");
+			this.unprotectedHeader = unprotectedHeader;
+			return this;
+		}
+		addSignature(...args) {
+			return this.parent.addSignature(...args);
+		}
+		sign(...args) {
+			return this.parent.sign(...args);
+		}
+		done() {
+			return this.parent;
+		}
+	};
+	var GeneralSign = class {
+		_payload;
+		_signatures = [];
+		constructor(payload) {
+			this._payload = payload;
+		}
+		addSignature(key, options) {
+			const signature = new IndividualSignature(this, key, options);
+			this._signatures.push(signature);
+			return signature;
+		}
+		async sign() {
+			if (!this._signatures.length) throw new errors_js_1.JWSInvalid("at least one signature must be added");
+			const jws = {
+				signatures: [],
+				payload: ""
+			};
+			for (let i = 0; i < this._signatures.length; i++) {
+				const signature = this._signatures[i];
+				const flattened = new sign_js_1.FlattenedSign(this._payload);
+				flattened.setProtectedHeader(signature.protectedHeader);
+				flattened.setUnprotectedHeader(signature.unprotectedHeader);
+				const { payload, ...rest } = await flattened.sign(signature.key, signature.options);
+				if (i === 0) jws.payload = payload;
+				else if (jws.payload !== payload) throw new errors_js_1.JWSInvalid("inconsistent use of JWS Unencoded Payload (RFC7797)");
+				jws.signatures.push(rest);
+			}
+			return jws;
+		}
+	};
+	exports.GeneralSign = GeneralSign;
+}));
+// node_modules/jose/dist/node/cjs/jwt/produce.js
+var require_produce = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.ProduceJWT = void 0;
+	var epoch_js_1 = require_epoch();
+	var is_object_js_1 = require_is_object();
+	var secs_js_1 = require_secs();
+	function validateInput(label, input) {
+		if (!Number.isFinite(input)) throw new TypeError(`Invalid ${label} input`);
+		return input;
+	}
+	var ProduceJWT = class {
+		_payload;
+		constructor(payload = {}) {
+			if (!(0, is_object_js_1.default)(payload)) throw new TypeError("JWT Claims Set MUST be an object");
+			this._payload = payload;
+		}
+		setIssuer(issuer) {
+			this._payload = {
+				...this._payload,
+				iss: issuer
+			};
+			return this;
+		}
+		setSubject(subject) {
+			this._payload = {
+				...this._payload,
+				sub: subject
+			};
+			return this;
+		}
+		setAudience(audience) {
+			this._payload = {
+				...this._payload,
+				aud: audience
+			};
+			return this;
+		}
+		setJti(jwtId) {
+			this._payload = {
+				...this._payload,
+				jti: jwtId
+			};
+			return this;
+		}
+		setNotBefore(input) {
+			if (typeof input === "number") this._payload = {
+				...this._payload,
+				nbf: validateInput("setNotBefore", input)
+			};
+			else if (input instanceof Date) this._payload = {
+				...this._payload,
+				nbf: validateInput("setNotBefore", (0, epoch_js_1.default)(input))
+			};
+			else this._payload = {
+				...this._payload,
+				nbf: (0, epoch_js_1.default)(/* @__PURE__ */ new Date()) + (0, secs_js_1.default)(input)
+			};
+			return this;
+		}
+		setExpirationTime(input) {
+			if (typeof input === "number") this._payload = {
+				...this._payload,
+				exp: validateInput("setExpirationTime", input)
+			};
+			else if (input instanceof Date) this._payload = {
+				...this._payload,
+				exp: validateInput("setExpirationTime", (0, epoch_js_1.default)(input))
+			};
+			else this._payload = {
+				...this._payload,
+				exp: (0, epoch_js_1.default)(/* @__PURE__ */ new Date()) + (0, secs_js_1.default)(input)
+			};
+			return this;
+		}
+		setIssuedAt(input) {
+			if (typeof input === "undefined") this._payload = {
+				...this._payload,
+				iat: (0, epoch_js_1.default)(/* @__PURE__ */ new Date())
+			};
+			else if (input instanceof Date) this._payload = {
+				...this._payload,
+				iat: validateInput("setIssuedAt", (0, epoch_js_1.default)(input))
+			};
+			else if (typeof input === "string") this._payload = {
+				...this._payload,
+				iat: validateInput("setIssuedAt", (0, epoch_js_1.default)(/* @__PURE__ */ new Date()) + (0, secs_js_1.default)(input))
+			};
+			else this._payload = {
+				...this._payload,
+				iat: validateInput("setIssuedAt", input)
+			};
+			return this;
+		}
+	};
+	exports.ProduceJWT = ProduceJWT;
+}));
+// node_modules/jose/dist/node/cjs/jwt/sign.js
+var require_sign = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.SignJWT = void 0;
+	var sign_js_1 = require_sign$2();
+	var errors_js_1 = require_errors();
+	var buffer_utils_js_1 = require_buffer_utils();
+	var produce_js_1 = require_produce();
+	var SignJWT = class extends produce_js_1.ProduceJWT {
+		_protectedHeader;
+		setProtectedHeader(protectedHeader) {
+			this._protectedHeader = protectedHeader;
+			return this;
+		}
+		async sign(key, options) {
+			const sig = new sign_js_1.CompactSign(buffer_utils_js_1.encoder.encode(JSON.stringify(this._payload)));
+			sig.setProtectedHeader(this._protectedHeader);
+			if (Array.isArray(this._protectedHeader?.crit) && this._protectedHeader.crit.includes("b64") && this._protectedHeader.b64 === false) throw new errors_js_1.JWTInvalid("JWTs MUST NOT use unencoded payload");
+			return sig.sign(key, options);
+		}
+	};
+	exports.SignJWT = SignJWT;
+}));
+// node_modules/jose/dist/node/cjs/jwt/encrypt.js
+var require_encrypt = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.EncryptJWT = void 0;
+	var encrypt_js_1 = require_encrypt$1();
+	var buffer_utils_js_1 = require_buffer_utils();
+	var produce_js_1 = require_produce();
+	var EncryptJWT = class extends produce_js_1.ProduceJWT {
+		_cek;
+		_iv;
+		_keyManagementParameters;
+		_protectedHeader;
+		_replicateIssuerAsHeader;
+		_replicateSubjectAsHeader;
+		_replicateAudienceAsHeader;
+		setProtectedHeader(protectedHeader) {
+			if (this._protectedHeader) throw new TypeError("setProtectedHeader can only be called once");
+			this._protectedHeader = protectedHeader;
+			return this;
+		}
+		setKeyManagementParameters(parameters) {
+			if (this._keyManagementParameters) throw new TypeError("setKeyManagementParameters can only be called once");
+			this._keyManagementParameters = parameters;
+			return this;
+		}
+		setContentEncryptionKey(cek) {
+			if (this._cek) throw new TypeError("setContentEncryptionKey can only be called once");
+			this._cek = cek;
+			return this;
+		}
+		setInitializationVector(iv) {
+			if (this._iv) throw new TypeError("setInitializationVector can only be called once");
+			this._iv = iv;
+			return this;
+		}
+		replicateIssuerAsHeader() {
+			this._replicateIssuerAsHeader = true;
+			return this;
+		}
+		replicateSubjectAsHeader() {
+			this._replicateSubjectAsHeader = true;
+			return this;
+		}
+		replicateAudienceAsHeader() {
+			this._replicateAudienceAsHeader = true;
+			return this;
+		}
+		async encrypt(key, options) {
+			const enc = new encrypt_js_1.CompactEncrypt(buffer_utils_js_1.encoder.encode(JSON.stringify(this._payload)));
+			if (this._replicateIssuerAsHeader) this._protectedHeader = {
+				...this._protectedHeader,
+				iss: this._payload.iss
+			};
+			if (this._replicateSubjectAsHeader) this._protectedHeader = {
+				...this._protectedHeader,
+				sub: this._payload.sub
+			};
+			if (this._replicateAudienceAsHeader) this._protectedHeader = {
+				...this._protectedHeader,
+				aud: this._payload.aud
+			};
+			enc.setProtectedHeader(this._protectedHeader);
+			if (this._iv) enc.setInitializationVector(this._iv);
+			if (this._cek) enc.setContentEncryptionKey(this._cek);
+			if (this._keyManagementParameters) enc.setKeyManagementParameters(this._keyManagementParameters);
+			return enc.encrypt(key, options);
+		}
+	};
+	exports.EncryptJWT = EncryptJWT;
+}));
+// node_modules/jose/dist/node/cjs/jwk/thumbprint.js
+var require_thumbprint = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.calculateJwkThumbprint = calculateJwkThumbprint;
+	exports.calculateJwkThumbprintUri = calculateJwkThumbprintUri;
+	var digest_js_1 = require_digest();
+	var base64url_js_1 = require_base64url$1();
+	var errors_js_1 = require_errors();
+	var buffer_utils_js_1 = require_buffer_utils();
+	var is_object_js_1 = require_is_object();
+	var check = (value, description) => {
+		if (typeof value !== "string" || !value) throw new errors_js_1.JWKInvalid(`${description} missing or invalid`);
+	};
+	async function calculateJwkThumbprint(jwk, digestAlgorithm) {
+		if (!(0, is_object_js_1.default)(jwk)) throw new TypeError("JWK must be an object");
+		digestAlgorithm ??= "sha256";
+		if (digestAlgorithm !== "sha256" && digestAlgorithm !== "sha384" && digestAlgorithm !== "sha512") throw new TypeError("digestAlgorithm must one of \"sha256\", \"sha384\", or \"sha512\"");
+		let components;
+		switch (jwk.kty) {
+			case "EC":
+				check(jwk.crv, "\"crv\" (Curve) Parameter");
+				check(jwk.x, "\"x\" (X Coordinate) Parameter");
+				check(jwk.y, "\"y\" (Y Coordinate) Parameter");
+				components = {
+					crv: jwk.crv,
+					kty: jwk.kty,
+					x: jwk.x,
+					y: jwk.y
+				};
+				break;
+			case "OKP":
+				check(jwk.crv, "\"crv\" (Subtype of Key Pair) Parameter");
+				check(jwk.x, "\"x\" (Public Key) Parameter");
+				components = {
+					crv: jwk.crv,
+					kty: jwk.kty,
+					x: jwk.x
+				};
+				break;
+			case "RSA":
+				check(jwk.e, "\"e\" (Exponent) Parameter");
+				check(jwk.n, "\"n\" (Modulus) Parameter");
+				components = {
+					e: jwk.e,
+					kty: jwk.kty,
+					n: jwk.n
+				};
+				break;
+			case "oct":
+				check(jwk.k, "\"k\" (Key Value) Parameter");
+				components = {
+					k: jwk.k,
+					kty: jwk.kty
+				};
+				break;
+			default: throw new errors_js_1.JOSENotSupported("\"kty\" (Key Type) Parameter missing or unsupported");
+		}
+		const data = buffer_utils_js_1.encoder.encode(JSON.stringify(components));
+		return (0, base64url_js_1.encode)(await (0, digest_js_1.default)(digestAlgorithm, data));
+	}
+	async function calculateJwkThumbprintUri(jwk, digestAlgorithm) {
+		digestAlgorithm ??= "sha256";
+		const thumbprint = await calculateJwkThumbprint(jwk, digestAlgorithm);
+		return `urn:ietf:params:oauth:jwk-thumbprint:sha-${digestAlgorithm.slice(-3)}:${thumbprint}`;
+	}
+}));
+// node_modules/jose/dist/node/cjs/jwk/embedded.js
+var require_embedded = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.EmbeddedJWK = EmbeddedJWK;
+	var import_js_1 = require_import();
+	var is_object_js_1 = require_is_object();
+	var errors_js_1 = require_errors();
+	async function EmbeddedJWK(protectedHeader, token) {
+		const joseHeader = {
+			...protectedHeader,
+			...token?.header
+		};
+		if (!(0, is_object_js_1.default)(joseHeader.jwk)) throw new errors_js_1.JWSInvalid("\"jwk\" (JSON Web Key) Header Parameter must be a JSON object");
+		const key = await (0, import_js_1.importJWK)({
+			...joseHeader.jwk,
+			ext: true
+		}, joseHeader.alg);
+		if (key instanceof Uint8Array || key.type !== "public") throw new errors_js_1.JWSInvalid("\"jwk\" (JSON Web Key) Header Parameter must be a public key");
+		return key;
+	}
+}));
+// node_modules/jose/dist/node/cjs/jwks/local.js
+var require_local = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.createLocalJWKSet = createLocalJWKSet;
+	var import_js_1 = require_import();
+	var errors_js_1 = require_errors();
+	var is_object_js_1 = require_is_object();
+	function getKtyFromAlg(alg) {
+		switch (typeof alg === "string" && alg.slice(0, 2)) {
+			case "RS":
+			case "PS": return "RSA";
+			case "ES": return "EC";
+			case "Ed": return "OKP";
+			default: throw new errors_js_1.JOSENotSupported("Unsupported \"alg\" value for a JSON Web Key Set");
+		}
+	}
+	function isJWKSLike(jwks) {
+		return jwks && typeof jwks === "object" && Array.isArray(jwks.keys) && jwks.keys.every(isJWKLike);
+	}
+	function isJWKLike(key) {
+		return (0, is_object_js_1.default)(key);
+	}
+	function clone(obj) {
+		if (typeof structuredClone === "function") return structuredClone(obj);
+		return JSON.parse(JSON.stringify(obj));
+	}
+	var LocalJWKSet = class {
+		_jwks;
+		_cached = /* @__PURE__ */ new WeakMap();
+		constructor(jwks) {
+			if (!isJWKSLike(jwks)) throw new errors_js_1.JWKSInvalid("JSON Web Key Set malformed");
+			this._jwks = clone(jwks);
+		}
+		async getKey(protectedHeader, token) {
+			const { alg, kid } = {
+				...protectedHeader,
+				...token?.header
+			};
+			const kty = getKtyFromAlg(alg);
+			const candidates = this._jwks.keys.filter((jwk) => {
+				let candidate = kty === jwk.kty;
+				if (candidate && typeof kid === "string") candidate = kid === jwk.kid;
+				if (candidate && typeof jwk.alg === "string") candidate = alg === jwk.alg;
+				if (candidate && typeof jwk.use === "string") candidate = jwk.use === "sig";
+				if (candidate && Array.isArray(jwk.key_ops)) candidate = jwk.key_ops.includes("verify");
+				if (candidate) switch (alg) {
+					case "ES256":
+						candidate = jwk.crv === "P-256";
+						break;
+					case "ES256K":
+						candidate = jwk.crv === "secp256k1";
+						break;
+					case "ES384":
+						candidate = jwk.crv === "P-384";
+						break;
+					case "ES512":
+						candidate = jwk.crv === "P-521";
+						break;
+					case "Ed25519":
+						candidate = jwk.crv === "Ed25519";
+						break;
+					case "EdDSA": candidate = jwk.crv === "Ed25519" || jwk.crv === "Ed448";
+				}
+				return candidate;
+			});
+			const { 0: jwk, length } = candidates;
+			if (length === 0) throw new errors_js_1.JWKSNoMatchingKey();
+			if (length !== 1) {
+				const error = new errors_js_1.JWKSMultipleMatchingKeys();
+				const { _cached } = this;
+				error[Symbol.asyncIterator] = async function* () {
+					for (const jwk of candidates) try {
+						yield await importWithAlgCache(_cached, jwk, alg);
+					} catch {}
+				};
+				throw error;
+			}
+			return importWithAlgCache(this._cached, jwk, alg);
+		}
+	};
+	async function importWithAlgCache(cache, jwk, alg) {
+		const cached = cache.get(jwk) || cache.set(jwk, {}).get(jwk);
+		if (cached[alg] === void 0) {
+			const key = await (0, import_js_1.importJWK)({
+				...jwk,
+				ext: true
+			}, alg);
+			if (key instanceof Uint8Array || key.type !== "public") throw new errors_js_1.JWKSInvalid("JSON Web Key Set members must be public keys");
+			cached[alg] = key;
+		}
+		return cached[alg];
+	}
+	function createLocalJWKSet(jwks) {
+		const set = new LocalJWKSet(jwks);
+		const localJWKSet = async (protectedHeader, token) => set.getKey(protectedHeader, token);
+		Object.defineProperties(localJWKSet, { jwks: {
+			value: () => clone(set._jwks),
+			enumerable: true,
+			configurable: false,
+			writable: false
+		} });
+		return localJWKSet;
+	}
+}));
+// node_modules/jose/dist/node/cjs/runtime/fetch_jwks.js
+var require_fetch_jwks = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	var http = __require("node:http");
+	var https = __require("node:https");
+	var node_events_1 = __require("node:events");
+	var errors_js_1 = require_errors();
+	var buffer_utils_js_1 = require_buffer_utils();
+	var fetchJwks = async (url, timeout, options) => {
+		let get;
+		switch (url.protocol) {
+			case "https:":
+				get = https.get;
+				break;
+			case "http:":
+				get = http.get;
+				break;
+			default: throw new TypeError("Unsupported URL protocol.");
+		}
+		const { agent, headers } = options;
+		const req = get(url.href, {
+			agent,
+			timeout,
+			headers
+		});
+		const [response] = await Promise.race([(0, node_events_1.once)(req, "response"), (0, node_events_1.once)(req, "timeout")]);
+		if (!response) {
+			req.destroy();
+			throw new errors_js_1.JWKSTimeout();
+		}
+		if (response.statusCode !== 200) throw new errors_js_1.JOSEError("Expected 200 OK from the JSON Web Key Set HTTP response");
+		const parts = [];
+		for await (const part of response) parts.push(part);
+		try {
+			return JSON.parse(buffer_utils_js_1.decoder.decode((0, buffer_utils_js_1.concat)(...parts)));
+		} catch {
+			throw new errors_js_1.JOSEError("Failed to parse the JSON Web Key Set HTTP response as JSON");
+		}
+	};
+	exports.default = fetchJwks;
+}));
+// node_modules/jose/dist/node/cjs/jwks/remote.js
+var require_remote = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.experimental_jwksCache = exports.jwksCache = void 0;
+	exports.createRemoteJWKSet = createRemoteJWKSet;
+	var fetch_jwks_js_1 = require_fetch_jwks();
+	var errors_js_1 = require_errors();
+	var local_js_1 = require_local();
+	var is_object_js_1 = require_is_object();
+	function isCloudflareWorkers() {
+		return typeof WebSocketPair !== "undefined" || typeof navigator !== "undefined" && navigator.userAgent === "Cloudflare-Workers" || typeof EdgeRuntime !== "undefined" && EdgeRuntime === "vercel";
+	}
+	var USER_AGENT;
+	if (typeof navigator === "undefined" || !navigator.userAgent?.startsWith?.("Mozilla/5.0 ")) USER_AGENT = `jose/v5.10.0`;
+	exports.jwksCache = Symbol();
+	function isFreshJwksCache(input, cacheMaxAge) {
+		if (typeof input !== "object" || input === null) return false;
+		if (!("uat" in input) || typeof input.uat !== "number" || Date.now() - input.uat >= cacheMaxAge) return false;
+		if (!("jwks" in input) || !(0, is_object_js_1.default)(input.jwks) || !Array.isArray(input.jwks.keys) || !Array.prototype.every.call(input.jwks.keys, is_object_js_1.default)) return false;
+		return true;
+	}
+	var RemoteJWKSet = class {
+		_url;
+		_timeoutDuration;
+		_cooldownDuration;
+		_cacheMaxAge;
+		_jwksTimestamp;
+		_pendingFetch;
+		_options;
+		_local;
+		_cache;
+		constructor(url, options) {
+			if (!(url instanceof URL)) throw new TypeError("url must be an instance of URL");
+			this._url = new URL(url.href);
+			this._options = {
+				agent: options?.agent,
+				headers: options?.headers
+			};
+			this._timeoutDuration = typeof options?.timeoutDuration === "number" ? options?.timeoutDuration : 5e3;
+			this._cooldownDuration = typeof options?.cooldownDuration === "number" ? options?.cooldownDuration : 3e4;
+			this._cacheMaxAge = typeof options?.cacheMaxAge === "number" ? options?.cacheMaxAge : 6e5;
+			if (options?.[exports.jwksCache] !== void 0) {
+				this._cache = options?.[exports.jwksCache];
+				if (isFreshJwksCache(options?.[exports.jwksCache], this._cacheMaxAge)) {
+					this._jwksTimestamp = this._cache.uat;
+					this._local = (0, local_js_1.createLocalJWKSet)(this._cache.jwks);
+				}
+			}
+		}
+		coolingDown() {
+			return typeof this._jwksTimestamp === "number" ? Date.now() < this._jwksTimestamp + this._cooldownDuration : false;
+		}
+		fresh() {
+			return typeof this._jwksTimestamp === "number" ? Date.now() < this._jwksTimestamp + this._cacheMaxAge : false;
+		}
+		async getKey(protectedHeader, token) {
+			if (!this._local || !this.fresh()) await this.reload();
+			try {
+				return await this._local(protectedHeader, token);
+			} catch (err) {
+				if (err instanceof errors_js_1.JWKSNoMatchingKey) {
+					if (this.coolingDown() === false) {
+						await this.reload();
+						return this._local(protectedHeader, token);
+					}
+				}
+				throw err;
+			}
+		}
+		async reload() {
+			if (this._pendingFetch && isCloudflareWorkers()) this._pendingFetch = void 0;
+			const headers = new Headers(this._options.headers);
+			if (USER_AGENT && !headers.has("User-Agent")) {
+				headers.set("User-Agent", USER_AGENT);
+				this._options.headers = Object.fromEntries(headers.entries());
+			}
+			this._pendingFetch ||= (0, fetch_jwks_js_1.default)(this._url, this._timeoutDuration, this._options).then((json) => {
+				this._local = (0, local_js_1.createLocalJWKSet)(json);
+				if (this._cache) {
+					this._cache.uat = Date.now();
+					this._cache.jwks = json;
+				}
+				this._jwksTimestamp = Date.now();
+				this._pendingFetch = void 0;
+			}).catch((err) => {
+				this._pendingFetch = void 0;
+				throw err;
+			});
+			await this._pendingFetch;
+		}
+	};
+	function createRemoteJWKSet(url, options) {
+		const set = new RemoteJWKSet(url, options);
+		const remoteJWKSet = async (protectedHeader, token) => set.getKey(protectedHeader, token);
+		Object.defineProperties(remoteJWKSet, {
+			coolingDown: {
+				get: () => set.coolingDown(),
+				enumerable: true,
+				configurable: false
+			},
+			fresh: {
+				get: () => set.fresh(),
+				enumerable: true,
+				configurable: false
+			},
+			reload: {
+				value: () => set.reload(),
+				enumerable: true,
+				configurable: false,
+				writable: false
+			},
+			reloading: {
+				get: () => !!set._pendingFetch,
+				enumerable: true,
+				configurable: false
+			},
+			jwks: {
+				value: () => set._local?.jwks(),
+				enumerable: true,
+				configurable: false,
+				writable: false
+			}
+		});
+		return remoteJWKSet;
+	}
+	exports.experimental_jwksCache = exports.jwksCache;
+}));
+// node_modules/jose/dist/node/cjs/jwt/unsecured.js
+var require_unsecured = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.UnsecuredJWT = void 0;
+	var base64url = require_base64url$1();
+	var buffer_utils_js_1 = require_buffer_utils();
+	var errors_js_1 = require_errors();
+	var jwt_claims_set_js_1 = require_jwt_claims_set();
+	var produce_js_1 = require_produce();
+	var UnsecuredJWT = class extends produce_js_1.ProduceJWT {
+		encode() {
+			return `${base64url.encode(JSON.stringify({ alg: "none" }))}.${base64url.encode(JSON.stringify(this._payload))}.`;
+		}
+		static decode(jwt, options) {
+			if (typeof jwt !== "string") throw new errors_js_1.JWTInvalid("Unsecured JWT must be a string");
+			const { 0: encodedHeader, 1: encodedPayload, 2: signature, length } = jwt.split(".");
+			if (length !== 3 || signature !== "") throw new errors_js_1.JWTInvalid("Invalid Unsecured JWT");
+			let header;
+			try {
+				header = JSON.parse(buffer_utils_js_1.decoder.decode(base64url.decode(encodedHeader)));
+				if (header.alg !== "none") throw new Error();
+			} catch {
+				throw new errors_js_1.JWTInvalid("Invalid Unsecured JWT");
+			}
+			return {
+				payload: (0, jwt_claims_set_js_1.default)(header, base64url.decode(encodedPayload), options),
+				header
+			};
+		}
+	};
+	exports.UnsecuredJWT = UnsecuredJWT;
+}));
+// node_modules/jose/dist/node/cjs/util/base64url.js
+var require_base64url = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.decode = exports.encode = void 0;
+	var base64url = require_base64url$1();
+	exports.encode = base64url.encode;
+	exports.decode = base64url.decode;
+}));
+// node_modules/jose/dist/node/cjs/util/decode_protected_header.js
+var require_decode_protected_header = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.decodeProtectedHeader = decodeProtectedHeader;
+	var base64url_js_1 = require_base64url();
+	var buffer_utils_js_1 = require_buffer_utils();
+	var is_object_js_1 = require_is_object();
+	function decodeProtectedHeader(token) {
+		let protectedB64u;
+		if (typeof token === "string") {
+			const parts = token.split(".");
+			if (parts.length === 3 || parts.length === 5) [protectedB64u] = parts;
+		} else if (typeof token === "object" && token) {
+			if ("protected" in token) protectedB64u = token.protected;
+			else throw new TypeError("Token does not contain a Protected Header");
+		}
+		try {
+			if (typeof protectedB64u !== "string" || !protectedB64u) throw new Error();
+			const result = JSON.parse(buffer_utils_js_1.decoder.decode((0, base64url_js_1.decode)(protectedB64u)));
+			if (!(0, is_object_js_1.default)(result)) throw new Error();
+			return result;
+		} catch {
+			throw new TypeError("Invalid Token or Protected Header formatting");
+		}
+	}
+}));
+// node_modules/jose/dist/node/cjs/util/decode_jwt.js
+var require_decode_jwt = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.decodeJwt = decodeJwt;
+	var base64url_js_1 = require_base64url();
+	var buffer_utils_js_1 = require_buffer_utils();
+	var is_object_js_1 = require_is_object();
+	var errors_js_1 = require_errors();
+	function decodeJwt(jwt) {
+		if (typeof jwt !== "string") throw new errors_js_1.JWTInvalid("JWTs must use Compact JWS serialization, JWT must be a string");
+		const { 1: payload, length } = jwt.split(".");
+		if (length === 5) throw new errors_js_1.JWTInvalid("Only JWTs using Compact JWS serialization can be decoded");
+		if (length !== 3) throw new errors_js_1.JWTInvalid("Invalid JWT");
+		if (!payload) throw new errors_js_1.JWTInvalid("JWTs must contain a payload");
+		let decoded;
+		try {
+			decoded = (0, base64url_js_1.decode)(payload);
+		} catch {
+			throw new errors_js_1.JWTInvalid("Failed to base64url decode the payload");
+		}
+		let result;
+		try {
+			result = JSON.parse(buffer_utils_js_1.decoder.decode(decoded));
+		} catch {
+			throw new errors_js_1.JWTInvalid("Failed to parse the decoded payload as JSON");
+		}
+		if (!(0, is_object_js_1.default)(result)) throw new errors_js_1.JWTInvalid("Invalid JWT Claims Set");
+		return result;
+	}
+}));
+// node_modules/jose/dist/node/cjs/runtime/generate.js
+var require_generate = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.generateSecret = generateSecret;
+	exports.generateKeyPair = generateKeyPair;
+	var node_crypto_1 = __require("node:crypto");
+	var node_util_1 = __require("node:util");
+	var random_js_1 = require_random();
+	var errors_js_1 = require_errors();
+	var generate = (0, node_util_1.promisify)(node_crypto_1.generateKeyPair);
+	async function generateSecret(alg, options) {
+		let length;
+		switch (alg) {
+			case "HS256":
+			case "HS384":
+			case "HS512":
+			case "A128CBC-HS256":
+			case "A192CBC-HS384":
+			case "A256CBC-HS512":
+				length = parseInt(alg.slice(-3), 10);
+				break;
+			case "A128KW":
+			case "A192KW":
+			case "A256KW":
+			case "A128GCMKW":
+			case "A192GCMKW":
+			case "A256GCMKW":
+			case "A128GCM":
+			case "A192GCM":
+			case "A256GCM":
+				length = parseInt(alg.slice(1, 4), 10);
+				break;
+			default: throw new errors_js_1.JOSENotSupported("Invalid or unsupported JWK \"alg\" (Algorithm) Parameter value");
+		}
+		return (0, node_crypto_1.createSecretKey)((0, random_js_1.default)(new Uint8Array(length >> 3)));
+	}
+	async function generateKeyPair(alg, options) {
+		switch (alg) {
+			case "RS256":
+			case "RS384":
+			case "RS512":
+			case "PS256":
+			case "PS384":
+			case "PS512":
+			case "RSA-OAEP":
+			case "RSA-OAEP-256":
+			case "RSA-OAEP-384":
+			case "RSA-OAEP-512":
+			case "RSA1_5": {
+				const modulusLength = options?.modulusLength ?? 2048;
+				if (typeof modulusLength !== "number" || modulusLength < 2048) throw new errors_js_1.JOSENotSupported("Invalid or unsupported modulusLength option provided, 2048 bits or larger keys must be used");
+				return await generate("rsa", {
+					modulusLength,
+					publicExponent: 65537
+				});
+			}
+			case "ES256": return generate("ec", { namedCurve: "P-256" });
+			case "ES256K": return generate("ec", { namedCurve: "secp256k1" });
+			case "ES384": return generate("ec", { namedCurve: "P-384" });
+			case "ES512": return generate("ec", { namedCurve: "P-521" });
+			case "Ed25519": return generate("ed25519");
+			case "EdDSA": switch (options?.crv) {
+				case void 0:
+				case "Ed25519": return generate("ed25519");
+				case "Ed448": return generate("ed448");
+				default: throw new errors_js_1.JOSENotSupported("Invalid or unsupported crv option provided, supported values are Ed25519 and Ed448");
+			}
+			case "ECDH-ES":
+			case "ECDH-ES+A128KW":
+			case "ECDH-ES+A192KW":
+			case "ECDH-ES+A256KW": {
+				const crv = options?.crv ?? "P-256";
+				switch (crv) {
+					case void 0:
+					case "P-256":
+					case "P-384":
+					case "P-521": return generate("ec", { namedCurve: crv });
+					case "X25519": return generate("x25519");
+					case "X448": return generate("x448");
+					default: throw new errors_js_1.JOSENotSupported("Invalid or unsupported crv option provided, supported values are P-256, P-384, P-521, X25519, and X448");
+				}
+			}
+			default: throw new errors_js_1.JOSENotSupported("Invalid or unsupported JWK \"alg\" (Algorithm) Parameter value");
+		}
+	}
+}));
+// node_modules/jose/dist/node/cjs/key/generate_key_pair.js
+var require_generate_key_pair = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.generateKeyPair = generateKeyPair;
+	var generate_js_1 = require_generate();
+	async function generateKeyPair(alg, options) {
+		return (0, generate_js_1.generateKeyPair)(alg, options);
+	}
+}));
+// node_modules/jose/dist/node/cjs/key/generate_secret.js
+var require_generate_secret = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.generateSecret = generateSecret;
+	var generate_js_1 = require_generate();
+	async function generateSecret(alg, options) {
+		return (0, generate_js_1.generateSecret)(alg, options);
+	}
+}));
+// node_modules/jose/dist/node/cjs/runtime/runtime.js
+var require_runtime$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = "node:crypto";
+}));
+// node_modules/jose/dist/node/cjs/util/runtime.js
+var require_runtime = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = require_runtime$1().default;
+}));
+// node_modules/jose/dist/node/cjs/index.js
+var require_cjs = /* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.cryptoRuntime = exports.base64url = exports.generateSecret = exports.generateKeyPair = exports.errors = exports.decodeJwt = exports.decodeProtectedHeader = exports.importJWK = exports.importX509 = exports.importPKCS8 = exports.importSPKI = exports.exportJWK = exports.exportSPKI = exports.exportPKCS8 = exports.UnsecuredJWT = exports.experimental_jwksCache = exports.jwksCache = exports.createRemoteJWKSet = exports.createLocalJWKSet = exports.EmbeddedJWK = exports.calculateJwkThumbprintUri = exports.calculateJwkThumbprint = exports.EncryptJWT = exports.SignJWT = exports.GeneralSign = exports.FlattenedSign = exports.CompactSign = exports.FlattenedEncrypt = exports.CompactEncrypt = exports.jwtDecrypt = exports.jwtVerify = exports.generalVerify = exports.flattenedVerify = exports.compactVerify = exports.GeneralEncrypt = exports.generalDecrypt = exports.flattenedDecrypt = exports.compactDecrypt = void 0;
+	var decrypt_js_1 = require_decrypt$2();
+	Object.defineProperty(exports, "compactDecrypt", {
+		enumerable: true,
+		get: function() {
+			return decrypt_js_1.compactDecrypt;
+		}
+	});
+	var decrypt_js_2 = require_decrypt$3();
+	Object.defineProperty(exports, "flattenedDecrypt", {
+		enumerable: true,
+		get: function() {
+			return decrypt_js_2.flattenedDecrypt;
+		}
+	});
+	var decrypt_js_3 = require_decrypt$1();
+	Object.defineProperty(exports, "generalDecrypt", {
+		enumerable: true,
+		get: function() {
+			return decrypt_js_3.generalDecrypt;
+		}
+	});
+	var encrypt_js_1 = require_encrypt$2();
+	Object.defineProperty(exports, "GeneralEncrypt", {
+		enumerable: true,
+		get: function() {
+			return encrypt_js_1.GeneralEncrypt;
+		}
+	});
+	var verify_js_1 = require_verify$2();
+	Object.defineProperty(exports, "compactVerify", {
+		enumerable: true,
+		get: function() {
+			return verify_js_1.compactVerify;
+		}
+	});
+	var verify_js_2 = require_verify$3();
+	Object.defineProperty(exports, "flattenedVerify", {
+		enumerable: true,
+		get: function() {
+			return verify_js_2.flattenedVerify;
+		}
+	});
+	var verify_js_3 = require_verify$1();
+	Object.defineProperty(exports, "generalVerify", {
+		enumerable: true,
+		get: function() {
+			return verify_js_3.generalVerify;
+		}
+	});
+	var verify_js_4 = require_verify();
+	Object.defineProperty(exports, "jwtVerify", {
+		enumerable: true,
+		get: function() {
+			return verify_js_4.jwtVerify;
+		}
+	});
+	var decrypt_js_4 = require_decrypt();
+	Object.defineProperty(exports, "jwtDecrypt", {
+		enumerable: true,
+		get: function() {
+			return decrypt_js_4.jwtDecrypt;
+		}
+	});
+	var encrypt_js_2 = require_encrypt$1();
+	Object.defineProperty(exports, "CompactEncrypt", {
+		enumerable: true,
+		get: function() {
+			return encrypt_js_2.CompactEncrypt;
+		}
+	});
+	var encrypt_js_3 = require_encrypt$3();
+	Object.defineProperty(exports, "FlattenedEncrypt", {
+		enumerable: true,
+		get: function() {
+			return encrypt_js_3.FlattenedEncrypt;
+		}
+	});
+	var sign_js_1 = require_sign$2();
+	Object.defineProperty(exports, "CompactSign", {
+		enumerable: true,
+		get: function() {
+			return sign_js_1.CompactSign;
+		}
+	});
+	var sign_js_2 = require_sign$3();
+	Object.defineProperty(exports, "FlattenedSign", {
+		enumerable: true,
+		get: function() {
+			return sign_js_2.FlattenedSign;
+		}
+	});
+	var sign_js_3 = require_sign$1();
+	Object.defineProperty(exports, "GeneralSign", {
+		enumerable: true,
+		get: function() {
+			return sign_js_3.GeneralSign;
+		}
+	});
+	var sign_js_4 = require_sign();
+	Object.defineProperty(exports, "SignJWT", {
+		enumerable: true,
+		get: function() {
+			return sign_js_4.SignJWT;
+		}
+	});
+	var encrypt_js_4 = require_encrypt();
+	Object.defineProperty(exports, "EncryptJWT", {
+		enumerable: true,
+		get: function() {
+			return encrypt_js_4.EncryptJWT;
+		}
+	});
+	var thumbprint_js_1 = require_thumbprint();
+	Object.defineProperty(exports, "calculateJwkThumbprint", {
+		enumerable: true,
+		get: function() {
+			return thumbprint_js_1.calculateJwkThumbprint;
+		}
+	});
+	Object.defineProperty(exports, "calculateJwkThumbprintUri", {
+		enumerable: true,
+		get: function() {
+			return thumbprint_js_1.calculateJwkThumbprintUri;
+		}
+	});
+	var embedded_js_1 = require_embedded();
+	Object.defineProperty(exports, "EmbeddedJWK", {
+		enumerable: true,
+		get: function() {
+			return embedded_js_1.EmbeddedJWK;
+		}
+	});
+	var local_js_1 = require_local();
+	Object.defineProperty(exports, "createLocalJWKSet", {
+		enumerable: true,
+		get: function() {
+			return local_js_1.createLocalJWKSet;
+		}
+	});
+	var remote_js_1 = require_remote();
+	Object.defineProperty(exports, "createRemoteJWKSet", {
+		enumerable: true,
+		get: function() {
+			return remote_js_1.createRemoteJWKSet;
+		}
+	});
+	Object.defineProperty(exports, "jwksCache", {
+		enumerable: true,
+		get: function() {
+			return remote_js_1.jwksCache;
+		}
+	});
+	Object.defineProperty(exports, "experimental_jwksCache", {
+		enumerable: true,
+		get: function() {
+			return remote_js_1.experimental_jwksCache;
+		}
+	});
+	var unsecured_js_1 = require_unsecured();
+	Object.defineProperty(exports, "UnsecuredJWT", {
+		enumerable: true,
+		get: function() {
+			return unsecured_js_1.UnsecuredJWT;
+		}
+	});
+	var export_js_1 = require_export();
+	Object.defineProperty(exports, "exportPKCS8", {
+		enumerable: true,
+		get: function() {
+			return export_js_1.exportPKCS8;
+		}
+	});
+	Object.defineProperty(exports, "exportSPKI", {
+		enumerable: true,
+		get: function() {
+			return export_js_1.exportSPKI;
+		}
+	});
+	Object.defineProperty(exports, "exportJWK", {
+		enumerable: true,
+		get: function() {
+			return export_js_1.exportJWK;
+		}
+	});
+	var import_js_1 = require_import();
+	Object.defineProperty(exports, "importSPKI", {
+		enumerable: true,
+		get: function() {
+			return import_js_1.importSPKI;
+		}
+	});
+	Object.defineProperty(exports, "importPKCS8", {
+		enumerable: true,
+		get: function() {
+			return import_js_1.importPKCS8;
+		}
+	});
+	Object.defineProperty(exports, "importX509", {
+		enumerable: true,
+		get: function() {
+			return import_js_1.importX509;
+		}
+	});
+	Object.defineProperty(exports, "importJWK", {
+		enumerable: true,
+		get: function() {
+			return import_js_1.importJWK;
+		}
+	});
+	var decode_protected_header_js_1 = require_decode_protected_header();
+	Object.defineProperty(exports, "decodeProtectedHeader", {
+		enumerable: true,
+		get: function() {
+			return decode_protected_header_js_1.decodeProtectedHeader;
+		}
+	});
+	var decode_jwt_js_1 = require_decode_jwt();
+	Object.defineProperty(exports, "decodeJwt", {
+		enumerable: true,
+		get: function() {
+			return decode_jwt_js_1.decodeJwt;
+		}
+	});
+	exports.errors = require_errors();
+	var generate_key_pair_js_1 = require_generate_key_pair();
+	Object.defineProperty(exports, "generateKeyPair", {
+		enumerable: true,
+		get: function() {
+			return generate_key_pair_js_1.generateKeyPair;
+		}
+	});
+	var generate_secret_js_1 = require_generate_secret();
+	Object.defineProperty(exports, "generateSecret", {
+		enumerable: true,
+		get: function() {
+			return generate_secret_js_1.generateSecret;
+		}
+	});
+	exports.base64url = require_base64url();
+	var runtime_js_1 = require_runtime();
+	Object.defineProperty(exports, "cryptoRuntime", {
+		enumerable: true,
+		get: function() {
+			return runtime_js_1.default;
+		}
+	});
+}));
+// node_modules/@vercel/oidc/dist/verify-vercel-oidc-token.js
+var require_verify_vercel_oidc_token = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var verify_vercel_oidc_token_exports = {};
+	__export(verify_vercel_oidc_token_exports, { verifyVercelOidcToken: () => verifyVercelOidcToken });
+	module.exports = __toCommonJS(verify_vercel_oidc_token_exports);
+	var import_jose = require_cjs();
+	var VERCEL_OIDC_ISSUER = "https://oidc.vercel.com";
+	var VERCEL_OIDC_JWKS_URL = new URL("https://oidc.vercel.com/.well-known/jwks");
+	var DEFAULT_ALGORITHMS = ["RS256"];
+	var VERCEL_OIDC_JWKS = (0, import_jose.createRemoteJWKSet)(VERCEL_OIDC_JWKS_URL);
+	var VercelOidcTokenValidationError = class extends TypeError {
+		constructor(message) {
+			super(message);
+			this.code = "ERR_VERCEL_OIDC_TOKEN_VALIDATION";
+			this.name = "VercelOidcTokenValidationError";
+		}
+	};
+	async function verifyVercelOidcToken(token, options) {
+		const { algorithms, projectId = process.env.VERCEL_PROJECT_ID, environment = process.env.VERCEL_TARGET_ENV || process.env.VERCEL_ENV, ownerId, ...verifyOptions } = options ?? {};
+		if (projectId === "*" && ownerId === void 0 && !hasAudienceVerification(verifyOptions.audience)) throw new TypeError("Expected ownerId or audience to be provided when projectId is '*'.");
+		const result = await (0, import_jose.jwtVerify)(token, VERCEL_OIDC_JWKS, {
+			...verifyOptions,
+			algorithms: algorithms ?? DEFAULT_ALGORITHMS
+		});
+		validateIssuer(result.payload.iss);
+		validateClaim({
+			actual: result.payload.project_id,
+			claim: "project_id",
+			env: "VERCEL_PROJECT_ID",
+			expected: projectId,
+			option: "projectId"
+		});
+		validateClaim({
+			actual: result.payload.environment,
+			claim: "environment",
+			env: "VERCEL_TARGET_ENV or VERCEL_ENV",
+			expected: environment,
+			option: "environment"
+		});
+		validateOptionalClaim({
+			actual: result.payload.owner_id,
+			claim: "owner_id",
+			expected: ownerId
+		});
+		return result;
+	}
+	function hasAudienceVerification(audience) {
+		return Array.isArray(audience) ? audience.length > 0 : audience !== void 0;
+	}
+	function validateIssuer(actual) {
+		if (actual !== VERCEL_OIDC_ISSUER && (typeof actual !== "string" || !actual.startsWith(`${VERCEL_OIDC_ISSUER}/`))) throw new VercelOidcTokenValidationError(`Expected Vercel OIDC token iss claim to be "${VERCEL_OIDC_ISSUER}" or to start with "${VERCEL_OIDC_ISSUER}/".`);
+	}
+	function validateClaim({ actual, claim, env, expected, option }) {
+		if (expected === "*") return;
+		if (expected === void 0 || expected.length === 0) throw new TypeError(`Expected ${env} to be set or ${option} to be provided. Pass ${option}: '*' to allow any ${claim} claim.`);
+		if (Array.isArray(expected) && typeof actual === "string" && expected.includes(actual)) return;
+		if (actual !== expected) throw new VercelOidcTokenValidationError(Array.isArray(expected) ? `Expected Vercel OIDC token ${claim} claim to be one of: ${expected.map((value) => `"${value}"`).join(", ")}.` : `Expected Vercel OIDC token ${claim} claim to be "${expected}".`);
+	}
+	function validateOptionalClaim({ actual, claim, expected }) {
+		if (expected === void 0) return;
+		if (actual !== expected) throw new VercelOidcTokenValidationError(`Expected Vercel OIDC token ${claim} claim to be "${expected}".`);
+	}
+	0 && (module.exports = { verifyVercelOidcToken });
+}));
+// node_modules/@vercel/oidc/dist/index.js
+var require_dist = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var src_exports = {};
+	__export(src_exports, {
+		AccessTokenMissingError: () => import_auth_errors.AccessTokenMissingError,
+		RefreshAccessTokenFailedError: () => import_auth_errors.RefreshAccessTokenFailedError,
+		exchangeVercelOidcToken: () => import_exchange_vercel_oidc_token.exchangeVercelOidcToken,
+		getContext: () => import_get_context.getContext,
+		getVercelOidcToken: () => import_get_vercel_oidc_token_with_refresh.getVercelOidcToken,
+		getVercelOidcTokenSync: () => import_get_vercel_oidc_token_sync.getVercelOidcTokenSync,
+		getVercelToken: () => import_token_util.getVercelToken,
+		verifyVercelOidcToken: () => import_verify_vercel_oidc_token.verifyVercelOidcToken
+	});
+	module.exports = __toCommonJS(src_exports);
+	var import_get_vercel_oidc_token_with_refresh = require_get_vercel_oidc_token_with_refresh();
+	var import_get_vercel_oidc_token_sync = require_get_vercel_oidc_token_sync();
+	var import_get_context = require_get_context();
+	var import_verify_vercel_oidc_token = require_verify_vercel_oidc_token();
+	var import_auth_errors = require_auth_errors();
+	var import_exchange_vercel_oidc_token = require_exchange_vercel_oidc_token();
+	var import_token_util = require_token_util();
+	0 && (module.exports = {
+		AccessTokenMissingError,
+		RefreshAccessTokenFailedError,
+		exchangeVercelOidcToken,
+		getContext,
+		getVercelOidcToken,
+		getVercelOidcTokenSync,
+		getVercelToken,
+		verifyVercelOidcToken
+	});
+}));
+// node_modules/@vercel/functions/affinity.js
+var require_affinity = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var affinity_exports = {};
+	__export(affinity_exports, {
+		unstable_getAffinityHeaders: () => unstable_getAffinityHeaders,
+		unstable_getAffinityId: () => unstable_getAffinityId
+	});
+	module.exports = __toCommonJS(affinity_exports);
+	var import_oidc = require_dist();
+	var import_get_context = require_get_context$1();
+	var AFFINITY_ID_HEADER = "x-vercel-affinity-id";
+	function unstable_getAffinityId() {
+		return (0, import_get_context.getContext)().headers?.[AFFINITY_ID_HEADER];
+	}
+	async function unstable_getAffinityHeaders(options) {
+		const { affinityId, oidc } = options;
+		if (typeof affinityId !== "string" || affinityId.length === 0 || affinityId.length > 256 || /[^\x21-\x7e]/.test(affinityId)) throw new TypeError("affinityId must contain 1 to 256 visible ASCII characters, without spaces");
+		const headers = { [AFFINITY_ID_HEADER]: affinityId };
+		if (oidc === true) headers["x-vercel-trusted-oidc-idp-token"] = await (0, import_oidc.getVercelOidcToken)();
+		return headers;
+	}
+	0 && (module.exports = {
+		unstable_getAffinityHeaders,
+		unstable_getAffinityId
+	});
+}));
+// src/server/store.ts
+var import_functions = (/* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __export = (target, all) => {
+		for (var name in all) __defProp(target, name, {
+			get: all[name],
+			enumerable: true
+		});
+	};
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") {
+			for (let key of __getOwnPropNames(from)) if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: () => from[key],
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+	var src_exports = {};
+	__export(src_exports, {
+		addCacheTag: () => import_addcachetag.addCacheTag,
+		attachDatabasePool: () => import_db_connections.attachDatabasePool,
+		dangerouslyDeleteBySrcImage: () => import_purge.dangerouslyDeleteBySrcImage,
+		dangerouslyDeleteByTag: () => import_purge.dangerouslyDeleteByTag,
+		experimental_attachDatabasePool: () => import_db_connections.experimental_attachDatabasePool,
+		experimental_upgradeWebSocket: () => import_websocket.experimental_upgradeWebSocket,
+		geolocation: () => import_headers.geolocation,
+		getCache: () => import_cache.getCache,
+		getDeadline: () => import_deadline.getDeadline,
+		getEnv: () => import_get_env.getEnv,
+		invalidateBySrcImage: () => import_purge.invalidateBySrcImage,
+		invalidateByTag: () => import_purge.invalidateByTag,
+		ipAddress: () => import_headers.ipAddress,
+		metric: () => import_metric.metric,
+		next: () => import_middleware.next,
+		rewrite: () => import_middleware.rewrite,
+		unstable_getAffinityHeaders: () => import_affinity.unstable_getAffinityHeaders,
+		unstable_getAffinityId: () => import_affinity.unstable_getAffinityId,
+		upgradeWebSocket: () => import_websocket.upgradeWebSocket,
+		waitUntil: () => import_wait_until.waitUntil
+	});
+	module.exports = __toCommonJS(src_exports);
+	var import_headers = require_headers();
+	var import_get_env = require_get_env();
+	var import_deadline = require_deadline();
+	var import_wait_until = require_wait_until();
+	var import_metric = require_metric();
+	var import_middleware = require_middleware();
+	var import_cache = require_cache();
+	var import_db_connections = require_db_connections();
+	var import_purge = require_purge();
+	var import_addcachetag = require_addcachetag();
+	var import_websocket = require_websocket();
+	var import_affinity = require_affinity();
+	0 && (module.exports = {
+		addCacheTag,
+		attachDatabasePool,
+		dangerouslyDeleteBySrcImage,
+		dangerouslyDeleteByTag,
+		experimental_attachDatabasePool,
+		experimental_upgradeWebSocket,
+		geolocation,
+		getCache,
+		getDeadline,
+		getEnv,
+		invalidateBySrcImage,
+		invalidateByTag,
+		ipAddress,
+		metric,
+		next,
+		rewrite,
+		unstable_getAffinityHeaders,
+		unstable_getAffinityId,
+		upgradeWebSocket,
+		waitUntil
+	});
+})))();
+var local = /* @__PURE__ */ new Map();
+var memory = {
+	kind: "memory",
+	async get(key) {
+		const hit = local.get(key);
+		if (!hit) return void 0;
+		if (hit.until < Date.now()) {
+			local.delete(key);
+			return;
+		}
+		return hit.value;
+	},
+	async set(key, value, ttlSec) {
+		local.set(key, {
+			value: JSON.parse(JSON.stringify(value)),
+			until: Date.now() + ttlSec * 1e3
+		});
+	},
+	async delete(key) {
+		local.delete(key);
+	}
+};
+/** True when this request runs where Vercel provides its shared cache. */
+function sharedCacheAvailable() {
+	return !!globalThis[Symbol.for("@vercel/request-context")]?.get?.()?.cache;
+}
+/** The store to use for the request being handled right now. */
+function storeForRequest() {
+	if (!sharedCacheAvailable()) return memory;
+	const cache = (0, import_functions.getCache)({ namespace: "mlbb-guru" });
+	return {
+		kind: "shared",
+		async get(key) {
+			return await cache.get(key) ?? void 0;
+		},
+		async set(key, value, ttlSec) {
+			await cache.set(key, value, { ttl: ttlSec });
+		},
+		async delete(key) {
+			await cache.delete(key);
+		}
+	};
+}
 // src/server/coachApi.ts
 /**
-* Screenshot-in, advice-out endpoint for the iPad Shortcut (deployed as a
-* Vercel Function at /api/coach). It holds no secret: the caller sends their own
-* vision API key with each request, so a public URL costs the owner nothing.
+* Screenshot-in, advice-out endpoint for the Shortcut on the device that plays
+* (deployed as a Vercel Function at /api/coach). It holds no secret: the caller
+* sends their own model API key with each request, so a public URL costs the
+* owner nothing.
 *
-* Match memory lives in this instance's memory only. A scoreboard screenshot is
-* self-contained (both teams, items, gold, clock), so losing memory just means
-* the next shop read asks for the scoreboard once.
+* One request does up to three things: a reader model transcribes the screenshot,
+* the rule engine works out the numbers (gold spent, what is owned, who is fed),
+* and a coach model decides the build order and the calls for the next minutes.
+* The room — the match as understood so far — is kept in a store every copy of
+* this function shares (see store.ts), and the dashboard polls it.
 */
 var MAX_BYTES = 4e6;
-var ROOM_TTL_MS = 108e5;
+var ROOM_TTL_SEC = 10800;
 var DEFAULT_MODEL = {
 	gemini: "gemini-3.8-flash",
 	claude: "claude-opus-5-5"
 };
+/** Two screenshots this close together on the match clock show the same moment: the coach is not asked twice. */
+var COACH_GAP_SEC = 20;
+/** How long the first positioning picture waits for the second. */
+var POSITION_WAIT_MS = 12e4;
 /**
-* One line per event in the host's own logs. The room's memory is wiped whenever
-* this server sleeps or is redeployed; these lines outlive that (about an hour on
-* the free plan), so a match can still be examined afterwards. No key and no
-* picture is ever written — only what was understood.
+* One line per event in the host's own logs (kept about an hour on the free
+* plan), so a match can be examined afterwards. No key and no picture is ever
+* written — only what was understood.
 */
 function record(event) {
 	try {
@@ -83130,28 +97045,50 @@ var rowsFor = (players) => players.map((p) => ({
 	gold: p.gold,
 	items: p.items
 }));
-var blankRoom = (now) => ({
+var blankRoom = () => ({
 	session: EMPTY_SESSION,
-	called: /* @__PURE__ */ new Set(),
+	called: [],
 	matchId: 0,
 	at: 0,
-	seen: now,
 	version: 0,
 	reads: []
 });
-/** Apply a change to the room as it is *now*. Reads take seconds; never write back a stale copy. */
-function update(roomId, now, change) {
-	const current = rooms.get(roomId) ?? blankRoom(now);
-	const next = {
-		...current,
-		...change(current),
-		seen: Date.now()
-	};
-	rooms.set(roomId, next);
-	return next;
+async function loadRoom(store, roomId) {
+	const value = await store.get(`room:${roomId}`);
+	return value && typeof value === "object" ? value : void 0;
 }
-var rooms = /* @__PURE__ */ new Map();
-var demo = demoVision();
+/** Changes to one room are applied one after another within this copy of the function. */
+var queues = /* @__PURE__ */ new Map();
+/**
+* Apply a change to the room as it is *now*. A read takes seconds; whatever the
+* dashboard did meanwhile must survive, so never write back a copy taken earlier.
+*/
+function update(store, roomId, change) {
+	const job = async () => {
+		const current = await loadRoom(store, roomId) ?? blankRoom();
+		const next = {
+			...current,
+			...change(current),
+			version: current.version + 1
+		};
+		await store.set(`room:${roomId}`, next, ROOM_TTL_SEC);
+		await store.set(`v:${roomId}`, next.version, ROOM_TTL_SEC);
+		return next;
+	};
+	const tail = (queues.get(roomId) ?? Promise.resolve()).catch(() => void 0).then(job);
+	queues.set(roomId, tail);
+	tail.catch(() => void 0).finally(() => {
+		if (queues.get(roomId) === tail) queues.delete(roomId);
+	});
+	return tail;
+}
+/** The scripted demo reader walks through a match; each room gets its own walk. */
+var demos = /* @__PURE__ */ new Map();
+var demoFor = (roomId) => {
+	let reader = demos.get(roomId);
+	if (!reader) demos.set(roomId, reader = demoVision());
+	return reader;
+};
 var json = (status, body) => new Response(JSON.stringify(body), {
 	status,
 	headers: {
@@ -83185,16 +97122,82 @@ async function readImage(request) {
 	}
 	return new Uint8Array(await request.arrayBuffer());
 }
-function pickVision(request) {
+/** Which provider and key the caller sent. The key is used for this request only and never stored or logged. */
+function caller(request) {
 	const key = (request.headers.get("x-vision-key") ?? "").trim();
-	const provider = (request.headers.get("x-vision-provider") ?? "").trim().toLowerCase() || (key.startsWith("sk-ant") ? "claude" : key ? "gemini" : "");
-	const model = (request.headers.get("x-vision-model") ?? "").trim();
-	if (provider === "demo") return demo;
-	if (provider === "claude") return claudeVision(key, model || DEFAULT_MODEL.claude);
-	if (provider === "gemini") return geminiVision(key, model || DEFAULT_MODEL.gemini);
+	return {
+		key,
+		provider: (request.headers.get("x-vision-provider") ?? "").trim().toLowerCase() || (key.startsWith("sk-ant") ? "claude" : key ? "gemini" : ""),
+		readerModel: (request.headers.get("x-vision-model") ?? "").trim(),
+		coachModel: (request.headers.get("x-coach-model") ?? "").trim(),
+		coachOff: /^(off|no|0|false)$/i.test((request.headers.get("x-coach") ?? "").trim())
+	};
+}
+function pickVision(request, roomId) {
+	const { key, provider, readerModel } = caller(request);
+	if (provider === "demo") return {
+		vision: demoFor(roomId),
+		asked: "demo"
+	};
+	if (provider === "claude") return {
+		vision: claudeVision(key, readerModel || DEFAULT_MODEL.claude),
+		asked: readerModel || DEFAULT_MODEL.claude
+	};
+	if (provider === "gemini") return {
+		vision: geminiVision(key, readerModel || DEFAULT_MODEL.gemini),
+		asked: readerModel || DEFAULT_MODEL.gemini
+	};
 	throw new VisionError("Add your API key to the shortcut as the x-vision-key header.", "config");
 }
+/** The model that decides (build order, calls, positioning). Defaults to the strongest model for the caller's key. */
+function pickCoach(request, session) {
+	const { key, provider, readerModel, coachModel, coachOff } = caller(request);
+	if (coachOff) return void 0;
+	if (provider === "demo") return {
+		asked: "demo",
+		ask: async ({ schema }) => ({
+			raw: schema === POSITION_SCHEMA ? demoPosition() : demoCoach(session()),
+			model: "demo"
+		})
+	};
+	if (provider === "claude") return {
+		ask: claudeAsk(key, coachModel || DEFAULT_MODEL.claude),
+		asked: coachModel || DEFAULT_MODEL.claude
+	};
+	if (provider === "gemini") return {
+		ask: geminiAsk(key, coachModel || readerModel || DEFAULT_MODEL.gemini),
+		asked: coachModel || readerModel || DEFAULT_MODEL.gemini
+	};
+}
+/** Words a voice command may use for each stage. */
+var STAGE_WORDS = {
+	draft: "draft",
+	pick: "draft",
+	picks: "draft",
+	selection: "draft",
+	loading: "loading",
+	enter: "loading",
+	entering: "loading",
+	live: "live",
+	start: "live",
+	started: "live",
+	on: "live",
+	match: "live",
+	done: "done",
+	over: "done",
+	off: "done",
+	stop: "done",
+	end: "done",
+	pause: "done"
+};
+var STAGE_SAY = {
+	draft: "Hero selection. Show me the draft and I will call the picks.",
+	loading: "Match starting. I am reading both teams.",
+	live: "Coaching is on.",
+	done: "Coaching paused. Say draft mode when the next match starts."
+};
 async function handle(request) {
+	const started = Date.now();
 	const url = new URL(request.url);
 	if (request.method === "OPTIONS") return new Response(null, {
 		status: 204,
@@ -83204,18 +97207,20 @@ async function handle(request) {
 			"access-control-allow-methods": "GET,POST,OPTIONS"
 		}
 	});
+	const store = storeForRequest();
 	const roomParam = (url.searchParams.get("room") ?? request.headers.get("x-coach-room") ?? "").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 32).toUpperCase();
+	const announce = (room, text) => ({ announce: {
+		id: (room.announce?.id ?? 0) + 1,
+		text
+	} });
 	const ask = (url.searchParams.get("ask") ?? "").toLowerCase();
-	if (roomParam && ask) {
+	if (roomParam && ask && ask !== "position") {
 		if (!ASK_TOPICS.includes(ask)) return json(400, {
 			ok: false,
-			say: `I don't know that question. Try: ${ASK_TOPICS.join(", ")}.`
+			say: `I don't know that question. Try: ${[...ASK_TOPICS, "position"].join(", ")}.`
 		});
-		const answer = answerQuestion(rooms.get(roomParam)?.session ?? EMPTY_SESSION, ask);
-		update(roomParam, Date.now(), (room) => ({ announce: {
-			id: (room.announce?.id ?? 0) + 1,
-			text: answer.say
-		} }));
+		const answer = answerQuestion((await loadRoom(store, roomParam))?.session ?? EMPTY_SESSION, ask);
+		await update(store, roomParam, (room) => announce(room, answer.say));
 		record({
 			t: "ask",
 			room: roomParam,
@@ -83227,29 +97232,65 @@ async function handle(request) {
 			body: answer.say
 		});
 	}
+	const stageWord = (url.searchParams.get("stage") ?? "").toLowerCase();
+	let stageSet;
+	if (roomParam && stageWord) {
+		const stage = STAGE_WORDS[stageWord];
+		if (!stage) return json(400, {
+			ok: false,
+			say: "I don't know that stage. Use draft, loading, live or done."
+		});
+		await update(store, roomParam, (room) => {
+			const session = sessionReducer(room.session, {
+				type: "setStage",
+				stage,
+				now: started
+			});
+			return {
+				session,
+				matchId: session.matchId,
+				called: session.matchId === room.matchId ? room.called : [],
+				...announce(room, STAGE_SAY[stage])
+			};
+		});
+		record({
+			t: "stage",
+			room: roomParam,
+			stage
+		});
+		stageSet = stage;
+		if (request.method !== "POST") return json(200, {
+			ok: true,
+			title: STAGE_SAY[stage],
+			body: STAGE_SAY[stage],
+			say: STAGE_SAY[stage],
+			stage
+		});
+	}
 	if (request.method === "GET" && roomParam) {
-		const room = rooms.get(roomParam);
+		const wantLog = url.searchParams.has("log");
+		const have = url.searchParams.get("v");
+		if (have !== null && !wantLog) {
+			const current = Number(await store.get(`v:${roomParam}`) ?? 0);
+			if (String(current) === have) return json(200, {
+				ok: true,
+				version: current,
+				unchanged: true
+			});
+		}
+		const room = await loadRoom(store, roomParam);
 		if (!room) return json(200, {
 			ok: true,
 			version: 0
 		});
-		const info = {
+		return json(200, {
 			ok: true,
 			version: room.version,
 			at: room.at || void 0,
 			error: room.error?.message,
 			errorAt: room.error?.at,
 			read: room.read,
-			announce: room.announce
-		};
-		const wantLog = url.searchParams.has("log");
-		if (url.searchParams.get("v") === String(room.version)) return json(200, {
-			...info,
-			unchanged: true,
-			...wantLog ? { reads: room.reads } : {}
-		});
-		return json(200, {
-			...info,
+			announce: room.announce,
 			session: room.session,
 			reads: room.reads
 		});
@@ -83265,16 +97306,17 @@ async function handle(request) {
 			ok: true,
 			heroes: HEROES.length,
 			sample,
+			store: store.kind,
 			usage: "POST a screenshot with an x-vision-key header."
 		});
 	}
 	if (request.method !== "POST") return fail(405, "Send the screenshot with a POST request.");
 	const now = Date.now();
-	for (const [id, room] of rooms) if (now - room.seen > ROOM_TTL_MS) rooms.delete(id);
 	const roomId = roomParam || "DEFAULT";
-	/** A failed read is remembered on the room so the phone can say why nothing is arriving. */
-	const failRead = (status, message) => {
-		update(roomId, now, (room) => ({
+	const sessionNow = async () => (await loadRoom(store, roomId))?.session ?? EMPTY_SESSION;
+	/** A failed read is remembered on the room so the dashboard can say why nothing is arriving. */
+	const failRead = async (status, message) => {
+		await update(store, roomId, (room) => ({
 			error: {
 				message,
 				at: Date.now()
@@ -83292,7 +97334,8 @@ async function handle(request) {
 		return fail(status, message);
 	};
 	if (url.searchParams.has("reset")) {
-		rooms.delete(roomId);
+		await store.delete(`room:${roomId}`);
+		await store.delete(`v:${roomId}`);
 		return json(200, {
 			title: "New match",
 			body: "Cleared.",
@@ -83305,13 +97348,12 @@ async function handle(request) {
 			ok: false,
 			error: "Unknown action."
 		});
-		const after = update(roomId, now, (room) => {
+		const after = await update(store, roomId, (room) => {
 			const session = sessionReducer(room.session, action);
 			return {
 				session,
 				matchId: session.matchId,
-				called: session.matchId === room.matchId ? room.called : /* @__PURE__ */ new Set(),
-				version: room.version + 1
+				called: session.matchId === room.matchId ? room.called : []
 			};
 		});
 		record({
@@ -83326,76 +97368,165 @@ async function handle(request) {
 	}
 	if (url.searchParams.has("restore")) {
 		const body = await request.json().catch(() => ({}));
-		if (!rooms.get(roomId)?.version && body.session && typeof body.session === "object") {
+		const existing = await loadRoom(store, roomId);
+		if (!existing?.version && body.session && typeof body.session === "object") {
 			const session = {
 				...EMPTY_SESSION,
 				...body.session,
 				log: []
 			};
-			update(roomId, now, () => ({
-				session,
-				matchId: session.matchId,
-				version: 1
-			}));
+			return json(200, {
+				ok: true,
+				version: (await update(store, roomId, () => ({
+					session,
+					matchId: session.matchId
+				}))).version
+			});
 		}
 		return json(200, {
 			ok: true,
-			version: rooms.get(roomId)?.version ?? 0
+			version: existing?.version ?? 0
 		});
 	}
-	const paused = () => stageOf(rooms.get(roomId)?.session ?? EMPTY_SESSION) === "done";
-	if (paused()) return json(200, {
-		title: "Paused",
-		body: "Paused. Tap Hero selection on your phone when the next match starts.",
-		say: "",
-		stop: true,
-		screen: "other"
-	});
 	let bytes;
 	try {
 		bytes = await readImage(request);
 	} catch {
 		return failRead(400, "I couldn't read that upload.");
 	}
-	let vision;
+	const upMs = Date.now() - started;
+	if (stageSet && !bytes.length) return json(200, {
+		ok: true,
+		title: STAGE_SAY[stageSet],
+		body: STAGE_SAY[stageSet],
+		say: STAGE_SAY[stageSet],
+		stage: stageSet
+	});
+	const pausedNow = async () => stageOf(await sessionNow()) === "done";
+	if (await pausedNow()) return json(200, {
+		title: "Paused",
+		body: "Paused. Say coach on, or tap In match on the dashboard, to start again.",
+		say: "",
+		stop: true,
+		halt: "yes",
+		screen: "other"
+	});
+	let reader;
 	try {
-		vision = pickVision(request);
+		reader = pickVision(request, roomId);
 	} catch (err) {
 		return failRead(400, err instanceof Error ? err.message : "Missing API key.");
 	}
 	const mediaType = sniff(bytes);
-	if (vision !== demo) {
+	if (reader.asked !== "demo") {
 		if (!mediaType) return failRead(400, "That doesn't look like a screenshot. In the shortcut, set Request Body to File and choose the converted image.");
 		if (bytes.length > MAX_BYTES) return failRead(413, "The screenshot is too large. Add Resize Image and Convert to JPEG steps to the shortcut.");
 	}
+	const image = {
+		base64: Buffer.from(bytes).toString("base64"),
+		mediaType: mediaType ?? "image/jpeg"
+	};
+	let latest = await sessionNow();
+	const coach = pickCoach(request, () => latest);
+	if (ask === "position") {
+		const shot = url.searchParams.get("shot");
+		const waiting = await store.get(`pos:${roomId}`);
+		const first = waiting && now - waiting.at < POSITION_WAIT_MS ? waiting : void 0;
+		if (shot === "1" || !shot && !first) {
+			await store.set(`pos:${roomId}`, {
+				...image,
+				at: now
+			}, Math.ceil(POSITION_WAIT_MS / 1e3));
+			const say = "Open the map.";
+			await update(store, roomId, (room) => announce(room, say));
+			record({
+				t: "position",
+				room: roomId,
+				shot: 1,
+				bytes: bytes.length,
+				upMs
+			});
+			return json(200, {
+				title: "Positioning",
+				body: "Open the map. I take the second picture in a moment.",
+				say,
+				shot: 1
+			});
+		}
+		if (!coach) return failRead(400, "Positioning needs your API key in the x-vision-key header.");
+		try {
+			const pictures = first ? [{
+				base64: first.base64,
+				mediaType: first.mediaType
+			}, image] : [image];
+			const reply = await coach.ask({
+				system: POSITION_SYSTEM,
+				user: positionBrief(latest, now, pictures.length),
+				images: pictures,
+				schema: POSITION_SCHEMA
+			});
+			await store.delete(`pos:${roomId}`);
+			const advice = normalizePosition(reply.raw, reply.model ?? coach.asked, Date.now());
+			if (!advice) return failRead(502, "I couldn't work out your position from those pictures.");
+			await update(store, roomId, (room) => ({
+				session: sessionReducer(room.session, {
+					type: "position",
+					advice
+				}),
+				...announce(room, advice.say)
+			}));
+			record({
+				t: "position",
+				room: roomId,
+				shot: 2,
+				pictures: pictures.length,
+				bytes: bytes.length,
+				upMs,
+				ms: Date.now() - now,
+				asked: coach.asked,
+				model: advice.model,
+				said: advice.say,
+				summary: advice.summary,
+				moves: advice.moves
+			});
+			return json(200, {
+				title: "Positioning",
+				body: [advice.summary, ...advice.moves].join(" "),
+				say: advice.say,
+				moves: advice.moves,
+				model: advice.model
+			});
+		} catch (err) {
+			const message = err instanceof VisionError ? err.message : "Something went wrong working out your position.";
+			return failRead(err instanceof VisionError && (err.kind === "auth" || err.kind === "config") ? 401 : 502, message);
+		}
+	}
 	try {
-		const before = rooms.get(roomId)?.session ?? EMPTY_SESSION;
-		const reply = await vision({
-			base64: Buffer.from(bytes).toString("base64"),
-			mediaType: mediaType ?? "image/jpeg"
-		}, {
+		const before = latest;
+		const reply = await reader.vision(image, {
 			stage: stageOf(before),
 			myHeroId: before.myHeroId,
 			allies: before.allies,
 			enemies: before.enemies
 		});
 		const obs = normalizeObservation(reply.raw);
-		if (paused()) return json(200, {
+		if (await pausedNow()) return json(200, {
 			title: "Paused",
 			body: "",
 			say: "",
 			stop: true,
+			halt: "yes",
 			screen: obs.screen
 		});
 		const readAt = Date.now();
 		let answer;
-		update(roomId, readAt, (room) => {
+		latest = (await update(store, roomId, (room) => {
 			const session = sessionReducer(room.session, {
 				type: "observe",
 				obs,
 				now
 			});
-			const called = session.matchId === room.matchId ? room.called : /* @__PURE__ */ new Set();
+			const called = new Set(session.matchId === room.matchId ? room.called : []);
 			answer = coachReply(session, obs, called, url.origin);
 			const read = {
 				screen: obs.screen,
@@ -83415,23 +97546,25 @@ async function handle(request) {
 			};
 			return {
 				session,
-				called,
+				called: [...called],
 				matchId: session.matchId,
 				at: readAt,
-				version: room.version + 1,
 				error: void 0,
 				read,
 				reads: [...room.reads, entry].slice(-30)
 			};
-		});
-		const after = rooms.get(roomId)?.session;
+		})).session;
 		record({
 			t: "read",
 			room: roomId,
+			store: store.kind,
 			screen: obs.screen,
 			clock: obs.gameTimeSec,
 			gold: obs.myGold,
+			bytes: bytes.length,
+			upMs,
 			ms: readAt - now,
+			asked: reader.asked,
 			model: reply.model,
 			me: obs.meHeroId ? heroName(obs.meHeroId) : void 0,
 			allies: rowsFor(obs.allies),
@@ -83439,13 +97572,63 @@ async function handle(request) {
 			myItems: obs.myItems,
 			shop: obs.shop,
 			unknown: obs.unknown,
-			spent: after?.spent,
-			owned: after?.owned,
-			seen: after?.seenItems,
+			spent: latest.spent,
+			owned: latest.owned,
+			seen: latest.seenItems,
+			partial: latest.seenPartial,
 			said: answer?.title
 		});
+		let headline;
+		const worthCoaching = obs.screen === "scoreboard" || obs.screen === "shop" || obs.screen === "loading";
+		const sec = gameSeconds(latest, readAt);
+		const last = latest.ai;
+		const learned = JSON.stringify([before.plannedBuild, before.seenItems]) !== JSON.stringify([latest.plannedBuild, latest.seenItems]);
+		const answered = !!last && !learned && (obs.screen === "loading" ? last.clock === void 0 : last.clock !== void 0 && sec !== void 0 && Math.abs(sec - last.clock) < COACH_GAP_SEC);
+		const brief = coach && worthCoaching && !answered ? coachBrief(latest, readAt) : void 0;
+		if (coach && brief) {
+			const askedAt = Date.now();
+			try {
+				const answered = await coach.ask({
+					system: COACH_SYSTEM,
+					user: brief,
+					schema: COACH_SCHEMA
+				});
+				const result = normalizeCoach(answered.raw, await sessionNow(), answered.model ?? coach.asked, Date.now());
+				if (result && !await pausedNow()) {
+					latest = (await update(store, roomId, (room) => ({ session: sessionReducer(room.session, {
+						type: "ai",
+						...result
+					}) }))).session;
+					headline = result.advice.headline;
+					record({
+						t: "coach",
+						room: roomId,
+						ms: Date.now() - askedAt,
+						asked: coach.asked,
+						model: result.advice.model,
+						situation: result.advice.situation,
+						headline,
+						doNow: result.advice.doNow,
+						avoid: result.advice.avoid,
+						focus: result.advice.focus ? heroName(result.advice.focus.heroId) : void 0,
+						build: result.build?.ids,
+						beat: result.beat?.text
+					});
+				}
+			} catch (err) {
+				record({
+					t: "coach-fail",
+					room: roomId,
+					ms: Date.now() - askedAt,
+					asked: coach.asked,
+					error: err instanceof Error ? err.message : String(err)
+				});
+			}
+		}
 		return json(200, {
 			...answer,
+			say: [headline, answer?.say].filter(Boolean).join(" "),
+			coach: headline,
 			stop: false,
 			model: reply.model,
 			unknown: obs.unknown

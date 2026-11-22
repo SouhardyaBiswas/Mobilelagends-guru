@@ -1,7 +1,7 @@
 import { bootsNote, templateFor, type BuildTemplate } from "../data/builds";
 import { heroById, heroName } from "../data/heroes";
 import { componentId, itemById, SELL_REFUND, SHOP_TAB } from "../data/items";
-import type { BuildPlan, BuildSlot, Hero, Item, Lane, NextStep, PlayerState, ThreatProfile } from "../types";
+import type { AiBuild, BuildPlan, BuildSlot, Hero, Item, Lane, NextStep, PlayerState, ThreatProfile } from "../types";
 import { analyzeThreat } from "./threat";
 
 export interface BuildInput {
@@ -24,9 +24,28 @@ export interface BuildInput {
   seenItems?: string[];
   /** Remaining prices printed in the shop, still current. */
   shopPrices?: Record<string, number>;
+  /** The item the player is part-way through buying, when a read of their inventory showed it. */
+  partial?: string;
+  /** A build order chosen by the AI coach. When present it replaces the template's order. */
+  aiBuild?: AiBuild;
 }
 
 const FROM_YOUR_BUILD = "From the build you chose in game.";
+const FROM_AI = "Chosen by the coach for this match.";
+/** With this much gold in hand there is almost always a piece of the next item to buy. */
+const PIECE_FLOOR = 400;
+
+/** The AI coach's build as catalog items: no duplicates, one pair of boots, six at most. Too short a list is ignored. */
+function aiItems(ai: AiBuild | undefined): Item[] | undefined {
+  const out: Item[] = [];
+  for (const id of ai?.ids ?? []) {
+    const item = itemById(id);
+    if (!item || out.includes(item)) continue;
+    if (item.category === "boots" && out.some((i) => i.category === "boots")) continue;
+    out.push(item);
+  }
+  return out.length >= 3 ? out.slice(0, SLOTS) : undefined;
+}
 
 /** Use the player's own in-game build as the base, keeping the template's counters and defensive options. */
 function withPlannedBuild(tpl: BuildTemplate, plannedIds: string[] | undefined): BuildTemplate {
@@ -291,6 +310,18 @@ function nextStep(slots: BuildSlot[], overflow: Pick[], input: BuildInput, squis
 
   const goal = comp && !haveComp ? comp : undefined;
   const goldNeeded = (goal ? price(goal.cost) : remaining) - gold;
+  if (!goal && gold >= PIECE_FLOOR) {
+    // Gold in the pocket does nothing. Pieces give stats now and count toward the item.
+    const listed = input.shopListed?.includes(item.id);
+    return {
+      action: "buy-pieces",
+      item,
+      goldNeeded,
+      where: `Open ${item.name}${listed ? "" : ` in the ${SHOP_TAB[item.category]} tab`} and buy the pieces in its build path that you can afford.`,
+      say: `Buy pieces of ${item.name} now. ${goldNeeded} more gold finishes it.`,
+      detail: `${why} You have ${gold} gold: spend it on pieces rather than carrying it.`.trim(),
+    };
+  }
   return {
     action: "save",
     item,
@@ -336,9 +367,14 @@ export function planBuild(input: BuildInput): BuildPlan & { threat: ThreatProfil
     return true;
   };
 
+  // The AI coach's order, when there is one, comes first; the rules below then only fill what it left open.
+  const ai = aiItems(input.aiBuild);
+  for (const item of ai ?? []) push(item, input.aiBuild?.why[item.id] || FROM_AI, item.category === "boots" ? "boots" : "core");
+  const aiHasBoots = !!ai?.some((i) => i.category === "boots");
+
   const playerPickedBoots = fromPlayer && (input.plannedBuild ?? []).some((id) => itemById(id)?.category === "boots");
   const boots = chooseBoots(tpl, threat, squishy, playerPickedBoots);
-  push(itemById(boots.id), boots.reason, "boots");
+  if (!aiHasBoots) push(itemById(boots.id), boots.reason, "boots");
   const [firstCore, ...restCore] = tpl.core;
   if (firstCore) push(itemById(firstCore), tpl.coreWhy, "core");
   for (const p of picks.filter((p) => p.score >= URGENT)) push(p.item, p.reason, "situational", p.score);
@@ -364,26 +400,51 @@ export function planBuild(input: BuildInput): BuildPlan & { threat: ThreatProfil
 
   const have = [...planned.filter((o) => ownedFull.includes(o.item.id)), ...offPlan];
   const want = planned.filter((o) => !ownedFull.includes(o.item.id));
+  type Entry = (typeof ordered)[number];
+  const entryFor = (item: Item, reason: string): Entry => planned.find((o) => o.item.id === item.id) ?? { item, reason, kind: "core", score: 0, defensive: isDefensive(item) };
 
   // Spending tells us how far along the build is, even when the icons could not be read:
-  // gold left after the known items pays for the next items in order, and any remainder
-  // is progress toward the one after.
+  // gold left after the known items pays for the next items in the order the player is most
+  // likely buying them, and any remainder is progress toward the one after.
+  //
+  // That order is: an item they visibly hold pieces of; then their own in-game list (it is what
+  // the game's quick-buy button offers them); then this plan. A counter the coach merely
+  // suggested is never assumed bought — only a read of the inventory or a tap confirms it.
   const paidToward = new Map<string, number>();
+  const assumed: Entry[] = [];
+  let started: Entry | undefined;
   if (input.spent !== undefined) {
     let budget = input.spent - have.reduce((sum, o) => sum + price(o.item.cost), 0);
-    for (const o of want) {
-      const cost = price(o.item.cost);
+    const partial = input.partial ? itemById(input.partial) : undefined;
+    const inGame = (input.plannedBuild ?? []).map(itemById).filter((i): i is Item => !!i);
+    const expected: Entry[] = [];
+    const expect = (e: Entry) => {
+      if (ownedFull.includes(e.item.id) || expected.some((x) => x.item.id === e.item.id)) return;
+      // Never assume a second pair of boots.
+      if (e.item.category === "boots" && (ownedBoots || expected.some((x) => x.item.category === "boots"))) return;
+      expected.push(e);
+    };
+    if (partial) expect(entryFor(partial, "You already hold pieces of it."));
+    for (const item of inGame) expect(entryFor(item, FROM_YOUR_BUILD));
+    for (const o of want) if (o.kind !== "situational") expect(o);
+    for (const e of expected) {
+      const cost = price(e.item.cost);
       if (budget + 60 >= cost) {
-        ownedFull = [...ownedFull, o.item.id];
+        ownedFull = [...ownedFull, e.item.id];
+        assumed.push(e);
         budget -= cost;
       } else {
-        if (budget >= 100) paidToward.set(o.item.id, Math.round(budget));
+        if (budget >= 100) {
+          paidToward.set(e.item.id, Math.round(budget));
+          started = e;
+        }
         break;
       }
     }
   }
-  const settled = [...have, ...want.filter((o) => ownedFull.includes(o.item.id))];
-  const pending = want.filter((o) => !ownedFull.includes(o.item.id));
+  const settled = [...have, ...assumed];
+  // An item already paid toward is finished first: its pieces are sitting in the inventory.
+  const pending = [...(started ? [started] : []), ...want.filter((o) => !ownedFull.includes(o.item.id) && o.item.id !== started?.item.id)];
   const fitted = [...settled, ...pending].slice(0, SLOTS);
   const slots: BuildSlot[] = fitted.map((o) => ({
     item: o.item,

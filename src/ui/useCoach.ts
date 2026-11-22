@@ -99,14 +99,24 @@ export function useCoach(plan: (BuildPlan & { threat: ThreatProfile }) | undefin
   // What the match's memory shows: say it when the picture changes (ahead / behind, carry / dying).
   const story = useMemo(() => (live ? matchStory(session) : undefined), [live, session]);
   const storyKey = story?.headline ? `${session.matchId}:${story.headline.key}` : undefined;
+  // The AI coach covers the same ground when it has spoken, so the rule-based lines stay quiet then.
+  const ai = session.ai;
   useEffect(() => {
-    if (story?.headline && storyKey) say({ key: storyKey, say: story.headline.say, kind: "info", priority: 1 }, Infinity);
+    if (story?.headline && storyKey && !ai) say({ key: storyKey, say: story.headline.say, kind: "info", priority: 1 }, Infinity);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storyKey]);
 
+  // The AI coach's call: said when it changes, not every time it repeats itself.
+  const aiKey = ai ? `ai:${session.matchId}:${ai.headline}` : undefined;
+  useEffect(() => {
+    if (ai && aiKey) say({ key: aiKey, say: [ai.headline, ai.doNow[0]].filter(Boolean).join(" "), kind: "info", priority: 1 }, Infinity);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [aiKey]);
+
   // One-line observation from the screenshot reader.
   useEffect(() => {
-    if (live && session.tip) say({ key: `tip:${session.tip}`, say: session.tip, kind: "tip", priority: 0 }, Infinity);
+    if (live && session.tip && !ai) say({ key: `tip:${session.tip}`, say: session.tip, kind: "tip", priority: 0 }, Infinity);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [live, session.tip, say]);
 
   // Objective reminders off the match clock.

@@ -161,7 +161,8 @@ export interface BuildSlot {
 }
 
 export interface NextStep {
-  action: "buy" | "buy-component" | "save" | "sell-swap" | "done";
+  /** "buy-pieces": can't afford the item yet, but the gold in hand buys part of its build path. */
+  action: "buy" | "buy-component" | "buy-pieces" | "save" | "sell-swap" | "done";
   item?: Item;
   component?: ItemComponent;
   sell?: Item;
@@ -221,4 +222,48 @@ export interface Advice {
   detail?: string;
   kind: "buy" | "threat" | "setup" | "timer" | "tip" | "info";
   priority: 0 | 1 | 2;
+}
+
+/** What the AI coach concluded from the latest read of the match. */
+export interface AiAdvice {
+  /** Epoch ms when it was produced. */
+  at: number;
+  /** Match clock in seconds at that moment. */
+  clock?: number;
+  model: string;
+  situation: "ahead" | "even" | "behind";
+  /** The single most important thing right now, in a dozen words. */
+  headline: string;
+  /** One to three short instructions. */
+  doNow: string[];
+  avoid?: string;
+  /** The enemy to kill first, or to stay away from. */
+  focus?: { heroId: number; why: string };
+  /** The next item, with the coach's reason. */
+  item?: { id: string; why: string };
+}
+
+/** One line of the match storyboard. */
+export interface StoryBeat {
+  /** Match clock in seconds. */
+  at: number;
+  text: string;
+  tone?: "good" | "bad" | "neutral";
+}
+
+/** Answer to "help me position": read from a battlefield screenshot and the opened map. */
+export interface PositionAdvice {
+  /** Epoch ms. */
+  at: number;
+  summary: string;
+  danger?: string;
+  moves: string[];
+  say: string;
+  model: string;
+}
+
+/** A build order chosen by the AI coach for this match: catalog item ids, with a reason for each. */
+export interface AiBuild {
+  ids: string[];
+  why: Record<string, string>;
 }

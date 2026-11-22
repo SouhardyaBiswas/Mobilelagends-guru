@@ -1,7 +1,7 @@
 import { ApiError, GoogleGenAI } from "@google/genai";
 import { SYSTEM_PROMPT, userPrompt } from "./prompt";
 import { extractJson, VISION_SCHEMA } from "./schema";
-import { VisionError, type VisionCall, type VisionReply } from "./types";
+import { VisionError, type AskInput, type AskJson, type VisionCall, type VisionReply } from "./types";
 
 function toVisionError(err: unknown): VisionError {
   if (err instanceof VisionError) return err;
@@ -19,7 +19,8 @@ function toVisionError(err: unknown): VisionError {
 /** Tried in order when the chosen model does not exist for this key. */
 const FALLBACK_MODELS = ["gemini-flash-latest", "gemini-2.5-flash"];
 
-export function geminiVision(apiKey: string, model: string): VisionCall {
+/** Ask Gemini a question that must be answered as JSON matching a schema, with optional pictures. */
+export function geminiAsk(apiKey: string, model: string): AskJson {
   if (!apiKey) throw new VisionError("Add your Gemini API key in Settings.", "config");
   // The key stays in this browser; requests go straight to Google.
   const ai = new GoogleGenAI({ apiKey });
@@ -27,19 +28,19 @@ export function geminiVision(apiKey: string, model: string): VisionCall {
   // Once a model answers, keep using it.
   let working = 0;
 
-  const ask = async (name: string, image: Parameters<VisionCall>[0], ctx: Parameters<VisionCall>[1]): Promise<VisionReply> => {
+  const ask = async (name: string, { system, user, images = [], schema }: AskInput): Promise<VisionReply> => {
     const response = await ai.models.generateContent({
       model: name,
       contents: [
         {
           role: "user",
-          parts: [{ inlineData: { mimeType: image.mediaType, data: image.base64 } }, { text: userPrompt(ctx) }],
+          parts: [...images.map((image) => ({ inlineData: { mimeType: image.mediaType, data: image.base64 } })), { text: user }],
         },
       ],
       config: {
-        systemInstruction: SYSTEM_PROMPT,
+        systemInstruction: system,
         responseMimeType: "application/json",
-        responseJsonSchema: VISION_SCHEMA,
+        responseJsonSchema: schema,
       },
     });
     const text = response.text;
@@ -57,11 +58,11 @@ export function geminiVision(apiKey: string, model: string): VisionCall {
     };
   };
 
-  return async (image, ctx): Promise<VisionReply> => {
+  return async (input): Promise<VisionReply> => {
     let lastError: VisionError | undefined;
     for (let i = working; i < candidates.length; i++) {
       try {
-        const reply = await ask(candidates[i]!, image, ctx);
+        const reply = await ask(candidates[i]!, input);
         working = i;
         return reply;
       } catch (err) {
@@ -72,4 +73,10 @@ export function geminiVision(apiKey: string, model: string): VisionCall {
     }
     throw lastError ?? new VisionError("No Gemini model answered.", "api");
   };
+}
+
+/** The screenshot reader: one picture in, the screen's contents out. */
+export function geminiVision(apiKey: string, model: string): VisionCall {
+  const ask = geminiAsk(apiKey, model);
+  return (image, ctx) => ask({ system: SYSTEM_PROMPT, user: userPrompt(ctx), images: [image], schema: VISION_SCHEMA });
 }

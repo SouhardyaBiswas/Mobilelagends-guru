@@ -4,6 +4,8 @@ import { useStore } from "../state/store";
 import type { Session } from "../state/session";
 
 const POLL_MS = 3000;
+/** With nothing new for a while the dashboard checks less often; it speeds up again the moment something arrives. */
+const pollDelay = (idleMs: number) => (idleMs > 45 * 60_000 ? 20_000 : idleMs > 10 * 60_000 ? 6000 : POLL_MS);
 
 export interface RoomStatus {
   /** Server version of the room: 0 until the first screenshot arrives. */
@@ -78,6 +80,7 @@ export function useRoomSync(): RoomStatus | undefined {
     version.current = 0;
     setStatus({ version: 0 });
     let stopped = false;
+    let lastChange = Date.now();
     const url = `/api/coach?room=${encodeURIComponent(room)}`;
 
     const poll = async () => {
@@ -87,6 +90,12 @@ export function useRoomSync(): RoomStatus | undefined {
         const body = (await res.json()) as RoomAnswer;
         if (stopped) return;
         if (!body.ok) throw new Error(`HTTP ${res.status}`);
+        // Nothing has changed since the copy we hold: the server sends only the version number.
+        if (body.unchanged) {
+          setStatus((prev) => (prev.error ? { ...prev, error: undefined } : prev));
+          return;
+        }
+        lastChange = Date.now();
         const remote = body.version ?? 0;
         if (remote === 0 && version.current > 0) {
           // The server lost the room (it restarted). Give it back what we have.
@@ -111,9 +120,17 @@ export function useRoomSync(): RoomStatus | undefined {
       }
     };
 
-    void poll();
-    const timer = setInterval(() => void poll(), POLL_MS);
-    const onVisible = () => void poll();
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const loop = async () => {
+      await poll();
+      if (!stopped) timer = setTimeout(() => void loop(), pollDelay(Date.now() - lastChange));
+    };
+    void loop();
+    const onVisible = () => {
+      // Back on screen: check at once and at full speed.
+      lastChange = Date.now();
+      void poll();
+    };
     document.addEventListener("visibilitychange", onVisible);
 
     // Keep the screen on while following, so the phone doesn't sleep mid-match.
@@ -127,7 +144,7 @@ export function useRoomSync(): RoomStatus | undefined {
 
     return () => {
       stopped = true;
-      clearInterval(timer);
+      clearTimeout(timer);
       document.removeEventListener("visibilitychange", onVisible);
       document.removeEventListener("visibilitychange", hold);
       void lock?.release().catch(() => undefined);

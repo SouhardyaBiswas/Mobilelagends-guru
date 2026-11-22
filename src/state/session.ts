@@ -4,7 +4,8 @@
  */
 import { heroById } from "../data/heroes";
 import { COMPONENTS, componentId, itemById, SELL_REFUND } from "../data/items";
-import type { Lane, Observation, PlayerState, ShopEntry } from "../types";
+import { storyBeat } from "../engine/story";
+import type { AiAdvice, AiBuild, Lane, Observation, PlayerState, PositionAdvice, ShopEntry, StoryBeat } from "../types";
 
 export interface LogEntry {
   at: number;
@@ -30,6 +31,7 @@ export interface Snapshot {
 }
 
 const HISTORY_MAX = 40;
+const STORY_MAX = 40;
 
 export interface Session {
   phase: "draft" | "live";
@@ -82,6 +84,24 @@ export interface Session {
   pendingClock?: number;
   /** True once the clock came from a screenshot. A clock started by a tap or a guess yields to the first real reading. */
   clockSure?: boolean;
+  /** The item the player is part-way through buying (its pieces sit in their inventory), when a read showed it. */
+  seenPartial?: string;
+  /** An icon read of the player's items that did not agree with the last one; believed if the next read confirms it. */
+  pendingSeen?: string[];
+  /**
+   * Gold the scoreboard leaves out of a player's total. Some matches print totals without the
+   * starting gold; a believed inventory that costs about that much more than "spent" shows it.
+   */
+  goldOffset?: number;
+  /** Scoreboard rows that went backwards (a misread); held until the next read says which was right. */
+  doubt?: Record<number, PlayerState>;
+  /** The storyboard: one line per scoreboard, oldest first. */
+  story?: StoryBeat[];
+  /** The AI coach's latest read of the match, and the build order it chose. */
+  ai?: AiAdvice;
+  aiBuild?: AiBuild;
+  /** The latest answer to "help me position". */
+  position?: PositionAdvice;
 }
 
 /** List value of a set of item / component ids. */
@@ -103,6 +123,65 @@ export function believableItems(ids: string[] | undefined, budget: number | unde
 }
 
 const keepBelievable = (p: PlayerState): PlayerState => (believableItems(p.items, p.gold) ? p : { ...p, items: undefined });
+
+/** Starting gold, which some scoreboards leave out of a player's total. */
+const START_GOLD = 300;
+
+/**
+ * Fit an icon read of the player's own items to what they have spent. Returns the
+ * finished items, the one still being built when the list only fits that way (its
+ * pieces were read as the finished item), and how far the list exceeds the spending.
+ */
+export function fitOwnItems(ids: string[] | undefined, spent: number | undefined, factor = 1): { items: string[]; partial?: string; over: number } | undefined {
+  if (!ids?.length) return undefined;
+  const finished = ids.filter((id) => !id.startsWith("comp:"));
+  if (new Set(finished).size !== finished.length) return undefined;
+  if (finished.filter((id) => itemById(id)?.category === "boots").length > 1) return undefined;
+  if (spent === undefined) return { items: ids, over: 0 };
+  const cost = (id: string) => Math.floor((id.startsWith("comp:") ? (COMPONENTS.get(id)?.cost ?? 0) : (itemById(id)?.cost ?? 0)) * factor);
+  const value = ids.reduce((sum, id) => sum + cost(id), 0);
+  if (value <= spent + START_GOLD + 50) return { items: ids, over: Math.max(0, value - spent) };
+  // One item too many for the gold: the newest one is probably still in pieces.
+  for (const id of [...finished].reverse()) {
+    const rest = value - cost(id);
+    if (rest <= spent + 60 && spent - rest < cost(id)) return { items: ids.filter((x) => x !== id), partial: id, over: 0 };
+  }
+  return undefined;
+}
+
+const NUMBERS = ["gold", "kills", "deaths", "assists"] as const;
+/** Scoreboard numbers only ever go up within a match. */
+const wentBackwards = (prev: PlayerState | undefined, p: PlayerState): boolean =>
+  !!prev && NUMBERS.some((k) => prev[k] !== undefined && p[k] !== undefined && p[k]! < prev[k]!);
+
+/**
+ * Decide what to believe about one scoreboard row. A row whose numbers went down
+ * is a misread — unless the next read agrees with it, in which case the earlier
+ * figure was the wrong one.
+ */
+function settleRow(prev: PlayerState | undefined, read: PlayerState, doubt: Record<number, PlayerState>): PlayerState {
+  const p = keepBelievable(read);
+  const merged = (): PlayerState => ({
+    ...p,
+    gold: p.gold ?? prev?.gold,
+    kills: p.kills ?? prev?.kills,
+    deaths: p.deaths ?? prev?.deaths,
+    assists: p.assists ?? prev?.assists,
+    level: p.level ?? prev?.level,
+    items: p.items?.length ? p.items : prev?.items,
+  });
+  if (!wentBackwards(prev, p)) {
+    delete doubt[p.heroId];
+    return merged();
+  }
+  const held = doubt[p.heroId];
+  if (held && !wentBackwards(held, p)) {
+    delete doubt[p.heroId];
+    return p;
+  }
+  doubt[p.heroId] = p;
+  return prev!;
+}
 
 export const EMPTY_SESSION: Session = {
   phase: "draft",
@@ -137,6 +216,8 @@ export type SessionAction =
   | { type: "syncClock"; now: number; gameSec: number }
   | { type: "observe"; obs: Observation; now: number; costUsd?: number }
   | { type: "adopt"; session: Session }
+  | { type: "ai"; advice: AiAdvice; beat?: StoryBeat; build?: AiBuild }
+  | { type: "position"; advice: PositionAdvice }
   | { type: "setStage"; stage: Stage; now: number }
   | { type: "log"; entry: LogEntry };
 
@@ -245,33 +326,58 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
 
   if (obs.screen === "scoreboard") {
     // Item lists that cost more than the player has earned are icon misreads: keep the numbers, drop the items.
+    // Numbers that went down since the last scoreboard are misreads too: keep the earlier row.
+    const doubt = { ...(s.doubt ?? {}) };
     const live = { ...s.enemyLive };
-    for (const p of obs.enemies) if (next.enemies.includes(p.heroId)) live[p.heroId] = keepBelievable(p);
+    for (const p of obs.enemies) if (next.enemies.includes(p.heroId)) live[p.heroId] = settleRow(s.enemyLive[p.heroId], p, doubt);
     next.enemyLive = live;
     const mineLive = { ...s.allyLive };
-    for (const p of obs.allies) mineLive[p.heroId] = keepBelievable(p);
+    for (const p of obs.allies) mineLive[p.heroId] = settleRow(s.allyLive[p.heroId], p, doubt);
     next.allyLive = mineLive;
+    next.doubt = doubt;
     // How much the player has spent: total earned minus what is in their pocket. Both are printed numbers.
     const mine = obs.allies.find((p) => p.heroId === next.myHeroId);
-    if (mine?.gold !== undefined && obs.myGold !== undefined && mine.gold >= obs.myGold) next.spent = mine.gold - obs.myGold;
+    if (mine?.gold !== undefined && obs.myGold !== undefined && mine.gold >= obs.myGold && !doubt[mine.heroId]) {
+      next.spent = mine.gold - obs.myGold + (next.goldOffset ?? 0);
+    }
   } else if (obs.myGold !== undefined && s.gold !== undefined && s.spent !== undefined && obs.myGold < s.gold - 150) {
     // Between scoreboards, a drop in pocket gold is a purchase.
     next.spent = s.spent + (s.gold - obs.myGold);
   }
 
+  // The shop's printed prices show the discount in force; it is needed to price the inventory below.
+  if (obs.shop) next.priceFactor = learnPriceFactor([...obs.shop.recommended, ...obs.shop.spare]) ?? next.priceFactor;
   // The player's own items as icons (their scoreboard row, or the shop's inventory row):
   // believed only when they fit what has been spent.
   if (obs.screen === "shop" || obs.screen === "scoreboard") {
     const mineRow = obs.screen === "scoreboard" ? obs.allies.find((p) => p.heroId === next.myHeroId) : undefined;
-    const seen = obs.myItems?.length ? obs.myItems : mineRow?.items;
-    if (seen?.length && believableItems(seen, next.spent ?? mineRow?.gold, 150)) next.seenItems = uniq(seen);
+    const read = obs.myItems?.length ? obs.myItems : mineRow?.items;
+    const fit = fitOwnItems(read, next.spent ?? mineRow?.gold, next.priceFactor);
+    if (fit) {
+      const now = uniq(fit.items);
+      const grows = (base: string[] | undefined) => !!base?.length && base.every((id) => now.includes(id));
+      // The shop's inventory row is large and reliable. A scoreboard row is tiny: believe it when it
+      // builds on what was seen before, or when two reads in a row agree.
+      const trusted = obs.screen === "shop" || (!s.seenItems?.length && !fit.partial) || grows(s.seenItems) || grows(s.pendingSeen);
+      if (trusted) {
+        next.seenItems = now;
+        next.seenPartial = fit.partial;
+        next.pendingSeen = undefined;
+        // A believed inventory worth about the starting gold more than "spent": this scoreboard leaves it out.
+        if (obs.screen === "shop" && !next.goldOffset && next.spent !== undefined && fit.over >= START_GOLD - 100) {
+          next.goldOffset = START_GOLD;
+          next.spent += START_GOLD;
+        }
+      } else {
+        next.pendingSeen = now;
+      }
+    }
   }
   if (obs.shop) {
     const rec = obs.shop.recommended.map((e) => e.id);
     if (rec.length >= 3) next.plannedBuild = uniq(rec);
     const listed = [...obs.shop.recommended, ...obs.shop.spare];
     next.shopListed = uniq(listed.map((e) => e.id));
-    next.priceFactor = learnPriceFactor(listed) ?? next.priceFactor;
     // Prices printed in the shop already account for the pieces the player owns.
     next.shopPrices = Object.fromEntries(listed.filter((e) => e.price !== undefined && e.price > 0).map((e) => [e.id, e.price!]));
     next.shopPricesSpent = next.spent;
@@ -304,16 +410,22 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
     // The clock printed on this very scoreboard is the best timestamp for it.
     const at = obs.gameTimeSec ?? (next.clockStart !== undefined ? Math.max(0, Math.round((now - next.clockStart) / 1000)) : 0);
     const players: Snapshot["players"] = {};
-    for (const p of [...obs.allies, ...obs.enemies]) {
+    for (const seen of [...obs.allies, ...obs.enemies]) {
+      // Remember what was believed about the row, not a figure that was thrown out.
+      const p = next.allyLive[seen.heroId] ?? next.enemyLive[seen.heroId] ?? seen;
       if (p.gold !== undefined || p.kills !== undefined) players[p.heroId] = { gold: p.gold, kills: p.kills, deaths: p.deaths, assists: p.assists };
     }
     if (Object.keys(players).length) {
       const history = [...next.history];
       // Two reads of the same open scoreboard are one moment, not two.
       const last = history.at(-1);
-      if (last && Math.abs(last.at - at) < 20) history[history.length - 1] = { at, players };
+      const same = !!last && Math.abs(last.at - at) < 20;
+      if (same) history[history.length - 1] = { at, players };
       else history.push({ at, players });
       next.history = history.slice(-HISTORY_MAX);
+      // One storyboard line per scoreboard: what changed since the one before.
+      const beat = storyBeat(next);
+      if (beat) next.story = addBeat(next.story, beat);
     }
   }
   // Keep the stage in step with what the screen shows, so the buttons rarely need touching.
@@ -321,6 +433,15 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
   else if (obs.screen === "loading") next.stage = "loading";
   else if (obs.screen === "draft") next.stage = "draft";
   return next;
+}
+
+/** Add a line to the storyboard; a line for the same moment replaces the one already there. */
+function addBeat(story: StoryBeat[] | undefined, beat: StoryBeat): StoryBeat[] {
+  const lines = [...(story ?? [])];
+  const last = lines.at(-1);
+  if (last && Math.abs(last.at - beat.at) < 20) lines[lines.length - 1] = beat;
+  else lines.push(beat);
+  return lines.slice(-STORY_MAX);
 }
 
 export function sessionReducer(s: Session, a: SessionAction): Session {
@@ -342,7 +463,10 @@ export function sessionReducer(s: Session, a: SessionAction): Session {
     case "setLaneOpponent":
       return { ...s, laneOpponentId: a.id };
     case "startMatch":
-      return { ...s, phase: "live", clockStart: a.now, owned: [], gold: undefined, enemyLive: {}, allyLive: {}, history: [], manualFed: {}, tip: undefined, calls: 0, costUsd: 0, matchId: s.matchId + 1 };
+      return {
+        ...s, phase: "live", clockStart: a.now, owned: [], gold: undefined, enemyLive: {}, allyLive: {}, history: [], manualFed: {}, tip: undefined, calls: 0, costUsd: 0, matchId: s.matchId + 1,
+        spent: undefined, seenItems: undefined, seenPartial: undefined, pendingSeen: undefined, goldOffset: undefined, doubt: undefined, story: undefined, ai: undefined, aiBuild: undefined, position: undefined,
+      };
     case "newMatch":
       return { ...EMPTY_SESSION, lane: s.lane, matchId: s.matchId + 1 };
     case "backToDraft":
@@ -410,6 +534,10 @@ export function sessionReducer(s: Session, a: SessionAction): Session {
           return { ...s, phase: "draft", stage: "done" };
       }
       return s;
+    case "ai":
+      return { ...s, ai: a.advice, aiBuild: a.build ?? s.aiBuild, story: a.beat ? addBeat(s.story, a.beat) : s.story };
+    case "position":
+      return { ...s, position: a.advice };
     case "adopt":
       // Match state from the server replaces ours; this device keeps its own log of what was said.
       return { ...EMPTY_SESSION, ...a.session, log: s.log };
@@ -467,5 +595,7 @@ export function buildInputs(s: Session) {
     plannedBuild: s.plannedBuild,
     shopListed: s.shopListed,
     priceFactor: s.priceFactor,
+    partial: s.seenPartial,
+    aiBuild: s.aiBuild,
   };
 }

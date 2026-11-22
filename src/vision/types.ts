@@ -30,6 +30,18 @@ export interface VisionImage {
 
 export type VisionCall = (image: VisionImage, ctx: VisionContext) => Promise<VisionReply>;
 
+/** One question to a model that must answer as JSON matching `schema`. Used by the reader, the coach and the positioning helper. */
+export interface AskInput {
+  /** Stable instructions (cached by the provider where possible). */
+  system: string;
+  /** What changes on each call. */
+  user: string;
+  images?: VisionImage[];
+  schema: Record<string, unknown>;
+}
+
+export type AskJson = (input: AskInput) => Promise<VisionReply>;
+
 /** Error with a message that is safe and useful to show the player. */
 export class VisionError extends Error {
   constructor(

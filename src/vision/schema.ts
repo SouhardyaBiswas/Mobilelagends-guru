@@ -82,6 +82,27 @@ const num = (v: unknown): number | undefined => {
   return typeof n === "number" && Number.isFinite(n) && n >= 0 ? Math.round(n) : undefined;
 };
 
+/** Nobody has this many kills, deaths or assists: a bigger number is a gold figure read from the wrong column. */
+const KDA_MAX = 60;
+
+/**
+ * The enemy half of the scoreboard mirrors the player's half, and readers sometimes
+ * come out one column over: gold lands in "kills", kills in "deaths", deaths in
+ * "assists" (and assists in "gold", or nowhere). When most of a side shows that
+ * pattern, shift it back; an isolated impossible row just loses its numbers.
+ */
+export function unscramble(rows: PlayerState[]): PlayerState[] {
+  const shifted = (p: PlayerState) => (p.kills ?? 0) > KDA_MAX;
+  const blank = (p: PlayerState): PlayerState => ({ ...p, kills: undefined, deaths: undefined, assists: undefined, gold: undefined });
+  const impossible = (p: PlayerState) => (p.deaths ?? 0) > KDA_MAX || (p.assists ?? 0) > KDA_MAX;
+  const repair = rows.filter(shifted).length * 2 >= rows.length;
+  return rows.map((p) => {
+    if (!shifted(p)) return impossible(p) ? blank(p) : p;
+    if (!repair || impossible(p)) return blank(p);
+    return { ...p, gold: p.kills, kills: p.deaths, deaths: p.assists, assists: p.gold !== undefined && p.gold <= KDA_MAX ? p.gold : undefined };
+  });
+}
+
 export function parseGameTime(text: unknown): number | undefined {
   if (typeof text !== "string") return undefined;
   const m = /^\s*(\d{1,2}):(\d{2})\s*$/.exec(text);
@@ -140,7 +161,7 @@ export function normalizeObservation(raw: unknown): Observation {
         items,
       });
     }
-    return { rows, me };
+    return { rows: unscramble(rows), me };
   };
 
   let mine = players(r.allies);
