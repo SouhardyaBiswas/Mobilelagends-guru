@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { speaker } from "../audio/speech";
 import { useStore } from "../state/store";
 import type { Session } from "../state/session";
 
@@ -35,6 +36,7 @@ interface RoomAnswer {
   at?: number;
   error?: string;
   read?: { screen: string; title: string; body: string };
+  announce?: { id: number; text: string };
 }
 
 /**
@@ -50,6 +52,8 @@ export function useRoomSync(): RoomStatus | undefined {
   const { room, follow } = state.settings.sync;
   const [status, setStatus] = useState<RoomStatus>({ version: 0 });
   const version = useRef(0);
+  /** Last voice-question answer already spoken; undefined until the first poll so old answers are not replayed. */
+  const announced = useRef<number | undefined>(undefined);
   const sessionRef = useRef(state.session);
   sessionRef.current = state.session;
 
@@ -78,6 +82,13 @@ export function useRoomSync(): RoomStatus | undefined {
           version.current = remote;
           dispatch({ type: "adopt", session: body.session });
         }
+        // The answer to a voice question asked on the iPad: say it here, once.
+        const note = body.announce;
+        if (note && announced.current !== undefined && note.id !== announced.current) {
+          speaker.say(note.text, 2);
+          dispatch({ type: "log", entry: { at: Date.now(), kind: "say", text: note.text } });
+        }
+        announced.current = note?.id ?? 0;
         setStatus({ version: remote, lastReadAt: body.at, readError: body.error, lastRead: body.read });
       } catch {
         if (!stopped) setStatus((s) => ({ ...s, error: "Can't reach the coach server. This works on the deployed site only." }));

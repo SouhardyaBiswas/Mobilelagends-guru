@@ -5,7 +5,8 @@ import type { Observation } from "../types";
 import { planBuild } from "./build";
 import { buyAdvice, fedAdvice } from "./coach";
 import { rankCounters } from "./draft";
-import { briefOn, guessLaneOpponent } from "./tips";
+import { matchStory } from "./story";
+import { briefOn, gamePlan, guessLaneOpponent } from "./tips";
 
 /** What the iPad shortcut gets back: a banner (title + body + picture) and a line to speak. */
 export interface CoachReply {
@@ -86,4 +87,64 @@ export function coachReply(session: Session, obs: Observation, called: Set<numbe
     icon: picture(iconId ? itemIcon(iconId) : undefined),
     screen,
   };
+}
+
+/** Questions a voice command can ask without sending a screenshot. */
+export const ASK_TOPICS = ["buy", "status", "lane", "plan", "picks", "threat"] as const;
+export type AskTopic = (typeof ASK_TOPICS)[number];
+
+/**
+ * Answer a spoken question from what the room already knows. No screenshot and
+ * no AI call: it reads the match state built up from earlier screenshots, so it
+ * is instant and free.
+ */
+export function answerQuestion(session: Session, topic: AskTopic): { title: string; say: string } {
+  const hero = session.myHeroId ? heroById(session.myHeroId) : undefined;
+  const needBoard = "I haven't seen your scoreboard yet. Open it and send a screenshot first.";
+
+  if (topic === "picks") {
+    if (!session.enemies.length) return { title: "Hero pick", say: "I can't see any enemy picks yet. Take the hero you play best." };
+    const laneOpponent = guessLaneOpponent(session.lane, session.enemies);
+    const picks = rankCounters({ enemies: session.enemies, allies: session.allies, lane: session.lane, laneOpponent, limit: 3 });
+    const top = picks[0];
+    return { title: "Hero pick", say: `Best picks here: ${picks.map((p) => p.hero.name).join(", ")}.${top ? ` ${top.hero.name}: ${top.reasons[0] ?? ""}` : ""}` };
+  }
+  if (!hero) return { title: "No match yet", say: needBoard };
+  if (!session.enemies.length) return { title: "No enemies yet", say: needBoard };
+
+  const plan = planBuild({
+    hero,
+    lane: session.lane,
+    enemies: enemyStates(session),
+    owned: session.owned,
+    gold: session.gold,
+    plannedBuild: session.plannedBuild,
+    shopListed: session.shopListed,
+    priceFactor: session.priceFactor,
+  });
+  const laneId = session.laneOpponentId ?? guessLaneOpponent(session.lane, session.enemies);
+
+  switch (topic) {
+    case "buy":
+      return { title: "Next item", say: buyAdvice(plan).say };
+    case "status": {
+      const story = matchStory(session);
+      return { title: "Match so far", say: story?.lines.slice(0, 3).join(" ") || "I need a scoreboard screenshot to tell you how the match is going." };
+    }
+    case "lane": {
+      const lane = laneId ? heroById(laneId) : undefined;
+      if (!lane) return { title: "Your lane", say: "I don't know who is in your lane yet. Tap them on the phone under Who is in your lane." };
+      const brief = briefOn(lane, hero);
+      return { title: `Your lane: ${lane.name}`, say: `You face ${lane.name}. ${brief.summary} ${brief.how.slice(0, 2).join(" ")}` };
+    }
+    case "plan":
+      return { title: "Game plan", say: gamePlan(hero, session.enemies, plan.threat, laneId).slice(0, 3).join(" ") };
+    case "threat": {
+      const top = plan.threat.sources[0];
+      const enemy = top ? heroById(top.heroId) : undefined;
+      if (!enemy) return { title: "Biggest threat", say: needBoard };
+      const brief = briefOn(enemy, hero);
+      return { title: `Watch ${enemy.name}`, say: `${enemy.name} is their biggest threat${top!.fed ? " and is fed" : ""}. ${brief.how[0] ?? brief.summary}` };
+    }
+  }
 }

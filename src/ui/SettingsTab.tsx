@@ -211,6 +211,28 @@ function IpadSetup() {
       <p className="fine">
         That sends a screenshot every 15 seconds for about 15 minutes with no tapping. Ordinary gameplay still shows your gold and the match clock, and whenever you open the scoreboard or shop the next screenshot picks it up. Run it again for a longer match.
       </p>
+      <h3>Voice commands (optional)</h3>
+      <p className="fine">
+        Each of these is a one-action shortcut: <em>Get Contents of URL</em> with the address below, nothing else. Run it and the phone answers out loud, from what it already knows — no screenshot, no cost. Give each one a spoken phrase under iPad Settings → Accessibility → Vocal Shortcuts.
+      </p>
+      <table className="standings asks">
+        <tbody>
+          {[
+            ["What do I buy?", "buy"],
+            ["How are we doing?", "status"],
+            ["How do I play my lane?", "lane"],
+            ["What's the plan?", "plan"],
+            ["Who do I watch?", "threat"],
+            ["Help me pick a hero", "picks"],
+          ].map(([label, topic]) => (
+            <tr key={topic}>
+              <td className="who">{label}</td>
+              <td><code className="endpoint">{`${endpoint}&ask=${topic}`}</code></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
       <h3>Play</h3>
       <ol className="steps">
         <li>Phone: open the phone link, tap <em>Turn on voice</em>, and keep it on screen beside you. The stage buttons at the top are yours: <em>Hero selection</em> starts a fresh match, <em>Match over</em> pauses reading.</li>

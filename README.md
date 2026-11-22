@@ -8,7 +8,7 @@ A coach for Mobile Legends: Bang Bang, built for a new player. It tells you, in 
 
 Every enemy gets a card with the skills to recognise (real names and descriptions from the game's own data) and how to play against them.
 
-> **Status:** the advice engine, guide, pictures, voice and the screenshot endpoint are tested (56 unit tests, 35 scripted browser checks). Reading *real* screenshots with a live vision model has **not** been run yet — see [What is and isn't verified](#what-is-and-isnt-verified).
+> **Status:** the advice engine, guide, pictures, voice and the screenshot endpoint are tested (57 unit tests, 35 scripted browser checks). Reading *real* screenshots with a live vision model has **not** been run yet — see [What is and isn't verified](#what-is-and-isnt-verified).
 
 ## iPad plays, phone coaches (no laptop)
 
@@ -49,6 +49,8 @@ On the site open **Settings → iPad plays, phone coaches**. It shows your room 
 The stage moves on by itself as the screenshots change; the buttons are there for when it guesses wrong.
 
 **Two triggers instead of one:** make two shortcuts — *Coach Now* (the four actions, one read) and *Coach Auto* (the same inside *Repeat*, with *Wait* 60 seconds) — and assign them to the AssistiveTouch button's Double-Tap and Long Press. iPadOS has no way to start a shortcut from a multi-finger tap.
+
+**Voice commands:** iPadOS *Vocal Shortcuts* (Settings → Accessibility → Vocal Shortcuts) runs a shortcut when you say a phrase, with no Siri screen. Besides "coach now" for a screenshot, a one-action shortcut can ask a question — *Get Contents of URL* with `…/api/coach?room=CODE&ask=buy` (or `status`, `lane`, `plan`, `threat`, `picks`). The answer comes from what the room already knows, costs nothing, and is spoken on the phone. Settings lists the addresses.
 
 **No hero selection (tutorial or bot matches):** nothing is lost. Open the scoreboard once the match starts; it shows both teams, your hero and your gold.
 
@@ -100,7 +102,7 @@ The stage moves on by itself as the screenshots change; the buttons are there fo
 - A realistic-size screenshot upload reaches Google's API from the server (tested with an invalid key, which was rejected as expected).
 
 **Verified here**
-- 56 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, catalog and picture coverage, and session handling.
+- 57 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, catalog and picture coverage, and session handling.
 - Tests transcribed by hand from real match screenshots: one scoreboard yields the hero, both teams, gold and inventory; the shop yields the in-game build; all eight shop prices match the catalog at the emblem's 95%.
 - 35 scripted browser checks in demo mode: the single-device flow, and the two-device flow with a simulated iPad posting screenshots while a phone-sized page follows, speaks, sends purchases back and switches stages.
 - The screenshot endpoint, run locally: health check, error answers, a scripted match, and the cases that matter with two devices — a tap on the phone landing while a screenshot is still being read, ending the match mid-read, and failed reads being reported to the phone.

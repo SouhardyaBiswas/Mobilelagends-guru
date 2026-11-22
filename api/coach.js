@@ -2271,6 +2271,115 @@ function rankCounters(input) {
 	}
 	return picks.sort((a, b) => b.score - a.score).slice(0, input.limit ?? 8);
 }
+// src/engine/story.ts
+var k = (n) => Math.abs(n) >= 1e3 ? `${(Math.abs(n) / 1e3).toFixed(1)}k` : String(Math.abs(Math.round(n)));
+var sum = (xs) => xs.reduce((a, b) => a + b, 0);
+/** The snapshot to compare against: the most recent one at least `minGapSec` older than the latest. */
+function earlier(history, minGapSec) {
+	const latest = history.at(-1);
+	if (!latest) return void 0;
+	for (let i = history.length - 2; i >= 0; i--) if (latest.at - history[i].at >= minGapSec) return history[i];
+}
+/**
+* What the match's memory says: who is ahead, who is growing, who is struggling,
+* and where the player stands. Built only from numbers printed on the scoreboard
+* (gold and kills / deaths / assists), compared across readings.
+*/
+function matchStory(s) {
+	const latest = s.history.at(-1);
+	if (!latest || !s.myHeroId) return void 0;
+	const before = earlier(s.history, 90);
+	const me = s.myHeroId;
+	const sideOf = (id) => id === me ? "me" : s.allies.includes(id) ? "ally" : s.enemies.includes(id) ? "enemy" : void 0;
+	const players = [];
+	for (const [idText, now] of Object.entries(latest.players)) {
+		const heroId = Number(idText);
+		const side = sideOf(heroId);
+		if (!side || !heroById(heroId)) continue;
+		const was = before?.players[heroId];
+		players.push({
+			heroId,
+			side,
+			...now,
+			gain: now.gold !== void 0 && was?.gold !== void 0 ? now.gold - was.gold : void 0
+		});
+	}
+	players.sort((a, b) => (b.gold ?? -1) - (a.gold ?? -1));
+	const mine = players.filter((p) => p.side !== "enemy");
+	const theirs = players.filter((p) => p.side === "enemy");
+	const golds = (ps) => ps.map((p) => p.gold).filter((g) => g !== void 0);
+	const lines = [];
+	const story = {
+		players,
+		lines,
+		readings: s.history.length
+	};
+	let state;
+	if (golds(mine).length >= 4 && golds(theirs).length >= 4) {
+		const a = sum(golds(mine));
+		const b = sum(golds(theirs));
+		const lead = a - b;
+		story.teamGold = {
+			mine: a,
+			theirs: b,
+			lead
+		};
+		state = Math.abs(lead) < Math.max(500, (a + b) * .04) ? "even" : lead > 0 ? "ahead" : "behind";
+		let moving = "";
+		if (before) {
+			const wasMine = sum(mine.map((p) => before.players[p.heroId]?.gold ?? NaN));
+			const wasTheirs = sum(theirs.map((p) => before.players[p.heroId]?.gold ?? NaN));
+			if (Number.isFinite(wasMine) && Number.isFinite(wasTheirs)) {
+				story.leadChange = lead - (wasMine - wasTheirs);
+				story.overMinutes = Math.max(1, Math.round((latest.at - before.at) / 60));
+				const span = `in the last ${story.overMinutes} minute${story.overMinutes === 1 ? "" : "s"}`;
+				if (story.leadChange >= 400) moving = ` You gained ${k(story.leadChange)} on them ${span}.`;
+				else if (story.leadChange <= -400) moving = ` They gained ${k(story.leadChange)} on you ${span}.`;
+			}
+		}
+		lines.push((state === "even" ? "The teams are about even on gold." : `Your team is ${state} by ${k(lead)} gold.`) + moving);
+	}
+	const self = players.find((p) => p.side === "me");
+	let selfState = "";
+	if (self) {
+		const rank = mine.filter((p) => (p.gold ?? 0) > (self.gold ?? 0)).length + 1;
+		if ((self.deaths ?? 0) >= 3 && (self.deaths ?? 0) > (self.kills ?? 0)) {
+			selfState = "dying";
+			lines.push(`You have died ${self.deaths} times. Stay behind your tank and near your turrets until your next item.`);
+		} else if (self.gold !== void 0 && mine.length >= 4 && rank === 1) {
+			selfState = "carry";
+			lines.push("You have the most gold on your team. You are the carry now — staying alive matters more than one more kill.");
+		} else if (self.gold !== void 0 && mine.length >= 4 && rank >= 4) {
+			selfState = "poor";
+			lines.push("You are low on gold for your team. Clear minion waves and jungle camps before you join fights.");
+		}
+	}
+	const allies = mine.filter((p) => p.side === "ally");
+	const strong = allies.find((p) => p.gold !== void 0 && (p.kills ?? 0) >= (p.deaths ?? 0) && (p.kills ?? 0) + (p.assists ?? 0) >= 2);
+	if (strong) lines.push(`${heroName(strong.heroId)} is your strongest teammate (${strong.kills}/${strong.deaths}/${strong.assists}). Fight near them.`);
+	const weak = allies.find((p) => (p.deaths ?? 0) >= 3 && (p.deaths ?? 0) >= (p.kills ?? 0) + 2);
+	if (weak && weak !== strong) lines.push(`${heroName(weak.heroId)} is struggling (${weak.kills}/${weak.deaths}/${weak.assists}). Don't follow them into a fight alone.`);
+	const top = theirs[0];
+	if (top?.gold !== void 0 && theirs.length >= 3) {
+		const rest = golds(theirs.slice(1));
+		const avg = rest.length ? sum(rest) / rest.length : 0;
+		if (top.gold - avg >= 600) lines.push(`${heroName(top.heroId)} is their richest hero (${top.kills ?? "?"}/${top.deaths ?? "?"}/${top.assists ?? "?"}) — the one to watch.`);
+	}
+	const gains = theirs.filter((p) => p.gain !== void 0);
+	if (gains.length >= 3) {
+		const fastest = [...gains].sort((a, b) => b.gain - a.gain)[0];
+		const others = gains.filter((p) => p !== fastest);
+		const avgGain = sum(others.map((p) => p.gain)) / others.length;
+		if (fastest.gain >= 600 && fastest.gain >= avgGain * 1.4 && fastest !== top) lines.push(`${heroName(fastest.heroId)} is growing fastest on their team (+${k(fastest.gain)} gold recently).`);
+	}
+	if (!before && s.history.length === 1) lines.push("This is the first scoreboard I have seen. Open it again in a couple of minutes and I can tell you who is pulling ahead.");
+	const spoken = [lines.find((l) => /^Your team is|^The teams are/.test(l)), lines.find((l) => /^You (have|are)/.test(l))].filter(Boolean);
+	if (spoken.length && (state || selfState)) story.headline = {
+		key: `story:${state ?? "-"}:${selfState || "-"}`,
+		say: spoken.join(" ")
+	};
+	return story;
+}
 // src/engine/tips.ts
 var SKILLS = {
 	"1": [
@@ -6847,6 +6956,42 @@ function guessLaneOpponent(myLane, enemyIds) {
 	const want = LANE_MATCH[myLane];
 	return (enemies.find((h) => h.lanes[0] && want.includes(h.lanes[0])) ?? enemies.find((h) => h.lanes.some((l) => want.includes(l))))?.id;
 }
+var JOB = {
+	Marksman: "Your job: farm safely until you have two or three items, then stand behind your tank and hit whoever is closest.",
+	Mage: "Your job: clear the mid wave fast, help the side lanes, and land your skills on their damage dealers from the back.",
+	Assassin: "Your job: farm the jungle, then pick off their marksman or mage when they are alone. Don't go in first.",
+	Fighter: "Your job: win or hold your lane, then dive their back line once your tank has started the fight.",
+	Tank: "Your job: go in first, soak up their big skills, and keep enemies off your marksman.",
+	Support: "Your job: stay with your marksman early, keep your team alive, and save your big skill for the fight that matters."
+};
+/** A short game plan for a new player: who to kill, who to respect, what the team needs from them. */
+function gamePlan(me, enemyIds, threat, laneOpponentId) {
+	const enemies = enemyIds.map(heroById).filter((h) => !!h);
+	if (!enemies.length) return [JOB[me.roles[0] ?? "Fighter"] ?? ""];
+	const out = [];
+	const list = (hs) => hs.map((h) => h.name).join(" and ");
+	const lane = laneOpponentId ? heroById(laneOpponentId) : void 0;
+	if (lane) {
+		const edge = versus(me.id, lane.id);
+		const read = edge === void 0 ? "" : edge >= 1 ? ` The numbers favour you (+${edge.toFixed(1)}% win rate).` : edge <= -1 ? ` This lane is hard for ${me.name} (${edge.toFixed(1)}% win rate) — farm safely and don't take even fights.` : "";
+		out.push(`In lane you face ${lane.name}: ${summarise(lane).replace(/\.$/, "").toLowerCase()}.${read}`);
+	}
+	const carries = enemies.filter((h) => squishy(h) && h.roles[0] !== "Support").sort((a, b) => b.ability.offense - a.ability.offense).slice(0, 2);
+	const healers = enemies.filter((h) => h.roles[0] === "Support" && h.traits.sustain >= .5).slice(0, 2);
+	const targets = carries.length ? carries : healers;
+	if (carries.length) out.push(`Kill first: ${list(carries)} — their damage, and easy to kill.`);
+	else if (healers.length) out.push(`Kill first: ${list(healers)} — their healers. While they live, nobody else dies.`);
+	const warnings = [];
+	if (threat.sustain + .5 * threat.shields >= 1.2) warnings.push("They heal and shield a lot — someone on your team needs anti-heal early. It is in your build.");
+	const divers = (threat.who.burst ?? []).map(heroById).filter((h) => !!h).slice(0, 2);
+	if (divers.length && squishy(me)) warnings.push(`${list(divers)} will try to jump on you. Stay behind your team and keep your escape ready.`);
+	if (threat.cc >= 2.2) warnings.push("They have a lot of crowd control. Don't bunch up with teammates, and don't be the first one in.");
+	const walls = enemies.filter((h) => h.traits.tanky >= .75).slice(0, 2);
+	if (walls.length && targets.length) warnings.push(`Don't waste skills on ${list(walls)} while ${targets[0].name} is alive.`);
+	out.push(...warnings.slice(0, 2));
+	out.push(JOB[me.roles[0] ?? "Fighter"] ?? "");
+	return out.filter(Boolean).slice(0, 5);
+}
 // src/engine/reply.ts
 /**
 * Turn the session after a screenshot read into one short answer.
@@ -6939,6 +7084,101 @@ function coachReply(session, obs, called, origin) {
 		icon: picture(iconId ? itemIcon(iconId) : void 0),
 		screen
 	};
+}
+/** Questions a voice command can ask without sending a screenshot. */
+var ASK_TOPICS = [
+	"buy",
+	"status",
+	"lane",
+	"plan",
+	"picks",
+	"threat"
+];
+/**
+* Answer a spoken question from what the room already knows. No screenshot and
+* no AI call: it reads the match state built up from earlier screenshots, so it
+* is instant and free.
+*/
+function answerQuestion(session, topic) {
+	const hero = session.myHeroId ? heroById(session.myHeroId) : void 0;
+	const needBoard = "I haven't seen your scoreboard yet. Open it and send a screenshot first.";
+	if (topic === "picks") {
+		if (!session.enemies.length) return {
+			title: "Hero pick",
+			say: "I can't see any enemy picks yet. Take the hero you play best."
+		};
+		const laneOpponent = guessLaneOpponent(session.lane, session.enemies);
+		const picks = rankCounters({
+			enemies: session.enemies,
+			allies: session.allies,
+			lane: session.lane,
+			laneOpponent,
+			limit: 3
+		});
+		const top = picks[0];
+		return {
+			title: "Hero pick",
+			say: `Best picks here: ${picks.map((p) => p.hero.name).join(", ")}.${top ? ` ${top.hero.name}: ${top.reasons[0] ?? ""}` : ""}`
+		};
+	}
+	if (!hero) return {
+		title: "No match yet",
+		say: needBoard
+	};
+	if (!session.enemies.length) return {
+		title: "No enemies yet",
+		say: needBoard
+	};
+	const plan = planBuild({
+		hero,
+		lane: session.lane,
+		enemies: enemyStates(session),
+		owned: session.owned,
+		gold: session.gold,
+		plannedBuild: session.plannedBuild,
+		shopListed: session.shopListed,
+		priceFactor: session.priceFactor
+	});
+	const laneId = session.laneOpponentId ?? guessLaneOpponent(session.lane, session.enemies);
+	switch (topic) {
+		case "buy": return {
+			title: "Next item",
+			say: buyAdvice(plan).say
+		};
+		case "status": return {
+			title: "Match so far",
+			say: matchStory(session)?.lines.slice(0, 3).join(" ") || "I need a scoreboard screenshot to tell you how the match is going."
+		};
+		case "lane": {
+			const lane = laneId ? heroById(laneId) : void 0;
+			if (!lane) return {
+				title: "Your lane",
+				say: "I don't know who is in your lane yet. Tap them on the phone under Who is in your lane."
+			};
+			const brief = briefOn(lane, hero);
+			return {
+				title: `Your lane: ${lane.name}`,
+				say: `You face ${lane.name}. ${brief.summary} ${brief.how.slice(0, 2).join(" ")}`
+			};
+		}
+		case "plan": return {
+			title: "Game plan",
+			say: gamePlan(hero, session.enemies, plan.threat, laneId).slice(0, 3).join(" ")
+		};
+		case "threat": {
+			const top = plan.threat.sources[0];
+			const enemy = top ? heroById(top.heroId) : void 0;
+			if (!enemy) return {
+				title: "Biggest threat",
+				say: needBoard
+			};
+			const brief = briefOn(enemy, hero);
+			return {
+				title: `Watch ${enemy.name}`,
+				say: `${enemy.name} is their biggest threat${top.fed ? " and is fed" : ""}. ${brief.how[0] ?? brief.summary}`
+			};
+		}
+	}
 }
 // node_modules/@anthropic-ai/sdk/internal/tslib.mjs
 function __classPrivateFieldSet(receiver, state, value, kind, f) {
@@ -82877,6 +83117,22 @@ async function handle(request) {
 		}
 	});
 	const roomParam = (url.searchParams.get("room") ?? request.headers.get("x-coach-room") ?? "").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 32).toUpperCase();
+	const ask = (url.searchParams.get("ask") ?? "").toLowerCase();
+	if (roomParam && ask) {
+		if (!ASK_TOPICS.includes(ask)) return json(400, {
+			ok: false,
+			say: `I don't know that question. Try: ${ASK_TOPICS.join(", ")}.`
+		});
+		const answer = answerQuestion(rooms.get(roomParam)?.session ?? EMPTY_SESSION, ask);
+		update(roomParam, Date.now(), (room) => ({ announce: {
+			id: (room.announce?.id ?? 0) + 1,
+			text: answer.say
+		} }));
+		return json(200, {
+			...answer,
+			body: answer.say
+		});
+	}
 	if (request.method === "GET" && roomParam) {
 		const room = rooms.get(roomParam);
 		if (!room) return json(200, {
@@ -82889,7 +83145,8 @@ async function handle(request) {
 			at: room.at,
 			error: room.error?.message,
 			errorAt: room.error?.at,
-			read: room.read
+			read: room.read,
+			announce: room.announce
 		};
 		if (url.searchParams.get("v") === String(room.version)) return json(200, {
 			...info,

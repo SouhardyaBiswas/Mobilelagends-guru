@@ -74,6 +74,30 @@ describe("screenshot endpoint", () => {
     expect(ok.read).toMatchObject({ screen: expect.any(String), title: expect.any(String), body: expect.any(String) });
   });
 
+  it("answers voice questions from memory and hands the answer to the phone", async () => {
+    const room = "ASK01";
+    // Before anything is known, it says what it needs instead of guessing.
+    expect(String((await call("GET", `?room=${room}&ask=buy`)).body.say)).toMatch(/haven't seen your scoreboard/);
+    expect(String((await call("GET", `?room=${room}&ask=picks`)).body.say)).toMatch(/Take the hero you play best/);
+    await ipad(room);
+    await ipad(room);
+    const s = (await state(room)).session!;
+    expect(s.myHeroId).toBeDefined();
+    expect(s.enemies.length).toBe(5);
+    const before = (await state(room)).version;
+    const buy = await call("GET", `?room=${room}&ask=buy`);
+    expect(String(buy.body.say)).toMatch(/Buy|Next item|Save/);
+    expect(String((await call("GET", `?room=${room}&ask=plan`)).body.say).length).toBeGreaterThan(20);
+    expect(String((await call("GET", `?room=${room}&ask=threat`)).body.say)).toMatch(/biggest threat/);
+    const status = await call("GET", `?room=${room}&ask=status`);
+    // The phone is told to say the latest answer, with a new id each time, without disturbing the match.
+    const after = await state(room);
+    expect(after.announce).toMatchObject({ text: status.body.say });
+    expect((after.announce as { id: number }).id).toBeGreaterThanOrEqual(4);
+    expect(after.version).toBe(before);
+    expect((await call("GET", `?room=${room}&ask=nonsense`)).status).toBe(400);
+  });
+
   it("rejects actions it does not know and keeps rooms apart", async () => {
     expect((await phone("SAFE01", { type: "observe", obs: {}, now: 1 })).status).toBe(400);
     expect((await phone("SAFE01", { type: "adopt", session: {} })).status).toBe(400);

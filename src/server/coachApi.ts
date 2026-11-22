@@ -9,7 +9,7 @@
  */
 import { HEROES } from "../data/heroes";
 import { planBuild } from "../engine/build";
-import { coachReply } from "../engine/reply";
+import { answerQuestion, ASK_TOPICS, coachReply, type AskTopic } from "../engine/reply";
 import { CONTROLLER_ACTIONS, EMPTY_SESSION, sessionReducer, stageOf, type Session, type SessionAction } from "../state/session";
 import { claudeVision } from "../vision/claude";
 import { demoVision } from "../vision/demo";
@@ -33,6 +33,8 @@ interface Room {
   error?: { message: string; at: number };
   /** What the most recent screenshot turned out to be, so the follower gets feedback even when it was no use. */
   read?: { screen: string; title: string; body: string };
+  /** Something to say out loud on the following device right now (the answer to a voice question). */
+  announce?: { id: number; text: string };
 }
 
 const blankRoom = (now: number): Room => ({ session: EMPTY_SESSION, called: new Set<number>(), matchId: 0, at: now, version: 0 });
@@ -95,11 +97,21 @@ async function handle(request: Request): Promise<Response> {
   }
   const roomParam = (url.searchParams.get("room") ?? request.headers.get("x-coach-room") ?? "").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 32).toUpperCase();
 
+  // A voice command asking a question: answered from what the room already knows — no screenshot, no AI call.
+  const ask = (url.searchParams.get("ask") ?? "").toLowerCase();
+  if (roomParam && ask) {
+    if (!(ASK_TOPICS as readonly string[]).includes(ask)) return json(400, { ok: false, say: `I don't know that question. Try: ${ASK_TOPICS.join(", ")}.` });
+    const answer = answerQuestion(rooms.get(roomParam)?.session ?? EMPTY_SESSION, ask as AskTopic);
+    // Hand the answer to the following device so the phone says it too.
+    update(roomParam, Date.now(), (room) => ({ announce: { id: (room.announce?.id ?? 0) + 1, text: answer.say } }));
+    return json(200, { ...answer, body: answer.say });
+  }
+
   // A follower (the phone) asking what the room's screenshots have produced so far.
   if (request.method === "GET" && roomParam) {
     const room = rooms.get(roomParam);
     if (!room) return json(200, { ok: true, version: 0 });
-    const info = { ok: true, version: room.version, at: room.at, error: room.error?.message, errorAt: room.error?.at, read: room.read };
+    const info = { ok: true, version: room.version, at: room.at, error: room.error?.message, errorAt: room.error?.at, read: room.read, announce: room.announce };
     if (url.searchParams.get("v") === String(room.version)) return json(200, { ...info, unchanged: true });
     return json(200, { ...info, session: room.session });
   }

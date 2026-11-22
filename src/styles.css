@@ -262,3 +262,5 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
 .standings .gain { color: var(--ok); }
 .standings .side-enemy .who { color: #ffc2c2; }
 .standings .side-ally .who, .standings .side-me .who { color: #cfe6ff; }
+.standings.asks td:first-child { width: auto; padding-right: 10px; white-space: nowrap; }
+.standings.asks .endpoint { padding: 6px 8px; font-size: 12px; }
