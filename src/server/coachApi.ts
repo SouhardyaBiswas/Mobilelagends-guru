@@ -22,6 +22,7 @@ import { demoVision } from "../vision/demo";
 import { geminiAsk, geminiVision } from "../vision/gemini";
 import { normalizeObservation } from "../vision/schema";
 import { VisionError, type AskJson, type VisionCall, type VisionImage } from "../vision/types";
+import { waitUntil } from "@vercel/functions";
 import { storeForRequest, type KeyValue } from "./store";
 
 const MAX_BYTES = 4_000_000;
@@ -241,6 +242,24 @@ async function handle(request: Request): Promise<Response> {
   const store = storeForRequest();
   const roomParam = (url.searchParams.get("room") ?? request.headers.get("x-coach-room") ?? "").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 32).toUpperCase();
   const announce = (room: Room, text: string) => ({ announce: { id: (room.announce?.id ?? 0) + 1, text } });
+
+  // Diagnostic: does work keep running here after the answer has been sent? "later" answers at once and
+  // writes a marker a few seconds afterwards; "read" says whether the marker ever arrived.
+  const probe = url.searchParams.get("probe");
+  if (probe) {
+    const key = `probe:${(url.searchParams.get("id") ?? "x").replace(/[^a-zA-Z0-9]/g, "").slice(0, 24)}`;
+    if (probe === "later") {
+      const wait = Math.min(20_000, Math.max(0, Number(url.searchParams.get("ms") ?? 8000)));
+      waitUntil(
+        (async () => {
+          await new Promise((r) => setTimeout(r, wait));
+          await store.set(key, { wrote: Date.now(), after: wait, store: store.kind }, 300);
+        })(),
+      );
+      return json(200, { ok: true, answeredAt: Date.now(), store: store.kind });
+    }
+    return json(200, { ok: true, marker: (await store.get(key)) ?? null, now: Date.now() });
+  }
 
   // A voice command asking a question: answered from what the room already knows — no screenshot, no AI call.
   const ask = (url.searchParams.get("ask") ?? "").toLowerCase();

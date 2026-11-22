@@ -43,12 +43,12 @@ function NowCard({ plan, onRepeat }: { plan: Plan; onRepeat: () => void }) {
       <p>{n.detail}</p>
       {n.where && <p className="where">🛒 {n.where}</p>}
       <div className="row">
-        {n.action !== "done" && n.action !== "save" && (
+        {n.action !== "done" && n.action !== "save" && n.action !== "buy-pieces" && (
           <button className="btn primary" onClick={confirm}>
             ✓ Done{target ? ` — got ${target.name}` : ""}
           </button>
         )}
-        {n.action === "save" && n.item && (
+        {(n.action === "save" || n.action === "buy-pieces") && n.item && (
           <button className="btn" onClick={confirm}>
             I bought {n.item.name} anyway
           </button>

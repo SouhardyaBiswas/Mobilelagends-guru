@@ -97271,6 +97271,31 @@ async function handle(request) {
 		id: (room.announce?.id ?? 0) + 1,
 		text
 	} });
+	const probe = url.searchParams.get("probe");
+	if (probe) {
+		const key = `probe:${(url.searchParams.get("id") ?? "x").replace(/[^a-zA-Z0-9]/g, "").slice(0, 24)}`;
+		if (probe === "later") {
+			const wait = Math.min(2e4, Math.max(0, Number(url.searchParams.get("ms") ?? 8e3)));
+			(0, import_functions.waitUntil)((async () => {
+				await new Promise((r) => setTimeout(r, wait));
+				await store.set(key, {
+					wrote: Date.now(),
+					after: wait,
+					store: store.kind
+				}, 300);
+			})());
+			return json(200, {
+				ok: true,
+				answeredAt: Date.now(),
+				store: store.kind
+			});
+		}
+		return json(200, {
+			ok: true,
+			marker: await store.get(key) ?? null,
+			now: Date.now()
+		});
+	}
 	const ask = (url.searchParams.get("ask") ?? "").toLowerCase();
 	if (roomParam && ask && ask !== "position") {
 		if (!ASK_TOPICS.includes(ask)) return json(400, {
