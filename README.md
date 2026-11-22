@@ -8,82 +8,113 @@ A coach for Mobile Legends: Bang Bang, built for a new player. It tells you, in 
 
 Every enemy gets a card with the skills to recognise (real names and descriptions from the game's own data) and how to play against them.
 
-> **Status:** the advice engine, guide, pictures, voice and the screenshot endpoint are tested (64 unit tests, 36 scripted browser checks). Reading *real* screenshots with a live vision model has **not** been run yet — see [What is and isn't verified](#what-is-and-isnt-verified).
+> **Status:** the engine, the endpoint, the voice-command flow, the storyboard and the AI coach's plumbing are covered by 82 unit tests and scripted browser checks, and the reader has been run on real matches. The AI coach and the positioning helper have **not** yet been run against a real model — see [What is and isn't verified](#what-is-and-isnt-verified).
 
-## iPad plays, phone coaches (no laptop)
+## Phone plays, iPad shows the coach
 
-The iPad runs the game and sends screenshots by itself. This site reads them and works out the advice. Your phone, beside you, is the dashboard and the voice — and the controller, with stage buttons for *Hero selection → Match starting → In match → Match over*.
+The phone runs the game and a handful of Apple Shortcuts, started by voice. Each shortcut sends a screenshot or a command to this site. The site reads it, the rules work out the numbers, an AI coach decides, and the iPad — open on the dashboard — shows everything in one window and says it out loud.
+
+```
+phone (game + Shortcuts) ──screenshot / command──▶ /api/coach ──▶ reader model: what is on screen
+                                                        │         rules: gold spent, what you own, who is fed
+                                                        │         coach model: build order, calls, storyboard line
+iPad dashboard  ◀──────────── polls the room ───────────┘
+```
 
 ### 1. It is online
 
 **https://mlbb-guru.vercel.app** — on Vercel's free plan.
 
-It was deployed without linking Vercel to GitHub: Vercel's build fetches this public repository and builds the latest commit. That means an update only goes live when the project is redeployed (Vercel dashboard → the project → Deployments → ⋯ → Redeploy). To get automatic redeploys instead, connect GitHub under Vercel's account settings and import the repository at vercel.com/new.
+It was deployed without linking Vercel to GitHub: Vercel's build fetches this public repository and builds the latest commit. An update only goes live when the project is redeployed (Vercel dashboard → the project → Deployments → ⋯ → Redeploy). To get automatic redeploys, connect GitHub under Vercel's account settings and import the repository at vercel.com/new.
 
-### 2. Get a free key
+### 2. A model key
 
-Google AI Studio → *Get API key*. This is what reads the screenshots. It goes into the iPad shortcut, not onto the site.
+The shortcuts send your own key with each screenshot (`x-vision-key` header); the site stores none. A Claude key (`sk-ant…`) or a Google AI Studio key both work.
+
+| Header | What it sets | Default with a Claude key |
+|---|---|---|
+| `x-vision-key` | Your API key | — |
+| `x-vision-model` | The model that reads the screenshot | `claude-opus-5-5` |
+| `x-coach-model` | The model that decides items and calls | `claude-opus-5-5` |
+| `x-coach` | `off` uses the built-in rules only | on |
 
 ### 3. Set up the two devices
 
-On the site open **Settings → iPad plays, phone coaches**. It shows your room code, the link for the phone and the address for the shortcut, with copy buttons and a *Test server* button.
+Open **Settings → Phone plays, iPad shows the coach** on the site. It shows your room code, the dashboard link, the shortcut address and the exact address for every voice command.
 
-**iPad — build the shortcut once** (Shortcuts app → +):
+**iPad:** open the dashboard link (`/?room=CODE`) in landscape and tap **Turn on voice**.
 
-1. *Repeat* — 60 times. Put the next five actions inside it.
-2. *Take Screenshot*
-3. *Resize Image* — width 1600
-4. *Convert Image* — JPEG
-5. *Get Contents of URL* — the shortcut address from Settings; method POST; header `x-vision-key` = your key; request body = File → the converted image
-6. *Wait* — 15 seconds
+**Phone — the screenshot block.** Every screenshot command is the same four actions with a different address:
 
-**Phone:** open the phone link from Settings, tap **Turn on voice**, and keep the page on screen.
+1. *Take Screenshot*
+2. *Resize Image* — width 1600 (a full-size screenshot takes seconds to upload from a phone)
+3. *Convert Image* — JPEG
+4. *Get Contents of URL* — Method POST; header `x-vision-key` = your key; Request Body = File → the converted image
 
-### 4. Play
+**Voice commands.** One shortcut per row; give each a phrase under iPhone Settings → Accessibility → Vocal Shortcuts.
 
-1. When hero selection starts, tap **Hero selection** on the phone and run the shortcut on the iPad.
-2. As enemies lock in, the phone calls out the best picks. Once you have picked, it tells you how to play your lane.
-3. In the match it tracks your gold and the clock from ordinary gameplay screenshots, and says what to buy, with the item's picture and where it is in the shop. Open the scoreboard now and then so it sees everyone's items; open the shop once so it learns the build you chose.
-4. Tap **Done** on the phone when you buy something. Tap **Match over** to pause reading.
+| Say | When | Shortcut |
+|---|---|---|
+| "Draft mode" | Hero selection on screen | Screenshot block → `…&stage=draft` |
+| "Entering the match" | Loading screen | Screenshot block → `…&stage=loading` |
+| "Coach on" | Match started | One action: `…&stage=live` |
+| "Coach now" | Scoreboard or shop open | Screenshot block → the plain address |
+| "Help me position" | Any time in the match | Screenshot → `…&ask=position&shot=1` → *Speak Text* "Open the map" → *Wait* 3 s → screenshot → `…&ask=position&shot=2` |
+| "Coach off" | Match over | One action: `…&stage=done` |
+| "What do I buy?" and five more | Any time | One action: `…&ask=buy` (`status`, `threat`, `lane`, `plan`, `picks`) |
 
-The stage moves on by itself as the screenshots change; the buttons are there for when it guesses wrong.
+The questions in the last row are answered from what the room already knows — no screenshot, no AI call, no cost.
 
-**Two triggers instead of one:** make two shortcuts — *Coach Now* (the four actions, one read) and *Coach Auto* (the same inside *Repeat*, with *Wait* 60 seconds) — and assign them to the AssistiveTouch button's Double-Tap and Long Press. iPadOS has no way to start a shortcut from a multi-finger tap.
+**Hands-free reads.** To send a screenshot every 30 seconds, extend "Coach on": after the stage action add *Wait* 1 second → *Repeat* 40 → [screenshot block → *Get Dictionary Value* `halt` → *If* it has any value: *Stop This Shortcut* → *Wait* 30 seconds]. "Coach off" then stops the loop. Whether iOS keeps a long repeat alive behind the game has not been tried.
 
-**Voice commands:** iPadOS *Vocal Shortcuts* (Settings → Accessibility → Vocal Shortcuts) runs a shortcut when you say a phrase, with no Siri screen. Besides "coach now" for a screenshot, a one-action shortcut can ask a question — *Get Contents of URL* with `…/api/coach?room=CODE&ask=buy` (or `status`, `lane`, `plan`, `threat`, `picks`). The answer comes from what the room already knows, costs nothing, and is spoken on the phone. Settings lists the addresses.
+### 4. A match, start to finish
 
-**No hero selection (tutorial or bot matches):** nothing is lost. Open the scoreboard once the match starts; it shows both teams, your hero and your gold.
+1. Hero selection: say **"draft mode"**. The iPad calls the best picks. Say "coach now" again as enemies lock in.
+2. Loading screen: say **"entering the match"**. You get your build, battle spell and lane plan.
+3. First trip to the shop: open it and say **"coach now"** once. The coach learns your in-game list and what you own.
+4. During the match: open the scoreboard and say **"coach now"** whenever you want a fresh read. Say **"help me position"** when unsure where to be.
+5. End: say **"coach off"**.
 
-**First run:** build the shortcut without *Repeat* and *Wait*, open the scoreboard in a match and run it once with the phone watching. That proves the key, the server and the read in one step. If nothing arrives, the bar at the top of the phone says why (wrong key, quota, wrong upload). Then add *Repeat* and *Wait*.
+**No hero selection (bot or tutorial matches):** open the scoreboard once the match starts and say "coach now"; it shows both teams, your hero and your gold.
 
-**Hero selection:** the coach can only suggest picks once enemy heroes are actually shown. In modes where the enemy side stays hidden ("Player 1–5") until the loading screen, advice starts at the loading screen.
-
-**If the repeating shortcut stops by itself:** iPadOS decides how long a shortcut may keep running behind a game, and that has only been reasoned about, not tried. If it stops, remove *Repeat* and *Wait*, assign the four-action shortcut to an AssistiveTouch double-tap (Settings → Accessibility → Touch → AssistiveTouch → Custom Actions), and double-tap when you open the scoreboard. One double-tap takes and sends the screenshot; nothing is shared by hand.
-
-### What an iPad cannot do
+### What a phone and an iPad cannot do
 
 | Wanted | Reality |
 |---|---|
-| A web page that watches the game | Not possible in Safari on iPad. The Shortcut is the only route without a native app. |
-| A pop-up drawn over the game | Not possible from a web page. The phone is the display; a true overlay needs a native app, built with a Mac. |
-| Guaranteed memory of the match on the server | The free setup keeps the match in the server's memory. If the server restarts, the phone hands its copy back; if both lose it, the next scoreboard screenshot rebuilds everything. |
+| A web page that watches the game | Not possible in Safari. A Shortcut taking screenshots is the only route without a native app. |
+| A pop-up drawn over the game | Not possible from a web page. The iPad is the display. |
+| Instant advice | A read is a photo upload plus one or two model calls: several seconds. Good for what to buy and where to be; not for reacting inside a fight. |
+| Guaranteed memory on the server | The match is kept in Vercel's shared cache, which can drop an entry. If it does, the dashboard hands its copy back. |
 
 ### Other ways to use it
 
-- **Phone only, by hand:** Draft tab → tap in the enemy heroes → pick yours → Start match. No key needed.
+- **By hand, one device:** Draft tab → tap in the enemy heroes → pick yours → Start match. No key needed.
 - **Upload a screenshot:** Settings → Screen reading → paste the key → Live coach → Upload screenshot.
 - **Laptop:** Live coach → Share game screen, which watches a game window continuously.
 
 ## How it decides
 
-- **Counters** — each candidate's measured win-rate edge against every enemy pick (Moonton's ranked stats), lane opponent doubled, half-weight synergy with teammates, a small patch-strength nudge, plus the game's own hero notes.
-- **Threat** — each enemy's share of their team's kill pressure, raised for whoever is really ahead (at least 700 gold or 3 kills clear). That re-weights the physical/magic split and flags healing, burst, crowd control and tankiness.
-- **Build** — your in-game build if a shop screenshot was read, otherwise a short core for your hero type; then counters for this enemy team. Carries get at most two defensive items.
-- **Next step** — buy if you can afford it; otherwise an urgent counter you *can* afford, or a cheap piece that already carries part of its effect; otherwise save. Every step says where the item is: your Recommended list, a shop tab, or inside another item's build path.
-- **Guide** — skill names, cooldowns and descriptions come from synced game data, so new heroes are covered. The advice lines follow from what a kit does (crowd control, burst, healing, dashes), not from memory of the hero.
-- **Build progress** — measured by gold spent (total earned on your scoreboard row minus the gold in your pocket), both printed numbers. Item icons are the one thing vision models misread, so an item list that costs more than its owner has earned is thrown away, and your own progress never depends on icons.
-- **Match memory** — every scoreboard read is kept for the match. Comparing them gives the "Match so far" panel: team gold and how the lead is moving, your strongest and struggling teammates, the enemy to watch and who is growing fastest, and where you stand.
-- **Voice** — speaks when the advice changes, never on a loop.
+Three layers, each checking the one before.
+
+**1. The reader** (a vision model) transcribes the screenshot: screen type, clock, pocket gold, each row's hero, kills / deaths / assists and gold, the shop's lists and prices, your inventory. It is never asked for advice.
+
+**2. The rules** turn that into facts, and distrust what is known to go wrong:
+
+- **Gold spent** — your total on the scoreboard minus the gold in your pocket. Some matches print totals without the 300 starting gold; a believed inventory that costs about that much more than "spent" reveals it, and the figure is corrected for the rest of the match.
+- **What you own** — the shop's inventory row is believed when it fits the gold spent. Scoreboard icons are tiny, so that row is believed only when it builds on what was seen before or two reads agree. Gold not yet accounted for is assumed to have gone into your own in-game list, in order — the game's quick-buy button offers exactly that. A counter the coach merely suggested is never assumed bought.
+- **Misreads** — a score row with gold in the kills column is shifted back; a row whose numbers went down is held until the next read settles it; item lists that cost more than their owner earned are dropped.
+- **Threat** — each enemy's share of their team's kill pressure, raised for whoever is really ahead (700 gold or 3 kills clear).
+- **Next step** — buy if you can afford it; otherwise a named piece, or "buy pieces" when there is gold in hand; "save" only when the pocket is nearly empty.
+
+**3. The AI coach** (a strong model, text only) gets the whole match as plain text — both teams with roles, kits and numbers, what you own and are part-way through, your in-game list, the rules' plan, the storyboard — and answers with a six-item build order with a reason per item, the calls for the next two minutes, who to focus or avoid, and one storyboard line. Before any of it is shown: unknown item and hero names are dropped, repeats and second boots removed, and what you already own stays at the front. If the coach fails or is switched off, the rules' answer stands.
+
+**Storyboard** — one line per scoreboard: who got kills, whether you died, how the gold lead moved. Written by the rules at once and replaced by the coach's line when it arrives.
+
+**Positioning** — "help me position" sends a picture of the fight and one with the map open to the coach model, which is told to describe only what it can see and to say so when the map is not open.
+
+**Counters in draft** — each candidate's measured win-rate edge against every enemy pick (Moonton's ranked stats), lane opponent doubled, half-weight synergy with teammates, plus the game's own hero notes.
+
+**Voice** — speaks when the advice changes, never on a loop.
 
 ## Data
 
@@ -98,23 +129,23 @@ The stage moves on by itself as the screenshots change; the buttons are there fo
 ## What is and isn't verified
 
 **Verified on the live site**
-- The site and item pictures load, and the server answers with real advice.
-- The two-device sequence run with curl: a scripted read, the phone's poll, a purchase and a stage change sent from the phone, pausing, and a failed read reported to the phone.
-- A realistic-size screenshot upload reaches Google's API from the server (tested with an invalid key, which was rejected as expected).
+- The site loads and the server answers with real advice.
+- Match memory is shared between server copies. Before the fix, polls made while a screenshot was being read came back empty from a copy that knew nothing; the same test now returns the room every time. The shared cache does occasionally return the previous copy for under a second after a write (2 of 84 polls in one measurement); the server and the dashboard both guard against that.
+- Real reads from real matches reach the reader model and come back (Claude Haiku so far).
 
 **Verified here**
-- 64 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, catalog and picture coverage, and session handling.
-- Tests transcribed by hand from real match screenshots: one scoreboard yields the hero, both teams, gold and inventory; the shop yields the in-game build; all eight shop prices match the catalog at the emblem's 95%.
-- 36 scripted browser checks in demo mode: the single-device flow, and the two-device flow with a simulated iPad posting screenshots while a phone-sized page follows, speaks, sends purchases back and switches stages.
-- The screenshot endpoint, run locally: health check, error answers, a scripted match, and the cases that matter with two devices — a tap on the phone landing while a screenshot is still being read, ending the match mid-read, and failed reads being reported to the phone.
+- 82 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, the endpoint with two devices, voice stages, the positioning flow, the coach's answer being checked against the catalog, and two server copies sharing one room.
+- Tests transcribed from two real matches. One from screenshots: a scoreboard and the shop, with all eight prices matching the catalog at the emblem's 95%. One from the server's logs: six scoreboards and a shop read from a ranked match, including the three that came back with shifted columns and the missing starting gold.
 
-**Learned from the first real matches**
-- Claude Haiku read hero names, kills/deaths/assists and gold correctly from real scoreboards.
-- It misread item icons badly (one hero with 3,619 gold was credited with about 10,000 gold of items). The coach no longer relies on icons for your build, and discards item lists that are impossible for the gold earned.
+**Learned from real matches**
+- Claude Haiku reads hero names, the clock and gold correctly, shifted the enemy columns on half the scoreboards, and its item icons are noise (the same inventory read as four different sets of items in four reads).
+- Its read of the shop's large inventory row matched the gold spent to within 2 gold.
+- Uploads took 2 to 8 seconds on top of the model's own time when the screenshot was not resized.
 
 **Not verified**
-- **The Shortcut on a real iPad**, in particular whether a repeating shortcut keeps running behind the game.
-- **Voice on iPhone and iPad Safari.**
+- **The AI coach and positioning against a real model.** Their instructions, the checking of their answers and the whole request flow are tested with scripted answers; how good the advice is on a real match is unknown until one is played.
+- **A stronger reader on item icons.** Whether Opus reads the small scoreboard icons reliably has not been measured.
+- **A long repeating shortcut behind the game**, and **voice on iPad Safari**.
 
 ## Fair-play note
 
@@ -135,9 +166,10 @@ Node 20+. Screen sharing (**Share game screen**) works on a laptop browser, wher
 scripts/           data and picture sync
 src/data/          generated hero data, item catalog, build templates, timers
 src/engine/        threat, counters, build planner, guide, coach lines, endpoint replies
-src/vision/        prompt, answer schema, Gemini / Claude / demo readers
+src/vision/        the reader: prompt, answer schema, Gemini / Claude / demo
+src/ai/            the coach and the positioning helper: instructions, answer checks
 src/state/         match state (shared by the app and the endpoint)
-src/server/        the screenshot endpoint, bundled to api/coach.js
+src/server/        the endpoint and its shared room store, bundled to api/coach.js
 src/ui/            Draft, Live coach, Settings
 tests/             unit tests
 ```

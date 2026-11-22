@@ -255,6 +255,36 @@ describe("room memory shared between copies of the server", () => {
     expect(backing.size).toBeGreaterThanOrEqual(2); // the room and its version number really went through the cache
   });
 
+  it("does not lose a read when the shared cache answers with the previous copy for a moment", async () => {
+    // Measured on the live site: for up to a second after a write, a read can return the value from before it.
+    const versions = new Map<string, Array<{ at: number; json: string }>>();
+    const LAG_MS = 300;
+    const cache = {
+      get: async (key: string) => {
+        const all = versions.get(key) ?? [];
+        const settled = all.filter((v) => Date.now() - v.at >= LAG_MS).at(-1);
+        return settled ? JSON.parse(settled.json) : null;
+      },
+      set: async (key: string, value: unknown) => void versions.set(key, [...(versions.get(key) ?? []), { at: Date.now(), json: JSON.stringify(value) }]),
+      delete: async (key: string) => void versions.delete(key),
+      expireTag: async () => undefined,
+    };
+    holder[CONTEXT] = { get: () => ({ cache }) };
+    vi.resetModules();
+    const mod = (await import("../src/server/coachApi")).default;
+    const go = async (method: string, path: string, init: RequestInit = {}) => (await (await mod.fetch(new Request(`https://coach.test/api/coach${path}`, { method, ...init }))).json()) as Record<string, unknown> & { session?: Session; version?: number };
+    const shot = { headers: { "content-type": "image/png", "x-vision-provider": "demo" }, body: PNG };
+    // One request, two writes a moment apart: the read, then the coach's answer built on it.
+    await go("POST", "?room=LAGGY1", shot);
+    await go("POST", "?room=LAGGY1", shot);
+    await new Promise((r) => setTimeout(r, LAG_MS + 50));
+    const after = await go("GET", "?room=LAGGY1&v=-1");
+    expect(after.version).toBe(4); // read, coach, read, coach: none overwritten
+    expect(after.session!.history.length).toBe(1); // the scoreboard read survived the coach's write
+    expect(after.session!.ai).toBeDefined();
+    expect(after.session!.gold).toBe(620);
+  });
+
   it("falls back to its own memory where there is no shared cache", async () => {
     const mod = (await import("../src/server/coachApi")).default;
     const res = (await (await mod.fetch(new Request("https://coach.test/api/coach"))).json()) as { store: string };

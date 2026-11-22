@@ -139,13 +139,13 @@ export function SettingsTab() {
   );
 }
 
-/** Two-device setup: the iPad sends screenshots, this site reads them, the phone shows and speaks the coach. */
+/** Two-device setup: the phone plays and runs the shortcuts, this site reads and decides, the iPad shows and speaks the coach. */
 function IpadSetup() {
   const { state, dispatch } = useStore();
   const { sync } = state.settings;
   const origin = window.location.origin;
   const endpoint = `${origin}/api/coach?room=${sync.room}`;
-  const phoneLink = `${origin}/?room=${sync.room}`;
+  const dashboardLink = `${origin}/?room=${sync.room}`;
   const [check, setCheck] = useState<string>();
   const setSync = (patch: Partial<typeof sync>) => dispatch({ type: "settings", patch: { sync: { ...sync, ...patch } } });
   const copy = (text: string) => void navigator.clipboard?.writeText(text);
@@ -153,17 +153,28 @@ function IpadSetup() {
     setCheck("Checking…");
     try {
       const res = await fetch(`${origin}/api/coach`);
-      const body = (await res.json()) as { ok?: boolean; heroes?: number; sample?: string };
-      setCheck(body.ok ? `Working — ${body.heroes} heroes loaded. Sample advice: "${body.sample}"` : `Unexpected answer (HTTP ${res.status}).`);
+      const body = (await res.json()) as { ok?: boolean; heroes?: number; sample?: string; store?: string };
+      setCheck(
+        body.ok
+          ? `Working — ${body.heroes} heroes loaded, match memory is ${body.store === "shared" ? "shared between server copies" : "in this server's memory only"}. Sample advice: "${body.sample}"`
+          : `Unexpected answer (HTTP ${res.status}).`,
+      );
     } catch {
       setCheck("Not reachable. This only works on the deployed site, not on a local preview.");
     }
   };
+  const Address = ({ query }: { query: string }) => <code className="endpoint">{`${endpoint}${query}`}</code>;
+  /** The four actions that take a screenshot and send it. Every screenshot command is this block with a different address. */
+  const SEND = (
+    <>
+      <strong>Take Screenshot</strong> → <strong>Resize Image</strong> (width 1600) → <strong>Convert Image</strong> (JPEG) → <strong>Get Contents of URL</strong>
+    </>
+  );
   return (
     <section className="panel span">
-      <h2>iPad plays, phone coaches</h2>
+      <h2>Phone plays, iPad shows the coach</h2>
       <p className="hint">
-        Safari on an iPad can't look at the game, so the screenshots come from an Apple Shortcut. It sends each one to this site, the site works out the advice, and your phone — following the same room — shows the dashboard and says it out loud.
+        The phone runs the game and a handful of Apple Shortcuts, started by voice. Each one sends a screenshot or a command to this site; the site reads it, an AI coach decides, and the iPad — open on the dashboard link — shows everything and says it out loud.
       </p>
 
       <div className="setup-grid">
@@ -178,70 +189,95 @@ function IpadSetup() {
             <input type="checkbox" checked={sync.follow} onChange={(e) => setSync({ follow: e.target.checked })} />
             <span>Follow this room (show and speak the coach here)</span>
           </label>
-          <p>Turn this on for the phone. Leave it off on the iPad.</p>
+          <p>On for the iPad dashboard. The phone does not need this page open at all.</p>
         </div>
       </div>
 
       <div className="field">
-        <span>1 · Open this on your phone</span>
-        <code className="endpoint">{phoneLink}</code>
+        <span>1 · Open this on the iPad, in landscape, and tap Turn on voice</span>
+        <code className="endpoint">{dashboardLink}</code>
       </div>
       <div className="field">
-        <span>2 · The iPad shortcut sends screenshots here</span>
+        <span>2 · Every shortcut on the phone talks to this address</span>
         <code className="endpoint">{endpoint}</code>
       </div>
       <div className="row wrap">
-        <button className="btn" onClick={() => copy(phoneLink)}>Copy phone link</button>
+        <button className="btn" onClick={() => copy(dashboardLink)}>Copy dashboard link</button>
         <button className="btn" onClick={() => copy(endpoint)}>Copy shortcut address</button>
         <button className="btn" onClick={() => void test()}>Test server</button>
       </div>
       {check && <p className="fine">{check}</p>}
 
-      <h3>Build the shortcut on the iPad (Shortcuts app → +)</h3>
-      <ol className="steps">
-        <li><strong>Repeat</strong> — 60 times. Put the next five actions inside it.</li>
-        <li><strong>Take Screenshot</strong></li>
-        <li><strong>Resize Image</strong> — width 1600, height auto</li>
-        <li><strong>Convert Image</strong> — to JPEG</li>
-        <li>
-          <strong>Get Contents of URL</strong> — the shortcut address above. Show More → Method <em>POST</em>. Headers → add <code>x-vision-key</code> with your Gemini API key. Request Body → <em>File</em> → choose the Converted Image.
-        </li>
-        <li><strong>Wait</strong> — 15 seconds</li>
-      </ol>
+      <h3>The screenshot block</h3>
       <p className="fine">
-        That sends a screenshot every 15 seconds for about 15 minutes with no tapping. Ordinary gameplay still shows your gold and the match clock, and whenever you open the scoreboard or shop the next screenshot picks it up. Run it again for a longer match.
+        Every screenshot command below is the same four actions with a different address: {SEND}. In <em>Get Contents of URL</em>: Show More → Method <em>POST</em>; Headers → <code>x-vision-key</code> = your API key; Request Body → <em>File</em> → the Converted Image. Resizing matters: a full-size screenshot takes
+        seconds to upload from a phone.
       </p>
-      <h3>Voice commands (optional)</h3>
       <p className="fine">
-        Each of these is a one-action shortcut: <em>Get Contents of URL</em> with the address below, nothing else. Run it and the phone answers out loud, from what it already knows — no screenshot, no cost. Give each one a spoken phrase under iPad Settings → Accessibility → Vocal Shortcuts.
+        Models: with a Claude key both the reader and the coach default to the strongest model. To choose, add the headers <code>x-vision-model</code> (reads the screenshot) and <code>x-coach-model</code> (decides items and calls), or <code>x-coach</code> = <code>off</code> to use the built-in rules only.
+      </p>
+
+      <h3>Voice commands</h3>
+      <p className="fine">
+        Make one shortcut per row, then give each a phrase under iPhone Settings → Accessibility → Vocal Shortcuts. Rows marked <em>address only</em> are a single <em>Get Contents of URL</em> action with nothing else to set.
       </p>
       <table className="standings asks">
         <tbody>
+          <tr>
+            <td className="who">“Draft mode”<br /><span className="fine">hero selection is on screen</span></td>
+            <td>The screenshot block, sent to <Address query="&stage=draft" /><span className="fine">Starts a fresh match and calls the picks. Say “coach now” again as enemies lock in.</span></td>
+          </tr>
+          <tr>
+            <td className="who">“Entering the match”<br /><span className="fine">loading screen, all ten heroes</span></td>
+            <td>The screenshot block, sent to <Address query="&stage=loading" /><span className="fine">Reads both teams; the coach answers with your build, spell and lane plan.</span></td>
+          </tr>
+          <tr>
+            <td className="who">“Coach on”<br /><span className="fine">match started</span></td>
+            <td><em>Address only:</em> <Address query="&stage=live" /><span className="fine">To also send a screenshot every 30 seconds, add after it: Wait 1 second → Repeat 40 → [the screenshot block to the plain address → Get Dictionary Value <code>halt</code> → If it has any value: Stop This Shortcut → Wait 30 seconds].</span></td>
+          </tr>
+          <tr>
+            <td className="who">“Coach now”<br /><span className="fine">scoreboard or shop open</span></td>
+            <td>The screenshot block, sent to <Address query="" /><span className="fine">The scoreboard gives the coach both teams’ numbers; the shop gives it your list and what you own.</span></td>
+          </tr>
+          <tr>
+            <td className="who">“Help me position”</td>
+            <td>
+              Take Screenshot → Convert Image → Get Contents of URL <Address query="&ask=position&shot=1" /> → <strong>Speak Text</strong> “Open the map” → <strong>Wait</strong> 3 seconds → Take Screenshot → Convert Image → Get Contents of URL <Address query="&ask=position&shot=2" />
+              <span className="fine">Both requests are POST with the key header and the image as the file. Open the map when you hear the prompt; the answer is spoken on the iPad.</span>
+            </td>
+          </tr>
+          <tr>
+            <td className="who">“Coach off”<br /><span className="fine">match over</span></td>
+            <td><em>Address only:</em> <Address query="&stage=done" /><span className="fine">Pauses reading, so a repeating shortcut stops spending your key.</span></td>
+          </tr>
           {[
-            ["What do I buy?", "buy"],
-            ["How are we doing?", "status"],
-            ["How do I play my lane?", "lane"],
-            ["What's the plan?", "plan"],
-            ["Who do I watch?", "threat"],
-            ["Help me pick a hero", "picks"],
+            ["“What do I buy?”", "buy"],
+            ["“How are we doing?”", "status"],
+            ["“Who do I watch?”", "threat"],
+            ["“How do I play my lane?”", "lane"],
+            ["“What's the plan?”", "plan"],
+            ["“Help me pick”", "picks"],
           ].map(([label, topic]) => (
             <tr key={topic}>
               <td className="who">{label}</td>
-              <td><code className="endpoint">{`${endpoint}&ask=${topic}`}</code></td>
+              <td><em>Address only:</em> <Address query={`&ask=${topic}`} /></td>
             </tr>
           ))}
         </tbody>
       </table>
-
-      <h3>Play</h3>
-      <ol className="steps">
-        <li>Phone: open the phone link, tap <em>Turn on voice</em>, and keep it on screen beside you. The stage buttons at the top are yours: <em>Hero selection</em> starts a fresh match, <em>Match over</em> pauses reading.</li>
-        <li>iPad: when hero selection starts, run the shortcut (from the Home Screen, or assign it to AssistiveTouch: Settings → Accessibility → Touch → AssistiveTouch → Custom Actions).</li>
-        <li>Play. Open the scoreboard now and then so the coach sees everyone's items.</li>
-      </ol>
       <p className="fine">
-        <strong>If the repeating shortcut stops by itself</strong> — iPadOS decides how long a shortcut may run behind a game, and that has to be tried on your iPad — remove the Repeat and Wait, assign the four-action shortcut to an AssistiveTouch double-tap, and tap it when you open the scoreboard. One double-tap takes the screenshot and sends it; there is nothing to share by hand.
+        The six questions at the bottom are answered from what the room already knows: no screenshot, no AI call, no cost. Everything else that sends a picture uses your key.
       </p>
+
+      <h3>A match, start to finish</h3>
+      <ol className="steps">
+        <li>iPad: dashboard link open, voice on.</li>
+        <li>Hero selection: say <em>“draft mode”</em>. The iPad calls the best picks.</li>
+        <li>Loading screen: say <em>“entering the match”</em>. You get your build, battle spell and lane plan.</li>
+        <li>First trip to the shop: open it and say <em>“coach now”</em> once. The coach learns your in-game list and what you own.</li>
+        <li>During the match: open the scoreboard and say <em>“coach now”</em> whenever you want a fresh read — after a fight, when you die, before a big purchase. Ask <em>“help me position”</em> when you are unsure where to be.</li>
+        <li>End: say <em>“coach off”</em>.</li>
+      </ol>
     </section>
   );
 }

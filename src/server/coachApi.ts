@@ -88,9 +88,22 @@ const rowsFor = (players: Observation["allies"]) =>
 
 const blankRoom = (): Room => ({ session: EMPTY_SESSION, called: [], matchId: 0, at: 0, version: 0, reads: [] });
 
+/**
+ * What this copy of the function wrote in the last few seconds. Measured on the live
+ * site, the shared cache now and then hands back the previous value for up to a second
+ * after a write. A read and the coach's answer are two writes a moment apart in one
+ * request, so without this the second would be built on the copy from before the first.
+ */
+const justWritten = new Map<string, { room: Room; at: number }>();
+const WRITE_MEMORY_MS = 5000;
+
 async function loadRoom(store: KeyValue, roomId: string): Promise<Room | undefined> {
   const value = await store.get(`room:${roomId}`);
-  return value && typeof value === "object" ? (value as Room) : undefined;
+  const cached = value && typeof value === "object" ? (value as Room) : undefined;
+  const mine = justWritten.get(roomId);
+  if (mine && Date.now() - mine.at > WRITE_MEMORY_MS) justWritten.delete(roomId);
+  else if (mine && mine.room.version > (cached?.version ?? 0)) return mine.room;
+  return cached;
 }
 
 /** Changes to one room are applied one after another within this copy of the function. */
@@ -105,6 +118,7 @@ function update(store: KeyValue, roomId: string, change: (room: Room) => Partial
     const current = (await loadRoom(store, roomId)) ?? blankRoom();
     const next: Room = { ...current, ...change(current), version: current.version + 1 };
     await store.set(`room:${roomId}`, next, ROOM_TTL_SEC);
+    if (store.kind === "shared") justWritten.set(roomId, { room: next, at: Date.now() });
     // A tiny companion entry: the dashboard polls this, and only fetches the room when it moved.
     await store.set(`v:${roomId}`, next.version, ROOM_TTL_SEC);
     return next;
@@ -270,6 +284,7 @@ async function handle(request: Request): Promise<Response> {
   if (url.searchParams.has("reset")) {
     await store.delete(`room:${roomId}`);
     await store.delete(`v:${roomId}`);
+    justWritten.delete(roomId);
     return json(200, { title: "New match", body: "Cleared.", say: "Ready for a new match." });
   }
   if (url.searchParams.has("action")) {

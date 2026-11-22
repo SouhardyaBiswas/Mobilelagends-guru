@@ -81,6 +81,7 @@ export function useRoomSync(): RoomStatus | undefined {
     setStatus({ version: 0 });
     let stopped = false;
     let lastChange = Date.now();
+    let adoptedAt = 0;
     const url = `/api/coach?room=${encodeURIComponent(room)}`;
 
     const poll = async () => {
@@ -103,8 +104,12 @@ export function useRoomSync(): RoomStatus | undefined {
           version.current = 0;
           return;
         }
+        // The shared store can hand back the previous copy for a moment after a write. An older
+        // version arriving right after a newer one is that, not news: keep what we have.
+        if (remote !== 0 && remote < version.current && Date.now() - adoptedAt < 10_000) return;
         if (body.session && remote !== version.current) {
           version.current = remote;
+          adoptedAt = Date.now();
           dispatch({ type: "adopt", session: body.session });
         }
         // The answer to a voice question asked on the iPad: say it here, once.
