@@ -9,7 +9,7 @@ import { planBuild } from "../src/engine/build";
 import { buyAdvice, fedAdvice, SpokenLog } from "../src/engine/coach";
 import { rankCounters } from "../src/engine/draft";
 import { analyzeThreat } from "../src/engine/threat";
-import { EMPTY_SESSION, orientObservation, sessionReducer, type Session } from "../src/state/store";
+import { EMPTY_SESSION, freshSession, orientObservation, sessionReducer, type Session } from "../src/state/store";
 import type { Observation, PlayerState } from "../src/types";
 import { normalizeObservation, parseGameTime } from "../src/vision/schema";
 
@@ -172,7 +172,11 @@ describe("build planner", () => {
     expect(plan.slots.find((s) => !s.owned)?.item.id).toBe("windtalker"); // still the next core item…
     expect(plan.next).toMatchObject({ action: "buy-component", component: { name: "Magic Blade" } }); // …but 1450g buys the shield piece now
     expect(plan.next.item?.id).toBe("rose_gold_meteor");
-    // With nothing threatening there is nothing to improvise: keep saving for the core item.
+    // Same lineup, same gold, nobody fed: the assassin is only a nice-to-have counter,
+    // so the plan still contains the defensive item but does not delay the first damage item for it.
+    const unfed = planBuild({ hero: H("Layla"), enemies: team(...HEALERS), owned: ["swift_boots"], gold: 1450 });
+    expect(slotIds(unfed)).toContain("rose_gold_meteor");
+    expect(unfed.next).toMatchObject({ action: "save", item: { id: "windtalker" } });
     const calm = planBuild({ hero: H("Layla"), enemies: team("Tigreal", "Franco"), owned: ["swift_boots"], gold: 1450 });
     expect(calm.next).toMatchObject({ action: "save", item: { id: "windtalker" } });
   });
@@ -350,6 +354,36 @@ describe("session state", () => {
     expect(s.enemies).toEqual(ids("Zilong", "Nana", "Hanabi", "Atlas", "Fanny"));
     expect(s.allies).toEqual(ids("Franco", "Aurora", "Saber", "Chou"));
     expect(s.phase).toBe("draft");
+  });
+
+  it("treats a scoreboard full of different heroes as a new match", () => {
+    const yesterday: Session = { ...base, phase: "live", clockStart: 0, owned: ["swift_boots", "windtalker"], matchId: 7 };
+    const board = obsOf(
+      "scoreboard",
+      [{ heroId: H("Miya").id, items: ["swift_boots"] }, ...team("Franco", "Aurora")],
+      team("Zilong", "Nana", "Hanabi"),
+      { meHeroId: H("Miya").id, gameTimeSec: 120 },
+    );
+    const s = sessionReducer(yesterday, { type: "observe", obs: board, now: 5_000_000 });
+    expect(s.matchId).toBe(8);
+    expect(s.myHeroId).toBe(H("Miya").id);
+    expect(s.enemies).toEqual(ids("Zilong", "Nana", "Hanabi"));
+    expect(s.owned).toEqual(["swift_boots"]); // this game's inventory, not the old one
+    expect(s.phase).toBe("live");
+    // A scoreboard that merely misreads a couple of portraits is not a new match.
+    const noisy = obsOf("scoreboard", team("Layla", "Tigreal", "Eudora"), team("Gusion", "Karrie", "Nana"));
+    expect(sessionReducer(yesterday, { type: "observe", obs: noisy, now: 5_000_000 }).matchId).toBe(7);
+  });
+
+  it("drops a restored match that is hours old but keeps one in progress", () => {
+    const live: Session = { ...base, phase: "live", clockStart: 1_000_000, owned: ["swift_boots"], lane: "gold", matchId: 2 };
+    expect(freshSession(live, 1_000_000 + 20 * 60_000)).toBe(live);
+    const stale = freshSession(live, 1_000_000 + 3 * 60 * 60_000);
+    expect(stale).toMatchObject({ phase: "draft", owned: [], enemies: [], lane: "gold", matchId: 3 });
+    expect(stale.myHeroId).toBeUndefined();
+    // A draft being prepared is never discarded.
+    const draft: Session = { ...base, phase: "draft" };
+    expect(freshSession(draft, 9e12)).toBe(draft);
   });
 
   it("handles buying, finishing from a component, and sell-swaps", () => {

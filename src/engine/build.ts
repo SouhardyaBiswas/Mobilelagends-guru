@@ -210,8 +210,9 @@ function nextStep(
   }
   // Improvise: rather than sit on gold for an expensive item, take a counter you can afford right now —
   // the finished item if possible, otherwise a cheap piece that already carries part of its effect.
+  // Only for urgent counters: an unfed enemy is no reason to delay your core damage item.
   for (const later of slots) {
-    if (later.owned || later === target || later.kind !== "situational") continue;
+    if (later.owned || later === target || !later.urgent) continue;
     const lc = later.item.component;
     const haveLc = !!lc && owned.includes(componentId(lc.name));
     const laterRemaining = later.item.cost - (haveLc && lc ? lc.cost : 0);
@@ -299,7 +300,13 @@ export function planBuild(input: BuildInput): BuildPlan & { threat: ThreatProfil
   const have = [...planned.filter((o) => ownedFull.includes(o.item.id)), ...offPlan];
   const want = planned.filter((o) => !ownedFull.includes(o.item.id));
   const fitted = [...have, ...want].slice(0, SLOTS);
-  const slots: BuildSlot[] = fitted.map((o) => ({ item: o.item, reason: o.reason, kind: o.kind, owned: ownedFull.includes(o.item.id) }));
+  const slots: BuildSlot[] = fitted.map((o) => ({
+    item: o.item,
+    reason: o.reason,
+    kind: o.kind,
+    owned: ownedFull.includes(o.item.id),
+    urgent: o.kind === "situational" && o.score >= URGENT,
+  }));
   const fittedIds = new Set(fitted.map((o) => o.item.id));
   const overflow: Pick[] = want.filter((o) => !fittedIds.has(o.item.id) && o.kind === "situational");
 

@@ -152,6 +152,8 @@ export interface BuildSlot {
   reason: string;
   kind: "boots" | "core" | "situational" | "damage";
   owned: boolean;
+  /** A counter that matters right now (fed enemy, heavy healing) rather than a nice-to-have. */
+  urgent?: boolean;
 }
 
 export interface NextStep {

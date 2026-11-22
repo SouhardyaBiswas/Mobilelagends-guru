@@ -140,16 +140,19 @@ export function orientObservation(obs: Observation, s: Pick<Session, "myHeroId" 
 }
 
 /**
- * A loading or draft screen showing mostly different heroes means the next game
- * has started. The roster check matters: a mid-match screen misread as "loading"
- * still shows the same heroes and must not wipe the match.
+ * A screen showing mostly different heroes means the next game has started.
+ * The roster check matters: a mid-match screen misread as "loading" still shows
+ * the same heroes and must not wipe the match. Loading and draft screens print
+ * hero names, so two are enough; a scoreboard only shows portraits, so it needs
+ * most of the lobby to disagree before we believe it.
  */
 function isNewMatch(s: Session, obs: Observation): boolean {
-  if (obs.screen !== "loading" && obs.screen !== "draft") return false;
+  const textScreen = obs.screen === "loading" || obs.screen === "draft";
+  if (!textScreen && obs.screen !== "scoreboard") return false;
   if (s.phase !== "live" && s.owned.length === 0) return false;
   const seen = [...obs.allies, ...obs.enemies].map((p) => p.heroId);
   const known = [...s.allies, ...s.enemies, ...(s.myHeroId ? [s.myHeroId] : [])];
-  return seen.length >= 2 && known.length >= 4 && overlap(seen, known) * 3 <= seen.length;
+  return seen.length >= (textScreen ? 2 : 6) && known.length >= 4 && overlap(seen, known) * 3 <= seen.length;
 }
 
 function applyObservation(s0: Session, obs0: Observation, now: number, costUsd = 0): Session {
@@ -281,6 +284,15 @@ function load<T>(key: string, fallback: T): T {
   }
 }
 
+/** No match lasts this long; a "live" session older than this was left over from an earlier sitting. */
+const STALE_MATCH_MS = 60 * 60 * 1000;
+
+/** Drop a restored match that is clearly over, so yesterday's items and enemies don't coach today's game. */
+export function freshSession(saved: Session, now: number): Session {
+  const stale = saved.phase === "live" && saved.clockStart !== undefined && now - saved.clockStart > STALE_MATCH_MS;
+  return stale ? { ...EMPTY_SESSION, lane: saved.lane, matchId: saved.matchId + 1 } : saved;
+}
+
 function initialState(): State {
   const saved = load<Settings>(KEY_SETTINGS, DEFAULT_SETTINGS);
   return {
@@ -289,7 +301,7 @@ function initialState(): State {
       speech: { ...DEFAULT_SETTINGS.speech, ...saved.speech },
       capture: { ...DEFAULT_SETTINGS.capture, ...saved.capture },
     },
-    session: load<Session>(KEY_SESSION, EMPTY_SESSION),
+    session: freshSession(load<Session>(KEY_SESSION, EMPTY_SESSION), Date.now()),
   };
 }
 

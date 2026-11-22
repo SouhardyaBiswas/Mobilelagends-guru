@@ -8,7 +8,7 @@ A voice coach for Mobile Legends: Bang Bang. It runs next to the game and tells 
 
 The item logic follows how strong players itemise: a short fixed core, then answers to whoever is actually hurting you — and a cheap counter piece now rather than gold sitting in your pocket.
 
-> **Status:** the recommendation engine, UI, voice and capture loop are tested (31 unit tests plus a scripted browser run). Reading *real* game screenshots with a live API key has **not** been tested yet — see [What is and isn't verified](#what-is-and-isnt-verified).
+> **Status:** the recommendation engine, UI, voice and capture loop are tested (33 unit tests plus a scripted browser run). Reading *real* game screenshots with a live API key has **not** been tested yet — see [What is and isn't verified](#what-is-and-isnt-verified).
 
 ## Quick start
 
@@ -99,7 +99,7 @@ Behind a proxy, run the sync as `NODE_USE_ENV_PROXY=1 npm run sync-data`.
 ## What is and isn't verified
 
 **Verified here**
-- Engine behaviour: 31 unit tests covering counters, threat weighting, build planning, the buy/component/save/sell flow, catalog integrity and session handling.
+- Engine behaviour: 33 unit tests covering counters, threat weighting, build planning, the buy/component/save/sell flow, catalog integrity and session handling.
 - The whole app in headless Chromium: draft → plan → live coaching → demo reads → fed-enemy re-plan → spoken lines, plus a fake camera stream through the capture loop, both missing-key error paths, reload persistence and phone-width layout.
 - Hero and matchup data pulled live from Moonton's API.
 
