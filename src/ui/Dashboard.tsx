@@ -2,8 +2,8 @@ import { useEffect, useState, type ReactNode } from "react";
 import { speaker } from "../audio/speech";
 import { heroById } from "../data/heroes";
 import { formatClock, upcoming } from "../data/timeline";
-import { STAGE_LABEL, stageOf, useStore, type Session, type Stage } from "../state/store";
-import { LANE_LABEL, type BuildPlan, type Hero, type ThreatProfile } from "../types";
+import { STAGE_LABEL, stageOf, useStore, type Stage } from "../state/store";
+import { LANE_LABEL, type AiAdvice, type BuildPlan, type Hero, type PositionAdvice, type StoryBeat, type ThreatProfile } from "../types";
 import { BuildList, SpellEmblem } from "./BuildList";
 import { CounterList, LaneChips, useCounterPicks } from "./DraftTab";
 import { Guide } from "./Guide";
@@ -12,29 +12,6 @@ import { NowCard, ReadsPanel, StoryPanel, ThreatPanel } from "./LiveTab";
 import { SettingsTab } from "./SettingsTab";
 import { SCREEN_LABEL, type RoomStatus } from "./useRoomSync";
 
-/* ── AI coach fields ─────────────────────────────────────────────────────────
- * The server attaches these to the session. They are declared here only until
- * they exist on `Session` in src/state/session.ts: after that, delete this
- * block and the single cast marked "DashExtras cast" in Dashboard() below.
- */
-/** What the AI coach concluded from the latest read. */
-interface AiAdvice {
-  at: number; // epoch ms when it was produced
-  clock?: number; // match seconds at that moment
-  model: string;
-  situation: "ahead" | "even" | "behind";
-  headline: string; // at most ~12 words: the single most important thing right now
-  doNow: string[]; // 1 to 3 short imperative lines
-  avoid?: string; // one line
-  focus?: { heroId: number; why: string }; // the enemy to kill first, or to stay away from
-  item?: { id: string; why: string }; // the next item, an id from the item catalog
-}
-/** One line of the match storyboard. */
-interface StoryBeat { at: number; text: string; tone?: "good" | "bad" | "neutral" } // at = match seconds
-/** Answer to the voice question "help me position". */
-interface PositionAdvice { at: number; summary: string; danger?: string; moves: string[]; say: string; model: string } // at = epoch ms
-interface DashExtras { ai?: AiAdvice; story?: StoryBeat[]; position?: PositionAdvice }
-/* ── end of AI coach fields ──────────────────────────────────────────────── */
 
 type Plan = BuildPlan & { threat: ThreatProfile };
 
@@ -89,7 +66,7 @@ interface DashboardProps {
 export function Dashboard({ plan, hero, gameSec, laneOpponentId, room, now, onRepeat, settingsOpen, onSettings }: DashboardProps) {
   const { state, dispatch } = useStore();
   const { session, settings } = state;
-  const { ai, story, position } = session as Session & DashExtras; // DashExtras cast: plain `session` once it declares these fields.
+  const { ai, story, position } = session;
   const stage = stageOf(session);
   // Speech needs one tap per page load on iOS, even when the setting already says "on".
   const [voiceReady, setVoiceReady] = useState(false);
@@ -275,16 +252,22 @@ function WaitingBoard({ stage, room, voice, needHero = false }: { stage?: Stage;
         <span className="eyebrow">On your phone</span>
         {needHero ? (
           <ol className="plan">
-            <li>Open the scoreboard — your own row is highlighted there — and let the coach shortcut take a screenshot.</li>
+            <li>
+              Open the scoreboard — your own row is highlighted there — and say <strong>"coach now"</strong>.
+            </li>
             <li>Your hero, build, the enemy team and the plan then appear here and are spoken aloud.</li>
           </ol>
         ) : (
           <ol className="plan">
-            <li>Start the coach shortcut, so screenshots of the game are sent to this room.</li>
             <li>
               When hero selection begins, say <strong>"draft mode"</strong>. Counter picks appear here as the enemy locks in.
             </li>
-            <li>In the match, open the scoreboard now and then, so the coach can see everyone's gold and items.</li>
+            <li>
+              On the loading screen, say <strong>"entering the match"</strong>.
+            </li>
+            <li>
+              When the match starts, say <strong>"coach on"</strong>. Open the scoreboard and the shop now and then, so the coach sees everyone's gold and your items.
+            </li>
           </ol>
         )}
         {!voice.ready && (

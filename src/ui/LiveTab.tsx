@@ -2,7 +2,7 @@ import { useMemo, useRef, type ReactNode } from "react";
 import { speaker } from "../audio/speech";
 import { captureSupport } from "../capture/capture";
 import { heroById } from "../data/heroes";
-import { componentId, ownedLabel } from "../data/items";
+import { componentId, itemById, ownedLabel } from "../data/items";
 import { formatClock, upcoming } from "../data/timeline";
 import { matchStory } from "../engine/story";
 import { useStore } from "../state/store";
@@ -74,6 +74,8 @@ export function ThreatPanel({ plan, compact = false }: { plan: Plan; compact?: b
   if (t.tankiness >= 2.2) chips.push("Tanky");
   if (t.basicAttack >= 1.2) chips.push("Basic attackers");
   const magicPct = Math.round(t.magicShare * 100);
+  // What the enemy tracker made of the last scoreboard picture, when it has run.
+  const intel = s.intel;
 
   return (
     <section className="panel">
@@ -86,12 +88,14 @@ export function ThreatPanel({ plan, compact = false }: { plan: Plan; compact?: b
             <i className="magic" style={{ width: `${magicPct}%` }}>{magicPct >= 18 ? `Magic ${magicPct}%` : ""}</i>
           </div>
           <div className="chips static">{chips.map((c) => <span key={c} className="chip on">{c}</span>)}</div>
+          {intel?.summary && <p className="intel-summary">{intel.summary}</p>}
           <ul className="enemies">
             {t.sources.map((src) => {
               const hero = heroById(src.heroId);
               if (!hero) return null;
               const live = s.enemyLive[src.heroId];
               const mark = s.manualFed[src.heroId];
+              const seen = intel?.enemies.find((e) => e.heroId === src.heroId);
               return (
                 <li key={src.heroId} className={src.fed ? "fed" : ""}>
                   <HeroIcon hero={hero} size={compact ? 32 : 40} />
@@ -102,6 +106,19 @@ export function ThreatPanel({ plan, compact = false }: { plan: Plan; compact?: b
                       {src.fed && <span className="tag fedtag">fed</span>}
                     </span>
                     <span className="bar"><i style={{ width: `${Math.round(src.weight * 100 * 2.2)}%` }} /></span>
+                    {seen && (seen.note || seen.items.length > 0 || seen.maybe.length > 0) && (
+                      <span className="enemy-note">
+                        {seen.items.map((id) => (
+                          <ItemIcon key={id} id={id} name={itemById(id)?.name ?? id} size={20} />
+                        ))}
+                        {seen.maybe.map((id) => (
+                          <span key={id} className="intel-maybe" title="Seen once; not confirmed yet">
+                            <ItemIcon id={id} name={itemById(id)?.name ?? id} size={20} />
+                          </span>
+                        ))}
+                        {seen.note}
+                      </span>
+                    )}
                     {!compact && (
                       <small>
                         {live?.kills !== undefined ? `${live.kills}/${live.deaths ?? "?"}/${live.assists ?? "?"}` : "no live stats"}

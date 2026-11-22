@@ -18319,6 +18319,8 @@ function analyzeThreat(enemies) {
 // src/engine/build.ts
 var FROM_YOUR_BUILD = "From the build you chose in game.";
 var FROM_AI = "Chosen by the coach for this match.";
+/** Gold already put into an item before it is treated as "being built" and finished first. */
+var PINNED_FROM = 350;
 /** With this much gold in hand there is almost always a piece of the next item to buy. */
 var PIECE_FLOOR = 400;
 /** The AI coach's build as catalog items: no duplicates, one pair of boots, six at most. Too short a list is ignored. */
@@ -18686,10 +18688,8 @@ function planBuild(input) {
 				assumed.push(e);
 				budget -= cost;
 			} else {
-				if (budget >= 100) {
-					paidToward.set(e.item.id, Math.round(budget));
-					started = e;
-				}
+				if (budget >= 100) paidToward.set(e.item.id, Math.round(budget));
+				if (budget >= PINNED_FROM) started = e;
 				break;
 			}
 		}

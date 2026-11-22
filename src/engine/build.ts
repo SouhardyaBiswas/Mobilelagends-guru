@@ -32,6 +32,8 @@ export interface BuildInput {
 
 const FROM_YOUR_BUILD = "From the build you chose in game.";
 const FROM_AI = "Chosen by the coach for this match.";
+/** Gold already put into an item before it is treated as "being built" and finished first. */
+const PINNED_FROM = 350;
 /** With this much gold in hand there is almost always a piece of the next item to buy. */
 const PIECE_FLOOR = 400;
 
@@ -434,10 +436,10 @@ export function planBuild(input: BuildInput): BuildPlan & { threat: ThreatProfil
         assumed.push(e);
         budget -= cost;
       } else {
-        if (budget >= 100) {
-          paidToward.set(e.item.id, Math.round(budget));
-          started = e;
-        }
+        if (budget >= 100) paidToward.set(e.item.id, Math.round(budget));
+        // Only a real sum moves that item to the front. A small remainder is within what the
+        // gold figures can be off by, and is no reason to put it ahead of an urgent counter.
+        if (budget >= PINNED_FROM) started = e;
         break;
       }
     }
