@@ -22,6 +22,15 @@ export const STAGE_LABEL: Record<Stage, string> = {
   done: "Match over",
 };
 
+/** One scoreboard reading, kept so the coach can tell how the match is moving, not just where it stands. */
+export interface Snapshot {
+  /** Match clock in seconds when it was read. */
+  at: number;
+  players: Record<number, { gold?: number; kills?: number; deaths?: number; assists?: number }>;
+}
+
+const HISTORY_MAX = 40;
+
 export interface Session {
   phase: "draft" | "live";
   /** Set from the phone's stage buttons, or inferred from what the screenshots show. */
@@ -33,6 +42,10 @@ export interface Session {
   banned: number[];
   /** Latest scoreboard stats per enemy hero id. */
   enemyLive: Record<number, PlayerState>;
+  /** Latest scoreboard stats for the player's own team (including the player). */
+  allyLive: Record<number, PlayerState>;
+  /** Every scoreboard reading this match, oldest first: the match's memory. */
+  history: Snapshot[];
   /** Manual "this enemy is fed / behind" marks for play without screen reading. */
   manualFed: Record<number, 1 | -1>;
   /** Owned item ids; a cheap component is stored as "comp:<slug>". */
@@ -62,6 +75,8 @@ export const EMPTY_SESSION: Session = {
   enemies: [],
   banned: [],
   enemyLive: {},
+  allyLive: {},
+  history: [],
   manualFed: {},
   owned: [],
   log: [],
@@ -197,6 +212,9 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
     const live = { ...s.enemyLive };
     for (const p of obs.enemies) if (next.enemies.includes(p.heroId)) live[p.heroId] = p;
     next.enemyLive = live;
+    const mineLive = { ...s.allyLive };
+    for (const p of obs.allies) mineLive[p.heroId] = p;
+    next.allyLive = mineLive;
     const mine = obs.allies.find((p) => p.heroId === next.myHeroId);
     // Union, not replace: an icon the model could not identify must not look like a sold item.
     if (mine?.items?.length) next.owned = tidyOwned([...s.owned, ...mine.items]);
@@ -218,6 +236,22 @@ function applyObservation(s0: Session, obs0: Observation, now: number, costUsd =
   if ((obs.screen === "scoreboard" || obs.screen === "gameplay" || obs.screen === "shop") && next.myHeroId) {
     next.phase = "live";
     next.clockStart ??= now;
+  }
+  // Remember this scoreboard so later ones can be compared against it.
+  if (obs.screen === "scoreboard") {
+    const at = next.clockStart !== undefined ? Math.max(0, Math.round((now - next.clockStart) / 1000)) : 0;
+    const players: Snapshot["players"] = {};
+    for (const p of [...obs.allies, ...obs.enemies]) {
+      if (p.gold !== undefined || p.kills !== undefined) players[p.heroId] = { gold: p.gold, kills: p.kills, deaths: p.deaths, assists: p.assists };
+    }
+    if (Object.keys(players).length) {
+      const history = [...next.history];
+      // Two reads of the same open scoreboard are one moment, not two.
+      const last = history.at(-1);
+      if (last && Math.abs(last.at - at) < 20) history[history.length - 1] = { at, players };
+      else history.push({ at, players });
+      next.history = history.slice(-HISTORY_MAX);
+    }
   }
   // Keep the stage in step with what the screen shows, so the buttons rarely need touching.
   if (next.phase === "live") next.stage = "live";
@@ -245,7 +279,7 @@ export function sessionReducer(s: Session, a: SessionAction): Session {
     case "setLaneOpponent":
       return { ...s, laneOpponentId: a.id };
     case "startMatch":
-      return { ...s, phase: "live", clockStart: a.now, owned: [], gold: undefined, enemyLive: {}, manualFed: {}, tip: undefined, calls: 0, costUsd: 0, matchId: s.matchId + 1 };
+      return { ...s, phase: "live", clockStart: a.now, owned: [], gold: undefined, enemyLive: {}, allyLive: {}, history: [], manualFed: {}, tip: undefined, calls: 0, costUsd: 0, matchId: s.matchId + 1 };
     case "newMatch":
       return { ...EMPTY_SESSION, lane: s.lane, matchId: s.matchId + 1 };
     case "backToDraft":

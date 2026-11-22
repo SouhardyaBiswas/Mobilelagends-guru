@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { speaker } from "../audio/speech";
 import { eventsBetween } from "../data/timeline";
 import { buyAdvice, counterAdvice, fedAdvice, setupAdvice, SpokenLog } from "../engine/coach";
 import { rankCounters } from "../engine/draft";
+import { matchStory } from "../engine/story";
 import { gamePlan } from "../engine/tips";
 import { useStore } from "../state/store";
 import type { Advice, BuildPlan, Hero, ThreatProfile } from "../types";
@@ -94,6 +95,14 @@ export function useCoach(plan: (BuildPlan & { threat: ThreatProfile }) | undefin
     if (buy) say(buy);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [buy?.key]);
+
+  // What the match's memory shows: say it when the picture changes (ahead / behind, carry / dying).
+  const story = useMemo(() => (live ? matchStory(session) : undefined), [live, session]);
+  const storyKey = story?.headline ? `${session.matchId}:${story.headline.key}` : undefined;
+  useEffect(() => {
+    if (story?.headline && storyKey) say({ key: storyKey, say: story.headline.say, kind: "info", priority: 1 }, Infinity);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storyKey]);
 
   // One-line observation from the screenshot reader.
   useEffect(() => {

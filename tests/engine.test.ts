@@ -9,6 +9,7 @@ import { planBuild } from "../src/engine/build";
 import { buyAdvice, fedAdvice, SpokenLog } from "../src/engine/coach";
 import { rankCounters } from "../src/engine/draft";
 import { coachReply } from "../src/engine/reply";
+import { matchStory } from "../src/engine/story";
 import { analyzeThreat } from "../src/engine/threat";
 import { briefOn, gamePlan, guessLaneOpponent, skillsOf } from "../src/engine/tips";
 import { EMPTY_SESSION, freshSession, orientObservation, sessionReducer, stageOf, type Session } from "../src/state/session";
@@ -572,6 +573,63 @@ describe("a real match, from the player's screenshots", () => {
     expect(next.item?.id).toBe("sea_halberd");
     expect(next.where).toBe("It's under the Attack tab.");
     expect(buyAdvice(plan(s)).say).toMatch(/^Buy Sea Halberd now\. Anti-heal.*It's under the Attack tab\.$/);
+  });
+});
+
+describe("match memory", () => {
+  const rowOf = (hero: string, k: number, d: number, a: number, gold: number, isMe = false) => ({ hero, isMe, kills: k, deaths: d, assists: a, gold, level: -1, items: [] });
+  const board = (time: string, mine: Array<[string, number, number, number, number]>, theirs: Array<[string, number, number, number, number]>) =>
+    normalizeObservation({ screen: "scoreboard", gameTime: time, myGold: 500, allies: mine.map(([h, k, d, a, g], i) => rowOf(h, k, d, a, g, i === 0)), enemies: theirs.map(([h, k, d, a, g]) => rowOf(h, k, d, a, g)), myItems: [], recommended: [], spare: [], tip: "" });
+  const at = (min: number) => min * 60_000;
+  const MINE = (g: number[], kd: Array<[number, number, number]>) => ["Obsidia", "Freya", "Xavier", "Uranus", "Franco"].map((h, i) => [h, ...kd[i]!, g[i]!] as [string, number, number, number, number]);
+  const THEIRS = (g: number[], kd: Array<[number, number, number]>) => ["Angela", "Minotaur", "Rafaela", "Akai", "Bane"].map((h, i) => [h, ...kd[i]!, g[i]!] as [string, number, number, number, number]);
+  const flat: Array<[number, number, number]> = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
+
+  it("remembers every scoreboard and treats two reads of the same moment as one", () => {
+    let s = sessionReducer(EMPTY_SESSION, { type: "observe", obs: board("02:00", MINE([1400, 1100, 1300, 1100, 700], flat), THEIRS([750, 750, 760, 800, 600], flat)), now: at(2) });
+    expect(s.history).toHaveLength(1);
+    expect(s.history[0]!.at).toBe(120);
+    expect(s.allyLive[H("Freya").id]).toMatchObject({ gold: 1100 });
+    s = sessionReducer(s, { type: "observe", obs: board("02:05", MINE([1450, 1100, 1300, 1100, 700], flat), THEIRS([750, 750, 760, 800, 600], flat)), now: at(2) + 5000 });
+    expect(s.history).toHaveLength(1); // same open scoreboard
+    s = sessionReducer(s, { type: "observe", obs: board("05:00", MINE([3000, 2400, 2600, 2300, 1500], flat), THEIRS([1500, 1500, 1500, 1600, 2900], flat)), now: at(5) });
+    expect(s.history).toHaveLength(2);
+    // A new match starts with an empty memory.
+    expect(sessionReducer(s, { type: "setStage", stage: "draft", now: 1 }).history).toEqual([]);
+  });
+
+  it("tells the story from the first scoreboard, then compares against it", () => {
+    let s = sessionReducer(EMPTY_SESSION, { type: "observe", obs: board("02:00", MINE([1400, 1100, 1300, 1100, 700], [[3, 0, 0], [0, 0, 1], [0, 0, 0], [1, 0, 0], [0, 0, 0]]), THEIRS([750, 750, 760, 800, 600], flat)), now: at(2) });
+    const first = matchStory(s)!;
+    expect(first.teamGold).toMatchObject({ mine: 5600, theirs: 3660, lead: 1940 });
+    expect(first.lines[0]).toBe("Your team is ahead by 1.9k gold.");
+    expect(first.lines.join(" ")).toMatch(/You have the most gold on your team/);
+    expect(first.lines.at(-1)).toMatch(/first scoreboard I have seen/);
+    expect(first.leadChange).toBeUndefined();
+
+    // Three minutes later Bane has snowballed and the lead has shrunk.
+    s = sessionReducer(s, { type: "observe", obs: board("05:00", MINE([2600, 2300, 2500, 2200, 1500], [[3, 2, 1], [2, 0, 3], [0, 1, 1], [1, 0, 2], [0, 4, 1]]), THEIRS([1500, 1500, 1500, 1600, 4200], [[0, 1, 2], [0, 1, 2], [0, 1, 1], [0, 2, 2], [6, 0, 1]])), now: at(5) });
+    const later = matchStory(s)!;
+    expect(later.teamGold!.lead).toBe(11100 - 10300);
+    expect(later.leadChange).toBe(800 - 1940);
+    expect(later.overMinutes).toBe(3);
+    // 800 gold out of 21k is not a real lead any more: the coach calls it even, and says who gained.
+    expect(later.lines[0]).toBe("The teams are about even on gold. They gained 1.1k on you in the last 3 minutes.");
+    const text = later.lines.join(" ");
+    expect(text).toMatch(/Freya is your strongest teammate \(2\/0\/3\)/);
+    expect(text).toMatch(/Franco is struggling \(0\/4\/1\)/);
+    expect(text).toMatch(/Bane is their richest hero \(6\/0\/1\)/);
+    expect(later.players[0]).toMatchObject({ heroId: H("Bane").id, side: "enemy", gold: 4200, gain: 3600 });
+    expect(later.players.find((p) => p.side === "me")).toMatchObject({ gain: 1200 });
+    // The spoken line's key changes exactly when the situation does (ahead → even), so it is said once.
+    expect(first.headline!.key).toBe("story:ahead:carry");
+    expect(later.headline!.key).toBe("story:even:carry");
+    expect(later.headline!.say).toMatch(/^The teams are about even on gold\. They gained 1\.1k on you/);
+  });
+
+  it("says nothing before a scoreboard has been seen", () => {
+    expect(matchStory(EMPTY_SESSION)).toBeUndefined();
+    expect(matchStory({ ...EMPTY_SESSION, myHeroId: H("Layla").id })).toBeUndefined();
   });
 });
 

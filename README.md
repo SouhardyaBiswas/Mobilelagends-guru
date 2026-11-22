@@ -8,7 +8,7 @@ A coach for Mobile Legends: Bang Bang, built for a new player. It tells you, in 
 
 Every enemy gets a card with the skills to recognise (real names and descriptions from the game's own data) and how to play against them.
 
-> **Status:** the advice engine, guide, pictures, voice and the screenshot endpoint are tested (53 unit tests, 34 scripted browser checks). Reading *real* screenshots with a live vision model has **not** been run yet — see [What is and isn't verified](#what-is-and-isnt-verified).
+> **Status:** the advice engine, guide, pictures, voice and the screenshot endpoint are tested (56 unit tests, 35 scripted browser checks). Reading *real* screenshots with a live vision model has **not** been run yet — see [What is and isn't verified](#what-is-and-isnt-verified).
 
 ## iPad plays, phone coaches (no laptop)
 
@@ -48,6 +48,10 @@ On the site open **Settings → iPad plays, phone coaches**. It shows your room 
 
 The stage moves on by itself as the screenshots change; the buttons are there for when it guesses wrong.
 
+**Two triggers instead of one:** make two shortcuts — *Coach Now* (the four actions, one read) and *Coach Auto* (the same inside *Repeat*, with *Wait* 60 seconds) — and assign them to the AssistiveTouch button's Double-Tap and Long Press. iPadOS has no way to start a shortcut from a multi-finger tap.
+
+**No hero selection (tutorial or bot matches):** nothing is lost. Open the scoreboard once the match starts; it shows both teams, your hero and your gold.
+
 **First run:** build the shortcut without *Repeat* and *Wait*, open the scoreboard in a match and run it once with the phone watching. That proves the key, the server and the read in one step. If nothing arrives, the bar at the top of the phone says why (wrong key, quota, wrong upload). Then add *Repeat* and *Wait*.
 
 **Hero selection:** the coach can only suggest picks once enemy heroes are actually shown. In modes where the enemy side stays hidden ("Player 1–5") until the loading screen, advice starts at the loading screen.
@@ -75,6 +79,7 @@ The stage moves on by itself as the screenshots change; the buttons are there fo
 - **Build** — your in-game build if a shop screenshot was read, otherwise a short core for your hero type; then counters for this enemy team. Carries get at most two defensive items.
 - **Next step** — buy if you can afford it; otherwise an urgent counter you *can* afford, or a cheap piece that already carries part of its effect; otherwise save. Every step says where the item is: your Recommended list, a shop tab, or inside another item's build path.
 - **Guide** — skill names, cooldowns and descriptions come from synced game data, so new heroes are covered. The advice lines follow from what a kit does (crowd control, burst, healing, dashes), not from memory of the hero.
+- **Match memory** — every scoreboard read is kept for the match. Comparing them gives the "Match so far" panel: team gold and how the lead is moving, your strongest and struggling teammates, the enemy to watch and who is growing fastest, and where you stand.
 - **Voice** — speaks when the advice changes, never on a loop.
 
 ## Data
@@ -95,9 +100,9 @@ The stage moves on by itself as the screenshots change; the buttons are there fo
 - A realistic-size screenshot upload reaches Google's API from the server (tested with an invalid key, which was rejected as expected).
 
 **Verified here**
-- 53 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, catalog and picture coverage, and session handling.
+- 56 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, catalog and picture coverage, and session handling.
 - Tests transcribed by hand from real match screenshots: one scoreboard yields the hero, both teams, gold and inventory; the shop yields the in-game build; all eight shop prices match the catalog at the emblem's 95%.
-- 34 scripted browser checks in demo mode: the single-device flow, and the two-device flow with a simulated iPad posting screenshots while a phone-sized page follows, speaks, sends purchases back and switches stages.
+- 35 scripted browser checks in demo mode: the single-device flow, and the two-device flow with a simulated iPad posting screenshots while a phone-sized page follows, speaks, sends purchases back and switches stages.
 - The screenshot endpoint, run locally: health check, error answers, a scripted match, and the cases that matter with two devices — a tap on the phone landing while a screenshot is still being read, ending the match mid-read, and failed reads being reported to the phone.
 
 **Not verified**

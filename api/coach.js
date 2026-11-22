@@ -1820,6 +1820,8 @@ var EMPTY_SESSION = {
 	enemies: [],
 	banned: [],
 	enemyLive: {},
+	allyLive: {},
+	history: [],
 	manualFed: {},
 	owned: [],
 	log: [],
@@ -1927,6 +1929,9 @@ function applyObservation(s0, obs0, now, costUsd = 0) {
 		const live = { ...s.enemyLive };
 		for (const p of obs.enemies) if (next.enemies.includes(p.heroId)) live[p.heroId] = p;
 		next.enemyLive = live;
+		const mineLive = { ...s.allyLive };
+		for (const p of obs.allies) mineLive[p.heroId] = p;
+		next.allyLive = mineLive;
 		const mine = obs.allies.find((p) => p.heroId === next.myHeroId);
 		if (mine?.items?.length) next.owned = tidyOwned([...s.owned, ...mine.items]);
 	}
@@ -1942,6 +1947,29 @@ function applyObservation(s0, obs0, now, costUsd = 0) {
 	if ((obs.screen === "scoreboard" || obs.screen === "gameplay" || obs.screen === "shop") && next.myHeroId) {
 		next.phase = "live";
 		next.clockStart ??= now;
+	}
+	if (obs.screen === "scoreboard") {
+		const at = next.clockStart !== void 0 ? Math.max(0, Math.round((now - next.clockStart) / 1e3)) : 0;
+		const players = {};
+		for (const p of [...obs.allies, ...obs.enemies]) if (p.gold !== void 0 || p.kills !== void 0) players[p.heroId] = {
+			gold: p.gold,
+			kills: p.kills,
+			deaths: p.deaths,
+			assists: p.assists
+		};
+		if (Object.keys(players).length) {
+			const history = [...next.history];
+			const last = history.at(-1);
+			if (last && Math.abs(last.at - at) < 20) history[history.length - 1] = {
+				at,
+				players
+			};
+			else history.push({
+				at,
+				players
+			});
+			next.history = history.slice(-40);
+		}
 	}
 	if (next.phase === "live") next.stage = "live";
 	else if (obs.screen === "loading") next.stage = "loading";
@@ -1979,6 +2007,8 @@ function sessionReducer(s, a) {
 			owned: [],
 			gold: void 0,
 			enemyLive: {},
+			allyLive: {},
+			history: [],
 			manualFed: {},
 			tip: void 0,
 			calls: 0,

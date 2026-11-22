@@ -1,9 +1,10 @@
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { speaker } from "../audio/speech";
 import { captureSupport } from "../capture/capture";
 import { heroById } from "../data/heroes";
 import { componentId, ownedLabel } from "../data/items";
 import { formatClock, upcoming } from "../data/timeline";
+import { matchStory } from "../engine/story";
 import { useStore } from "../state/store";
 import type { BuildPlan, Hero, ThreatProfile } from "../types";
 import { BuildList, SpellEmblem } from "./BuildList";
@@ -115,6 +116,59 @@ function ThreatPanel({ plan }: { plan: Plan }) {
           <p className="fine">The bar is each enemy's share of their team's kill pressure. Without live stats, tap Even to mark someone as fed or behind.</p>
         </>
       )}
+    </section>
+  );
+}
+
+/** The match's memory: how the game has moved across every scoreboard read so far. */
+function StoryPanel() {
+  const { state } = useStore();
+  const story = useMemo(() => matchStory(state.session), [state.session]);
+  if (!story) {
+    return (
+      <section className="panel">
+        <h2>Match so far</h2>
+        <p className="hint">Open the scoreboard and send a screenshot. From then on every scoreboard is remembered, so the coach can tell who is pulling ahead and who is falling behind.</p>
+      </section>
+    );
+  }
+  const g = story.teamGold;
+  const minePct = g ? Math.round((g.mine / Math.max(1, g.mine + g.theirs)) * 100) : 50;
+  return (
+    <section className="panel">
+      <div className="panel-head">
+        <h2>Match so far</h2>
+        <small>{story.readings} scoreboard{story.readings === 1 ? "" : "s"} remembered</small>
+      </div>
+      {g && (
+        <div className="split" title="Total gold of each team">
+          <i className="ally-side" style={{ width: `${minePct}%` }}>You {(g.mine / 1000).toFixed(1)}k</i>
+          <i className="enemy-side" style={{ width: `${100 - minePct}%` }}>Them {(g.theirs / 1000).toFixed(1)}k</i>
+        </div>
+      )}
+      <ul className="how">
+        {story.lines.map((line) => (
+          <li key={line}>{line}</li>
+        ))}
+      </ul>
+      <table className="standings">
+        <tbody>
+          {story.players.map((p) => {
+            const hero = heroById(p.heroId);
+            if (!hero) return null;
+            return (
+              <tr key={p.heroId} className={`side-${p.side}`}>
+                <td><HeroIcon hero={hero} size={28} /></td>
+                <td className="who">{hero.name}{p.side === "me" && <span className="tag nexttag">you</span>}</td>
+                <td className="num">{p.kills ?? "–"}/{p.deaths ?? "–"}/{p.assists ?? "–"}</td>
+                <td className="num">{p.gold ?? "–"}</td>
+                <td className="num gain">{p.gain !== undefined ? `+${p.gain}` : ""}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <p className="fine">Gold is each player's total earned, richest first. The last column is what they gained since an earlier scoreboard.</p>
     </section>
   );
 }
@@ -253,6 +307,8 @@ export function LiveTab({ plan, hero, gameSec, laneOpponentId, onRepeat, onDraft
             <small>Read from the screen when visible; type it for exact "buy now / save" calls.</small>
           </div>
         </section>
+
+        <StoryPanel />
 
         <section className="panel">
           <div className="panel-head">

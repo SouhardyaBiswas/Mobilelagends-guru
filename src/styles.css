@@ -250,3 +250,15 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
 .setup-card .input { margin: 4px 0; font-weight: 700; letter-spacing: 0.08em; }
 .stages { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
 .stages .chip { min-height: 40px; }
+
+/* ── Match so far ────────────────────────────────────── */
+.split .ally-side { background: var(--ally); } .split .enemy-side { background: var(--enemy); }
+.standings { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.standings td { padding: 4px 6px; border-top: 1px solid var(--border); vertical-align: middle; }
+.standings td:first-child { width: 34px; padding-left: 0; }
+.standings .who { font-weight: 600; }
+.standings .who .tag { margin-left: 6px; }
+.standings .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--muted); }
+.standings .gain { color: var(--ok); }
+.standings .side-enemy .who { color: #ffc2c2; }
+.standings .side-ally .who, .standings .side-me .who { color: #cfe6ff; }
