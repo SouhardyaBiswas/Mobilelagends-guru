@@ -1,12 +1,13 @@
 # MLBB Guru
 
-A coach for Mobile Legends: Bang Bang, built for a new player. It tells you, in plain words and out loud:
+A coach for Mobile Legends: Bang Bang, built for a new player. You play on your phone and talk to it; an iPad beside you shows the whole match in one window and says, in plain words:
 
-- **In draft** — which heroes are best into the enemy picks for your lane (your lane opponent counts double), and what to take if you pick first.
-- **Before the match** — battle spell, emblem, and a game plan: who is in your lane, how to play against them, who to kill first, what to watch out for.
-- **During the match** — the one thing to do with your gold right now, with the item's picture and where to find it in the shop. It re-plans when an enemy gets fed.
+- **In draft** — which heroes are best into the enemy picks for your lane, and what to take if you pick first.
+- **Before the match** — your build, battle spell and emblem, who is in your lane and how to play against them.
+- **During the match** — the one thing to do with your gold right now, with the item's picture and where to find it in the shop; what the AI coach would do for the next two minutes; who to focus or stay away from; and a storyboard of how the match has gone.
+- **On request** — "help me position": it looks at the fight and the map and tells you where to stand.
 
-Every enemy gets a card with the skills to recognise (real names and descriptions from the game's own data) and how to play against them.
+It reads only what is on your own screen, through screenshots you trigger. It never touches the game.
 
 > **Status:** the engine, the endpoint, the voice-command flow, the storyboard and the AI coach's plumbing are covered by 82 unit tests and scripted browser checks, and the reader has been run on real matches. The AI coach and the positioning helper have **not** yet been run against a real model — see [What is and isn't verified](#what-is-and-isnt-verified).
 
