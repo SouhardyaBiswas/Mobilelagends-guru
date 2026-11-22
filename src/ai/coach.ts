@@ -170,7 +170,10 @@ export function normalizeCoach(raw: unknown, s: Session, model: string, now: num
   if (hero && ids.length >= 3) {
     // What the player holds comes first, in the order they hold it; then the item they are part-way through.
     const plan = planBuild({ hero, gold: s.gold, gameTimeSec: sec, ...buildInputs(s), aiBuild: undefined });
-    const held = plan.slots.filter((x) => x.owned || x.paid).map((x) => x.item);
+    const holding = plan.slots.filter((x) => x.owned || x.paid);
+    const held = holding.map((x) => x.item);
+    // An item the player already has was not "chosen by the coach": it keeps its own reason unless the coach gave one.
+    for (const x of holding) if (!why[x.item.id]) why[x.item.id] = x.owned ? "Already yours." : x.reason;
     const hasBoots = held.some((i) => i.category === "boots");
     const rest = ids.filter((id) => !held.some((i) => i.id === id) && !(hasBoots && itemById(id)?.category === "boots"));
     build = { ids: [...held.map((i) => i.id), ...rest].slice(0, 6), why };

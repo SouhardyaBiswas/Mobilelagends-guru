@@ -233,7 +233,10 @@ function IpadSetup() {
           </tr>
           <tr>
             <td className="who">“Coach on”<br /><span className="fine">match started</span></td>
-            <td><em>Address only:</em> <Address query="&stage=live" /><span className="fine">To also send a screenshot every 30 seconds, add after it: Wait 1 second → Repeat 40 → [the screenshot block to the plain address → Get Dictionary Value <code>halt</code> → If it has any value: Stop This Shortcut → Wait 30 seconds].</span></td>
+            <td>
+              <strong>Get Contents of URL</strong> <Address query="&stage=live" /> → <strong>Wait</strong> 1 second → <strong>Repeat</strong> 150 times: [ the screenshot block, sent to <Address query="&stream=1" /> → <strong>Get Dictionary Value</strong> <code>halt</code> from its result → <strong>If</strong> it has any value: <strong>Stop This Shortcut</strong> → <strong>Wait</strong> 5 seconds ]
+              <span className="fine">This is the continuous mode: a screenshot about every 10 seconds for the whole match. Just play — open the scoreboard, the shop or the map whenever you like and the next frame picks it up. It stops by itself on the results screen, or when you say “coach off”.</span>
+            </td>
           </tr>
           <tr>
             <td className="who">“Coach now”<br /><span className="fine">scoreboard or shop open</span></td>
@@ -269,14 +272,20 @@ function IpadSetup() {
         The six questions at the bottom are answered from what the room already knows: no screenshot, no AI call, no cost. Everything else that sends a picture uses your key.
       </p>
 
+      <h3>What happens to each screenshot</h3>
+      <p className="fine">
+        A fast model sorts every frame — battlefield, map, scoreboard, shop — and reads it. Then three specialists, each a stronger model, work only when there is something new for them: the <strong>coach</strong> (your build order and the calls for the next two minutes) after a scoreboard or shop frame; the <strong>enemy tracker</strong> (who is dangerous, what they have built) after a scoreboard frame; <strong>positioning</strong> about once a minute from battlefield frames, using your last opened map. Each has its own panel on the dashboard.
+      </p>
+
       <h3>A match, start to finish</h3>
       <ol className="steps">
         <li>iPad: dashboard link open, voice on.</li>
         <li>Hero selection: say <em>“draft mode”</em>. The iPad calls the best picks.</li>
         <li>Loading screen: say <em>“entering the match”</em>. You get your build, battle spell and lane plan.</li>
-        <li>First trip to the shop: open it and say <em>“coach now”</em> once. The coach learns your in-game list and what you own.</li>
-        <li>During the match: open the scoreboard and say <em>“coach now”</em> whenever you want a fresh read — after a fight, when you die, before a big purchase. Ask <em>“help me position”</em> when you are unsure where to be.</li>
-        <li>End: say <em>“coach off”</em>.</li>
+        <li>Match starts: say <em>“coach on”</em>. Screenshots now go out by themselves.</li>
+        <li>Early on, open the shop once so the coach learns your in-game list and what you own. Open the scoreboard for a few seconds after fights; open the map when you want positioning looked at.</li>
+        <li>Any time: <em>“coach now”</em> for an immediate read of what is on screen, <em>“help me position”</em>, or one of the questions.</li>
+        <li>End: the results screen stops it, or say <em>“coach off”</em>.</li>
       </ol>
     </section>
   );

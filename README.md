@@ -58,7 +58,7 @@ Open **Settings → Phone plays, iPad shows the coach** on the site. It shows yo
 |---|---|---|
 | "Draft mode" | Hero selection on screen | Screenshot block → `…&stage=draft` |
 | "Entering the match" | Loading screen | Screenshot block → `…&stage=loading` |
-| "Coach on" | Match started | One action: `…&stage=live` |
+| "Coach on" | Match started | `…&stage=live` → *Wait* 1 s → *Repeat* 150: [screenshot block → `…&stream=1` → *Get Dictionary Value* `halt` → *If* it has any value: *Stop This Shortcut* → *Wait* 5 s] |
 | "Coach now" | Scoreboard or shop open | Screenshot block → the plain address |
 | "Help me position" | Any time in the match | Screenshot block → `…&ask=position&shot=1` → *Speak Text* "Open the map" → *Wait* 3 s → screenshot block again → `…&ask=position&shot=2` |
 | "Coach off" | Match over | One action: `…&stage=done` |
@@ -66,15 +66,26 @@ Open **Settings → Phone plays, iPad shows the coach** on the site. It shows yo
 
 The questions in the last row are answered from what the room already knows — no screenshot, no AI call, no cost.
 
-**Hands-free reads.** To send a screenshot every 30 seconds, extend "Coach on": after the stage action add *Wait* 1 second → *Repeat* 40 → [screenshot block → *Get Dictionary Value* `halt` → *If* it has any value: *Stop This Shortcut* → *Wait* 30 seconds]. "Coach off" then stops the loop. Whether iOS keeps a long repeat alive behind the game has not been tried.
+**Continuous mode.** "Coach on" sends a screenshot about every 10 seconds for the whole match (5 seconds of waiting plus the time to take, upload and read one). You just play; whenever the scoreboard, shop or map happens to be open, the next frame picks it up. The loop stops by itself on the results screen, after eight frames in a row with no game on them, or when you say "coach off". Whether iOS keeps a long repeat alive behind the game has to be tried on your phone: run it for two minutes in a match first.
+
+**What happens to each frame.** A fast model sorts it (battlefield, map, scoreboard, shop) and reads it before the next frame is accepted. Three specialists — each a stronger model with its own panel on the dashboard — then work only when there is something new for them:
+
+| Specialist | Runs after | Looks at | Produces |
+|---|---|---|---|
+| Coach | a scoreboard, shop or loading frame | the whole match as text | build order with reasons, calls for the next two minutes, a storyboard line |
+| Enemy tracker | a scoreboard frame | the scoreboard picture and the numbers | per enemy: threat, items (believed once two reads name them), how to deal with them |
+| Positioning | a battlefield frame, about once a minute; sooner after the map is opened | that frame, your last opened map, where you have been | where to stand, the risk, up to three moves — spoken only when the risk is high |
+
+They run after the frame's answer has gone out, so the loop is never held up by them.
 
 ### 4. A match, start to finish
 
 1. Hero selection: say **"draft mode"**. The iPad calls the best picks. Say "coach now" again as enemies lock in.
 2. Loading screen: say **"entering the match"**. You get your build, battle spell and lane plan.
-3. First trip to the shop: open it and say **"coach now"** once. The coach learns your in-game list and what you own.
-4. During the match: open the scoreboard and say **"coach now"** whenever you want a fresh read. Say **"help me position"** when unsure where to be.
-5. End: say **"coach off"**.
+3. Match starts: say **"coach on"**. Screenshots now go out by themselves.
+4. Early on, open the shop once so the coach learns your in-game list and what you own. Open the scoreboard for a few seconds after fights; open the map when you want positioning looked at.
+5. Any time: **"coach now"** for an immediate read, **"help me position"**, or one of the questions.
+6. End: the results screen stops it, or say **"coach off"**.
 
 **No hero selection (bot or tutorial matches):** open the scoreboard once the match starts and say "coach now"; it shows both teams, your hero and your gold.
 

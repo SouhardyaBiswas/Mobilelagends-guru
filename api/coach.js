@@ -18629,7 +18629,7 @@ function planBuild(input) {
 		return true;
 	};
 	const ai = aiItems(input.aiBuild);
-	for (const item of ai ?? []) push(item, input.aiBuild?.why[item.id] || FROM_AI, item.category === "boots" ? "boots" : "core");
+	for (const item of ai ?? []) push(item, input.aiBuild?.why[item.id] || (item.category === "boots" ? "" : FROM_AI), item.category === "boots" ? "boots" : "core");
 	const aiHasBoots = !!ai?.some((i) => i.category === "boots");
 	const boots = chooseBoots(tpl, threat, squishy, fromPlayer && (input.plannedBuild ?? []).some((id) => itemById(id)?.category === "boots"));
 	if (!aiHasBoots) push(itemById(boots.id), boots.reason, "boots");
@@ -24308,7 +24308,9 @@ function normalizeCoach(raw, s, model, now) {
 			...buildInputs(s),
 			aiBuild: void 0
 		});
-		const held = plan.slots.filter((x) => x.owned || x.paid).map((x) => x.item);
+		const holding = plan.slots.filter((x) => x.owned || x.paid);
+		const held = holding.map((x) => x.item);
+		for (const x of holding) if (!why[x.item.id]) why[x.item.id] = x.owned ? "Already yours." : x.reason;
 		const hasBoots = held.some((i) => i.category === "boots");
 		const rest = ids.filter((id) => !held.some((i) => i.id === id) && !(hasBoots && itemById(id)?.category === "boots"));
 		build = {
@@ -56483,7 +56485,11 @@ function demoVision() {
 		const allyNames = names(ctx.allies.length ? [.../* @__PURE__ */ new Set([ctx.myHeroId ?? ctx.allies[0], ...ctx.allies])] : [], DEFAULT_ALLIES);
 		const enemyNames = names(ctx.enemies, DEFAULT_ENEMIES);
 		const me = ctx.myHeroId ? heroById(ctx.myHeroId)?.name : allyNames[0];
-		const s = (ctx.step ?? step++) % 3;
+		const s = {
+			loading: 0,
+			early: 1,
+			late: 2
+		}[ctx.force ?? ""] ?? (ctx.step ?? step++) % 3;
 		const row = (hero, k, d, a, gold, items = []) => ({
 			hero,
 			isMe: hero === me,

@@ -21,7 +21,8 @@ export function demoVision(): VisionCall {
     const enemyNames = names(ctx.enemies, DEFAULT_ENEMIES);
     const me = ctx.myHeroId ? heroById(ctx.myHeroId)?.name : allyNames[0];
     // On the server several copies answer for one room, so the place in the script comes from the room, not from this copy.
-    const s = (ctx.step ?? step++) % 3;
+    const forced = { loading: 0, early: 1, late: 2 }[ctx.force ?? ""];
+    const s = forced ?? (ctx.step ?? step++) % 3;
 
     const row = (hero: string, k: number, d: number, a: number, gold: number, items: string[] = []) => ({
       hero,

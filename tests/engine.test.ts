@@ -13,6 +13,7 @@ import { matchStory } from "../src/engine/story";
 import { analyzeThreat } from "../src/engine/threat";
 import { briefOn, gamePlan, guessLaneOpponent, skillsOf } from "../src/engine/tips";
 import { coachBrief, COACH_SYSTEM, demoCoach, normalizeCoach } from "../src/ai/coach";
+import { enemyBrief, ENEMY_SYSTEM, normalizeEnemies } from "../src/ai/enemies";
 import { normalizePosition, positionBrief } from "../src/ai/position";
 import { believableItems, buildInputs, EMPTY_SESSION, fitOwnItems, freshSession, orientObservation, sessionReducer, stageOf, type Session } from "../src/state/session";
 import type { Observation, PlayerState } from "../src/types";
@@ -1086,5 +1087,71 @@ describe("AI coach", () => {
     expect(b.danger).toBeUndefined();
     expect(b.summary).toMatch(/map was not open/);
     expect(normalizePosition({ say: "" }, "m", 7)).toBeUndefined();
+  });
+});
+
+describe("frames arriving every few seconds", () => {
+  const liveAt = (gold: number): Session => ({ ...EMPTY_SESSION, phase: "live", stage: "live", myHeroId: H("Zetian").id, enemies: ids("Freya", "Layla", "Belerick"), gold, goldAt: 1_000_000, spent: 3000, spentAt: 1_000_000, clockStart: 700_000 });
+  const field = (myGold: number, screen: Observation["screen"] = "gameplay"): Observation => ({ screen, myGold, allies: [], enemies: [], unknown: [], gameTimeSec: 300, scene: "Mid lane, near your turret." });
+
+  it("waits for a second frame before believing a big change in pocket gold", () => {
+    const s = liveAt(1000);
+    // One frame reads 114 where the last said 1,000: a misread digit, or a purchase? Not known yet.
+    const one = sessionReducer(s, { type: "observe", obs: field(114), now: 1_010_000 });
+    expect(one.gold).toBe(1000);
+    expect(one.spent).toBe(3000);
+    expect(one.pendingGold).toBe(114);
+    // The next frame is back near 1,000: it was a misread, and nothing was bought.
+    const misread = sessionReducer(one, { type: "observe", obs: field(1030), now: 1_020_000 });
+    expect(misread).toMatchObject({ gold: 1030, spent: 3000, pendingGold: undefined });
+    // The next frame agrees with the low figure instead: a real purchase of about 880.
+    const bought = sessionReducer(one, { type: "observe", obs: field(140), now: 1_020_000 });
+    expect(bought.gold).toBe(140);
+    expect(bought.spent).toBe(3000 + 860);
+    // Ordinary income needs no second opinion.
+    expect(sessionReducer(s, { type: "observe", obs: field(1120), now: 1_010_000 }).gold).toBe(1120);
+    // A scoreboard is believed outright, and so is any frame when the last reading is too old to compare with.
+    expect(sessionReducer(s, { type: "observe", obs: field(114), now: 1_100_000 }).gold).toBe(114);
+  });
+
+  it("remembers the last few places the player was, and treats an opened map as part of the match", () => {
+    let s = liveAt(1000);
+    for (let i = 0; i < 8; i++) s = sessionReducer(s, { type: "observe", obs: { ...field(1000 + i * 20, i === 7 ? "map" : "gameplay"), scene: `Spot ${i}.`, gameTimeSec: 300 + i * 10 }, now: 1_010_000 + i * 10_000 });
+    expect(s.scenes!.map((x) => x.text)).toEqual(["Spot 2.", "Spot 3.", "Spot 4.", "Spot 5.", "Spot 6.", "Spot 7."]);
+    expect(s.scenes!.at(-1)!.at).toBe(370);
+    expect(s.stage).toBe("live");
+    // The reader's "map" answer survives normalisation, and a scene is only kept for battlefield screens.
+    expect(normalizeObservation({ screen: "map", gameTime: "05:00", myGold: 10, allies: [], enemies: [], scene: "  You are   mid. " })).toMatchObject({ screen: "map", scene: "You are mid.", gameTimeSec: 300 });
+    expect(normalizeObservation({ screen: "shop", scene: "ignored" }).scene).toBeUndefined();
+  });
+
+  it("briefs the enemy tracker and believes an item only when two reads name it", () => {
+    const s: Session = {
+      ...liveAt(1000),
+      enemies: ids("Freya", "Layla", "Belerick"),
+      enemyLive: { [H("Freya").id]: { heroId: H("Freya").id, kills: 9, deaths: 3, assists: 2, gold: 5230 } },
+      scenes: [{ at: 290, text: "Mid lane, near your turret." }],
+    };
+    const brief = enemyBrief(s, 1_000_000, true)!;
+    expect(brief).toMatch(/The player is Zetian \(Mage, magic damage\)/);
+    expect(brief).toMatch(/- Freya — Fighter, physical damage\. 9\/3\/2, 5230 gold\./);
+    expect(brief).toMatch(/- Layla — Marksman, physical damage\. no numbers yet\./);
+    expect(brief).toMatch(/The scoreboard picture is attached\./);
+    expect(enemyBrief(s, 1_000_000, false)).toMatch(/return empty item lists/);
+    expect(enemyBrief(EMPTY_SESSION, 0, true)).toBeUndefined();
+    expect(ENEMY_SYSTEM).toContain("Winter Crown");
+
+    const read = (items: string[]) => ({ summary: "Respect Freya.", enemies: [{ hero: "Freya", threat: "high", items, note: "Dives the back line; keep your freeze for her jump." }, { hero: "Gusion", threat: "high", items: [], note: "not in this match" }, { hero: "layla", threat: "nonsense", items: ["Windtalker"], note: "" }] });
+    const first = normalizeEnemies(read(["War Axe", "Warrior Boots", "Sword of Lies"]), s, undefined, "opus", 5)!;
+    expect(first.enemies.map((e) => e.heroId)).toEqual([H("Freya").id, H("Layla").id]); // Gusion is not in this match
+    expect(first.enemies[0]).toMatchObject({ threat: "high", items: [], maybe: ["war_axe", "warrior_boots"] });
+    expect(first.enemies[1]).toMatchObject({ threat: "medium", maybe: ["windtalker"] });
+    // The second read names War Axe again (now believed), drops the boots (still unconfirmed, gone) and adds a new maybe.
+    const second = normalizeEnemies(read(["War Axe", "Blade Armor"]), s, first, "opus", 6)!;
+    expect(second.enemies[0]).toMatchObject({ items: ["war_axe"], maybe: ["blade_armor"] });
+    // Believed items stay believed even if a later read misses them: nobody sells a finished item mid-fight.
+    const third = normalizeEnemies(read([]), s, second, "opus", 7)!;
+    expect(third.enemies[0]!.items).toEqual(["war_axe"]);
+    expect(normalizeEnemies({ enemies: [] }, s, undefined, "m", 1)).toBeUndefined();
   });
 });

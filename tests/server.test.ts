@@ -296,3 +296,90 @@ describe("room memory shared between copies of the server", () => {
     expect(res.store).toBe("memory");
   });
 });
+
+describe("continuous screenshots", () => {
+  /** One frame from a shortcut sending screenshots in a loop; the demo reader answers as the screen named. */
+  const frame = (room: string, screen?: string) =>
+    call("POST", `?room=${room}&stream=1`, { headers: { "content-type": "image/png", "x-vision-provider": "demo", ...(screen ? { "x-demo-screen": screen } : {}) }, body: PNG });
+
+  it("files battlefield frames quietly and reviews positioning from them", async () => {
+    const room = "STREAM1";
+    await ipad(room); // loading screen
+    await ipad(room); // scoreboard: the match is live
+    const first = await frame(room, "gameplay");
+    // The loop gets a short answer: nothing to speak, carry on.
+    expect(first.body).toEqual({ ok: true, screen: "gameplay", say: "", stop: false });
+    let now = await state(room);
+    expect(now.session!.scenes).toEqual([{ at: 240, text: "You are in the middle lane next to Tigreal; no enemy in view." }]);
+    expect(now.session!.gold).toBe(900);
+    // No positioning review had run this match, so this frame set one off.
+    const reviewed = now.session!.position!;
+    expect(reviewed).toMatchObject({ model: "demo", risk: "medium" });
+    // Unasked-for advice is not read out unless the player is in real danger.
+    expect((now.announce as { text: string } | undefined)?.text ?? "").not.toMatch(/turret/);
+    // The next frame, seconds later, does not ask again: once a minute is enough.
+    await frame(room, "gameplay");
+    await frame(room, "map");
+    now = await state(room);
+    expect(now.session!.position!.at).toBe(reviewed.at);
+    expect(now.session!.scenes).toHaveLength(3);
+    expect(now.session!.scenes!.at(-1)!.text).toMatch(/two enemies show in the top lane/);
+    // Frames never disturb what the specialists concluded, and the other way round.
+    expect(now.session!.ai).toBeDefined();
+    expect(now.session!.calls).toBe(5);
+    expect(now.session!.history).toHaveLength(1);
+  });
+
+  it("tracks the enemy team from the scoreboard picture, believing an item only on a second read", async () => {
+    const room = "STREAM2";
+    await ipad(room);
+    await ipad(room);
+    const intel = (await state(room)).session!.intel!;
+    expect(intel.model).toBe("demo");
+    expect(intel.enemies).toHaveLength(5);
+    const top = intel.enemies.find((e) => e.maybe.length > 0)!;
+    expect(top.maybe).toEqual(["arcane_boots"]); // named once: a hint, shown faded
+    expect(top.items).toEqual([]); // nothing is "known" from a single read, and the invented item is gone
+    expect(intel.summary).toMatch(/Respect/);
+  });
+
+  it("ends the match on the results screen and tells the loop to stop", async () => {
+    const room = "STREAM3";
+    await ipad(room);
+    await ipad(room);
+    expect((await frame(room, "gameplay")).body.stop).toBe(false);
+    const results = await frame(room, "post_game");
+    expect(results.body).toMatchObject({ stop: true, halt: "yes" });
+    expect((await state(room)).session!.stage).toBe("done");
+    // Whatever arrives next is not read at all.
+    const after = await frame(room, "gameplay");
+    expect(after.body).toMatchObject({ title: "Paused", halt: "yes" });
+    expect((await state(room)).session!.calls).toBe(4);
+  });
+
+  it("takes eight frames in a row with no game on them as the end of the match", async () => {
+    const room = "STREAM4";
+    await ipad(room);
+    await ipad(room);
+    for (let i = 0; i < 7; i++) expect((await frame(room, "other")).body.halt).toBeUndefined();
+    // A game frame in between would have reset the count; there was none.
+    expect((await frame(room, "other")).body).toMatchObject({ stop: true, halt: "yes" });
+    expect((await state(room)).session!.stage).toBe("done");
+  }, 20_000);
+
+  it("does not freeze a follower's old advice into a restored room", async () => {
+    const room = "STREAM5";
+    await ipad(room);
+    await ipad(room);
+    const held = (await state(room)).session!;
+    expect(held.ai).toBeDefined();
+    // The store drops the room; the dashboard hands back its copy, which still carries the coach's advice.
+    await call("POST", `?room=${room}&reset=1`);
+    await call("POST", `?room=${room}&restore=1`, { headers: { "content-type": "application/json" }, body: JSON.stringify({ session: held }) });
+    const back = (await state(room)).session!;
+    expect(back.enemies).toEqual(held.enemies);
+    expect(back.history).toHaveLength(1);
+    expect(back.ai).toBeUndefined();
+    expect(back.intel).toBeUndefined();
+  });
+});

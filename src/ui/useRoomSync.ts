@@ -94,6 +94,8 @@ export function useRoomSync(): RoomStatus | undefined {
         if (!body.ok) throw new Error(`HTTP ${res.status}`);
         // Nothing has changed since the copy we hold: the server sends only the version number.
         if (body.unchanged) {
+          // We have now heard from the server: anything it announces from here on is new, and is spoken.
+          announced.current ??= 0;
           setStatus((prev) => (prev.error ? { ...prev, error: undefined } : prev));
           return;
         }

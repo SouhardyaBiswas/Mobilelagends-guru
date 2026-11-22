@@ -371,7 +371,8 @@ export function planBuild(input: BuildInput): BuildPlan & { threat: ThreatProfil
 
   // The AI coach's order, when there is one, comes first; the rules below then only fill what it left open.
   const ai = aiItems(input.aiBuild);
-  for (const item of ai ?? []) push(item, input.aiBuild?.why[item.id] || FROM_AI, item.category === "boots" ? "boots" : "core");
+  // Boots need no justification; anything else the coach chose without saying why says so.
+  for (const item of ai ?? []) push(item, input.aiBuild?.why[item.id] || (item.category === "boots" ? "" : FROM_AI), item.category === "boots" ? "boots" : "core");
   const aiHasBoots = !!ai?.some((i) => i.category === "boots");
 
   const playerPickedBoots = fromPlayer && (input.plannedBuild ?? []).some((id) => itemById(id)?.category === "boots");
