@@ -1,0 +1,10 @@
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  plugins: [react()],
+  // Relative base so the build works from any static host or sub-path.
+  base: "./",
+  server: { host: true, port: 5173 },
+  test: { environment: "node", include: ["tests/**/*.test.ts"] },
+});
