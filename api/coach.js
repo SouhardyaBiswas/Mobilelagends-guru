@@ -6726,7 +6726,12 @@ function briefOn(enemy, me) {
 	if (t.basicAttacker >= .6 && enemy.roles[0] === "Marksman") how.push("Weak early, dangerous with items. Pressure them before they finish two items; later, don't face them without your team.");
 	if (t.poke) how.push("They poke from range. Step sideways to dodge, don't fight at half health, and go in when their skills are on cooldown.");
 	if (t.tanky >= .75) how.push("Hard to kill. In team fights hit their damage dealers first unless this is the only hero in reach.");
-	if (me && ranged(me) && !ranged(enemy)) how.push("You out-range them. Hit them when they step up to the minions, and back off before they reach you.");
+	const melee = [
+		"Fighter",
+		"Assassin",
+		"Tank"
+	].includes(enemy.roles[0] ?? "");
+	if (me && ranged(me) && melee) how.push("You out-range them. Hit them when they step up to the minions, and back off before they reach you.");
 	if (me && me.traits.burst >= .7 && squishy(enemy)) how.push("You can kill them with one full combo. Wait in a bush and open on them when they walk past.");
 	if (ult?.cd && ult.cd >= 30) how.push(`${ult.name} is their ultimate (about ${Math.round(ult.cd)} seconds). Once they have used it they are much weaker — that is your window.`);
 	const edge = me ? versus(me.id, enemy.id) : void 0;

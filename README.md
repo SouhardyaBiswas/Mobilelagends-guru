@@ -8,7 +8,7 @@ A coach for Mobile Legends: Bang Bang, built for a new player. It tells you, in 
 
 Every enemy gets a card with the skills to recognise (real names and descriptions from the game's own data) and how to play against them.
 
-> **Status:** the advice engine, guide, pictures, voice and the screenshot endpoint are tested (44 unit tests, 21 scripted browser checks). Reading *real* screenshots with a live vision model has **not** been run yet — see [What is and isn't verified](#what-is-and-isnt-verified).
+> **Status:** the advice engine, guide, pictures, voice and the screenshot endpoint are tested (45 unit tests, 22 scripted browser checks). Reading *real* screenshots with a live vision model has **not** been run yet — see [What is and isn't verified](#what-is-and-isnt-verified).
 
 ## Use it with only an iPad (no laptop)
 
@@ -93,9 +93,9 @@ Your key travels in the request and is not stored on the site. The endpoint reme
 ## What is and isn't verified
 
 **Verified here**
-- 44 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, catalog and picture coverage, and session handling.
+- 45 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, catalog and picture coverage, and session handling.
 - Tests transcribed by hand from real match screenshots: one scoreboard yields the hero, both teams, gold and inventory; the shop yields the in-game build; all eight shop prices match the catalog at the emblem's 95%.
-- 21 scripted browser checks in demo mode, including pictures loading and spoken lines.
+- 22 scripted browser checks in demo mode, including pictures loading and spoken lines.
 - The screenshot endpoint, run locally: health check, error answers, and a scripted match.
 
 **Not verified**

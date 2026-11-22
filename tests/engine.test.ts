@@ -566,6 +566,23 @@ describe("new-player guidance", () => {
     expect(plan.length).toBeLessThanOrEqual(5);
   });
 
+  it("reads sensibly for the player's real match (Obsidia into two healers and two tanks)", () => {
+    const me = H("Obsidia");
+    const enemies = ids("Angela", "Minotaur", "Rafaela", "Akai", "Bane");
+    const plan = gamePlan(me, enemies, analyzeThreat(team("Angela", "Minotaur", "Rafaela", "Akai", "Bane")));
+    // Supports are not "their damage": the reason to kill a healer is that she keeps the others alive.
+    expect(plan[0]).toBe("Kill first: Angela and Rafaela — their healers. While they live, nobody else dies.");
+    expect(plan.join(" ")).not.toMatch(/Angela[^.]*their damage/);
+    // "You out-range them" is only true of heroes who have to walk up to you.
+    const outRanged = (name: string) => briefOn(H(name), me).how.some((line) => line.startsWith("You out-range"));
+    expect(outRanged("Angela")).toBe(false);
+    expect(outRanged("Rafaela")).toBe(false);
+    expect(outRanged("Akai")).toBe(true);
+    expect(outRanged("Bane")).toBe(true);
+    // A team with a marksman still gets the usual target call.
+    expect(gamePlan(H("Layla"), ids("Karrie", "Tigreal"), analyzeThreat(team("Karrie", "Tigreal")))[0]).toMatch(/^Kill first: Karrie — their damage/);
+  });
+
   it("counts the lane matchup double when ranking picks", () => {
     const enemies = ids("Esmeralda", "Estes", "Gusion");
     const plain = rankCounters({ enemies, allies: [], lane: "exp", limit: 40 });

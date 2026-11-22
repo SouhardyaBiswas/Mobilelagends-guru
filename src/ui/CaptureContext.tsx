@@ -137,7 +137,17 @@ export function CaptureProvider({ children }: { children: ReactNode }) {
     }
   }, [analyze]);
 
-  const analyzeFile = useCallback(async (file: Blob) => analyze(await frameFromBlob(file)), [analyze]);
+  const analyzeFile = useCallback(
+    async (file: Blob) => {
+      // Demo mode plays a scripted match; answering a real screenshot with it would look like a (wrong) read.
+      if (stateRef.current.settings.vision.provider === "demo") {
+        setStatus((st) => ({ ...st, error: "Demo mode can't read real screenshots. Add a free Gemini key in Settings → Screen reading first." }));
+        return;
+      }
+      await analyze(await frameFromBlob(file));
+    },
+    [analyze],
+  );
 
   useEffect(() => {
     const t = ticker.current;

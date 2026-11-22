@@ -114,7 +114,9 @@ export function briefOn(enemy: Hero, me?: Hero): HeroBrief {
   }
   if (t.poke) how.push("They poke from range. Step sideways to dodge, don't fight at half health, and go in when their skills are on cooldown.");
   if (t.tanky >= 0.75) how.push("Hard to kill. In team fights hit their damage dealers first unless this is the only hero in reach.");
-  if (me && ranged(me) && !ranged(enemy)) how.push("You out-range them. Hit them when they step up to the minions, and back off before they reach you.");
+  // Only true of heroes who must walk up to hit you; supports are often ranged too.
+  const melee = ["Fighter", "Assassin", "Tank"].includes(enemy.roles[0] ?? "");
+  if (me && ranged(me) && melee) how.push("You out-range them. Hit them when they step up to the minions, and back off before they reach you.");
   if (me && me.traits.burst >= 0.7 && squishy(enemy)) how.push("You can kill them with one full combo. Wait in a bush and open on them when they walk past.");
   if (ult?.cd && ult.cd >= 30) how.push(`${ult.name} is their ultimate (about ${Math.round(ult.cd)} seconds). Once they have used it they are much weaker — that is your window.`);
 
@@ -156,8 +158,12 @@ export function gamePlan(me: Hero, enemyIds: number[], threat: ThreatProfile, la
     out.push(`In lane you face ${lane.name}: ${summarise(lane).replace(/\.$/, "").toLowerCase()}.${read}`);
   }
 
-  const targets = enemies.filter(squishy).sort((a, b) => b.ability.offense - a.ability.offense).slice(0, 2);
-  if (targets.length) out.push(`Kill first: ${list(targets)} — their damage, and easy to kill.`);
+  // Who to focus: fragile damage dealers if they have any, otherwise the healers keeping everyone else alive.
+  const carries = enemies.filter((h) => squishy(h) && h.roles[0] !== "Support").sort((a, b) => b.ability.offense - a.ability.offense).slice(0, 2);
+  const healers = enemies.filter((h) => h.roles[0] === "Support" && h.traits.sustain >= 0.5).slice(0, 2);
+  const targets = carries.length ? carries : healers;
+  if (carries.length) out.push(`Kill first: ${list(carries)} — their damage, and easy to kill.`);
+  else if (healers.length) out.push(`Kill first: ${list(healers)} — their healers. While they live, nobody else dies.`);
 
   // At most two warnings, most actionable first, so the plan stays short enough to remember.
   const warnings: string[] = [];
