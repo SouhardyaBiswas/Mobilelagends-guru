@@ -9,7 +9,7 @@ A coach for Mobile Legends: Bang Bang, built for a new player. You play on your 
 
 It reads only what is on your own screen, through screenshots you trigger. It never touches the game.
 
-> **Status:** the engine, the endpoint, the voice-command flow, the storyboard and the AI coach's plumbing are covered by 82 unit tests and scripted browser checks, and the reader has been run on real matches. The AI coach and the positioning helper have **not** yet been run against a real model — see [What is and isn't verified](#what-is-and-isnt-verified).
+> **Status:** the engine, the endpoint, the continuous-screenshot flow, the voice commands and the dashboard are covered by 91 unit tests and 125 scripted browser checks, and the reader has been run on real matches. The three specialists (coach, enemy tracker, positioning) have **not** yet been run against a real model — see [What is and isn't verified](#what-is-and-isnt-verified).
 
 ## Phone plays, iPad shows the coach
 
@@ -143,21 +143,26 @@ Three layers, each checking the one before.
 **Verified on the live site**
 - The site loads and the server answers with real advice.
 - Match memory is shared between server copies. Before the fix, polls made while a screenshot was being read came back empty from a copy that knew nothing; the same test now returns the room every time. The shared cache does occasionally return the previous copy for under a second after a write (2 of 84 polls in one measurement); the server and the dashboard both guard against that.
+- Work continues after the answer has been sent (a marker written 18 seconds after the response arrived on schedule), which is what lets the specialists run without holding up the frame loop.
+- The continuous flow, with the scripted demo reader standing in for the models: eight frames a second apart, each answered in under a second, all eight applied in order, both scoreboards remembered, coach, enemy tracker and positioning all filled in, no poll ever empty, and the results screen stopping the loop.
 - Real reads from real matches reach the reader model and come back (Claude Haiku so far).
 
 **Verified here**
-- 82 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, the endpoint with two devices, voice stages, the positioning flow, the coach's answer being checked against the catalog, and two server copies sharing one room.
+- 91 unit tests: counters, threat weighting, build planning, the buy / piece / save / sell flow, the guide for all 133 heroes, the endpoint with two devices, voice stages, the frame loop and its auto-stop, the positioning flow, each specialist's answer being checked against the catalog and the match, the two-frame rule for pocket gold, and two server copies sharing one room through a cache that lags.
 - Tests transcribed from two real matches. One from screenshots: a scoreboard and the shop, with all eight prices matching the catalog at the emblem's 95%. One from the server's logs: six scoreboards and a shop read from a ranked match, including the three that came back with shifted columns and the missing starting gold.
+- 125 scripted browser checks: the single-device flow (22), a phone-sized follower (14), the iPad dashboard at 1180×820, 1024×768 and 1366×1024 in every stage with nothing scrolling off the page (70), and the dashboard driven by voice commands, single shots, the positioning flow and a frame loop while listening to what it says (19).
 
 **Learned from real matches**
 - Claude Haiku reads hero names, the clock and gold correctly, shifted the enemy columns on half the scoreboards, and its item icons are noise (the same inventory read as four different sets of items in four reads).
 - Its read of the shop's large inventory row matched the gold spent to within 2 gold.
+- In that ranked match the scoreboard's gold totals were about 300 short of what had been spent (the starting gold); in an earlier match they were not. The coach works out which case it is from the shop read rather than assuming.
 - Uploads took 2 to 8 seconds on top of the model's own time when the screenshot was not resized.
 
 **Not verified**
-- **The AI coach and positioning against a real model.** Their instructions, the checking of their answers and the whole request flow are tested with scripted answers; how good the advice is on a real match is unknown until one is played.
-- **A stronger reader on item icons.** Whether Opus reads the small scoreboard icons reliably has not been measured.
-- **A long repeating shortcut behind the game**, and **voice on iPad Safari**.
+- **The specialists against a real model.** Their instructions, the checking of their answers and the whole request flow are tested with scripted answers; how good the coach's build, the enemy tracker's item reads and the positioning advice are on a real match is unknown until one is played. The server logs every one of their answers so the first match can be examined.
+- **A long repeating shortcut behind the game.** iOS decides how long it may run. Try it for two minutes in a match before relying on it.
+- **Rate limits.** Up to three specialist calls can start at once; a low API tier may refuse some. A refusal is logged and the rules' answer stands.
+- **Voice on iPad Safari.**
 
 ## Fair-play note
 
