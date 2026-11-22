@@ -20,7 +20,8 @@ export function demoVision(): VisionCall {
     const allyNames = names(ctx.allies.length ? [...new Set([ctx.myHeroId ?? ctx.allies[0]!, ...ctx.allies])] : [], DEFAULT_ALLIES);
     const enemyNames = names(ctx.enemies, DEFAULT_ENEMIES);
     const me = ctx.myHeroId ? heroById(ctx.myHeroId)?.name : allyNames[0];
-    const s = step++ % 3;
+    // On the server several copies answer for one room, so the place in the script comes from the room, not from this copy.
+    const s = (ctx.step ?? step++) % 3;
 
     const row = (hero: string, k: number, d: number, a: number, gold: number, items: string[] = []) => ({
       hero,

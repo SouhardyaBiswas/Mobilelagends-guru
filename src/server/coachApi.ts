@@ -396,7 +396,7 @@ async function handle(request: Request): Promise<Response> {
 
   try {
     const before = latest;
-    const reply = await within(reader.vision(image, { stage: stageOf(before), myHeroId: before.myHeroId, allies: before.allies, enemies: before.enemies }), READER_DEADLINE_MS, "The model took too long to read the screenshot. Try again.");
+    const reply = await within(reader.vision(image, { stage: stageOf(before), myHeroId: before.myHeroId, allies: before.allies, enemies: before.enemies, step: before.calls }), READER_DEADLINE_MS, "The model took too long to read the screenshot. Try again.");
     const obs = normalizeObservation(reply.raw);
     // The read took seconds. Whatever the dashboard did meanwhile (bought an item, ended the match)
     // must survive, so apply the observation to the room as it is now, not as it was.

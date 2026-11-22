@@ -39443,7 +39443,7 @@ function demoVision() {
 		const allyNames = names(ctx.allies.length ? [.../* @__PURE__ */ new Set([ctx.myHeroId ?? ctx.allies[0], ...ctx.allies])] : [], DEFAULT_ALLIES);
 		const enemyNames = names(ctx.enemies, DEFAULT_ENEMIES);
 		const me = ctx.myHeroId ? heroById(ctx.myHeroId)?.name : allyNames[0];
-		const s = step++ % 3;
+		const s = (ctx.step ?? step++) % 3;
 		const row = (hero, k, d, a, gold, items = []) => ({
 			hero,
 			isMe: hero === me,
@@ -97572,7 +97572,8 @@ async function handle(request) {
 			stage: stageOf(before),
 			myHeroId: before.myHeroId,
 			allies: before.allies,
-			enemies: before.enemies
+			enemies: before.enemies,
+			step: before.calls
 		}), READER_DEADLINE_MS, "The model took too long to read the screenshot. Try again.");
 		const obs = normalizeObservation(reply.raw);
 		if (await pausedNow()) return json(200, {

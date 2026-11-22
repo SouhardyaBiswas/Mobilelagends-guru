@@ -8,6 +8,8 @@ export interface VisionContext {
   myHeroId?: number;
   allies: number[];
   enemies: number[];
+  /** How many screenshots this match has already seen. Only the scripted demo reader uses it, to know where in its script it is. */
+  step?: number;
 }
 
 /**
